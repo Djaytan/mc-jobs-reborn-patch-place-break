@@ -44,8 +44,6 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
-        <sonar.organization>voltariuss</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
         <minecraft.api.version>1.18</minecraft.api.version>
         <package.root>fr.djaytan.minecraft</package.root>

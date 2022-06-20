@@ -1,0 +1,22 @@
+version: 2.1
+
+environment:
+  PIPENV_VENV_IN_PROJECT: true
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: mvn compile
+      - run:
+          name: Test
+          command: mvn test
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
