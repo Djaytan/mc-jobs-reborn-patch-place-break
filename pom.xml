@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.djaytan.minecraft</groupId>
-    <artifactId>jobs-reborn-patch-place-break</artifactId>
+    <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
     <version>1.0.0-SNAPTSHOT</version>
     <packaging>jar</packaging>
 
