@@ -1,5 +1,5 @@
 /*
- * Blacklisting enchantments plugin for Minecraft (Bukkit servers)
+ * JobsReborn extension to patch place-break (Bukkit servers)
  * Copyright (C) 2022 - Loïc DUBOIS-TERMOZ
  *
  * This program is free software: you can redistribute it and/or modify
