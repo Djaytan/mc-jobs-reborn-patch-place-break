@@ -40,12 +40,12 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>17</java.version>
+        <java.version>16</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
-        <minecraft.api.version>1.18</minecraft.api.version>
+        <minecraft.api.version>1.13</minecraft.api.version>
         <package.root>fr.djaytan.minecraft.jobs_reborn_patch_place_break</package.root>
 
         <papermc.version>1.18.2-R0.1-SNAPSHOT</papermc.version>

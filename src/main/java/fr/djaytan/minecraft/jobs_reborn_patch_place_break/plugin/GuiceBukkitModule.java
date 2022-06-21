@@ -111,12 +111,6 @@ public class GuiceBukkitModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public @NotNull StructureManager provideStructureManager() {
-    return plugin.getServer().getStructureManager();
-  }
-
-  @Provides
-  @Singleton
   public @NotNull Executor provideMainThreadExecutor() {
     return runnable -> plugin.getServer().getScheduler().runTask(plugin, runnable);
   }
