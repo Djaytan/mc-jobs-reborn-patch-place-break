@@ -32,6 +32,8 @@ ago.
 The patch is very simple: each block is marked as a "player" one. This information
 is persisted over restart of the server. At payment time, if the breaking block is the one placed
 by a player, the payment will be cancelled no matter who is the breaker and without limit of time.
+As a comparison point, this behavior is similar to the one implemented by
+[mcMMO](https://www.spigotmc.org/resources/official-mcmmo-original-author-returns.64348/) plugin.
 Easy and efficient, this does the trick.
 
 ## Setup

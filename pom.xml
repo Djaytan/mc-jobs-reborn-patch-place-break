@@ -24,7 +24,7 @@
 
     <groupId>fr.djaytan.minecraft</groupId>
     <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
-    <version>1.0.0-SNAPTSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>JobsReborn-PatchPlaceBreak</name>
@@ -46,7 +46,7 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
         <minecraft.api.version>1.18</minecraft.api.version>
-        <package.root>fr.djaytan.minecraft</package.root>
+        <package.root>fr.djaytan.minecraft.jobs_reborn_patch_place_break</package.root>
 
         <papermc.version>1.18.2-R0.1-SNAPSHOT</papermc.version>
         <guice.version>5.1.0</guice.version>
