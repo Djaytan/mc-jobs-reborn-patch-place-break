@@ -21,7 +21,8 @@ place a block for decoration isn't very appreciated by players too.
 The place-break patch provided by JobsReborn seem to be insufficient: you must specify **for each
 block** a fix amount of time during which breaking the block again will not permit to earn money
 and xp. It's a first step forward, but it's insufficient. Specifying an unlimited time isn't
-sufficient too, because at server restart the placed blocks will not prevent the payment anymore.
+sufficient too, because after 14 days maximum the placed blocks will not prevent the payment
+anymore...
 
 So, this is why this project exists: doing an obvious and easy patch that would be done a long time
 ago.
@@ -30,7 +31,7 @@ ago.
 
 The patch is very simple: each block is marked as a "player" one. This information
 is persisted over restart of the server. At payment time, if the breaking block is the one placed
-by a player, the payment will be cancelled no matter who is the breaker.
+by a player, the payment will be cancelled no matter who is the breaker and without limit of time.
 Easy and efficient, this does the trick.
 
 ## Setup
