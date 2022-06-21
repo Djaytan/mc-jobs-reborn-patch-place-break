@@ -20,20 +20,16 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
 
 import com.gamingmesh.jobs.container.ActionType;
 import com.google.common.base.Preconditions;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import org.bukkit.block.Block;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@Singleton
 public class JobsControllerImpl implements JobsController {
 
   private final Plugin plugin;
 
-  @Inject
   public JobsControllerImpl(@NotNull Plugin plugin) {
     this.plugin = plugin;
   }

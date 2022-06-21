@@ -49,7 +49,7 @@
         <package.root>fr.djaytan.minecraft.jobs_reborn_patch_place_break</package.root>
 
         <papermc.version>1.18.2-R0.1-SNAPSHOT</papermc.version>
-        <guice.version>5.1.0</guice.version>
+        <jobs.version>v4.17.2</jobs.version>
         <lombok.version>1.18.24</lombok.version>
         <slf4j.version>1.7.36</slf4j.version>
         <log4j.version>2.17.2</log4j.version>
@@ -151,12 +151,6 @@
         </dependency>
 
         <!-- Java dependencies -->
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>${guice.version}</version>
-            <scope>compile</scope>
-        </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>

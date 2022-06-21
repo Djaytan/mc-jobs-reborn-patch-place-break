@@ -21,7 +21,6 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockPlaceListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.JobsExpGainListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.JobsPrePaymentListener;
-import javax.inject.Inject;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +37,6 @@ public class ListenerRegister {
   private final JobsExpGainListener jobsExpGainListener;
   private final JobsPrePaymentListener jobsPrePaymentListener;
 
-  @Inject
   public ListenerRegister(
       @NotNull Plugin plugin,
       @NotNull PluginManager pluginManager,

@@ -19,20 +19,16 @@
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener;
 
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.JobsController;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.jetbrains.annotations.NotNull;
 
-@Singleton
 public class BlockPlaceListener implements Listener {
 
   private final JobsController jobsController;
 
-  @Inject
   public BlockPlaceListener(@NotNull JobsController jobsController) {
     this.jobsController = jobsController;
   }

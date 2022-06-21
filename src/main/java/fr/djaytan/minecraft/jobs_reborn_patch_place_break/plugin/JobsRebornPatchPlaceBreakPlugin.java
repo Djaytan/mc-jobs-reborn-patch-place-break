@@ -18,21 +18,26 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin;
 
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.JobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.JobsControllerImpl;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockPlaceListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.JobsExpGainListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.JobsPrePaymentListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /** This class represents a JobsReborn patch place-break plugin. */
 public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
-  @Inject private ListenerRegister listenerRegister;
-
   @Override
   public void onEnable() {
-    Injector injector = Guice.createInjector(new GuiceBukkitModule(this), new GuicePluginModule());
-    injector.injectMembers(this);
-
+    JobsController jobsController = new JobsControllerImpl(this);
+    ListenerRegister listenerRegister =
+        new ListenerRegister(
+            this,
+            this.getServer().getPluginManager(),
+            new BlockPlaceListener(jobsController),
+            new JobsExpGainListener(jobsController),
+            new JobsPrePaymentListener(jobsController));
     listenerRegister.registerListeners();
   }
 }

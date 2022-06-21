@@ -20,19 +20,15 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener;
 
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.JobsController;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-@Singleton
 public class JobsExpGainListener implements Listener {
 
   private final JobsController jobsController;
 
-  @Inject
   public JobsExpGainListener(@NotNull JobsController jobsController) {
     this.jobsController = jobsController;
   }
