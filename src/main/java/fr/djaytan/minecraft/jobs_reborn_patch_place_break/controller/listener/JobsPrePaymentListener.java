@@ -19,7 +19,7 @@
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener;
 
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.JobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -27,10 +27,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class JobsPrePaymentListener implements Listener {
 
-  private final JobsController jobsController;
+  private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
-  public JobsPrePaymentListener(@NotNull JobsController jobsController) {
-    this.jobsController = jobsController;
+  public JobsPrePaymentListener(
+      @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
+    this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -39,7 +40,8 @@ public class JobsPrePaymentListener implements Listener {
       return;
     }
 
-    if (jobsController.isPlaceAndBreakAction(event.getActionInfo().getType(), event.getBlock())) {
+    if (patchPlaceAndBreakJobsController.isPlaceAndBreakAction(
+        event.getActionInfo().getType(), event.getBlock())) {
       event.setCancelled(true);
     }
   }

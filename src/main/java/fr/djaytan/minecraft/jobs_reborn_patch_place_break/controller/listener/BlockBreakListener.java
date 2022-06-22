@@ -18,38 +18,24 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.JobsController;
-import org.bukkit.Location;
-import org.bukkit.World;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
 public class BlockBreakListener implements Listener {
 
-  private final BukkitScheduler bukkitScheduler;
-  private final JobsController jobsController;
-  private final Plugin plugin;
+  private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
   public BlockBreakListener(
-      @NotNull BukkitScheduler bukkitScheduler,
-      @NotNull JobsController jobsController,
-      @NotNull Plugin plugin) {
-    this.bukkitScheduler = bukkitScheduler;
-    this.jobsController = jobsController;
-    this.plugin = plugin;
+      @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
+    this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockBreak(@NotNull BlockBreakEvent event) {
-    Location location = event.getBlock().getLocation();
-    World world = event.getBlock().getWorld();
-
-    bukkitScheduler.runTaskLater(
-        plugin, () -> jobsController.setPlayerBlockPlacedMetadata(world.getBlockAt(location)), 1L);
+    patchPlaceAndBreakJobsController.putTagOnNextTick(event.getBlock());
   }
 }

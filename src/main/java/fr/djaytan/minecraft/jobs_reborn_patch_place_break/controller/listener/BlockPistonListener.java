@@ -22,20 +22,28 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceA
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockSpreadEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class BlockSpreadListener implements Listener {
+public class BlockPistonListener implements Listener {
 
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
-  public BlockSpreadListener(
+  public BlockPistonListener(
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockSpread(@NotNull BlockSpreadEvent event) {
-    patchPlaceAndBreakJobsController.removeTag(event.getBlock());
+  public void onBlockPistonExtend(@NotNull BlockPistonExtendEvent event) {
+    patchPlaceAndBreakJobsController.putBackTagOnMovedBlocks(
+        event.getBlocks(), event.getDirection().getDirection());
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onBlockPistonRetract(@NotNull BlockPistonRetractEvent event) {
+    patchPlaceAndBreakJobsController.putBackTagOnMovedBlocks(
+        event.getBlocks(), event.getDirection().getDirection());
   }
 }

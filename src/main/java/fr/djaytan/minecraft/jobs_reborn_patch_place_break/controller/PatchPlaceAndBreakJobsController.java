@@ -19,18 +19,26 @@
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
 
 import com.gamingmesh.jobs.container.ActionType;
+import java.util.List;
 import org.bukkit.block.Block;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface JobsController {
+public interface PatchPlaceAndBreakJobsController {
 
   String PLAYER_BLOCK_PLACED_METADATA_KEY =
       "jobs_reborn.patch_place_break.is_block_placed_by_player";
 
+  boolean isTagged(@NotNull Block block);
+
+  void putTag(@NotNull Block block);
+
+  void putTagOnNextTick(@NotNull Block block);
+
+  void removeTag(@NotNull Block block);
+
   boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @Nullable Block block);
 
-  void setPlayerBlockPlacedMetadata(@NotNull Block block);
-
-  void removePlayerBlockPlacedMetadata(@NotNull Block block);
+  void putBackTagOnMovedBlocks(@NotNull List<Block> blocks, @NotNull Vector direction);
 }

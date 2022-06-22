@@ -18,7 +18,7 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.JobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -27,14 +27,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class BlockPlaceListener implements Listener {
 
-  private final JobsController jobsController;
+  private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
-  public BlockPlaceListener(@NotNull JobsController jobsController) {
-    this.jobsController = jobsController;
+  public BlockPlaceListener(
+      @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
+    this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockPlace(@NotNull BlockPlaceEvent event) {
-    jobsController.setPlayerBlockPlacedMetadata(event.getBlockPlaced());
+    patchPlaceAndBreakJobsController.putTag(event.getBlockPlaced());
   }
 }

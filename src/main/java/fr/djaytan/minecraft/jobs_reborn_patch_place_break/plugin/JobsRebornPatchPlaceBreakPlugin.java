@@ -18,10 +18,11 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.JobsController;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.JobsControllerImpl;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsControllerImpl;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockBreakListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockGrowListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockPistonListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockPlaceListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockSpreadListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.JobsExpGainListener;
@@ -33,17 +34,19 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    JobsController jobsController = new JobsControllerImpl(this);
+    PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController =
+        new PatchPlaceAndBreakJobsControllerImpl(getServer().getScheduler(), this);
     ListenerRegister listenerRegister =
         new ListenerRegister(
             this,
             this.getServer().getPluginManager(),
-            new BlockBreakListener(getServer().getScheduler(), jobsController, this),
-            new BlockGrowListener(jobsController),
-            new BlockPlaceListener(jobsController),
-            new BlockSpreadListener(jobsController),
-            new JobsExpGainListener(jobsController),
-            new JobsPrePaymentListener(jobsController));
+            new BlockBreakListener(patchPlaceAndBreakJobsController),
+            new BlockGrowListener(patchPlaceAndBreakJobsController),
+            new BlockPistonListener(patchPlaceAndBreakJobsController),
+            new BlockPlaceListener(patchPlaceAndBreakJobsController),
+            new BlockSpreadListener(patchPlaceAndBreakJobsController),
+            new JobsExpGainListener(patchPlaceAndBreakJobsController),
+            new JobsPrePaymentListener(patchPlaceAndBreakJobsController));
     listenerRegister.registerListeners();
   }
 }
