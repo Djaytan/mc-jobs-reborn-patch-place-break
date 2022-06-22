@@ -18,6 +18,7 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin;
 
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockBreakListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockGrowListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockPlaceListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockSpreadListener;
@@ -33,6 +34,7 @@ public class ListenerRegister {
   private final Plugin plugin;
   private final PluginManager pluginManager;
 
+  private final BlockBreakListener blockBreakListener;
   private final BlockGrowListener blockGrowListener;
   private final BlockPlaceListener blockPlaceListener;
   private final BlockSpreadListener blockSpreadListener;
@@ -42,6 +44,7 @@ public class ListenerRegister {
   public ListenerRegister(
       @NotNull Plugin plugin,
       @NotNull PluginManager pluginManager,
+      @NotNull BlockBreakListener blockBreakListener,
       @NotNull BlockGrowListener blockGrowListener,
       @NotNull BlockPlaceListener blockPlaceListener,
       @NotNull BlockSpreadListener blockSpreadListener,
@@ -50,6 +53,7 @@ public class ListenerRegister {
     this.plugin = plugin;
     this.pluginManager = pluginManager;
 
+    this.blockBreakListener = blockBreakListener;
     this.blockGrowListener = blockGrowListener;
     this.blockPlaceListener = blockPlaceListener;
     this.blockSpreadListener = blockSpreadListener;
@@ -58,6 +62,7 @@ public class ListenerRegister {
   }
 
   public void registerListeners() {
+    pluginManager.registerEvents(blockBreakListener, plugin);
     pluginManager.registerEvents(blockGrowListener, plugin);
     pluginManager.registerEvents(blockPlaceListener, plugin);
     pluginManager.registerEvents(blockSpreadListener, plugin);

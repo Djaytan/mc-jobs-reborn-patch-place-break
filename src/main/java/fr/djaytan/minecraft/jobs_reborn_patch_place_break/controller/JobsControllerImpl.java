@@ -39,7 +39,9 @@ public class JobsControllerImpl implements JobsController {
     Preconditions.checkNotNull(actionType);
 
     if (block == null
-        || !actionType.equals(ActionType.BREAK) && !actionType.equals(ActionType.TNTBREAK)) {
+        || !actionType.equals(ActionType.BREAK)
+            && !actionType.equals(ActionType.TNTBREAK)
+            && !actionType.equals(ActionType.PLACE)) {
       return false;
     }
 
