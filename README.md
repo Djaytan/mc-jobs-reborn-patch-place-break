@@ -31,20 +31,23 @@ ago.
 
 ## How the patch works
 
-The patch is very simple: when breaking or placing blocks, each one is marked as a "player" one. This information
+The patch is very simple: when breaking or placing blocks, each one is tagged. This information
 is persisted accross server restarts.
 
-At payment time, if the BREAK, TNTBREAK or PLACE action involve an active "player" tag, the payment will be cancelled.
-It doesn't matter whose player is the author, so if one player place a block and another one break it, the payment will
-be cancelled anyway.
+At payment time, if a BREAK, TNTBREAK or PLACE action involve an active "player" tag, the payment
+will be cancelled. It doesn't matter whose player is the author, so if one player place a block
+and another one break it, the payment will be cancelled anyway.
 
-There are two main behaviors which have subtal differences:
-* When a block is placed, a tag is attached to it: This is useful to patch BREAK and TNTBREAK actions (e.g. for breaking diamond ores) ;
-* When a block is broken, a tag is attached to the location where it was: This is useful to patch PLACE actions (e.g. for placing saplings).
+There are two main behaviors which have subtle differences:
+* When a block is placed, a tag is attached to it: This is useful to patch BREAK and TNTBREAK
+  actions (e.g. for breaking diamond ores) ;
+* When a block is broken, a tag is attached to the location where it was: This is useful to
+  patch PLACE actions (e.g. for placing saplings).
 
-*Note: the second behavior lead to "ephemeral" tags, that's to say a tag which will be applicatable during a short-time only. The value is fixed to three seconds.*
+*Note: the second behavior lead to "ephemeral" tags, that's to say a tag which will be
+applicatable during a short-time only. The value is fixed to three seconds.*
 
-As a comparison point, this behavior can have similituds with the one implemented by
+As a comparison point, this behavior can have similarities with the one implemented by
 [mcMMO](https://www.spigotmc.org/resources/official-mcmmo-original-author-returns.64348/) plugin.
 
 Easy and efficient, this does the trick.
@@ -59,7 +62,8 @@ Simply download the latest `.jar` file from the
 repository and put it into the `plugins/` folder, and you'll be done! After restarting the server,
 the plugin should now appear green in the list displayed by the `/plugins` command.
 
-At this point, you should simply turn off all options of the "PlaceAndBreak" config part of JobsReborn. This would lead to a similar result as the one below:
+At this point, you should simply turn off all options of the "PlaceAndBreak" config part of JobsReborn.
+This would lead to a similar result as the following one:
 
 ```yaml
 PlaceAndBreak:
