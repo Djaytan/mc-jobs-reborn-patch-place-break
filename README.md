@@ -20,14 +20,14 @@ for whatever reason, the amount of money to give when the block is broken will b
 the amount to be retrieved when placing the same one. And... well... losing money and xp when you
 place a block for decoration isn't very appreciated by players too.
 
-The place-break patch provided by JobsReborn seem to be insufficient: you must specify **for each
+The place-and-break patch provided by JobsReborn seems to be insufficient: you must specify **for each
 block** a fix amount of time during which breaking the block again will not permit to earn money
 and xp. It's a first step forward, but it's insufficient. Specifying an unlimited time isn't
 sufficient too, because after 14 days maximum the placed blocks will not prevent the payment
-anymore... And finally, piston bypass isn't taking into account.
+anymore... And finally, piston workaround isn't taking into account at all.
 
-So, this is why this project exists: doing an obvious and easy patch that would be done a long time
-ago.
+So, this is why this project exists: doing an obvious and easy patch that would have be done a long
+time ago.
 
 ## How the patch works
 
