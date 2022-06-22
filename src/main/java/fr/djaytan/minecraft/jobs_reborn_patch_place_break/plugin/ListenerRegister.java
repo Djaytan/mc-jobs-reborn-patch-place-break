@@ -20,6 +20,7 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin;
 
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockGrowListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockPlaceListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockSpreadListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.JobsExpGainListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.JobsPrePaymentListener;
 import org.bukkit.plugin.Plugin;
@@ -34,6 +35,7 @@ public class ListenerRegister {
 
   private final BlockGrowListener blockGrowListener;
   private final BlockPlaceListener blockPlaceListener;
+  private final BlockSpreadListener blockSpreadListener;
   private final JobsExpGainListener jobsExpGainListener;
   private final JobsPrePaymentListener jobsPrePaymentListener;
 
@@ -42,6 +44,7 @@ public class ListenerRegister {
       @NotNull PluginManager pluginManager,
       @NotNull BlockGrowListener blockGrowListener,
       @NotNull BlockPlaceListener blockPlaceListener,
+      @NotNull BlockSpreadListener blockSpreadListener,
       @NotNull JobsExpGainListener jobsExpGainListener,
       @NotNull JobsPrePaymentListener jobsPrePaymentListener) {
     this.plugin = plugin;
@@ -49,6 +52,7 @@ public class ListenerRegister {
 
     this.blockGrowListener = blockGrowListener;
     this.blockPlaceListener = blockPlaceListener;
+    this.blockSpreadListener = blockSpreadListener;
     this.jobsExpGainListener = jobsExpGainListener;
     this.jobsPrePaymentListener = jobsPrePaymentListener;
   }
@@ -56,6 +60,7 @@ public class ListenerRegister {
   public void registerListeners() {
     pluginManager.registerEvents(blockGrowListener, plugin);
     pluginManager.registerEvents(blockPlaceListener, plugin);
+    pluginManager.registerEvents(blockSpreadListener, plugin);
     pluginManager.registerEvents(jobsExpGainListener, plugin);
     pluginManager.registerEvents(jobsPrePaymentListener, plugin);
   }

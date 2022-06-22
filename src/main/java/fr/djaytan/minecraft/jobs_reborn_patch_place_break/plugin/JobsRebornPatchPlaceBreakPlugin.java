@@ -22,6 +22,7 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.JobsControl
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.JobsControllerImpl;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockGrowListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockPlaceListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockSpreadListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.JobsExpGainListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.JobsPrePaymentListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,6 +39,7 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
             this.getServer().getPluginManager(),
             new BlockGrowListener(jobsController),
             new BlockPlaceListener(jobsController),
+            new BlockSpreadListener(jobsController),
             new JobsExpGainListener(jobsController),
             new JobsPrePaymentListener(jobsController));
     listenerRegister.registerListeners();
