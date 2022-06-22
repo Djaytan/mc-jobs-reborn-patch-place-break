@@ -16,26 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener;
+package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit;
 
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockSpreadEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class BlockSpreadListener implements Listener {
+public class BlockPlaceListener implements Listener {
 
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
-  public BlockSpreadListener(
+  public BlockPlaceListener(
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockSpread(@NotNull BlockSpreadEvent event) {
-    patchPlaceAndBreakJobsController.removeTag(event.getBlock());
+  public void onBlockPlace(@NotNull BlockPlaceEvent event) {
+    patchPlaceAndBreakJobsController.putTag(event.getBlockPlaced());
   }
 }

@@ -16,34 +16,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener;
+package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs;
 
+import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPistonExtendEvent;
-import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class BlockPistonListener implements Listener {
+public class JobsPrePaymentListener implements Listener {
 
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
-  public BlockPistonListener(
+  public JobsPrePaymentListener(
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
-  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockPistonExtend(@NotNull BlockPistonExtendEvent event) {
-    patchPlaceAndBreakJobsController.putBackTagOnMovedBlocks(
-        event.getBlocks(), event.getDirection().getDirection());
-  }
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onJobsPayment(@NotNull JobsPrePaymentEvent event) {
+    if (event.getActionInfo() == null || event.getActionInfo().getType() == null) {
+      return;
+    }
 
-  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockPistonRetract(@NotNull BlockPistonRetractEvent event) {
-    patchPlaceAndBreakJobsController.putBackTagOnMovedBlocks(
-        event.getBlocks(), event.getDirection().getDirection());
+    if (patchPlaceAndBreakJobsController.isPlaceAndBreakAction(
+        event.getActionInfo().getType(), event.getBlock())) {
+      event.setCancelled(true);
+    }
   }
 }

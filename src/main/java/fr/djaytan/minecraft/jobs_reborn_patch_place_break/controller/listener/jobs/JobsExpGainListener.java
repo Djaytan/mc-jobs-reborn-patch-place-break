@@ -16,26 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener;
+package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs;
 
-import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
+import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-public class JobsPrePaymentListener implements Listener {
+public class JobsExpGainListener implements Listener {
 
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
-  public JobsPrePaymentListener(
+  public JobsExpGainListener(
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void onJobsPayment(@NotNull JobsPrePaymentEvent event) {
+  public void onJobsExpGain(@NotNull JobsExpGainEvent event) {
     if (event.getActionInfo() == null || event.getActionInfo().getType() == null) {
       return;
     }
