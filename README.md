@@ -45,7 +45,7 @@ There are two main behaviors which have subtle differences:
   patch PLACE actions (e.g. for placing saplings).
 
 *Note: the second behavior lead to "ephemeral" tags, that's to say a tag which will be
-applicatable during a short-time only. The value is fixed to three seconds.*
+applicable during a short-time only. The value is fixed to three seconds.*
 
 As a comparison point, this behavior can have similarities with the one implemented by
 [mcMMO](https://www.spigotmc.org/resources/official-mcmmo-original-author-returns.64348/) plugin.
