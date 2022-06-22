@@ -20,11 +20,17 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
 
 import com.gamingmesh.jobs.container.ActionType;
 import com.google.common.base.Preconditions;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
@@ -32,6 +38,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJobsController {
+
+  private static final Duration EPHEMERAL_TAG_DURATION = Duration.ofSeconds(3);
 
   private final BukkitScheduler bukkitScheduler;
   private final Plugin plugin;
@@ -43,38 +51,49 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
   }
 
   @Override
-  public boolean isTagged(@NotNull Block block) {
-    return block.hasMetadata(PLAYER_BLOCK_PLACED_METADATA_KEY);
-  }
-
-  @Override
   public boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @Nullable Block block) {
     Preconditions.checkNotNull(actionType);
 
-    if (block == null
-        || !actionType.equals(ActionType.BREAK)
-            && !actionType.equals(ActionType.TNTBREAK)
-            && !actionType.equals(ActionType.PLACE)) {
+    if (block == null || !isActionToPatch(actionType)) {
       return false;
     }
 
-    return block.hasMetadata(PLAYER_BLOCK_PLACED_METADATA_KEY);
+    Optional<PatchPlaceAndBreakTag> tag = getTag(block);
+
+    if (!tag.isPresent()) {
+      return false;
+    }
+
+    if (tag.get().getDuration() == null) {
+      return true;
+    }
+
+    LocalDateTime localDateTime = LocalDateTime.now();
+    Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
+
+    return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
   }
 
   @Override
-  public void putTag(@NotNull Block block) {
+  public void putTag(@NotNull Block block, boolean isEphemeral) {
     Preconditions.checkNotNull(block);
-    block.setMetadata(PLAYER_BLOCK_PLACED_METADATA_KEY, new FixedMetadataValue(plugin, true));
+
+    LocalDateTime localDateTime = LocalDateTime.now();
+    Duration duration = isEphemeral ? EPHEMERAL_TAG_DURATION : null;
+
+    PatchPlaceAndBreakTag tag = new PatchPlaceAndBreakTag(localDateTime, duration);
+
+    block.setMetadata(PLAYER_BLOCK_PLACED_METADATA_KEY, new FixedMetadataValue(plugin, tag));
   }
 
   @Override
-  public void putTagOnNextTick(@NotNull Block block) {
+  public void putTagOnNextTick(@NotNull Block block, boolean isEphemeral) {
     Preconditions.checkNotNull(block);
 
     Location location = block.getLocation();
     World world = block.getWorld();
 
-    bukkitScheduler.runTaskLater(plugin, () -> putTag(world.getBlockAt(location)), 1L);
+    bukkitScheduler.runTaskLater(plugin, () -> putTag(world.getBlockAt(location), isEphemeral), 1L);
   }
 
   @Override
@@ -86,14 +105,43 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
   @Override
   public void putBackTagOnMovedBlocks(@NotNull List<Block> blocks, @NotNull Vector direction) {
     for (Block block : blocks) {
-      if (!isTagged(block)) {
+      Optional<PatchPlaceAndBreakTag> tag = getTag(block);
+
+      if (!tag.isPresent()) {
         continue;
       }
 
       World world = block.getWorld();
       Location newLocation = block.getLocation().add(direction);
 
-      bukkitScheduler.runTaskLater(plugin, () -> putTag(world.getBlockAt(newLocation)), 1L);
+      // Wait the piston action to occur and then put back tag
+      bukkitScheduler.runTaskLater(
+          plugin,
+          () ->
+              world
+                  .getBlockAt(newLocation)
+                  .setMetadata(
+                      PLAYER_BLOCK_PLACED_METADATA_KEY, new FixedMetadataValue(plugin, tag.get())),
+          1L);
     }
+  }
+
+  private @NotNull Optional<PatchPlaceAndBreakTag> getTag(@NotNull Block block) {
+    Optional<MetadataValue> metadataValue =
+        block.getMetadata(PLAYER_BLOCK_PLACED_METADATA_KEY).stream()
+            .filter(mv -> Objects.equals(mv.getOwningPlugin(), plugin))
+            .findFirst();
+
+    if (!metadataValue.isPresent()) {
+      return Optional.empty();
+    }
+
+    PatchPlaceAndBreakTag tag = (PatchPlaceAndBreakTag) metadataValue.get().value();
+    return Optional.ofNullable(tag);
+  }
+
+  private boolean isActionToPatch(@NotNull ActionType actionType) {
+    return Arrays.asList(ActionType.BREAK, ActionType.TNTBREAK, ActionType.PLACE)
+        .contains(actionType);
   }
 }

@@ -18,25 +18,37 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
 
-import com.gamingmesh.jobs.container.ActionType;
-import java.util.List;
-import org.bukkit.block.Block;
-import org.bukkit.util.Vector;
+import com.google.common.base.Preconditions;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface PatchPlaceAndBreakJobsController {
+public class PatchPlaceAndBreakTag {
 
-  String PLAYER_BLOCK_PLACED_METADATA_KEY =
-      "jobs_reborn.patch_place_break.is_block_placed_by_player";
+  private LocalDateTime initLocalDateTime;
+  private Duration duration;
 
-  void putTag(@NotNull Block block, boolean isEphemeral);
+  public PatchPlaceAndBreakTag(
+      @NotNull LocalDateTime initLocalDateTime, @Nullable Duration duration) {
+    setInitLocalDateTime(initLocalDateTime);
+    setDuration(duration);
+  }
 
-  void putTagOnNextTick(@NotNull Block block, boolean isEphemeral);
+  public LocalDateTime getInitLocalDateTime() {
+    return initLocalDateTime;
+  }
 
-  void removeTag(@NotNull Block block);
+  public Duration getDuration() {
+    return duration;
+  }
 
-  boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @Nullable Block block);
+  private void setInitLocalDateTime(@NotNull LocalDateTime initLocalDateTime) {
+    Preconditions.checkNotNull(initLocalDateTime);
+    this.initLocalDateTime = initLocalDateTime;
+  }
 
-  void putBackTagOnMovedBlocks(@NotNull List<Block> blocks, @NotNull Vector direction);
+  private void setDuration(@Nullable Duration duration) {
+    this.duration = duration;
+  }
 }

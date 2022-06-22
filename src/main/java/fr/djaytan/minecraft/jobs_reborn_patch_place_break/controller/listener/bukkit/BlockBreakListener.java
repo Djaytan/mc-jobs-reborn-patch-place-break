@@ -36,6 +36,6 @@ public class BlockBreakListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockBreak(@NotNull BlockBreakEvent event) {
-    patchPlaceAndBreakJobsController.putTagOnNextTick(event.getBlock());
+    patchPlaceAndBreakJobsController.putTagOnNextTick(event.getBlock(), true);
   }
 }
