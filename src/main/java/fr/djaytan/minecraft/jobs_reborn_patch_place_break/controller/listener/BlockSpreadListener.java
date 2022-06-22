@@ -33,7 +33,7 @@ public class BlockSpreadListener implements Listener {
     this.jobsController = jobsController;
   }
 
-  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockSpread(@NotNull BlockSpreadEvent event) {
     jobsController.removePlayerBlockPlacedMetadata(event.getBlock());
   }

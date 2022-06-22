@@ -43,7 +43,7 @@ public class BlockGrowListener implements Listener {
     this.jobsController = jobsController;
   }
 
-  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockGrow(@NotNull BlockGrowEvent event) {
     jobsController.removePlayerBlockPlacedMetadata(event.getBlock());
   }

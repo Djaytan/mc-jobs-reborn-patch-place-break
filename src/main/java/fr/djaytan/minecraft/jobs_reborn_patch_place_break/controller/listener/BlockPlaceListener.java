@@ -33,7 +33,7 @@ public class BlockPlaceListener implements Listener {
     this.jobsController = jobsController;
   }
 
-  @EventHandler(priority = EventPriority.LOWEST)
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockPlace(@NotNull BlockPlaceEvent event) {
     jobsController.setPlayerBlockPlacedMetadata(event.getBlockPlaced());
   }
