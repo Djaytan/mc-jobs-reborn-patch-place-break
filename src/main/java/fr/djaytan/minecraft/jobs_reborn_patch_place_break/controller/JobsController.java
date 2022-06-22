@@ -31,4 +31,6 @@ public interface JobsController {
   boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @Nullable Block block);
 
   void setPlayerBlockPlacedMetadata(@NotNull Block block);
+
+  void removePlayerBlockPlacedMetadata(@NotNull Block block);
 }

@@ -49,7 +49,12 @@ public class JobsControllerImpl implements JobsController {
   @Override
   public void setPlayerBlockPlacedMetadata(@NotNull Block block) {
     Preconditions.checkNotNull(block);
-
     block.setMetadata(PLAYER_BLOCK_PLACED_METADATA_KEY, new FixedMetadataValue(plugin, true));
+  }
+
+  @Override
+  public void removePlayerBlockPlacedMetadata(@NotNull Block block) {
+    Preconditions.checkNotNull(block);
+    block.removeMetadata(PLAYER_BLOCK_PLACED_METADATA_KEY, plugin);
   }
 }

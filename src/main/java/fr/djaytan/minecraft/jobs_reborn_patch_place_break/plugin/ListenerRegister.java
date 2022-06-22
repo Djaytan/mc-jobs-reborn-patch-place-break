@@ -18,6 +18,7 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin;
 
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockGrowListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.BlockPlaceListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.JobsExpGainListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.JobsPrePaymentListener;
@@ -25,14 +26,13 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * This class represents a register of listeners.
- */
+/** This class represents a register of listeners. */
 public class ListenerRegister {
 
   private final Plugin plugin;
   private final PluginManager pluginManager;
 
+  private final BlockGrowListener blockGrowListener;
   private final BlockPlaceListener blockPlaceListener;
   private final JobsExpGainListener jobsExpGainListener;
   private final JobsPrePaymentListener jobsPrePaymentListener;
@@ -40,18 +40,21 @@ public class ListenerRegister {
   public ListenerRegister(
       @NotNull Plugin plugin,
       @NotNull PluginManager pluginManager,
+      @NotNull BlockGrowListener blockGrowListener,
       @NotNull BlockPlaceListener blockPlaceListener,
       @NotNull JobsExpGainListener jobsExpGainListener,
       @NotNull JobsPrePaymentListener jobsPrePaymentListener) {
     this.plugin = plugin;
     this.pluginManager = pluginManager;
 
+    this.blockGrowListener = blockGrowListener;
     this.blockPlaceListener = blockPlaceListener;
     this.jobsExpGainListener = jobsExpGainListener;
     this.jobsPrePaymentListener = jobsPrePaymentListener;
   }
 
   public void registerListeners() {
+    pluginManager.registerEvents(blockGrowListener, plugin);
     pluginManager.registerEvents(blockPlaceListener, plugin);
     pluginManager.registerEvents(jobsExpGainListener, plugin);
     pluginManager.registerEvents(jobsPrePaymentListener, plugin);
