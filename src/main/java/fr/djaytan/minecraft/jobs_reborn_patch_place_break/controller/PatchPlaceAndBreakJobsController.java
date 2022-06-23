@@ -19,8 +19,11 @@
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
 
 import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.Job;
 import java.util.List;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
+import org.bukkit.event.HandlerList;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -143,4 +146,22 @@ public interface PatchPlaceAndBreakJobsController {
    * @return <code>true</code> if it's a place-and-break exploit, <code>false</code> otherwise.
    */
   boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @Nullable Block block);
+
+  /**
+   * The purpose of this method is to verify the well-application of the patch if required for a
+   * given jobs action. If a place-and-break action has been detected but the event still not
+   * cancelled then a warning log will be sent.
+   *
+   * @param actionType The jobs ActionType.
+   * @param block The block with a potential place-and-break patch tag. It can be null.
+   * @param isEventCancelled <code>true</code> if the event is cancelled, <code>false</code>
+   *     otherwise.
+   */
+  void verifyPatchApplication(
+      @NotNull ActionType actionType,
+      @Nullable Block block,
+      boolean isEventCancelled,
+      @NotNull OfflinePlayer player,
+      @NotNull Job job,
+      @NotNull HandlerList handlerList);
 }

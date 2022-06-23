@@ -26,16 +26,14 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This class represents a {@link JobsExpGainEvent} listener.
- *
- * <p>The purpose of this listener is to cancel exp-gain jobs rewards when the action is considered
- * as a place-and-break one to be patched.
+ * This class represents a {@link JobsExpGainEvent} listener to verify the well-application of the
+ * patch if required.
  *
  * @author Djaytan
  * @see JobsExpGainEvent
  * @see Listener
  */
-public class JobsExpGainListener implements Listener {
+public class JobsExpGainVerificationListener implements Listener {
 
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
@@ -44,29 +42,32 @@ public class JobsExpGainListener implements Listener {
    *
    * @param patchPlaceAndBreakJobsController The place-and-break patch controller.
    */
-  public JobsExpGainListener(
+  public JobsExpGainVerificationListener(
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
   /**
-   * This method is called when a {@link JobsExpGainEvent} is dispatched to cancel it if the
-   * recorded action is a place-and-break one.
+   * This method is called when a {@link JobsExpGainEvent} is dispatched to verify a place-and-break
+   * action have been well-patched. Otherwise, a warning log is sent.
    *
-   * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we want to have the final
-   * word about the result of this event (a place-and-break action must be cancelled in all cases).
+   * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we just want to know if
+   * the event has been cancelled or no without modifying its result.
    *
    * @param event The jobs exp-gain event.
    */
-  @EventHandler(priority = EventPriority.HIGHEST)
+  @EventHandler(priority = EventPriority.MONITOR)
   public void onJobsExpGain(@NotNull JobsExpGainEvent event) {
     if (event.getActionInfo() == null || event.getActionInfo().getType() == null) {
       return;
     }
 
-    if (patchPlaceAndBreakJobsController.isPlaceAndBreakAction(
-        event.getActionInfo().getType(), event.getBlock())) {
-      event.setCancelled(true);
-    }
+    patchPlaceAndBreakJobsController.verifyPatchApplication(
+        event.getActionInfo().getType(),
+        event.getBlock(),
+        event.isCancelled(),
+        event.getPlayer(),
+        event.getJob(),
+        event.getHandlers());
   }
 }

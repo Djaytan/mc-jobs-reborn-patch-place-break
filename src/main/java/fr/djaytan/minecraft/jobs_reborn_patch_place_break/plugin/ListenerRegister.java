@@ -24,7 +24,9 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bu
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockPlaceListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockSpreadListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsExpGainListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsExpGainVerificationListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsPrePaymentListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsPrePaymentVerificationListener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +47,9 @@ public class ListenerRegister {
   private final BlockPlaceListener blockPlaceListener;
   private final BlockSpreadListener blockSpreadListener;
   private final JobsExpGainListener jobsExpGainListener;
+  private final JobsExpGainVerificationListener jobsExpGainVerificationListener;
   private final JobsPrePaymentListener jobsPrePaymentListener;
+  private final JobsPrePaymentVerificationListener jobsPrePaymentVerificationListener;
 
   /**
    * Constructor.
@@ -58,7 +62,9 @@ public class ListenerRegister {
    * @param blockPlaceListener The block place listener.
    * @param blockSpreadListener The block spread listener.
    * @param jobsExpGainListener The jobs exp-gain listener.
+   * @param jobsExpGainVerificationListener The jobs exp-gain verification listener.
    * @param jobsPrePaymentListener The jobs pre-payment listener.
+   * @param jobsPrePaymentVerificationListener The jobs pre-payment verification listener.
    */
   public ListenerRegister(
       @NotNull Plugin plugin,
@@ -69,7 +75,9 @@ public class ListenerRegister {
       @NotNull BlockPlaceListener blockPlaceListener,
       @NotNull BlockSpreadListener blockSpreadListener,
       @NotNull JobsExpGainListener jobsExpGainListener,
-      @NotNull JobsPrePaymentListener jobsPrePaymentListener) {
+      @NotNull JobsExpGainVerificationListener jobsExpGainVerificationListener,
+      @NotNull JobsPrePaymentListener jobsPrePaymentListener,
+      @NotNull JobsPrePaymentVerificationListener jobsPrePaymentVerificationListener) {
     this.plugin = plugin;
     this.pluginManager = pluginManager;
 
@@ -79,7 +87,9 @@ public class ListenerRegister {
     this.blockPlaceListener = blockPlaceListener;
     this.blockSpreadListener = blockSpreadListener;
     this.jobsExpGainListener = jobsExpGainListener;
+    this.jobsExpGainVerificationListener = jobsExpGainVerificationListener;
     this.jobsPrePaymentListener = jobsPrePaymentListener;
+    this.jobsPrePaymentVerificationListener = jobsPrePaymentVerificationListener;
   }
 
   /**
@@ -92,6 +102,8 @@ public class ListenerRegister {
     pluginManager.registerEvents(blockPlaceListener, plugin);
     pluginManager.registerEvents(blockSpreadListener, plugin);
     pluginManager.registerEvents(jobsExpGainListener, plugin);
+    pluginManager.registerEvents(jobsExpGainVerificationListener, plugin);
     pluginManager.registerEvents(jobsPrePaymentListener, plugin);
+    pluginManager.registerEvents(jobsPrePaymentVerificationListener, plugin);
   }
 }

@@ -19,6 +19,7 @@
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
 
 import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.Job;
 import com.google.common.base.Preconditions;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -27,8 +28,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -36,6 +39,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 /**
  * This class represents the default implementation of {@link PatchPlaceAndBreakJobsController}
@@ -48,42 +52,21 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
   private static final Duration EPHEMERAL_TAG_DURATION = Duration.ofSeconds(3);
 
   private final BukkitScheduler bukkitScheduler;
+  private final Logger logger;
   private final Plugin plugin;
 
   /**
    * Constructor.
    *
    * @param bukkitScheduler The Bukkit scheduler.
+   * @param logger The plugin's SLF4J logger.
    * @param plugin The plugin.
    */
   public PatchPlaceAndBreakJobsControllerImpl(
-      @NotNull BukkitScheduler bukkitScheduler, @NotNull Plugin plugin) {
+      @NotNull BukkitScheduler bukkitScheduler, @NotNull Logger logger, @NotNull Plugin plugin) {
     this.bukkitScheduler = bukkitScheduler;
+    this.logger = logger;
     this.plugin = plugin;
-  }
-
-  @Override
-  public boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @Nullable Block block) {
-    Preconditions.checkNotNull(actionType);
-
-    if (block == null || !isActionToPatch(actionType)) {
-      return false;
-    }
-
-    Optional<PatchPlaceAndBreakTag> tag = getTag(block);
-
-    if (!tag.isPresent()) {
-      return false;
-    }
-
-    if (tag.get().getValidityDuration() == null) {
-      return true;
-    }
-
-    LocalDateTime localDateTime = LocalDateTime.now();
-    Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
-
-    return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
   }
 
   @Override
@@ -136,6 +119,55 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
   public void removeTag(@NotNull Block block) {
     Preconditions.checkNotNull(block);
     block.removeMetadata(PLAYER_BLOCK_PLACED_METADATA_KEY, plugin);
+  }
+
+  @Override
+  public boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @Nullable Block block) {
+    Preconditions.checkNotNull(actionType);
+
+    if (block == null || !isActionToPatch(actionType)) {
+      return false;
+    }
+
+    Optional<PatchPlaceAndBreakTag> tag = getTag(block);
+
+    if (!tag.isPresent()) {
+      return false;
+    }
+
+    if (tag.get().getValidityDuration() == null) {
+      return true;
+    }
+
+    LocalDateTime localDateTime = LocalDateTime.now();
+    Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
+
+    return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
+  }
+
+  @Override
+  public void verifyPatchApplication(
+      @NotNull ActionType actionType,
+      @Nullable Block block,
+      boolean isEventCancelled,
+      @NotNull OfflinePlayer player,
+      @NotNull Job job,
+      @NotNull HandlerList handlerList) {
+    if (isPlaceAndBreakAction(actionType, block) && !isEventCancelled) {
+      logger.warn(
+          "Violation of a place-and-break patch detected! It's possible that's because of a"
+              + " conflict with another plugin. Please, report this full log message to the"
+              + " developer: player={}, jobs={}, actionType={}, blockMaterial={},"
+              + " detectedPotentielConflictingPlugins={}",
+          player.getName(),
+          job.getName(),
+          actionType.getName(),
+          block.getType().name(),
+          Arrays.stream(handlerList.getRegisteredListeners())
+              .map(registeredListener -> registeredListener.getPlugin().getName())
+              .distinct()
+              .toArray());
+    }
   }
 
   private @NotNull Optional<PatchPlaceAndBreakTag> getTag(@NotNull Block block) {

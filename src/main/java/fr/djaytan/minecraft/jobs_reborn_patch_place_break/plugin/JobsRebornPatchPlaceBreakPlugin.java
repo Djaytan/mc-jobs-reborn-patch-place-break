@@ -26,7 +26,9 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bu
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockPlaceListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockSpreadListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsExpGainListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsExpGainVerificationListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsPrePaymentListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsPrePaymentVerificationListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -40,7 +42,8 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
   @Override
   public void onEnable() {
     PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController =
-        new PatchPlaceAndBreakJobsControllerImpl(getServer().getScheduler(), this);
+        new PatchPlaceAndBreakJobsControllerImpl(
+            getServer().getScheduler(), getSLF4JLogger(), this);
     ListenerRegister listenerRegister =
         new ListenerRegister(
             this,
@@ -51,7 +54,9 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
             new BlockPlaceListener(patchPlaceAndBreakJobsController),
             new BlockSpreadListener(patchPlaceAndBreakJobsController),
             new JobsExpGainListener(patchPlaceAndBreakJobsController),
-            new JobsPrePaymentListener(patchPlaceAndBreakJobsController));
+            new JobsExpGainVerificationListener(patchPlaceAndBreakJobsController),
+            new JobsPrePaymentListener(patchPlaceAndBreakJobsController),
+            new JobsPrePaymentVerificationListener(patchPlaceAndBreakJobsController));
     listenerRegister.registerListeners();
   }
 }

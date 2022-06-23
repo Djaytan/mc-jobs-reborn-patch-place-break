@@ -70,7 +70,4 @@ public class JobsPrePaymentListener implements Listener {
       event.setCancelled(true);
     }
   }
-
-  // TODO: warning in MONITOR listener in case where the patch has been override (which mustn't be
-  //    the allowed at all!)
 }
