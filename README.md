@@ -25,15 +25,15 @@ The place-and-break patch provided by JobsReborn seems to be insufficient: you m
 block** a fix amount of time during which breaking the block again will not permit to earn money
 and xp. It's a first step forward, but it's insufficient. Specifying an unlimited time isn't
 sufficient too, because after 14 days maximum the placed blocks will not prevent the payment
-anymore... And finally, piston workaround isn't taking into account at all.
+anymore... And finally, piston exploit isn't taking into account at all.
 
-So, this is why this project exists: doing an obvious and easy patch that would have be done a long
-time ago.
+So, this is why this project exists: doing an obvious and easy patch that would have been done
+a long time ago.
 
 ## How the patch works
 
 The patch is very simple: when breaking or placing blocks, each one is tagged. This information
-is persisted accross server restarts.
+is persisted across server restarts.
 
 At payment time, if a BREAK, TNTBREAK or PLACE action involve an active "player" tag, the payment
 will be cancelled. It doesn't matter whose player is the author, so if one player place a block
