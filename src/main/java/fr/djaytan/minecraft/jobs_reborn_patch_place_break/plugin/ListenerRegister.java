@@ -29,7 +29,11 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
-/** This class represents a register of listeners. */
+/**
+ * This class represents a register of listeners.
+ *
+ * @author Djaytan
+ */
 public class ListenerRegister {
 
   private final Plugin plugin;
@@ -43,6 +47,19 @@ public class ListenerRegister {
   private final JobsExpGainListener jobsExpGainListener;
   private final JobsPrePaymentListener jobsPrePaymentListener;
 
+  /**
+   * Constructor.
+   *
+   * @param plugin The plugin associated with listeners to register.
+   * @param pluginManager The plugin manager in charge of registering listeners.
+   * @param blockBreakListener The block break listener.
+   * @param blockGrowListener The block grow listener.
+   * @param blockPistonListener The block piston listener.
+   * @param blockPlaceListener The block place listener.
+   * @param blockSpreadListener The block spread listener.
+   * @param jobsExpGainListener The jobs exp-gain listener.
+   * @param jobsPrePaymentListener The jobs pre-payment listener.
+   */
   public ListenerRegister(
       @NotNull Plugin plugin,
       @NotNull PluginManager pluginManager,
@@ -65,6 +82,9 @@ public class ListenerRegister {
     this.jobsPrePaymentListener = jobsPrePaymentListener;
   }
 
+  /**
+   * The purposes of this method is simple: registering listeners through the {@link PluginManager}.
+   */
   public void registerListeners() {
     pluginManager.registerEvents(blockBreakListener, plugin);
     pluginManager.registerEvents(blockGrowListener, plugin);

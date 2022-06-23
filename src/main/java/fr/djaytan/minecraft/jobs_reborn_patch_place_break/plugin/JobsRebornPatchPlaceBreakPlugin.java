@@ -29,7 +29,12 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jo
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsPrePaymentListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-/** This class represents a JobsReborn patch place-break plugin. */
+/**
+ * This class represents a JobsReborn patch place-break plugin.
+ *
+ * @author Djaytan
+ * @see JavaPlugin
+ */
 public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
   @Override
