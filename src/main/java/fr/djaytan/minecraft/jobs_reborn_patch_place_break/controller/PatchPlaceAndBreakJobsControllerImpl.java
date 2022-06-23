@@ -64,7 +64,7 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
       return false;
     }
 
-    if (tag.get().getDuration() == null) {
+    if (tag.get().getValidityDuration() == null) {
       return true;
     }
 
@@ -97,12 +97,6 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
   }
 
   @Override
-  public void removeTag(@NotNull Block block) {
-    Preconditions.checkNotNull(block);
-    block.removeMetadata(PLAYER_BLOCK_PLACED_METADATA_KEY, plugin);
-  }
-
-  @Override
   public void putBackTagOnMovedBlocks(@NotNull List<Block> blocks, @NotNull Vector direction) {
     for (Block block : blocks) {
       Optional<PatchPlaceAndBreakTag> tag = getTag(block);
@@ -116,14 +110,20 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
 
       // Wait the piston action to occur and then put back tag
       bukkitScheduler.runTaskLater(
-          plugin,
-          () ->
-              world
-                  .getBlockAt(newLocation)
-                  .setMetadata(
-                      PLAYER_BLOCK_PLACED_METADATA_KEY, new FixedMetadataValue(plugin, tag.get())),
-          1L);
+        plugin,
+        () ->
+          world
+            .getBlockAt(newLocation)
+            .setMetadata(
+              PLAYER_BLOCK_PLACED_METADATA_KEY, new FixedMetadataValue(plugin, tag.get())),
+        1L);
     }
+  }
+
+  @Override
+  public void removeTag(@NotNull Block block) {
+    Preconditions.checkNotNull(block);
+    block.removeMetadata(PLAYER_BLOCK_PLACED_METADATA_KEY, plugin);
   }
 
   private @NotNull Optional<PatchPlaceAndBreakTag> getTag(@NotNull Block block) {
