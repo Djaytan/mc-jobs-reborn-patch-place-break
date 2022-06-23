@@ -61,7 +61,9 @@ public class JobsPrePaymentListener implements Listener {
    */
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onJobsPayment(@NotNull JobsPrePaymentEvent event) {
-    if (event.getActionInfo() == null || event.getActionInfo().getType() == null) {
+    if (event.getBlock() == null
+        || event.getActionInfo() == null
+        || event.getActionInfo().getType() == null) {
       return;
     }
 

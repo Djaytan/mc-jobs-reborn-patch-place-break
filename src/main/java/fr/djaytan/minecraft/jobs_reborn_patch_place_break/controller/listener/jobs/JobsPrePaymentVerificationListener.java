@@ -58,7 +58,9 @@ public class JobsPrePaymentVerificationListener implements Listener {
    */
   @EventHandler(priority = EventPriority.MONITOR)
   public void onJobsExpGain(@NotNull JobsPrePaymentEvent event) {
-    if (event.getActionInfo() == null || event.getActionInfo().getType() == null) {
+    if (event.getBlock() == null
+        || event.getActionInfo() == null
+        || event.getActionInfo().getType() == null) {
       return;
     }
 

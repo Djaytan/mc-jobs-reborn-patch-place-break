@@ -60,7 +60,9 @@ public class JobsExpGainListener implements Listener {
    */
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onJobsExpGain(@NotNull JobsExpGainEvent event) {
-    if (event.getActionInfo() == null || event.getActionInfo().getType() == null) {
+    if (event.getBlock() == null
+        || event.getActionInfo() == null
+        || event.getActionInfo().getType() == null) {
       return;
     }
 

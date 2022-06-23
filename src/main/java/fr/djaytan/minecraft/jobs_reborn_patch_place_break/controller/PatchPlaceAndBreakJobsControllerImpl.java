@@ -38,7 +38,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 /**
@@ -93,6 +92,9 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
 
   @Override
   public void putBackTagOnMovedBlocks(@NotNull List<Block> blocks, @NotNull Vector direction) {
+    Preconditions.checkNotNull(blocks);
+    Preconditions.checkNotNull(direction);
+
     for (Block block : blocks) {
       Optional<PatchPlaceAndBreakTag> tag = getTag(block);
 
@@ -122,16 +124,13 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
   }
 
   @Override
-  public boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @Nullable Block block) {
+  public boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @NotNull Block block) {
     Preconditions.checkNotNull(actionType);
-
-    if (block == null || !isActionToPatch(actionType)) {
-      return false;
-    }
+    Preconditions.checkNotNull(block);
 
     Optional<PatchPlaceAndBreakTag> tag = getTag(block);
 
-    if (!tag.isPresent()) {
+    if (!isActionToPatch(actionType) || !tag.isPresent()) {
       return false;
     }
 
@@ -148,11 +147,17 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
   @Override
   public void verifyPatchApplication(
       @NotNull ActionType actionType,
-      @Nullable Block block,
+      @NotNull Block block,
       boolean isEventCancelled,
       @NotNull OfflinePlayer player,
       @NotNull Job job,
       @NotNull HandlerList handlerList) {
+    Preconditions.checkNotNull(actionType);
+    Preconditions.checkNotNull(block);
+    Preconditions.checkNotNull(player);
+    Preconditions.checkNotNull(job);
+    Preconditions.checkNotNull(handlerList);
+
     if (isPlaceAndBreakAction(actionType, block) && !isEventCancelled) {
       logger.warn(
           "Violation of a place-and-break patch detected! It's possible that's because of a"

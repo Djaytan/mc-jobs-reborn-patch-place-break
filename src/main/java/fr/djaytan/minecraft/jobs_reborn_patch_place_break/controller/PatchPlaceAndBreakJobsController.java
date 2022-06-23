@@ -26,7 +26,6 @@ import org.bukkit.block.Block;
 import org.bukkit.event.HandlerList;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * This interface represents the API to apply place-and-break patch.
@@ -133,7 +132,6 @@ public interface PatchPlaceAndBreakJobsController {
    * <p>This method will return <code>true</code> if all theses following criteria are meet:
    *
    * <ul>
-   *   <li>The block isn't null ;
    *   <li>The ActionType is eligible (the list of ActionType eligible is implementation specific,
    *       but we expect the list to contain at least {@link ActionType#BREAK}, {@link
    *       ActionType#TNTBREAK} and {@link ActionType#PLACE}) ;
@@ -142,24 +140,25 @@ public interface PatchPlaceAndBreakJobsController {
    * </ul>
    *
    * @param actionType The jobs ActionType.
-   * @param block The block with a potential place-and-break patch tag. It can be null.
+   * @param block The block with a potential place-and-break patch tag.
    * @return <code>true</code> if it's a place-and-break exploit, <code>false</code> otherwise.
    */
-  boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @Nullable Block block);
+  boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @NotNull Block block);
 
   /**
    * The purpose of this method is to verify the well-application of the patch if required for a
-   * given jobs action. If a place-and-break action has been detected but the event still not
-   * cancelled then a warning log will be sent.
+   * given jobs action. If a place-and-break action has been detected (via a call to {@link
+   * #isPlaceAndBreakAction(ActionType, Block)}) but the event still not cancelled then a warning
+   * log will be sent.
    *
    * @param actionType The jobs ActionType.
-   * @param block The block with a potential place-and-break patch tag. It can be null.
+   * @param block The block with a potential place-and-break patch tag.
    * @param isEventCancelled <code>true</code> if the event is cancelled, <code>false</code>
    *     otherwise.
    */
   void verifyPatchApplication(
       @NotNull ActionType actionType,
-      @Nullable Block block,
+      @NotNull Block block,
       boolean isEventCancelled,
       @NotNull OfflinePlayer player,
       @NotNull Job job,
