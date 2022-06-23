@@ -8,7 +8,7 @@ for Bukkit servers.
 
 The ressource is available in [Spigot](https://www.spigotmc.org/resources/jobsreborn-patchplacebreak.102779/) and [PaperMC](https://forums.papermc.io/threads/jobsreborn-patchplacebreak.367/).
 
-## Place-break issue
+## Place-and-break issue
 
 With JobsReborn, it appears that placing a block and then breaking it is counted as a valid job
 action which lead to a payment for the player. Given this fact, it's very easy to imagine a
