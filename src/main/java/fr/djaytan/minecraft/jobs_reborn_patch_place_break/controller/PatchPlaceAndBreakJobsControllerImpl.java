@@ -37,6 +37,12 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * This class represents the default implementation of {@link PatchPlaceAndBreakJobsController}
+ * interface.
+ *
+ * @author Djaytan
+ */
 public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJobsController {
 
   private static final Duration EPHEMERAL_TAG_DURATION = Duration.ofSeconds(3);
@@ -110,13 +116,13 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
 
       // Wait the piston action to occur and then put back tag
       bukkitScheduler.runTaskLater(
-        plugin,
-        () ->
-          world
-            .getBlockAt(newLocation)
-            .setMetadata(
-              PLAYER_BLOCK_PLACED_METADATA_KEY, new FixedMetadataValue(plugin, tag.get())),
-        1L);
+          plugin,
+          () ->
+              world
+                  .getBlockAt(newLocation)
+                  .setMetadata(
+                      PLAYER_BLOCK_PLACED_METADATA_KEY, new FixedMetadataValue(plugin, tag.get())),
+          1L);
     }
   }
 

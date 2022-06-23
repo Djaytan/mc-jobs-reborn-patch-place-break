@@ -44,6 +44,7 @@ import org.jetbrains.annotations.Nullable;
  *       calling {@link PatchPlaceAndBreakJobsController#removeTag(Block)}).
  * </ul>
  *
+ * @author Djaytan
  * @see com.gamingmesh.jobs.container.ActionType ActionType
  * @see org.bukkit.block.Block Block
  * @see PatchPlaceAndBreakJobsController

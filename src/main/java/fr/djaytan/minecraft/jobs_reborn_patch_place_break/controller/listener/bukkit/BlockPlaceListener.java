@@ -25,15 +25,42 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * This class represents a {@link BlockPlaceEvent} listener.
+ *
+ * <p>The purpose of this listener is to put a place-and-break tag to newly placed blocks by a
+ * player. This permits to prevent place-and-break exploit with diamond ores for example.
+ *
+ * @author Djaytan
+ * @see BlockPlaceEvent
+ * @see Listener
+ */
 public class BlockPlaceListener implements Listener {
 
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
+  /**
+   * Constructor.
+   *
+   * @param patchPlaceAndBreakJobsController The place-and-break patch controller.
+   */
   public BlockPlaceListener(
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
+  /**
+   * This method is called when a {@link BlockPlaceEvent} is dispatched to put the place-and-break
+   * patch tag.
+   *
+   * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we just want to react when
+   * we have the confirmation that the event will occur without modifying its result. Furthermore,
+   * because this plugin will always be enabled before the JobsReborn one (enhance the "depend"
+   * plugin.yml line), we have the guarantee that this listener will always be called before the one
+   * registered by JobsReborn at the same priority level.
+   *
+   * @param event The block place event.
+   */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockPlace(@NotNull BlockPlaceEvent event) {
     patchPlaceAndBreakJobsController.putTag(event.getBlockPlaced(), false);

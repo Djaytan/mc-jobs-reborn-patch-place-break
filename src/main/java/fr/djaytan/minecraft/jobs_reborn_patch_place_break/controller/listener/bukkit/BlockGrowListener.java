@@ -26,24 +26,39 @@ import org.bukkit.event.block.BlockGrowEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This class represents a listener of {@link BlockGrowEvent}.
+ * This class represents a {@link BlockGrowEvent} listener.
  *
  * <p>When a block grow, the metadata stills remains stored in it, which isn't what we want in the
  * context of the patch. Jobs like "farmer" shall be able to get paid when harvesting crops. So, the
  * idea here is simply to remove the corresponding metadata from the grown blocks.
  *
- * @see Listener
+ * @author Djaytan
  * @see BlockGrowEvent
+ * @see Listener
  */
 public class BlockGrowListener implements Listener {
 
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
+  /**
+   * Constructor.
+   *
+   * @param patchPlaceAndBreakJobsController The place-and-break patch controller.
+   */
   public BlockGrowListener(
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
+  /**
+   * This method is called when a {@link BlockGrowEvent} is dispatched to remove the potentially
+   * existing place-and-break patch tag to the growing block.
+   *
+   * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we just want to react when
+   * we have the confirmation that the event will occur without modifying its result.
+   *
+   * @param event The block grow event.
+   */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockGrow(@NotNull BlockGrowEvent event) {
     patchPlaceAndBreakJobsController.removeTag(event.getBlock());
