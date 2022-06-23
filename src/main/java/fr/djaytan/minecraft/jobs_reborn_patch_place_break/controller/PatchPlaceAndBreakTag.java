@@ -18,29 +18,53 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
 
+import com.gamingmesh.jobs.container.ActionType;
 import com.google.common.base.Preconditions;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * This class represents a place-and-break tag for the patch. The purpose of this tag is to be
+ * attached to the metadata of a {@link org.bukkit.block.Block}.
+ *
+ * <p>When an instance of this class is found in the metadata of a given block, this means that the
+ * patch must be applied for eligible {@link com.gamingmesh.jobs.container.ActionType}. See {@link
+ * PatchPlaceAndBreakJobsController#isPlaceAndBreakAction(ActionType, Block)} for more details about
+ * it.
+ *
+ * <p>This tag contains the following information:
+ *
+ * <ul>
+ *   <li>The initial date-time of when the tag as been created ;
+ *   <li>The validity duration of the tag. If null, this means that the tag isn't an "ephemeral" one
+ *       and will be persisted forever until removed explicitly from metadata of block (e.g. by
+ *       calling {@link PatchPlaceAndBreakJobsController#removeTag(Block)}).
+ * </ul>
+ *
+ * @see com.gamingmesh.jobs.container.ActionType ActionType
+ * @see org.bukkit.block.Block Block
+ * @see PatchPlaceAndBreakJobsController
+ */
 public class PatchPlaceAndBreakTag {
 
   private LocalDateTime initLocalDateTime;
-  private Duration duration;
+  private Duration validityDuration;
 
   public PatchPlaceAndBreakTag(
-      @NotNull LocalDateTime initLocalDateTime, @Nullable Duration duration) {
+      @NotNull LocalDateTime initLocalDateTime, @Nullable Duration validityDuration) {
     setInitLocalDateTime(initLocalDateTime);
-    setDuration(duration);
+    setValidityDuration(validityDuration);
   }
 
   public LocalDateTime getInitLocalDateTime() {
     return initLocalDateTime;
   }
 
-  public Duration getDuration() {
-    return duration;
+  public Duration getValidityDuration() {
+    return validityDuration;
   }
 
   private void setInitLocalDateTime(@NotNull LocalDateTime initLocalDateTime) {
@@ -48,7 +72,7 @@ public class PatchPlaceAndBreakTag {
     this.initLocalDateTime = initLocalDateTime;
   }
 
-  private void setDuration(@Nullable Duration duration) {
-    this.duration = duration;
+  private void setValidityDuration(@Nullable Duration validityDuration) {
+    this.validityDuration = validityDuration;
   }
 }
