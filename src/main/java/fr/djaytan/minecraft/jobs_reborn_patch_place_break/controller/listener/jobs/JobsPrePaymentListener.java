@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
  * This class represents a {@link JobsPrePaymentEvent} listener.
  *
  * <p>The purpose of this listener is to cancel payments jobs rewards when the action is considered
- * as a place-and-break one to be patched.
+ * as a place-and-break one to be patched. This cover both points and incomes.
  *
  * @author Djaytan
  * @see JobsPrePaymentEvent
