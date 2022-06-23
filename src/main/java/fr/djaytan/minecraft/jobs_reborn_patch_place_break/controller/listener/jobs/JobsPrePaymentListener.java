@@ -25,15 +25,40 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * This class represents a {@link JobsPrePaymentEvent} listener.
+ *
+ * <p>The purpose of this listener is to cancel payments jobs rewards when the action is considered
+ * as a place-and-break one to be patched.
+ *
+ * @author Djaytan
+ * @see JobsPrePaymentEvent
+ * @see Listener
+ */
 public class JobsPrePaymentListener implements Listener {
 
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
+  /**
+   * Constructor.
+   *
+   * @param patchPlaceAndBreakJobsController The place-and-break patch controller.
+   */
   public JobsPrePaymentListener(
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
+  /**
+   * This method is called when a {@link JobsPrePaymentEvent} is dispatched to cancel it if the
+   * recorded action is a place-and-break one.
+   *
+   * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we want to have the final
+   * word about the result of this event (there isn't any reason to not cancel a place-and-break
+   * action).
+   *
+   * @param event The jobs pre-payment event.
+   */
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onJobsPayment(@NotNull JobsPrePaymentEvent event) {
     if (event.getActionInfo() == null || event.getActionInfo().getType() == null) {
@@ -45,4 +70,7 @@ public class JobsPrePaymentListener implements Listener {
       event.setCancelled(true);
     }
   }
+
+  // TODO: warning in MONITOR listener in case where the patch has been override (which mustn't be
+  //    the allowed at all!)
 }

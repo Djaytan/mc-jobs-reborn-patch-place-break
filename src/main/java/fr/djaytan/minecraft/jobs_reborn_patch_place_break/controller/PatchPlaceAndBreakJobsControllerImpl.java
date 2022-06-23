@@ -50,6 +50,12 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
   private final BukkitScheduler bukkitScheduler;
   private final Plugin plugin;
 
+  /**
+   * Constructor.
+   *
+   * @param bukkitScheduler The Bukkit scheduler.
+   * @param plugin The plugin.
+   */
   public PatchPlaceAndBreakJobsControllerImpl(
       @NotNull BukkitScheduler bukkitScheduler, @NotNull Plugin plugin) {
     this.bukkitScheduler = bukkitScheduler;

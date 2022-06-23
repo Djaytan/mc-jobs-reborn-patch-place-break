@@ -25,15 +25,39 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * This class represents a {@link JobsExpGainEvent} listener.
+ *
+ * <p>The purpose of this listener is to cancel exp-gain jobs rewards when the action is considered
+ * as a place-and-break one to be patched.
+ *
+ * @author Djaytan
+ * @see JobsExpGainEvent
+ * @see Listener
+ */
 public class JobsExpGainListener implements Listener {
 
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
+  /**
+   * Constructor.
+   *
+   * @param patchPlaceAndBreakJobsController The place-and-break patch controller.
+   */
   public JobsExpGainListener(
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
+  /**
+   * This method is called when a {@link JobsExpGainEvent} is dispatched to cancel it if the
+   * recorded action is a place-and-break one.
+   *
+   * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we want to have the final
+   * word about the result of this event (a place-and-break action must be cancelled in all cases).
+   *
+   * @param event The jobs exp-gain event.
+   */
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onJobsExpGain(@NotNull JobsExpGainEvent event) {
     if (event.getActionInfo() == null || event.getActionInfo().getType() == null) {
@@ -45,4 +69,7 @@ public class JobsExpGainListener implements Listener {
       event.setCancelled(true);
     }
   }
+
+  // TODO: warning in MONITOR listener in case where the patch has been override (which mustn't be
+  //    the allowed at all!)
 }
