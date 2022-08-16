@@ -27,6 +27,8 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jo
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsExpGainVerificationListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsPrePaymentListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsPrePaymentVerificationListener;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Djaytan
  */
+@Singleton
 public class ListenerRegister {
 
   private final Plugin plugin;
@@ -66,6 +69,7 @@ public class ListenerRegister {
    * @param jobsPrePaymentListener The jobs pre-payment listener.
    * @param jobsPrePaymentVerificationListener The jobs pre-payment verification listener.
    */
+  @Inject
   public ListenerRegister(
       @NotNull Plugin plugin,
       @NotNull PluginManager pluginManager,

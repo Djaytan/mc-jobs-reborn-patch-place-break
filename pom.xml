@@ -51,6 +51,7 @@
         <papermc.version>1.18.2-R0.1-SNAPSHOT</papermc.version>
         <jobs.version>v4.17.2</jobs.version>
         <jetbrains.annotations.version>23.0.0</jetbrains.annotations.version>
+        <guice.version>5.1.0</guice.version>
     </properties>
 
     <repositories>
@@ -136,6 +137,12 @@
             <artifactId>annotations</artifactId>
             <version>${jetbrains.annotations.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${guice.version}</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

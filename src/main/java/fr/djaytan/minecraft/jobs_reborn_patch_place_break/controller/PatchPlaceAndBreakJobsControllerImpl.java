@@ -27,6 +27,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -46,6 +48,7 @@ import org.slf4j.Logger;
  *
  * @author Djaytan
  */
+@Singleton
 public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJobsController {
 
   private static final Duration EPHEMERAL_TAG_DURATION = Duration.ofSeconds(3);
@@ -61,6 +64,7 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
    * @param logger The plugin's SLF4J logger.
    * @param plugin The plugin.
    */
+  @Inject
   public PatchPlaceAndBreakJobsControllerImpl(
       @NotNull BukkitScheduler bukkitScheduler, @NotNull Logger logger, @NotNull Plugin plugin) {
     this.bukkitScheduler = bukkitScheduler;

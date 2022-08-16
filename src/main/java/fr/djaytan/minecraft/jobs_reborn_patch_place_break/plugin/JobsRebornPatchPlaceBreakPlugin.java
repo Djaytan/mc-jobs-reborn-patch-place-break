@@ -18,17 +18,11 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsControllerImpl;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockBreakListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockGrowListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockPistonListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockPlaceListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockSpreadListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsExpGainListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsExpGainVerificationListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsPrePaymentListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsPrePaymentVerificationListener;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.guice.GuiceBukkitModule;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.guice.GuiceGeneralModule;
+import javax.inject.Inject;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -39,24 +33,12 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
+  @Inject private ListenerRegister listenerRegister;
+
   @Override
   public void onEnable() {
-    PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController =
-        new PatchPlaceAndBreakJobsControllerImpl(
-            getServer().getScheduler(), getSLF4JLogger(), this);
-    ListenerRegister listenerRegister =
-        new ListenerRegister(
-            this,
-            this.getServer().getPluginManager(),
-            new BlockBreakListener(patchPlaceAndBreakJobsController),
-            new BlockGrowListener(patchPlaceAndBreakJobsController),
-            new BlockPistonListener(patchPlaceAndBreakJobsController),
-            new BlockPlaceListener(patchPlaceAndBreakJobsController),
-            new BlockSpreadListener(patchPlaceAndBreakJobsController),
-            new JobsExpGainListener(patchPlaceAndBreakJobsController),
-            new JobsExpGainVerificationListener(patchPlaceAndBreakJobsController),
-            new JobsPrePaymentListener(patchPlaceAndBreakJobsController),
-            new JobsPrePaymentVerificationListener(patchPlaceAndBreakJobsController));
+    Injector injector = Guice.createInjector(new GuiceBukkitModule(this), new GuiceGeneralModule());
+    injector.injectMembers(this);
     listenerRegister.registerListeners();
   }
 }

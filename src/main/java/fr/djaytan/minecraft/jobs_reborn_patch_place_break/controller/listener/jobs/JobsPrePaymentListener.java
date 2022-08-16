@@ -20,6 +20,8 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.j
 
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -35,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
  * @see JobsPrePaymentEvent
  * @see Listener
  */
+@Singleton
 public class JobsPrePaymentListener implements Listener {
 
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
@@ -44,6 +47,7 @@ public class JobsPrePaymentListener implements Listener {
    *
    * @param patchPlaceAndBreakJobsController The place-and-break patch controller.
    */
+  @Inject
   public JobsPrePaymentListener(
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
