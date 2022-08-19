@@ -72,7 +72,7 @@ public class JobsPrePaymentListener implements Listener {
     }
 
     if (patchPlaceAndBreakJobsController.isPlaceAndBreakAction(
-        event.getActionInfo().getType(), event.getBlock())) {
+        event.getActionInfo().getType(), event.getBlock().getLocation())) {
       event.setCancelled(true);
     }
   }

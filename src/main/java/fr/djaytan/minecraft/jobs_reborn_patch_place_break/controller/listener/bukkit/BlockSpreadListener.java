@@ -65,6 +65,6 @@ public class BlockSpreadListener implements Listener {
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockSpread(@NotNull BlockSpreadEvent event) {
-    patchPlaceAndBreakJobsController.removeTag(event.getBlock());
+    patchPlaceAndBreakJobsController.removeTag(event.getBlock().getLocation());
   }
 }

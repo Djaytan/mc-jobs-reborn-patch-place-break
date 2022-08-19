@@ -16,15 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
+package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity;
 
 import com.gamingmesh.jobs.container.ActionType;
 import com.google.common.base.Preconditions;
-import java.time.Duration;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 import java.time.LocalDateTime;
+import java.util.UUID;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * This class represents a place-and-break tag for the patch. The purpose of this tag is to be
@@ -44,36 +48,51 @@ import org.jetbrains.annotations.Nullable;
  *       calling {@link PatchPlaceAndBreakJobsController#removeTag(Block)}).
  * </ul>
  *
+ * This class is thread-safe and immutable.
+ *
  * @author Djaytan
  * @see com.gamingmesh.jobs.container.ActionType ActionType
  * @see org.bukkit.block.Block Block
  * @see PatchPlaceAndBreakJobsController
  */
+@Getter
+@ToString
+@EqualsAndHashCode
 public class PatchPlaceAndBreakTag {
 
-  private LocalDateTime initLocalDateTime;
-  private Duration validityDuration;
+  private final UUID uuid;
+  private final LocalDateTime initLocalDateTime;
+  private final boolean isEphemeral;
+  private final TagLocation tagLocation;
 
   public PatchPlaceAndBreakTag(
-      @NotNull LocalDateTime initLocalDateTime, @Nullable Duration validityDuration) {
-    setInitLocalDateTime(initLocalDateTime);
-    setValidityDuration(validityDuration);
+      @NotNull UUID uuid,
+      @NotNull LocalDateTime initLocalDateTime,
+      boolean isEphemeral,
+      @NotNull TagLocation tagLocation) {
+    Preconditions.checkNotNull(uuid);
+    Preconditions.checkNotNull(initLocalDateTime);
+    Preconditions.checkNotNull(tagLocation);
+
+    this.uuid = uuid;
+    this.initLocalDateTime = initLocalDateTime;
+    this.isEphemeral = isEphemeral;
+    this.tagLocation = tagLocation;
   }
 
-  public LocalDateTime getInitLocalDateTime() {
+  public @NotNull UUID getUuid() {
+    return uuid;
+  }
+
+  public @NotNull LocalDateTime getInitLocalDateTime() {
     return initLocalDateTime;
   }
 
-  public Duration getValidityDuration() {
-    return validityDuration;
+  public boolean isEphemeral() {
+    return isEphemeral;
   }
 
-  private void setInitLocalDateTime(@NotNull LocalDateTime initLocalDateTime) {
-    Preconditions.checkNotNull(initLocalDateTime);
-    this.initLocalDateTime = initLocalDateTime;
-  }
-
-  private void setValidityDuration(@Nullable Duration validityDuration) {
-    this.validityDuration = validityDuration;
+  public @NotNull TagLocation getTagLocation() {
+    return tagLocation;
   }
 }

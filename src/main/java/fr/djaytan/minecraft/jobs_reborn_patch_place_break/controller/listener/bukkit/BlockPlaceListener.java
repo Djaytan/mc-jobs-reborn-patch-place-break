@@ -67,6 +67,6 @@ public class BlockPlaceListener implements Listener {
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockPlace(@NotNull BlockPlaceEvent event) {
-    patchPlaceAndBreakJobsController.putTag(event.getBlockPlaced(), false);
+    patchPlaceAndBreakJobsController.putTag(event.getBlockPlaced().getLocation(), false);
   }
 }

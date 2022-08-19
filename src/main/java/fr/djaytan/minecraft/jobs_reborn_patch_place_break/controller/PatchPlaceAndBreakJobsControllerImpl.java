@@ -21,21 +21,22 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 import com.google.common.base.Preconditions;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.service.PatchPlaceAndBreakService;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.utils.LocationConverter;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.event.HandlerList;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
@@ -54,44 +55,40 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
   private static final Duration EPHEMERAL_TAG_DURATION = Duration.ofSeconds(3);
 
   private final BukkitScheduler bukkitScheduler;
+  private final LocationConverter locationConverter;
   private final Logger logger;
   private final Plugin plugin;
+  private final PatchPlaceAndBreakService patchPlaceAndBreakService;
 
   /**
    * Constructor.
    *
    * @param bukkitScheduler The Bukkit scheduler.
+   * @param locationConverter The location converter.
    * @param logger The plugin's SLF4J logger.
+   * @param patchPlaceAndBreakService The patch place-and-break service.
    * @param plugin The plugin.
    */
   @Inject
   public PatchPlaceAndBreakJobsControllerImpl(
-      @NotNull BukkitScheduler bukkitScheduler, @NotNull Logger logger, @NotNull Plugin plugin) {
+      @NotNull BukkitScheduler bukkitScheduler,
+      @NotNull LocationConverter locationConverter,
+      @NotNull Logger logger,
+      @NotNull PatchPlaceAndBreakService patchPlaceAndBreakService,
+      @NotNull Plugin plugin) {
     this.bukkitScheduler = bukkitScheduler;
+    this.locationConverter = locationConverter;
     this.logger = logger;
+    this.patchPlaceAndBreakService = patchPlaceAndBreakService;
     this.plugin = plugin;
   }
 
   @Override
-  public void putTag(@NotNull Block block, boolean isEphemeral) {
-    Preconditions.checkNotNull(block);
+  public void putTag(@NotNull Location location, boolean isEphemeral) {
+    Preconditions.checkNotNull(location);
 
-    LocalDateTime localDateTime = LocalDateTime.now();
-    Duration duration = isEphemeral ? EPHEMERAL_TAG_DURATION : null;
-
-    PatchPlaceAndBreakTag tag = new PatchPlaceAndBreakTag(localDateTime, duration);
-
-    block.setMetadata(PLAYER_BLOCK_PLACED_METADATA_KEY, new FixedMetadataValue(plugin, tag));
-  }
-
-  @Override
-  public void putTagOnNextTick(@NotNull Block block, boolean isEphemeral) {
-    Preconditions.checkNotNull(block);
-
-    Location location = block.getLocation();
-    World world = block.getWorld();
-
-    bukkitScheduler.runTaskLater(plugin, () -> putTag(world.getBlockAt(location), isEphemeral), 1L);
+    TagLocation tagLocation = locationConverter.convert(location);
+    patchPlaceAndBreakService.createTag(isEphemeral, tagLocation);
   }
 
   @Override
@@ -100,45 +97,36 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
     Preconditions.checkNotNull(direction);
 
     for (Block block : blocks) {
-      Optional<PatchPlaceAndBreakTag> tag = getTag(block);
+      Optional<PatchPlaceAndBreakTag> tag = getTag(block.getLocation()).join();
 
       if (!tag.isPresent()) {
         continue;
       }
 
-      World world = block.getWorld();
-      Location newLocation = block.getLocation().add(direction);
-
-      // Wait the piston action to occur and then put back tag
-      bukkitScheduler.runTaskLater(
-          plugin,
-          () ->
-              world
-                  .getBlockAt(newLocation)
-                  .setMetadata(
-                      PLAYER_BLOCK_PLACED_METADATA_KEY, new FixedMetadataValue(plugin, tag.get())),
-          1L);
+      putTag(block.getLocation().add(direction), false);
     }
   }
 
   @Override
-  public void removeTag(@NotNull Block block) {
-    Preconditions.checkNotNull(block);
-    block.removeMetadata(PLAYER_BLOCK_PLACED_METADATA_KEY, plugin);
+  public void removeTag(@NotNull Location location) {
+    Preconditions.checkNotNull(location);
+
+    TagLocation tagLocation = locationConverter.convert(location);
+    patchPlaceAndBreakService.removeTag(tagLocation);
   }
 
   @Override
-  public boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @NotNull Block block) {
+  public boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @NotNull Location location) {
     Preconditions.checkNotNull(actionType);
-    Preconditions.checkNotNull(block);
+    Preconditions.checkNotNull(location);
 
-    Optional<PatchPlaceAndBreakTag> tag = getTag(block);
+    Optional<PatchPlaceAndBreakTag> tag = getTag(location).join();
 
     if (!isActionToPatch(actionType) || !tag.isPresent()) {
       return false;
     }
 
-    if (tag.get().getValidityDuration() == null) {
+    if (!tag.get().isEphemeral()) {
       return true;
     }
 
@@ -162,7 +150,7 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
     Preconditions.checkNotNull(job);
     Preconditions.checkNotNull(handlerList);
 
-    if (isPlaceAndBreakAction(actionType, block) && !isEventCancelled) {
+    if (isPlaceAndBreakAction(actionType, block.getLocation()) && !isEventCancelled) {
       logger.warn(
           "Violation of a place-and-break patch detected! It's possible that's because of a"
               + " conflict with another plugin. Please, report this full log message to the"
@@ -179,18 +167,10 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
     }
   }
 
-  private @NotNull Optional<PatchPlaceAndBreakTag> getTag(@NotNull Block block) {
-    Optional<MetadataValue> metadataValue =
-        block.getMetadata(PLAYER_BLOCK_PLACED_METADATA_KEY).stream()
-            .filter(mv -> Objects.equals(mv.getOwningPlugin(), plugin))
-            .findFirst();
-
-    if (!metadataValue.isPresent()) {
-      return Optional.empty();
-    }
-
-    PatchPlaceAndBreakTag tag = (PatchPlaceAndBreakTag) metadataValue.get().value();
-    return Optional.ofNullable(tag);
+  private @NotNull CompletableFuture<Optional<PatchPlaceAndBreakTag>> getTag(
+      @NotNull Location location) {
+    TagLocation tagLocation = locationConverter.convert(location);
+    return patchPlaceAndBreakService.findTagByLocation(tagLocation);
   }
 
   private boolean isActionToPatch(@NotNull ActionType actionType) {
