@@ -16,21 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.djaytan.minecraft.jobs_reborn_patch_place_break.utils;
+package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.serializer;
 
 import com.google.common.base.Preconditions;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 import javax.inject.Singleton;
-import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 @Singleton
-public class LocationConverter {
+public class BooleanIntegerSerializer implements IntegerSerializer<Boolean> {
 
-  public @NotNull TagLocation convert(@NotNull Location location) {
-    Preconditions.checkNotNull(location);
+  @Override
+  public @NotNull Integer serialize(@NotNull Boolean bool) {
+    Preconditions.checkNotNull(bool);
+    return Boolean.TRUE.equals(bool) ? 1 : 0;
+  }
 
-    return new TagLocation(
-        location.getWorld().getName(), location.getX(), location.getY(), location.getZ());
+  @Override
+  public @NotNull Boolean deserialize(@NotNull Integer integer) {
+    Preconditions.checkNotNull(integer);
+    return integer == 1;
   }
 }

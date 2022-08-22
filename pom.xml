@@ -53,6 +53,8 @@
         <jetbrains.annotations.version>23.0.0</jetbrains.annotations.version>
         <lombok.version>1.18.24</lombok.version>
         <guice.version>5.1.0</guice.version>
+        <sqlite.version>3.39.2.0</sqlite.version>
+        <guava.version>31.1-jre</guava.version>
     </properties>
 
     <repositories>
@@ -156,7 +158,16 @@
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>${guice.version}</version>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>${sqlite.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
     </dependencies>
 </project>

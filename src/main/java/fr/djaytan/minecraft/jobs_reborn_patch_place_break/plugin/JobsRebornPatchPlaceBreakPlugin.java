@@ -18,10 +18,9 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.guice.GuiceBukkitModule;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.guice.GuiceGeneralModule;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SqlDataSource;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SqlDataSourceInitializer;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.guice.GuiceInjector;
 import javax.inject.Inject;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,11 +33,31 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
   @Inject private ListenerRegister listenerRegister;
+  @Inject private SqlDataSource sqlDataSource;
+  @Inject private SqlDataSourceInitializer sqlDataSourceInitializer;
 
   @Override
   public void onEnable() {
-    Injector injector = Guice.createInjector(new GuiceBukkitModule(this), new GuiceGeneralModule());
-    injector.injectMembers(this);
+    getSLF4JLogger().info("Guice injection");
+    GuiceInjector.inject(this);
+
+    getSLF4JLogger().info("SQL database initialization");
+    sqlDataSourceInitializer.initialize();
+
+    getSLF4JLogger().info("Database connection");
+    sqlDataSource.connect();
+
+    getSLF4JLogger().info("Creating default SQL table...");
+    boolean isTableAlreadyExists = sqlDataSourceInitializer.createTablesIfNotExists();
+    if (isTableAlreadyExists) {
+      getSLF4JLogger().info("SQL table already exists, skipping.");
+    } else {
+      getSLF4JLogger().info("SQL table created.");
+    }
+
+    getSLF4JLogger().info("Event listeners registration");
     listenerRegister.registerListeners();
+
+    getSLF4JLogger().info("JobsReborn-PatchPlaceBreak successfully enabled.");
   }
 }

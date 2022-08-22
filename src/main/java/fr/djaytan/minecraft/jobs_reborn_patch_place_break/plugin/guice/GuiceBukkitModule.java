@@ -19,6 +19,8 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.guice;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+import java.nio.file.Path;
 import java.util.concurrent.Executor;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
@@ -111,6 +113,13 @@ public class GuiceBukkitModule extends AbstractModule {
   @Singleton
   public @NotNull StructureManager provideStructureManager() {
     return plugin.getServer().getStructureManager();
+  }
+
+  @Provides
+  @Named("dataFolder")
+  @Singleton
+  public @NotNull Path provideDataFolderPath() {
+    return plugin.getDataFolder().toPath();
   }
 
   @Provides

@@ -31,19 +31,14 @@ public class TagLocation {
   private final double x;
   private final double y;
   private final double z;
-  private final float pitch;
-  private final float yaw;
 
-  public TagLocation(
-      @NotNull String worldName, double x, double y, double z, float pitch, float yaw) {
+  public TagLocation(@NotNull String worldName, double x, double y, double z) {
     Preconditions.checkNotNull(worldName);
 
     this.worldName = worldName;
     this.x = x;
     this.y = y;
     this.z = z;
-    this.pitch = pitch;
-    this.yaw = yaw;
   }
 
   public @NotNull String getWorldName() {
@@ -60,13 +55,5 @@ public class TagLocation {
 
   public double getZ() {
     return z;
-  }
-
-  public float getPitch() {
-    return pitch;
-  }
-
-  public float getYaw() {
-    return yaw;
   }
 }

@@ -16,21 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.djaytan.minecraft.jobs_reborn_patch_place_break.utils;
+package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource;
 
-import com.google.common.base.Preconditions;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
-import javax.inject.Singleton;
-import org.bukkit.Location;
+import java.sql.Connection;
 import org.jetbrains.annotations.NotNull;
 
-@Singleton
-public class LocationConverter {
+public interface SqlDataSource {
 
-  public @NotNull TagLocation convert(@NotNull Location location) {
-    Preconditions.checkNotNull(location);
+  String TABLE_NAME = "patch_place_and_break_tag";
 
-    return new TagLocation(
-        location.getWorld().getName(), location.getX(), location.getY(), location.getZ());
-  }
+  void connect();
+
+  @NotNull
+  Connection getConnection();
 }
