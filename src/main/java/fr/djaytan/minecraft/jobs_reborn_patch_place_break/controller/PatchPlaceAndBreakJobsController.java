@@ -21,7 +21,10 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
+
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
@@ -81,7 +84,8 @@ public interface PatchPlaceAndBreakJobsController {
    * @param isEphemeral <code>true</code> if the tag must be "ephemeral", <code>false</code>
    *     otherwise.
    */
-  void putTag(@NotNull Location location, boolean isEphemeral);
+  @NotNull
+  CompletableFuture<Void> putTag(@NotNull Location location, boolean isEphemeral);
 
   /**
    * This method permits to put back an existing {@link PatchPlaceAndBreakTag} to a moved block,
@@ -96,7 +100,9 @@ public interface PatchPlaceAndBreakJobsController {
    * @param direction The move direction of the specified blocks in order to reattach tags to these
    *     new calculated locations.
    */
-  void putBackTagOnMovedBlocks(@NotNull List<Block> blocks, @NotNull Vector direction);
+  @NotNull
+  CompletableFuture<Void> putBackTagOnMovedBlocks(
+      @NotNull List<Block> blocks, @NotNull Vector direction);
 
   /**
    * This method permits to remove a tag from a specified Block. This can be useful when the state
@@ -104,7 +110,8 @@ public interface PatchPlaceAndBreakJobsController {
    *
    * @param location The block's location which will have its tag to be removed if exists.
    */
-  void removeTag(@NotNull Location location);
+  @NotNull
+  CompletableFuture<Void> removeTag(@NotNull Location location);
 
   /**
    * This method permit to check if a jobs ActionType with a given Block is a place-and-break
@@ -124,7 +131,9 @@ public interface PatchPlaceAndBreakJobsController {
    * @param location The block's location with a potential place-and-break patch tag.
    * @return <code>true</code> if it's a place-and-break exploit, <code>false</code> otherwise.
    */
-  boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @NotNull Location location);
+  @NotNull
+  CompletableFuture<Boolean> isPlaceAndBreakAction(
+      @NotNull ActionType actionType, @NotNull Location location);
 
   /**
    * The purpose of this method is to verify the well-application of the patch if required for a
@@ -137,7 +146,8 @@ public interface PatchPlaceAndBreakJobsController {
    * @param isEventCancelled <code>true</code> if the event is cancelled, <code>false</code>
    *     otherwise.
    */
-  void verifyPatchApplication(
+  @NotNull
+  CompletableFuture<Void> verifyPatchApplication(
       @NotNull ActionType actionType,
       @NotNull Block block,
       boolean isEventCancelled,

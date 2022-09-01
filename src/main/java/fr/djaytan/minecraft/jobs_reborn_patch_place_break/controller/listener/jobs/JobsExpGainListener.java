@@ -70,8 +70,9 @@ public class JobsExpGainListener implements Listener {
       return;
     }
 
-    if (patchPlaceAndBreakJobsController.isPlaceAndBreakAction(
-        event.getActionInfo().getType(), event.getBlock().getLocation())) {
+    if (patchPlaceAndBreakJobsController
+        .isPlaceAndBreakAction(event.getActionInfo().getType(), event.getBlock().getLocation())
+        .join()) {
       event.setCancelled(true);
     }
   }

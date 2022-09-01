@@ -54,90 +54,95 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
 
   private static final Duration EPHEMERAL_TAG_DURATION = Duration.ofSeconds(3);
 
-  private final BukkitScheduler bukkitScheduler;
   private final LocationConverter locationConverter;
   private final Logger logger;
-  private final Plugin plugin;
   private final PatchPlaceAndBreakService patchPlaceAndBreakService;
 
   /**
    * Constructor.
    *
-   * @param bukkitScheduler The Bukkit scheduler.
    * @param locationConverter The location converter.
    * @param logger The plugin's SLF4J logger.
    * @param patchPlaceAndBreakService The patch place-and-break service.
-   * @param plugin The plugin.
    */
   @Inject
   public PatchPlaceAndBreakJobsControllerImpl(
-      @NotNull BukkitScheduler bukkitScheduler,
       @NotNull LocationConverter locationConverter,
       @NotNull Logger logger,
-      @NotNull PatchPlaceAndBreakService patchPlaceAndBreakService,
-      @NotNull Plugin plugin) {
-    this.bukkitScheduler = bukkitScheduler;
+      @NotNull PatchPlaceAndBreakService patchPlaceAndBreakService) {
     this.locationConverter = locationConverter;
     this.logger = logger;
     this.patchPlaceAndBreakService = patchPlaceAndBreakService;
-    this.plugin = plugin;
   }
 
   @Override
-  public void putTag(@NotNull Location location, boolean isEphemeral) {
+  public @NotNull CompletableFuture<Void> putTag(@NotNull Location location, boolean isEphemeral) {
     Preconditions.checkNotNull(location);
 
-    TagLocation tagLocation = locationConverter.convert(location);
-    patchPlaceAndBreakService.createTag(isEphemeral, tagLocation);
+    return CompletableFuture.runAsync(() -> {
+      TagLocation tagLocation = locationConverter.convert(location);
+      patchPlaceAndBreakService.createTag(isEphemeral, tagLocation).join();
+    });
   }
 
   @Override
-  public void putBackTagOnMovedBlocks(@NotNull List<Block> blocks, @NotNull Vector direction) {
+  public @NotNull CompletableFuture<Void> putBackTagOnMovedBlocks(
+      @NotNull List<Block> blocks, @NotNull Vector direction) {
     Preconditions.checkNotNull(blocks);
     Preconditions.checkNotNull(direction);
 
-    for (Block block : blocks) {
-      Optional<PatchPlaceAndBreakTag> tag = getTag(block.getLocation()).join();
+    return CompletableFuture.runAsync(
+        () -> {
+          for (Block block : blocks) {
+            Optional<PatchPlaceAndBreakTag> tag = getTag(block.getLocation()).join();
 
-      if (!tag.isPresent()) {
-        continue;
-      }
+            if (!tag.isPresent()) {
+              continue;
+            }
 
-      putTag(block.getLocation().add(direction), false);
-    }
+            putTag(block.getLocation().add(direction), false).join();
+          }
+        });
   }
 
   @Override
-  public void removeTag(@NotNull Location location) {
+  public @NotNull CompletableFuture<Void> removeTag(@NotNull Location location) {
     Preconditions.checkNotNull(location);
 
-    TagLocation tagLocation = locationConverter.convert(location);
-    patchPlaceAndBreakService.removeTag(tagLocation);
+    return CompletableFuture.runAsync(
+        () -> {
+          TagLocation tagLocation = locationConverter.convert(location);
+          patchPlaceAndBreakService.removeTag(tagLocation).join();
+        });
   }
 
   @Override
-  public boolean isPlaceAndBreakAction(@NotNull ActionType actionType, @NotNull Location location) {
+  public @NotNull CompletableFuture<Boolean> isPlaceAndBreakAction(
+      @NotNull ActionType actionType, @NotNull Location location) {
     Preconditions.checkNotNull(actionType);
     Preconditions.checkNotNull(location);
 
-    Optional<PatchPlaceAndBreakTag> tag = getTag(location).join();
+    return CompletableFuture.supplyAsync(
+        () -> {
+          Optional<PatchPlaceAndBreakTag> tag = getTag(location).join();
 
-    if (!isActionToPatch(actionType) || !tag.isPresent()) {
-      return false;
-    }
+          if (!isActionToPatch(actionType) || !tag.isPresent()) {
+            return false;
+          }
 
-    if (!tag.get().isEphemeral()) {
-      return true;
-    }
+          if (!tag.get().isEphemeral()) {
+            return true;
+          }
 
-    LocalDateTime localDateTime = LocalDateTime.now();
-    Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
+          LocalDateTime localDateTime = LocalDateTime.now();
+          Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
 
-    return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
+          return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
+        });
   }
 
   @Override
-  public void verifyPatchApplication(
+  public @NotNull CompletableFuture<Void> verifyPatchApplication(
       @NotNull ActionType actionType,
       @NotNull Block block,
       boolean isEventCancelled,
@@ -150,21 +155,24 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
     Preconditions.checkNotNull(job);
     Preconditions.checkNotNull(handlerList);
 
-    if (isPlaceAndBreakAction(actionType, block.getLocation()) && !isEventCancelled) {
-      logger.warn(
-          "Violation of a place-and-break patch detected! It's possible that's because of a"
-              + " conflict with another plugin. Please, report this full log message to the"
-              + " developer: player={}, jobs={}, actionType={}, blockMaterial={},"
-              + " detectedPotentielConflictingPlugins={}",
-          player.getName(),
-          job.getName(),
-          actionType.getName(),
-          block.getType().name(),
-          Arrays.stream(handlerList.getRegisteredListeners())
-              .map(registeredListener -> registeredListener.getPlugin().getName())
-              .distinct()
-              .toArray());
-    }
+    return CompletableFuture.runAsync(
+        () -> {
+          if (isPlaceAndBreakAction(actionType, block.getLocation()).join() && !isEventCancelled) {
+            logger.warn(
+                "Violation of a place-and-break patch detected! It's possible that's because of a"
+                    + " conflict with another plugin. Please, report this full log message to the"
+                    + " developer: player={}, jobs={}, actionType={}, blockMaterial={},"
+                    + " detectedPotentielConflictingPlugins={}",
+                player.getName(),
+                job.getName(),
+                actionType.getName(),
+                block.getType().name(),
+                Arrays.stream(handlerList.getRegisteredListeners())
+                    .map(registeredListener -> registeredListener.getPlugin().getName())
+                    .distinct()
+                    .toArray());
+          }
+        });
   }
 
   private @NotNull CompletableFuture<Optional<PatchPlaceAndBreakTag>> getTag(
