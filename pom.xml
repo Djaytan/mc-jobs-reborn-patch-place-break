@@ -24,7 +24,7 @@
 
     <groupId>fr.djaytan.minecraft</groupId>
     <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
-    <version>1.2.0-RC2</version>
+    <version>1.2.0-RC3</version>
     <packaging>jar</packaging>
 
     <name>JobsReborn-PatchPlaceBreak</name>
