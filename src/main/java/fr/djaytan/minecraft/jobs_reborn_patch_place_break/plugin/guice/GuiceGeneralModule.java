@@ -25,10 +25,10 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.dao.PatchPlaceAn
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.dao.PatchPlaceAndBreakTagSqlDao;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.service.PatchPlaceAndBreakService;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.service.PatchPlaceAndBreakServiceImpl;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SqlDataSource;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SqlDataSourceInitializer;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SQLiteDataSource;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SQLiteDataSourceInitializer;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SqlDataSource;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SqlDataSourceInitializer;
 
 public class GuiceGeneralModule extends AbstractModule {
 

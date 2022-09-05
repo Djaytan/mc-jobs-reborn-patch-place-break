@@ -27,6 +27,8 @@ public interface SqlDataSource {
 
   void connect();
 
+  void disconnect();
+
   @NotNull
   Connection getConnection();
 }

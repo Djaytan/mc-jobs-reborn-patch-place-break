@@ -18,10 +18,11 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakRuntimeException;
 import java.nio.file.Path;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -31,9 +32,8 @@ import org.jetbrains.annotations.NotNull;
 @Singleton
 public class SQLiteDataSource implements SqlDataSource {
 
+  private HikariDataSource hikariDataSource;
   private final Path dataFolder;
-
-  private Connection connection;
 
   @Inject
   public SQLiteDataSource(@NotNull @Named("dataFolder") Path dataFolder) {
@@ -42,26 +42,37 @@ public class SQLiteDataSource implements SqlDataSource {
 
   @Override
   public void connect() {
-    if (connection != null) {
+    if (hikariDataSource != null) {
       throw new PatchPlaceAndBreakRuntimeException("SQLite connection already been done.");
     }
 
     Path sqliteDatabasePath = dataFolder.resolve("data.db");
-    String url = String.format("jdbc:sqlite:%s", sqliteDatabasePath);
+    String jdbcUrl = String.format("jdbc:sqlite:%s", sqliteDatabasePath);
 
-    try {
-      connection = DriverManager.getConnection(url);
-    } catch (SQLException e) {
-      throw new PatchPlaceAndBreakRuntimeException("Failed to connect SQLite database.", e);
+    HikariConfig hikariConfig = new HikariConfig();
+    hikariConfig.setJdbcUrl(jdbcUrl);
+    hikariConfig.setMaximumPoolSize(10);
+    hikariConfig.setMinimumIdle(1);
+    hikariDataSource = new HikariDataSource(hikariConfig);
+  }
+
+  @Override
+  public void disconnect() {
+    if (hikariDataSource != null) {
+      hikariDataSource.close();
     }
   }
 
   @Override
   public @NotNull Connection getConnection() {
-    if (connection == null) {
+    if (hikariDataSource == null) {
       throw new PatchPlaceAndBreakRuntimeException(
-          "The connection to SQLite database must be done before using it.");
+          "The connection pool must be setup before using it.");
     }
-    return connection;
+    try {
+      return hikariDataSource.getConnection();
+    } catch (SQLException e) {
+      throw new PatchPlaceAndBreakRuntimeException("Failed to connect SQLite database.", e);
+    }
   }
 }

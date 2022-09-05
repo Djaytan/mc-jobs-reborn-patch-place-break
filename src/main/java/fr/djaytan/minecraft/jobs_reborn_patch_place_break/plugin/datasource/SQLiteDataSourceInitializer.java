@@ -74,11 +74,11 @@ public class SQLiteDataSourceInitializer implements SqlDataSourceInitializer {
 
   @Override
   public boolean createTablesIfNotExists() {
-    Connection connection = sqliteDataSource.getConnection();
+    try (Connection connection = sqliteDataSource.getConnection()) {
+      connection.setAutoCommit(false);
 
-    String sqlQuery = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?";
+      String sqlQuery = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?";
 
-    try {
       try (PreparedStatement query = connection.prepareStatement(sqlQuery)) {
         query.setString(1, SqlDataSource.TABLE_NAME);
         ResultSet rs = query.executeQuery();
@@ -102,8 +102,10 @@ public class SQLiteDataSourceInitializer implements SqlDataSourceInitializer {
       try (Statement dbSqlScriptStmt = connection.createStatement()) {
         dbSqlScriptStmt.addBatch(dbSqlScript);
         dbSqlScriptStmt.executeBatch();
+        connection.commit();
       }
       return true;
+
     } catch (SQLException | IOException e) {
       throw new PatchPlaceAndBreakRuntimeException(
           String.format("Failed to create default table: '%s'.", SqlDataSource.TABLE_NAME), e);
