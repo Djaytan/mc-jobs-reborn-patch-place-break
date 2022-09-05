@@ -34,9 +34,10 @@ public class PatchPlaceAndBreakTagMemoryDao implements PatchPlaceAndBreakTagDao 
   private final Map<UUID, PatchPlaceAndBreakTag> patchPlaceAndBreakTagMap = new HashMap<>();
 
   @Override
-  public void persist(@NotNull PatchPlaceAndBreakTag patchPlaceAndBreakTag) {
+  public void put(@NotNull PatchPlaceAndBreakTag patchPlaceAndBreakTag) {
     Preconditions.checkNotNull(patchPlaceAndBreakTag);
 
+    delete(patchPlaceAndBreakTag.getTagLocation());
     patchPlaceAndBreakTagMap.put(patchPlaceAndBreakTag.getUuid(), patchPlaceAndBreakTag);
   }
 

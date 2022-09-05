@@ -37,8 +37,6 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -79,10 +77,11 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
   public @NotNull CompletableFuture<Void> putTag(@NotNull Location location, boolean isEphemeral) {
     Preconditions.checkNotNull(location);
 
-    return CompletableFuture.runAsync(() -> {
-      TagLocation tagLocation = locationConverter.convert(location);
-      patchPlaceAndBreakService.createTag(isEphemeral, tagLocation).join();
-    });
+    return CompletableFuture.runAsync(
+        () -> {
+          TagLocation tagLocation = locationConverter.convert(location);
+          patchPlaceAndBreakService.putTag(isEphemeral, tagLocation).join();
+        });
   }
 
   @Override

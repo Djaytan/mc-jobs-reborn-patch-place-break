@@ -61,22 +61,32 @@ public class PatchPlaceAndBreakTagSqlDao implements PatchPlaceAndBreakTagDao {
   }
 
   @Override
-  public void persist(@NotNull PatchPlaceAndBreakTag patchPlaceAndBreakTag) {
-    Connection connection = sqlDataSource.getConnection();
+  public void put(@NotNull PatchPlaceAndBreakTag patchPlaceAndBreakTag) {
+    try (Connection connection = sqlDataSource.getConnection()) {
+      connection.setAutoCommit(false);
 
-    String sqlInsert =
-        String.format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?, ?)", SqlDataSource.TABLE_NAME);
+      try (PreparedStatement deleteStmt =
+          getDeleteStatement(connection, patchPlaceAndBreakTag.getTagLocation())) {
+        deleteStmt.executeUpdate();
+      }
 
-    try (PreparedStatement insertStmt = connection.prepareStatement(sqlInsert)) {
-      insertStmt.setString(1, uuidStringSerializer.serialize(patchPlaceAndBreakTag.getUuid()));
-      insertStmt.setString(
-          2, localDateTimeStringSerializer.serialize(patchPlaceAndBreakTag.getInitLocalDateTime()));
-      insertStmt.setInt(3, booleanIntegerSerializer.serialize(patchPlaceAndBreakTag.isEphemeral()));
-      insertStmt.setString(4, patchPlaceAndBreakTag.getTagLocation().getWorldName());
-      insertStmt.setDouble(5, patchPlaceAndBreakTag.getTagLocation().getX());
-      insertStmt.setDouble(6, patchPlaceAndBreakTag.getTagLocation().getY());
-      insertStmt.setDouble(7, patchPlaceAndBreakTag.getTagLocation().getZ());
-      insertStmt.executeUpdate();
+      String sqlInsert =
+          String.format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?, ?)", SqlDataSource.TABLE_NAME);
+
+      try (PreparedStatement insertStmt = connection.prepareStatement(sqlInsert)) {
+        insertStmt.setString(1, uuidStringSerializer.serialize(patchPlaceAndBreakTag.getUuid()));
+        insertStmt.setString(
+            2,
+            localDateTimeStringSerializer.serialize(patchPlaceAndBreakTag.getInitLocalDateTime()));
+        insertStmt.setInt(
+            3, booleanIntegerSerializer.serialize(patchPlaceAndBreakTag.isEphemeral()));
+        insertStmt.setString(4, patchPlaceAndBreakTag.getTagLocation().getWorldName());
+        insertStmt.setDouble(5, patchPlaceAndBreakTag.getTagLocation().getX());
+        insertStmt.setDouble(6, patchPlaceAndBreakTag.getTagLocation().getY());
+        insertStmt.setDouble(7, patchPlaceAndBreakTag.getTagLocation().getZ());
+        insertStmt.executeUpdate();
+      }
+      connection.commit();
     } catch (SQLException e) {
       throw new PatchPlaceAndBreakRuntimeException(
           "Failed to persist a patch place-and-break tag.", e);
@@ -85,41 +95,41 @@ public class PatchPlaceAndBreakTagSqlDao implements PatchPlaceAndBreakTagDao {
 
   @Override
   public @NotNull Optional<PatchPlaceAndBreakTag> findByLocation(@NotNull TagLocation tagLocation) {
-    Connection connection = sqlDataSource.getConnection();
+    try (Connection connection = sqlDataSource.getConnection()) {
+      String sqlQuery =
+          String.format(
+              "SELECT * FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
+                  + " location_z = ?",
+              SqlDataSource.TABLE_NAME);
 
-    String sqlQuery =
-        String.format(
-            "SELECT * FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
-                + " location_z = ?",
-            SqlDataSource.TABLE_NAME);
+      try (PreparedStatement queryStmt = connection.prepareStatement(sqlQuery)) {
+        queryStmt.setString(1, tagLocation.getWorldName());
+        queryStmt.setDouble(2, tagLocation.getX());
+        queryStmt.setDouble(3, tagLocation.getY());
+        queryStmt.setDouble(4, tagLocation.getZ());
 
-    try (PreparedStatement queryStmt = connection.prepareStatement(sqlQuery)) {
-      queryStmt.setString(1, tagLocation.getWorldName());
-      queryStmt.setDouble(2, tagLocation.getX());
-      queryStmt.setDouble(3, tagLocation.getY());
-      queryStmt.setDouble(4, tagLocation.getZ());
+        ResultSet rs = queryStmt.executeQuery();
+        if (rs.getFetchSize() > 1) {
+          logger.warn("Multiple tags detected for a same location, selecting the first one.");
+        }
 
-      ResultSet rs = queryStmt.executeQuery();
-      if (rs.getFetchSize() > 1) {
-        logger.warn("Multiple tags detected for a same location, selecting the first one.");
+        if (rs.next()) {
+          UUID tagUuid = uuidStringSerializer.deserialize(rs.getString("tag_uuid"));
+          LocalDateTime initLocalDateTime =
+              localDateTimeStringSerializer.deserialize(rs.getString("init_timestamp"));
+          boolean isEphemeral = booleanIntegerSerializer.deserialize(rs.getInt("is_ephemeral"));
+          String worldName = rs.getString("world_name");
+          double x = rs.getDouble("location_x");
+          double y = rs.getDouble("location_y");
+          double z = rs.getDouble("location_z");
+
+          TagLocation location = new TagLocation(worldName, x, y, z);
+          PatchPlaceAndBreakTag tag =
+              new PatchPlaceAndBreakTag(tagUuid, initLocalDateTime, isEphemeral, location);
+          return Optional.of(tag);
+        }
+        return Optional.empty();
       }
-
-      if (rs.next()) {
-        UUID tagUuid = uuidStringSerializer.deserialize(rs.getString("tag_uuid"));
-        LocalDateTime initLocalDateTime =
-            localDateTimeStringSerializer.deserialize(rs.getString("init_timestamp"));
-        boolean isEphemeral = booleanIntegerSerializer.deserialize(rs.getInt("is_ephemeral"));
-        String worldName = rs.getString("world_name");
-        double x = rs.getDouble("location_x");
-        double y = rs.getDouble("location_y");
-        double z = rs.getDouble("location_z");
-
-        TagLocation location = new TagLocation(worldName, x, y, z);
-        PatchPlaceAndBreakTag tag =
-            new PatchPlaceAndBreakTag(tagUuid, initLocalDateTime, isEphemeral, location);
-        return Optional.of(tag);
-      }
-      return Optional.empty();
     } catch (SQLException e) {
       throw new PatchPlaceAndBreakRuntimeException(
           "Failed to fetch a patch place-and-break tag.", e);
@@ -128,23 +138,29 @@ public class PatchPlaceAndBreakTagSqlDao implements PatchPlaceAndBreakTagDao {
 
   @Override
   public void delete(@NotNull TagLocation tagLocation) {
-    Connection connection = sqlDataSource.getConnection();
+    try (Connection connection = sqlDataSource.getConnection()) {
+      try (PreparedStatement deleteStmt = getDeleteStatement(connection, tagLocation)) {
+        deleteStmt.executeUpdate();
+      }
+    } catch (SQLException e) {
+      throw new PatchPlaceAndBreakRuntimeException(
+          "Failed to delete a patch place-and-break tag.", e);
+    }
+  }
 
+  private @NotNull PreparedStatement getDeleteStatement(
+      @NotNull Connection connection, @NotNull TagLocation tagLocation) throws SQLException {
     String sqlDelete =
         String.format(
             "DELETE FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
                 + " location_z = ?",
             SqlDataSource.TABLE_NAME);
 
-    try (PreparedStatement deleteStmt = connection.prepareStatement(sqlDelete)) {
-      deleteStmt.setString(1, tagLocation.getWorldName());
-      deleteStmt.setDouble(2, tagLocation.getX());
-      deleteStmt.setDouble(3, tagLocation.getY());
-      deleteStmt.setDouble(4, tagLocation.getZ());
-      deleteStmt.executeUpdate();
-    } catch (SQLException e) {
-      throw new PatchPlaceAndBreakRuntimeException(
-          "Failed to delete a patch place-and-break tag.", e);
-    }
+    PreparedStatement deleteStmt = connection.prepareStatement(sqlDelete);
+    deleteStmt.setString(1, tagLocation.getWorldName());
+    deleteStmt.setDouble(2, tagLocation.getX());
+    deleteStmt.setDouble(3, tagLocation.getY());
+    deleteStmt.setDouble(4, tagLocation.getZ());
+    return deleteStmt;
   }
 }

@@ -21,12 +21,11 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.dao;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 import java.util.Optional;
-import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 
 public interface PatchPlaceAndBreakTagDao {
 
-  void persist(@NotNull PatchPlaceAndBreakTag patchPlaceAndBreakTag);
+  void put(@NotNull PatchPlaceAndBreakTag patchPlaceAndBreakTag);
 
   @NotNull
   Optional<PatchPlaceAndBreakTag> findByLocation(@NotNull TagLocation tagLocation);

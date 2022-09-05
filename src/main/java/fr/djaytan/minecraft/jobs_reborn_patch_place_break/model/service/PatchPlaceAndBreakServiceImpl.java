@@ -40,7 +40,7 @@ public class PatchPlaceAndBreakServiceImpl implements PatchPlaceAndBreakService 
   }
 
   @Override
-  public @NotNull CompletableFuture<Void> createTag(
+  public @NotNull CompletableFuture<Void> putTag(
       boolean isEphemeral, @NotNull TagLocation tagLocation) {
     return CompletableFuture.runAsync(
         () -> {
@@ -48,7 +48,7 @@ public class PatchPlaceAndBreakServiceImpl implements PatchPlaceAndBreakService 
           LocalDateTime localDateTime = LocalDateTime.now();
           PatchPlaceAndBreakTag patchPlaceAndBreakTag =
               new PatchPlaceAndBreakTag(tagUuid, localDateTime, isEphemeral, tagLocation);
-          patchPlaceAndBreakTagDao.persist(patchPlaceAndBreakTag);
+          patchPlaceAndBreakTagDao.put(patchPlaceAndBreakTag);
         });
   }
 

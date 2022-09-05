@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 public interface PatchPlaceAndBreakService {
 
   @NotNull
-  CompletableFuture<Void> createTag(boolean isEphemeral, @NotNull TagLocation tagLocation);
+  CompletableFuture<Void> putTag(boolean isEphemeral, @NotNull TagLocation tagLocation);
 
   @NotNull
   CompletableFuture<Optional<PatchPlaceAndBreakTag>> findTagByLocation(
