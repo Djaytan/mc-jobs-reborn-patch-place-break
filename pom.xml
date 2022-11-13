@@ -42,10 +42,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.release>8</maven.compiler.release>
 
-        <minecraft.api.version>1.13</minecraft.api.version> <!-- The first API version supported by this option -->
+        <minecraft.api.version>1.13</minecraft.api.version> <!-- The oldest API version available for this option -->
+        <spigot.api.version>1.19.2-R0.1-SNAPSHOT</spigot.api.version>
         <package.root>fr.djaytan.minecraft.jobs_reborn_patch_place_break</package.root>
 
-        <papermc.version>1.18.2-R0.1-SNAPSHOT</papermc.version> <!-- TODO: Have a dependency only to Bukkit 1.8 -->
         <jobs.version>v4.17.2</jobs.version>
         <jetbrains.annotations.version>23.0.0</jetbrains.annotations.version>
         <lombok.version>1.18.24</lombok.version>
@@ -57,8 +57,8 @@
 
     <repositories>
         <repository>
-            <id>paper-repo</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
             <id>jitpack.io</id>
@@ -134,9 +134,9 @@
     <dependencies>
         <!-- Minecraft dependencies -->
         <dependency>
-            <groupId>io.papermc.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>${papermc.version}</version>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${spigot.api.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

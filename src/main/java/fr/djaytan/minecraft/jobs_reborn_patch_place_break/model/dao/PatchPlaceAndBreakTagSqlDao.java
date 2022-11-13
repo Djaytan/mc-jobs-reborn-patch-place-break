@@ -18,6 +18,7 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.dao;
 
+import com.google.inject.name.Named;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakRuntimeException;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
@@ -32,10 +33,10 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
 
 @Singleton
 public class PatchPlaceAndBreakTagSqlDao implements PatchPlaceAndBreakTagDao {
@@ -51,7 +52,7 @@ public class PatchPlaceAndBreakTagSqlDao implements PatchPlaceAndBreakTagDao {
       @NotNull BooleanIntegerSerializer booleanIntegerSerializer,
       @NotNull SqlDataSource sqlDataSource,
       @NotNull LocalDateTimeStringSerializer localDateTimeStringSerializer,
-      @NotNull Logger logger,
+      @NotNull @Named("BukkitLogger") Logger logger,
       @NotNull UUIDStringSerializer uuidStringSerializer) {
     this.booleanIntegerSerializer = booleanIntegerSerializer;
     this.sqlDataSource = sqlDataSource;
@@ -110,7 +111,7 @@ public class PatchPlaceAndBreakTagSqlDao implements PatchPlaceAndBreakTagDao {
 
         ResultSet rs = queryStmt.executeQuery();
         if (rs.getFetchSize() > 1) {
-          logger.warn("Multiple tags detected for a same location, selecting the first one.");
+          logger.warning("Multiple tags detected for a same location, selecting the first one.");
         }
 
         if (rs.next()) {

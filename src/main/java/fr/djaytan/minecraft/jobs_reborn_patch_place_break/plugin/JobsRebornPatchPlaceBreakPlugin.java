@@ -38,32 +38,32 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    getSLF4JLogger().info("Guice injection");
+    getLogger().info("Guice injection");
     GuiceInjector.inject(this);
 
-    getSLF4JLogger().info("SQL database initialization");
+    getLogger().info("SQL database initialization");
     sqlDataSourceInitializer.initialize();
 
-    getSLF4JLogger().info("Database connection");
+    getLogger().info("Database connection");
     sqlDataSource.connect();
 
-    getSLF4JLogger().info("Creating default SQL table...");
+    getLogger().info("Creating default SQL table...");
     boolean tablesCreated = sqlDataSourceInitializer.createTablesIfNotExists();
     if (tablesCreated) {
-      getSLF4JLogger().info("SQL table created.");
+      getLogger().info("SQL table created.");
     } else {
-      getSLF4JLogger().info("SQL table already exists, skipping.");
+      getLogger().info("SQL table already exists, skipping.");
     }
 
-    getSLF4JLogger().info("Event listeners registration");
+    getLogger().info("Event listeners registration");
     listenerRegister.registerListeners();
 
-    getSLF4JLogger().info("JobsReborn-PatchPlaceBreak successfully enabled.");
+    getLogger().info("JobsReborn-PatchPlaceBreak successfully enabled.");
   }
 
   @Override
   public void onDisable() {
-    getSLF4JLogger().info("Disconnecting database...");
+    getLogger().info("Disconnecting database...");
     sqlDataSource.disconnect();
   }
 }

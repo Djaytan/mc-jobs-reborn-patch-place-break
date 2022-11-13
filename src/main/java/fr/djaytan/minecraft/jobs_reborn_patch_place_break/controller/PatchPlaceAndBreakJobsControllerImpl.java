@@ -21,6 +21,7 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 import com.google.common.base.Preconditions;
+import com.google.inject.name.Named;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.service.PatchPlaceAndBreakService;
@@ -31,6 +32,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.bukkit.Location;
@@ -39,7 +42,6 @@ import org.bukkit.block.Block;
 import org.bukkit.event.HandlerList;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
 
 /**
  * This class represents the default implementation of {@link PatchPlaceAndBreakJobsController}
@@ -60,13 +62,13 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
    * Constructor.
    *
    * @param locationConverter The location converter.
-   * @param logger The plugin's SLF4J logger.
+   * @param logger The Bukkit logger.
    * @param patchPlaceAndBreakService The patch place-and-break service.
    */
   @Inject
   public PatchPlaceAndBreakJobsControllerImpl(
       @NotNull LocationConverter locationConverter,
-      @NotNull Logger logger,
+      @NotNull @Named("BukkitLogger") Logger logger,
       @NotNull PatchPlaceAndBreakService patchPlaceAndBreakService) {
     this.locationConverter = locationConverter;
     this.logger = logger;
@@ -157,11 +159,11 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
     return CompletableFuture.runAsync(
         () -> {
           if (isPlaceAndBreakAction(actionType, block.getLocation()).join() && !isEventCancelled) {
-            logger.warn(
+            logger.warning(String.format(
                 "Violation of a place-and-break patch detected! It's possible that's because of a"
                     + " conflict with another plugin. Please, report this full log message to the"
-                    + " developer: player={}, jobs={}, actionType={}, blockMaterial={},"
-                    + " detectedPotentielConflictingPlugins={}",
+                    + " developer: player=%s, jobs=%s, actionType=%s, blockMaterial=%s,"
+                    + " detectedPotentialConflictingPlugins=%s",
                 player.getName(),
                 job.getName(),
                 actionType.getName(),
@@ -169,7 +171,7 @@ public class PatchPlaceAndBreakJobsControllerImpl implements PatchPlaceAndBreakJ
                 Arrays.stream(handlerList.getRegisteredListeners())
                     .map(registeredListener -> registeredListener.getPlugin().getName())
                     .distinct()
-                    .toArray());
+                    .collect(Collectors.toList())));
           }
         });
   }

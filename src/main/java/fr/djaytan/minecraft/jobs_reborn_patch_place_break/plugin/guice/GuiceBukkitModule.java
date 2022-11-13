@@ -22,6 +22,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import java.nio.file.Path;
 import java.util.concurrent.Executor;
+import java.util.logging.Logger;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.inventory.ItemFactory;
@@ -30,12 +31,12 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.structure.StructureManager;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
 
-/** Guice module for Bukkit plugin. */
+/**
+ * Guice module for Bukkit plugin.
+ */
 public class GuiceBukkitModule extends AbstractModule {
 
   private final JavaPlugin plugin;
@@ -63,8 +64,9 @@ public class GuiceBukkitModule extends AbstractModule {
 
   @Provides
   @Singleton
+  @Named("BukkitLogger")
   public @NotNull Logger provideLogger() {
-    return plugin.getSLF4JLogger();
+    return plugin.getLogger();
   }
 
   @Provides
@@ -101,12 +103,6 @@ public class GuiceBukkitModule extends AbstractModule {
   @Singleton
   public @NotNull BukkitScheduler provideBukkitScheduler() {
     return plugin.getServer().getScheduler();
-  }
-
-  @Provides
-  @Singleton
-  public @NotNull ScoreboardManager provideScoreboardManager() {
-    return plugin.getServer().getScoreboardManager();
   }
 
   @Provides
