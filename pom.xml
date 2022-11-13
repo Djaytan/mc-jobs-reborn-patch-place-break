@@ -40,15 +40,12 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>8</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <maven.compiler.release>8</maven.compiler.release>
 
-        <minecraft.api.version>1.13</minecraft.api.version>
+        <minecraft.api.version>1.13</minecraft.api.version> <!-- The first API version supported by this option -->
         <package.root>fr.djaytan.minecraft.jobs_reborn_patch_place_break</package.root>
 
-        <papermc.version>1.18.2-R0.1-SNAPSHOT</papermc.version>
+        <papermc.version>1.18.2-R0.1-SNAPSHOT</papermc.version> <!-- TODO: Have a dependency only to Bukkit 1.8 -->
         <jobs.version>v4.17.2</jobs.version>
         <jetbrains.annotations.version>23.0.0</jetbrains.annotations.version>
         <lombok.version>1.18.24</lombok.version>
@@ -84,6 +81,13 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
+                    <!-- Compilation must be achieved with JDK 17 -->
+                    <fork>true</fork>
+                    <executable>${env.JAVA_1_17_HOME}/bin/javac</executable>
+                    <compilerVersion>17</compilerVersion>
+
+                    <!-- Lombok activation -->
+                    <!-- TODO: remove it since it's useless before JDK 9 -->
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>

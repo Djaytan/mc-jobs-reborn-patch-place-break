@@ -87,6 +87,26 @@ PlaceAndBreak:
   SilkTouchProtection: false
 ```
 
+## How to compile the project
+
+Since a [Maven Wrapper](https://github.com/apache/maven-wrapper) has been set up for this project, it's recommended
+to use it instead of your own local instance by executing the script `mvnw`
+(or `mvnw.cmd` if you are under Windows terminal of Powershell).
+
+To compile the project, run unit tests and package the plugin into a Jar file, simply run this command
+without any arguments: `mvnw`
+(see [Maven lifecycle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html) for more details).
+This is equivalent to `mvnw clean install`.
+
+The environment variable `JAVA_1_17_HOME` must be defined by targeting a JDK 17 home directory. This is required since
+the cross-compilation feature of `javac` is needed to target version 8 of Java whereas we are using libraries compiled
+with a later Java version (for example PaperMC 1.18.2 which as been compiled with JDK 17).
+Typically, this plugin need to be executed in 1.8 Minecraft servers under a Java 8 VM.
+
+***Take care:** the Maven compiler plugin for Java doesn't provide clear error message if the environment variable
+isn't defined or target a wrong JDK version. So, in case you have any unidentifiable issue when compiling the project,
+take a look at this section first by ensuring the set-up is right.*
+
 ## Licence
 
 This project is under the licence [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
