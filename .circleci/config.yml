@@ -10,6 +10,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Define JAVA_1_17_HOME environment variable
+          command: echo 'export JAVA_1_17_HOME="$JAVA_HOME"' >> "$BASH_ENV"
+      - run:
           name: Build
           command: mvn compile
       - run:
