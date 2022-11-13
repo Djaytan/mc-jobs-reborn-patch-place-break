@@ -18,14 +18,17 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs;
 
-import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
+
+import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
+
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 
 /**
  * This class represents a {@link JobsPrePaymentEvent} listener.
@@ -65,8 +68,7 @@ public class JobsPrePaymentListener implements Listener {
    */
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onJobsPayment(@NotNull JobsPrePaymentEvent event) {
-    if (event.getBlock() == null
-        || event.getActionInfo() == null
+    if (event.getBlock() == null || event.getActionInfo() == null
         || event.getActionInfo().getType() == null) {
       return;
     }

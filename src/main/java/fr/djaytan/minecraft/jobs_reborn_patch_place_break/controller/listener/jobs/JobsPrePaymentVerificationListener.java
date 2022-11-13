@@ -18,14 +18,17 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs;
 
-import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
+
+import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
+
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 
 /**
  * This class represents a {@link JobsPrePaymentEvent} listener to verify the well-application of
@@ -62,18 +65,13 @@ public class JobsPrePaymentVerificationListener implements Listener {
    */
   @EventHandler(priority = EventPriority.MONITOR)
   public void onJobsExpGain(@NotNull JobsPrePaymentEvent event) {
-    if (event.getBlock() == null
-        || event.getActionInfo() == null
+    if (event.getBlock() == null || event.getActionInfo() == null
         || event.getActionInfo().getType() == null) {
       return;
     }
 
-    patchPlaceAndBreakJobsController.verifyPatchApplication(
-        event.getActionInfo().getType(),
-        event.getBlock(),
-        event.isCancelled(),
-        event.getPlayer(),
-        event.getJob(),
+    patchPlaceAndBreakJobsController.verifyPatchApplication(event.getActionInfo().getType(),
+        event.getBlock(), event.isCancelled(), event.getPlayer(), event.getJob(),
         event.getHandlers());
   }
 }

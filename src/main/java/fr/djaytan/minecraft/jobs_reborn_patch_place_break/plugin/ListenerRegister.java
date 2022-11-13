@@ -18,6 +18,13 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.NotNull;
+
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockBreakListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockGrowListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockPistonListener;
@@ -27,11 +34,6 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jo
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsExpGainVerificationListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsPrePaymentListener;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsPrePaymentVerificationListener;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents a register of listeners.
@@ -70,11 +72,8 @@ public class ListenerRegister {
    * @param jobsPrePaymentVerificationListener The jobs pre-payment verification listener.
    */
   @Inject
-  public ListenerRegister(
-      @NotNull Plugin plugin,
-      @NotNull PluginManager pluginManager,
-      @NotNull BlockBreakListener blockBreakListener,
-      @NotNull BlockGrowListener blockGrowListener,
+  public ListenerRegister(@NotNull Plugin plugin, @NotNull PluginManager pluginManager,
+      @NotNull BlockBreakListener blockBreakListener, @NotNull BlockGrowListener blockGrowListener,
       @NotNull BlockPistonListener blockPistonListener,
       @NotNull BlockPlaceListener blockPlaceListener,
       @NotNull BlockSpreadListener blockSpreadListener,

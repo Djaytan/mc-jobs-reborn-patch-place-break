@@ -19,6 +19,7 @@
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource;
 
 import java.sql.Connection;
+
 import org.jetbrains.annotations.NotNull;
 
 public interface SqlDataSource {

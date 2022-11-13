@@ -18,10 +18,6 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
 
-import com.gamingmesh.jobs.container.ActionType;
-import com.gamingmesh.jobs.container.Job;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
-
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -31,6 +27,11 @@ import org.bukkit.block.Block;
 import org.bukkit.event.HandlerList;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+
+import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.Job;
+
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
 
 /**
  * This interface represents the API to apply place-and-break patch.
@@ -101,8 +102,8 @@ public interface PatchPlaceAndBreakJobsController {
    *     new calculated locations.
    */
   @NotNull
-  CompletableFuture<Void> putBackTagOnMovedBlocks(
-      @NotNull List<Block> blocks, @NotNull Vector direction);
+  CompletableFuture<Void> putBackTagOnMovedBlocks(@NotNull List<Block> blocks,
+      @NotNull Vector direction);
 
   /**
    * This method permits to remove a tag from a specified Block. This can be useful when the state
@@ -132,8 +133,8 @@ public interface PatchPlaceAndBreakJobsController {
    * @return <code>true</code> if it's a place-and-break exploit, <code>false</code> otherwise.
    */
   @NotNull
-  CompletableFuture<Boolean> isPlaceAndBreakAction(
-      @NotNull ActionType actionType, @NotNull Location location);
+  CompletableFuture<Boolean> isPlaceAndBreakAction(@NotNull ActionType actionType,
+      @NotNull Location location);
 
   /**
    * The purpose of this method is to verify the well-application of the patch if required for a
@@ -147,11 +148,7 @@ public interface PatchPlaceAndBreakJobsController {
    *     otherwise.
    */
   @NotNull
-  CompletableFuture<Void> verifyPatchApplication(
-      @NotNull ActionType actionType,
-      @NotNull Block block,
-      boolean isEventCancelled,
-      @NotNull OfflinePlayer player,
-      @NotNull Job job,
-      @NotNull HandlerList handlerList);
+  CompletableFuture<Void> verifyPatchApplication(@NotNull ActionType actionType,
+      @NotNull Block block, boolean isEventCancelled, @NotNull OfflinePlayer player,
+      @NotNull Job job, @NotNull HandlerList handlerList);
 }

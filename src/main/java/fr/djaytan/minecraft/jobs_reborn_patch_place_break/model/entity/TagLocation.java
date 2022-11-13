@@ -18,10 +18,12 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.base.Preconditions;
+
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.jetbrains.annotations.NotNull;
 
 @ToString
 @EqualsAndHashCode

@@ -18,19 +18,23 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.utils;
 
-import com.google.common.base.Preconditions;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 import javax.inject.Singleton;
+
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
+
+import com.google.common.base.Preconditions;
+
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 
 @Singleton
 public class LocationConverter {
 
   public @NotNull TagLocation convert(@NotNull Location location) {
     Preconditions.checkNotNull(location);
+    Preconditions.checkNotNull(location.getWorld());
 
-    return new TagLocation(
-        location.getWorld().getName(), location.getX(), location.getY(), location.getZ());
+    return new TagLocation(location.getWorld().getName(), location.getX(), location.getY(),
+        location.getZ());
   }
 }

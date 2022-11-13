@@ -16,10 +16,11 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.guice;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /** Guice injector for Bukkit plugin. */
 public final class GuiceInjector {

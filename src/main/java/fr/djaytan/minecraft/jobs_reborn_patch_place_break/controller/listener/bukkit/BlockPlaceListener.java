@@ -18,14 +18,16 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.jetbrains.annotations.NotNull;
+
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 
 /**
  * This class represents a {@link BlockPlaceEvent} listener.

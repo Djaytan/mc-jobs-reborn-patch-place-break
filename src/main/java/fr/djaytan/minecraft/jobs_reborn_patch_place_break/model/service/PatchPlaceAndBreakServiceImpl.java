@@ -18,16 +18,19 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.service;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.dao.PatchPlaceAndBreakTagDao;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
 import org.jetbrains.annotations.NotNull;
+
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.dao.PatchPlaceAndBreakTagDao;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 
 @Singleton
 public class PatchPlaceAndBreakServiceImpl implements PatchPlaceAndBreakService {
@@ -40,23 +43,22 @@ public class PatchPlaceAndBreakServiceImpl implements PatchPlaceAndBreakService 
   }
 
   @Override
-  public @NotNull CompletableFuture<Void> putTag(
-      boolean isEphemeral, @NotNull TagLocation tagLocation) {
-    return CompletableFuture.runAsync(
-        () -> {
-          UUID tagUuid = UUID.randomUUID();
-          LocalDateTime localDateTime = LocalDateTime.now();
-          PatchPlaceAndBreakTag patchPlaceAndBreakTag =
-              new PatchPlaceAndBreakTag(tagUuid, localDateTime, isEphemeral, tagLocation);
-          patchPlaceAndBreakTagDao.put(patchPlaceAndBreakTag);
-        });
+  public @NotNull CompletableFuture<Void> putTag(boolean isEphemeral,
+      @NotNull TagLocation tagLocation) {
+    return CompletableFuture.runAsync(() -> {
+      UUID tagUuid = UUID.randomUUID();
+      LocalDateTime localDateTime = LocalDateTime.now();
+      PatchPlaceAndBreakTag patchPlaceAndBreakTag =
+          new PatchPlaceAndBreakTag(tagUuid, localDateTime, isEphemeral, tagLocation);
+      patchPlaceAndBreakTagDao.put(patchPlaceAndBreakTag);
+    });
   }
 
   @Override
   public @NotNull CompletableFuture<Optional<PatchPlaceAndBreakTag>> findTagByLocation(
       @NotNull TagLocation tagLocation) {
-    return CompletableFuture.supplyAsync(
-        () -> patchPlaceAndBreakTagDao.findByLocation(tagLocation));
+    return CompletableFuture
+        .supplyAsync(() -> patchPlaceAndBreakTagDao.findByLocation(tagLocation));
   }
 
   @Override

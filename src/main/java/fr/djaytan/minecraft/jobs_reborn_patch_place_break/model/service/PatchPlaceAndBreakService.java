@@ -18,11 +18,13 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.service;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+
 import org.jetbrains.annotations.NotNull;
+
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 
 public interface PatchPlaceAndBreakService {
 

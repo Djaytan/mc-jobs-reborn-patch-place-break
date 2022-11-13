@@ -19,6 +19,7 @@
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.guice;
 
 import com.google.inject.AbstractModule;
+
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsControllerImpl;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.dao.PatchPlaceAndBreakTagDao;

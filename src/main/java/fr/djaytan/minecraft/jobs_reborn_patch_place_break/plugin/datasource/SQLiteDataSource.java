@@ -18,16 +18,20 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakRuntimeException;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+
 import org.jetbrains.annotations.NotNull;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakRuntimeException;
 
 @Singleton
 public class SQLiteDataSource implements SqlDataSource {

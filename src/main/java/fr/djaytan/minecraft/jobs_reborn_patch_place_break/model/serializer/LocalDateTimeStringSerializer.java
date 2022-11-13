@@ -18,11 +18,14 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.serializer;
 
-import com.google.common.base.Preconditions;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 import javax.inject.Singleton;
+
 import org.jetbrains.annotations.NotNull;
+
+import com.google.common.base.Preconditions;
 
 @Singleton
 public class LocalDateTimeStringSerializer implements StringSerializer<LocalDateTime> {

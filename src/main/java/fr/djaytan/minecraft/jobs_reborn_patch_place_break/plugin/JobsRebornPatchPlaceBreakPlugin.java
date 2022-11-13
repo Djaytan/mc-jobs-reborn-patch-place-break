@@ -18,11 +18,13 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin;
 
+import javax.inject.Inject;
+
+import org.bukkit.plugin.java.JavaPlugin;
+
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SqlDataSource;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SqlDataSourceInitializer;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.guice.GuiceInjector;
-import javax.inject.Inject;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * This class represents a JobsReborn patch place-break plugin.
@@ -32,9 +34,12 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
-  @Inject private ListenerRegister listenerRegister;
-  @Inject private SqlDataSource sqlDataSource;
-  @Inject private SqlDataSourceInitializer sqlDataSourceInitializer;
+  @Inject
+  private ListenerRegister listenerRegister;
+  @Inject
+  private SqlDataSource sqlDataSource;
+  @Inject
+  private SqlDataSourceInitializer sqlDataSourceInitializer;
 
   @Override
   public void onEnable() {

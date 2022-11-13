@@ -18,15 +18,19 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.dao;
 
-import com.google.common.base.Preconditions;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+
 import javax.inject.Singleton;
+
 import org.jetbrains.annotations.NotNull;
+
+import com.google.common.base.Preconditions;
+
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 
 @Singleton
 public class PatchPlaceAndBreakTagMemoryDao implements PatchPlaceAndBreakTagDao {
@@ -58,7 +62,7 @@ public class PatchPlaceAndBreakTagMemoryDao implements PatchPlaceAndBreakTagDao 
     Preconditions.checkNotNull(tagLocation);
 
     Optional<PatchPlaceAndBreakTag> patchPlaceAndBreakTag = findByLocation(tagLocation);
-    patchPlaceAndBreakTag.ifPresent(
-        placeAndBreakTag -> patchPlaceAndBreakTagMap.remove(placeAndBreakTag.getUuid()));
+    patchPlaceAndBreakTag
+        .ifPresent(placeAndBreakTag -> patchPlaceAndBreakTagMap.remove(placeAndBreakTag.getUuid()));
   }
 }

@@ -18,8 +18,6 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource;
 
-import com.google.common.io.CharStreams;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakRuntimeException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,11 +30,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+
+import com.google.common.io.CharStreams;
+
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakRuntimeException;
 
 @Singleton
 public class SQLiteDataSourceInitializer implements SqlDataSourceInitializer {
@@ -46,10 +50,8 @@ public class SQLiteDataSourceInitializer implements SqlDataSourceInitializer {
   private final SQLiteDataSource sqliteDataSource;
 
   @Inject
-  public SQLiteDataSourceInitializer(
-      @NotNull @Named("dataFolder") Path dataFolder,
-      @NotNull JavaPlugin javaPlugin,
-      @NotNull SQLiteDataSource sqliteDataSource) {
+  public SQLiteDataSourceInitializer(@NotNull @Named("dataFolder") Path dataFolder,
+      @NotNull JavaPlugin javaPlugin, @NotNull SQLiteDataSource sqliteDataSource) {
     this.dataFolder = dataFolder;
     this.javaPlugin = javaPlugin;
     this.sqliteDataSource = sqliteDataSource;

@@ -18,10 +18,13 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.serializer;
 
-import com.google.common.base.Preconditions;
 import java.util.UUID;
+
 import javax.inject.Singleton;
+
 import org.jetbrains.annotations.NotNull;
+
+import com.google.common.base.Preconditions;
 
 @Singleton
 public class UUIDStringSerializer implements StringSerializer<UUID> {

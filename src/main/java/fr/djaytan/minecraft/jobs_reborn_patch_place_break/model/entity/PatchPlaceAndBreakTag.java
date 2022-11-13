@@ -18,25 +18,28 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity;
 
-import com.gamingmesh.jobs.container.ActionType;
-import com.google.common.base.Preconditions;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 
+import com.gamingmesh.jobs.container.ActionType;
+import com.google.common.base.Preconditions;
+
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
 /**
  * This class represents a place-and-break tag for the patch. The purpose of this tag is to be
- * attached to the metadata of a {@link org.bukkit.block.Block}.
+ * attached to the metadata of a {@link Block}.
  *
  * <p>When an instance of this class is found in the metadata of a given block, this means that the
- * patch must be applied for eligible {@link com.gamingmesh.jobs.container.ActionType}. See {@link
- * PatchPlaceAndBreakJobsController#isPlaceAndBreakAction(ActionType, Block)} for more details about
+ * patch must be applied for eligible {@link ActionType}. See {@link
+ * PatchPlaceAndBreakJobsController#isPlaceAndBreakAction(ActionType, Location)} for more details about
  * it.
  *
  * <p>This tag contains the following information:
@@ -45,7 +48,7 @@ import org.jetbrains.annotations.NotNull;
  *   <li>The initial date-time of when the tag as been created ;
  *   <li>The validity duration of the tag. If null, this means that the tag isn't an "ephemeral" one
  *       and will be persisted forever until removed explicitly from metadata of block (e.g. by
- *       calling {@link PatchPlaceAndBreakJobsController#removeTag(Block)}).
+ *       calling {@link PatchPlaceAndBreakJobsController#removeTag(Location)}).
  * </ul>
  *
  * This class is thread-safe and immutable.
@@ -65,11 +68,8 @@ public class PatchPlaceAndBreakTag {
   private final boolean isEphemeral;
   private final TagLocation tagLocation;
 
-  public PatchPlaceAndBreakTag(
-      @NotNull UUID uuid,
-      @NotNull LocalDateTime initLocalDateTime,
-      boolean isEphemeral,
-      @NotNull TagLocation tagLocation) {
+  public PatchPlaceAndBreakTag(@NotNull UUID uuid, @NotNull LocalDateTime initLocalDateTime,
+      boolean isEphemeral, @NotNull TagLocation tagLocation) {
     Preconditions.checkNotNull(uuid);
     Preconditions.checkNotNull(initLocalDateTime);
     Preconditions.checkNotNull(tagLocation);

@@ -16,13 +16,10 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.guice;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
 import java.nio.file.Path;
 import java.util.concurrent.Executor;
 import java.util.logging.Logger;
+
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.inventory.ItemFactory;
@@ -33,6 +30,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.structure.StructureManager;
 import org.jetbrains.annotations.NotNull;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 
 /**
  * Guice module for Bukkit plugin.
