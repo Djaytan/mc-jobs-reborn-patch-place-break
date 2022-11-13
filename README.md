@@ -6,7 +6,7 @@
 A place-and-break patch extension of [JobsReborn plugin](https://www.spigotmc.org/resources/jobs-reborn.4216/)
 for Bukkit servers.
 
-The ressource is available in [Spigot](https://www.spigotmc.org/resources/jobsreborn-patchplacebreak.102779/) and [PaperMC](https://forums.papermc.io/threads/jobsreborn-patchplacebreak.367/).
+The resource is available on [Spigot](https://www.spigotmc.org/resources/jobsreborn-patchplacebreak.102779/).
 
 ## Place-and-break issue
 
