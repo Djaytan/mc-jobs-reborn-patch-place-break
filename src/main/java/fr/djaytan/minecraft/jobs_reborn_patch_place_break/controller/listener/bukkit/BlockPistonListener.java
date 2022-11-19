@@ -21,11 +21,13 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.b
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
@@ -72,8 +74,9 @@ public class BlockPistonListener implements Listener {
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockPistonExtend(@NotNull BlockPistonExtendEvent event) {
-    patchPlaceAndBreakJobsController.putBackTagOnMovedBlocks(event.getBlocks(),
-        event.getDirection().getDirection());
+    BlockFace blockFace = event.getDirection();
+    Vector blockDirection = getPistonMoveDirection(blockFace);
+    patchPlaceAndBreakJobsController.putBackTagOnMovedBlocks(event.getBlocks(), blockDirection);
   }
 
   /**
@@ -87,7 +90,12 @@ public class BlockPistonListener implements Listener {
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockPistonRetract(@NotNull BlockPistonRetractEvent event) {
-    patchPlaceAndBreakJobsController.putBackTagOnMovedBlocks(event.getBlocks(),
-        event.getDirection().getDirection());
+    BlockFace blockFace = event.getDirection();
+    Vector blockDirection = getPistonMoveDirection(blockFace);
+    patchPlaceAndBreakJobsController.putBackTagOnMovedBlocks(event.getBlocks(), blockDirection);
+  }
+
+  private @NotNull Vector getPistonMoveDirection(@NotNull BlockFace blockFace) {
+    return new Vector(blockFace.getModX(), blockFace.getModY(), blockFace.getModZ());
   }
 }

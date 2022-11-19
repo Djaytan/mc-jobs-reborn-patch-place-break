@@ -28,7 +28,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.structure.StructureManager;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.inject.AbstractModule;
@@ -105,12 +104,6 @@ public class GuiceBukkitModule extends AbstractModule {
   @Singleton
   public @NotNull BukkitScheduler provideBukkitScheduler() {
     return plugin.getServer().getScheduler();
-  }
-
-  @Provides
-  @Singleton
-  public @NotNull StructureManager provideStructureManager() {
-    return plugin.getServer().getStructureManager();
   }
 
   @Provides

@@ -42,11 +42,13 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.release>8</maven.compiler.release>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
 
-        <minecraft.api.version>1.13
-        </minecraft.api.version> <!-- The oldest API version available for this option -->
-        <spigot.api.version>1.19.2-R0.1-SNAPSHOT</spigot.api.version>
+        <!-- The oldest API version available for this option to prevent warning message -->
+        <minecraft.api.version>1.13</minecraft.api.version>
+
+        <spigot.api.version>1.8.8-R0.1-SNAPSHOT</spigot.api.version>
         <package.root>fr.djaytan.minecraft.jobs_reborn_patch_place_break</package.root>
 
         <formatter.goal>format</formatter.goal>
@@ -57,7 +59,7 @@
         <lombok.version>1.18.24</lombok.version>
         <guice.version>5.1.0</guice.version>
         <sqlite.version>3.39.2.0</sqlite.version>
-        <hikaricp.version>5.0.1</hikaricp.version>
+        <hikaricp.version>4.0.3</hikaricp.version> <!-- Latest version compatible with Java 8 -->
         <guava.version>31.1-jre</guava.version>
     </properties>
 
@@ -85,7 +87,8 @@
             <plugin>
                 <groupId>net.revelc.code.formatter</groupId>
                 <artifactId>formatter-maven-plugin</artifactId>
-                <version>2.21.0</version>
+                <!-- Don't bump this version! Latest available for JDK 8 -->
+                <version>2.16.0</version>
                 <configuration>
                     <configFile>${project.basedir}/eclipse-java-google-style.xml</configFile>
                     <encoding>${project.build.sourceEncoding}</encoding>
@@ -102,20 +105,17 @@
             <plugin>
                 <groupId>net.revelc.code</groupId>
                 <artifactId>impsort-maven-plugin</artifactId>
-                <version>1.7.0</version>
+                <!-- Don't bump this version! Latest available for JDK 8 -->
+                <version>1.6.2</version>
                 <configuration>
                     <groups>java.,javax.,org.,com.</groups>
                     <staticGroups>java,*</staticGroups>
-                    <excludes>
-                        <exclude>**/thrift/*.java</exclude>
-                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
                         <id>sort-imports</id>
                         <goals>
-                            <goal>${impsort.goal}
-                            </goal><!-- runs at process-sources phase by default -->
+                            <goal>${impsort.goal}</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -124,34 +124,21 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
-                <configuration>
-                    <!-- Compilation must be achieved with JDK 17 -->
-                    <fork>true</fork>
-                    <executable>${env.JAVA_1_17_HOME}/bin/javac</executable>
-                    <compilerVersion>17</compilerVersion>
-
-                    <!-- Lombok activation -->
-                    <!-- TODO: remove it since it's useless before JDK 9 -->
-                    <compilerArgs>
-                        <arg>-parameters</arg>
-                    </compilerArgs>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
-                    <dependencyReducedPomLocation>
-                        ${project.build.directory}/dependency-reduced-pom.xml
-                    </dependencyReducedPomLocation>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <transformers>
+                        <!-- Remove warning messages about duplicate manifest files -->
+                        <!-- Manifest file is useless for a JAR file to be used as a Bukkit plugin -->
+                        <transformer
+                            implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+                            <resource>MANIFEST.MF</resource>
+                        </transformer>
+                    </transformers>
                 </configuration>
                 <executions>
                     <execution>
@@ -159,18 +146,6 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
