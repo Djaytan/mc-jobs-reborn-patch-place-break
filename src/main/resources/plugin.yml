@@ -1,6 +1,6 @@
 name: ${name}
 version: ${version}
 author: Djaytan
-api-version: ${minecraft.api.version}
+api-version: 1.13
 main: ${package.root}.plugin.JobsRebornPatchPlaceBreakPlugin
 depend: [Jobs]

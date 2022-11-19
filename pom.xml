@@ -19,32 +19,49 @@
   </licenses>
 
   <properties>
+    <!-- ==================== Encoding ==================== -->
     <project.encoding>UTF-8</project.encoding>
     <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
     <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
 
+    <!-- ==================== Java ==================== -->
     <java.version>8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
-    <!-- The oldest API version available for this option to prevent warning message -->
-    <minecraft.api.version>1.13</minecraft.api.version>
-
+    <!-- ==================== Minecraft: Bukkit ==================== -->
     <spigot.api.version>1.8.8-R0.1-SNAPSHOT</spigot.api.version>
     <package.root>fr.djaytan.minecraft.jobs_reborn_patch_place_break</package.root>
 
+    <!-- ==================== Formatters ==================== -->
     <formatter.goal>format</formatter.goal>
     <impsort.goal>sort</impsort.goal>
     <sortpom.goal>sort</sortpom.goal>
 
-    <jobs.version>v4.17.2</jobs.version>
-    <jetbrains.annotations.version>23.0.0</jetbrains.annotations.version>
-    <lombok.version>1.18.24</lombok.version>
-    <guice.version>5.1.0</guice.version>
-    <sqlite.version>3.39.2.0</sqlite.version>
-    <!-- Latest version compatible with Java 8 -->
-    <hikaricp.version>4.0.3</hikaricp.version>
+    <!-- ==================== Plugins versions ==================== -->
+    <!-- Latest version of SortPom compatible with Java 8: don't bump it! -->
+    <sortpom.maven.plugin.version>3.0.1</sortpom.maven.plugin.version>
+    <!-- Latest version of ImpSort compatible with Java 8: don't bump it! -->
+    <impsort.maven.plugin.version>1.6.2</impsort.maven.plugin.version>
+    <!-- Latest version of Formatter compatible with Java 8: don't bump it! -->
+    <formatter.maven.plugin.version>2.16.0</formatter.maven.plugin.version>
+    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <maven.shade.plugin.version>3.3.0</maven.shade.plugin.version>
+    <maven.clean.plugin.version>2.5</maven.clean.plugin.version>
+    <maven.resources.plugin.version>2.6</maven.resources.plugin.version>
+    <maven.surefire.plugin.version>2.12.4</maven.surefire.plugin.version>
+    <maven.jar.plugin.version>2.4</maven.jar.plugin.version>
+    <maven.install.plugin.version>2.4</maven.install.plugin.version>
+
+    <!-- ==================== Dependencies versions ==================== -->
     <guava.version>31.1-jre</guava.version>
+    <guice.version>5.1.0</guice.version>
+    <hikaricp.version>4.0.3</hikaricp.version>
+    <sqlite.version>3.39.2.0</sqlite.version>
+    <jobs.version>v4.17.2</jobs.version>
+    <annotations.jetbrains.version>23.0.0</annotations.jetbrains.version>
+    <lombok.version>1.18.24</lombok.version>
+    <!-- Latest version of HikariCP compatible with Java 8: don't bump it! -->
   </properties>
 
   <dependencies>
@@ -77,7 +94,7 @@
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
-      <version>${jetbrains.annotations.version}</version>
+      <version>${annotations.jetbrains.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -118,7 +135,7 @@
       <plugin>
         <groupId>com.github.ekryd.sortpom</groupId>
         <artifactId>sortpom-maven-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>${sortpom.maven.plugin.version}</version>
         <configuration>
           <createBackupFile>false</createBackupFile>
           <encoding>${project.encoding}</encoding>
@@ -151,8 +168,7 @@
       <plugin>
         <groupId>net.revelc.code</groupId>
         <artifactId>impsort-maven-plugin</artifactId>
-        <!-- Don't bump this version! Latest available for JDK 8 -->
-        <version>1.6.2</version>
+        <version>${impsort.maven.plugin.version}</version>
         <configuration>
           <groups>java.,javax.,org.,com.</groups>
           <staticGroups>java,*</staticGroups>
@@ -169,11 +185,10 @@
       <plugin>
         <groupId>net.revelc.code.formatter</groupId>
         <artifactId>formatter-maven-plugin</artifactId>
-        <!-- Don't bump this version! Latest available for JDK 8 -->
-        <version>2.16.0</version>
+        <version>${formatter.maven.plugin.version}</version>
         <configuration>
           <configFile>${project.basedir}/eclipse-java-google-style.xml</configFile>
-          <encoding>${project.build.sourceEncoding}</encoding>
+          <encoding>${project.encoding}</encoding>
           <lineEnding>LF</lineEnding>
         </configuration>
         <executions>
@@ -186,13 +201,33 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>${maven.clean.plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>${maven.compiler.plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>${maven.install.plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven.jar.plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven.resources.plugin.version}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>${maven.shade.plugin.version}</version>
         <configuration>
           <createDependencyReducedPom>false</createDependencyReducedPom>
           <transformers>
@@ -211,6 +246,11 @@
             <phase>package</phase>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.plugin.version}</version>
       </plugin>
     </plugins>
   </build>
