@@ -57,7 +57,7 @@
     <guava.version>31.1-jre</guava.version>
     <guice.version>5.1.0</guice.version>
     <hikaricp.version>4.0.3</hikaricp.version>
-    <sqlite.version>3.39.2.0</sqlite.version>
+    <sqlite.version>3.39.3.0</sqlite.version>
     <jobs.version>v4.17.2</jobs.version>
     <annotations.jetbrains.version>23.0.0</annotations.jetbrains.version>
     <lombok.version>1.18.24</lombok.version>
