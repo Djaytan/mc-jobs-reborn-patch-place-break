@@ -20,6 +20,7 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin;
 
 import javax.inject.Inject;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SqlDataSource;
@@ -33,6 +34,8 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.guice.GuiceInje
  * @see JavaPlugin
  */
 public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
+
+  private static final int BSTATS_ID = 16899;
 
   @Inject
   private ListenerRegister listenerRegister;
@@ -55,20 +58,27 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
     getLogger().info("Creating default SQL table...");
     boolean tablesCreated = sqlDataSourceInitializer.createTablesIfNotExists();
     if (tablesCreated) {
-      getLogger().info("SQL table created.");
+      getLogger().info("SQL table created");
     } else {
-      getLogger().info("SQL table already exists, skipping.");
+      getLogger().info("SQL table already exists, skipping");
     }
 
     getLogger().info("Event listeners registration");
     listenerRegister.registerListeners();
 
-    getLogger().info("JobsReborn-PatchPlaceBreak successfully enabled.");
+    getLogger().info("Activation of metrics collection with bStats");
+    activateMetricsCollection();
+
+    getLogger().info("JobsReborn-PatchPlaceBreak successfully enabled");
   }
 
   @Override
   public void onDisable() {
     getLogger().info("Disconnecting database...");
     sqlDataSource.disconnect();
+  }
+
+  private void activateMetricsCollection() {
+    new Metrics(this, BSTATS_ID);
   }
 }

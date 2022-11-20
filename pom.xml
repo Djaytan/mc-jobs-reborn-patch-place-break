@@ -62,6 +62,7 @@
     <annotations.jetbrains.version>23.0.0</annotations.jetbrains.version>
     <lombok.version>1.18.24</lombok.version>
     <spigot.api.version>1.11.2-R0.1-SNAPSHOT</spigot.api.version>
+    <bstat.version>3.0.0</bstat.version>
   </properties>
 
   <dependencies>
@@ -79,6 +80,11 @@
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
       <version>${hikaricp.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.bstats</groupId>
+      <artifactId>bstats-bukkit</artifactId>
+      <version>${bstat.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -285,6 +291,7 @@
               <shadedPattern>${package.lib}.org</shadedPattern>
               <includes>
                 <include>org.aopalliance.**</include>
+                <include>org.bstats.**</include>
                 <include>org.checkerframework.**</include>
                 <include>org.sqlite.**</include>
               </includes>
