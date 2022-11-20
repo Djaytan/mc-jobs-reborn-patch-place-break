@@ -5,7 +5,7 @@
 
   <groupId>fr.djaytan.minecraft</groupId>
   <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
-  <version>1.3.0-SNAPSHOT</version>
+  <version>1.3.0</version>
   <packaging>jar</packaging>
 
   <name>JobsReborn-PatchPlaceBreak</name>
@@ -21,6 +21,7 @@
   <scm>
     <connection>scm:git:git@github.com:Djaytan/mc-jobs-reborn-patch-place-break.git</connection>
     <developerConnection>scm:git:git@github.com:Djaytan/mc-jobs-reborn-patch-place-break.git</developerConnection>
+    <tag>v1.3.0</tag>
     <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break</url>
   </scm>
 
@@ -263,6 +264,8 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>${maven.release.plugin.version}</version>
         <configuration>
+          <!-- Spigot API is a SNAPSHOT version... No choice to enable this option -->
+          <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
           <tagNameFormat>v@{project.version}</tagNameFormat>
         </configuration>
       </plugin>
