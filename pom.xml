@@ -18,6 +18,12 @@
     </license>
   </licenses>
 
+  <scm>
+    <connection>scm:git:ssh://github.com/Djaytan/mc-jobs-reborn-patch-place-break.git</connection>
+    <developerConnection>scm:git:ssh://github.com/Djaytan/mc-jobs-reborn-patch-place-break.git</developerConnection>
+    <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break</url>
+  </scm>
+
   <properties>
     <!-- ==================== General ==================== -->
     <project.encoding>UTF-8</project.encoding>
@@ -52,6 +58,7 @@
     <maven.surefire.plugin.version>3.0.0-M7</maven.surefire.plugin.version>
     <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
     <maven.install.plugin.version>3.1.0</maven.install.plugin.version>
+    <maven.release.plugin.version>3.0.0-M7</maven.release.plugin.version>
 
     <!-- ==================== Dependencies versions ==================== -->
     <guava.version>31.1-jre</guava.version>
@@ -250,6 +257,14 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${maven.release.plugin.version}</version>
+        <configuration>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
