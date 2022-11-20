@@ -46,19 +46,20 @@
     <impsort.maven.plugin.version>1.6.2</impsort.maven.plugin.version>
     <!-- Latest version of Formatter compatible with Java 8: don't bump it! -->
     <formatter.maven.plugin.version>2.16.0</formatter.maven.plugin.version>
-    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
     <maven.shade.plugin.version>3.4.1</maven.shade.plugin.version>
-    <maven.clean.plugin.version>2.5</maven.clean.plugin.version>
-    <maven.resources.plugin.version>2.6</maven.resources.plugin.version>
-    <maven.surefire.plugin.version>2.12.4</maven.surefire.plugin.version>
-    <maven.jar.plugin.version>2.4</maven.jar.plugin.version>
-    <maven.install.plugin.version>2.4</maven.install.plugin.version>
+    <maven.clean.plugin.version>3.2.0</maven.clean.plugin.version>
+    <maven.resources.plugin.version>3.3.0</maven.resources.plugin.version>
+    <maven.surefire.plugin.version>3.0.0-M7</maven.surefire.plugin.version>
+    <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
+    <maven.install.plugin.version>3.1.0</maven.install.plugin.version>
 
     <!-- ==================== Dependencies versions ==================== -->
     <guava.version>31.1-jre</guava.version>
     <guice.version>5.1.0</guice.version>
     <!-- Latest version of HikariCP compatible with Java 8: don't bump it! -->
     <hikaricp.version>4.0.3</hikaricp.version>
+    <slf4j.version>2.0.4</slf4j.version>
     <sqlite.version>3.39.3.0</sqlite.version>
     <jobs.version>v4.17.2</jobs.version>
     <annotations.jetbrains.version>23.0.0</annotations.jetbrains.version>
@@ -75,17 +76,16 @@
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
       <version>${guice.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>com.google.guava</groupId>
-          <artifactId>guava</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
       <version>${hikaricp.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.xerial</groupId>
@@ -115,6 +115,13 @@
       <artifactId>spigot-api</artifactId>
       <version>${spigot.api.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <!-- Use the same logger implementation as the one used by Bukkit -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 
@@ -247,33 +254,47 @@
             <filter>
               <artifact>*:*</artifact>
               <excludes>
+                <exclude>module-info.class</exclude>
                 <exclude>META-INF/*.SF</exclude>
                 <exclude>META-INF/*.DSA</exclude>
                 <exclude>META-INF/*.RSA</exclude>
               </excludes>
             </filter>
           </filters>
+          <!-- Prevent libraries versions collisions with other Bukkit plugins if loaded as is in classpath -->
           <relocations>
             <relocation>
               <pattern>com</pattern>
               <shadedPattern>${package.lib}.com</shadedPattern>
               <includes>
-                <include>com.**</include>
+                <include>com.google.common.**</include>
+                <include>com.google.errorprone.**</include>
+                <include>com.google.inject.**</include>
+                <include>com.google.j2objc.**</include>
+                <include>com.google.thirdparty.**</include>
+                <include>com.zaxxer.hikari.**</include>
               </includes>
             </relocation>
             <relocation>
               <pattern>javax</pattern>
               <shadedPattern>${package.lib}.javax</shadedPattern>
               <includes>
-                <include>javax.**</include>
+                <include>javax.annotation.**</include>
+                <include>javax.inject.**</include>
               </includes>
             </relocation>
             <relocation>
               <pattern>org</pattern>
               <shadedPattern>${package.lib}.org</shadedPattern>
               <includes>
-                <include>org.**</include>
+                <include>org.aopalliance.**</include>
+                <include>org.checkerframework.**</include>
+                <include>org.sqlite.**</include>
               </includes>
+              <excludes>
+                <!-- Seams SLF4J can't be relocated without failure -->
+                <exclude>org.slf4j.**</exclude>
+              </excludes>
             </relocation>
           </relocations>
           <transformers>
