@@ -47,6 +47,8 @@
     <maven.shade.plugin.version>3.4.1</maven.shade.plugin.version>
     <maven.clean.plugin.version>3.2.0</maven.clean.plugin.version>
     <maven.resources.plugin.version>3.3.0</maven.resources.plugin.version>
+    <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
+    <maven.javadoc.plugin.version>3.4.1</maven.javadoc.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M7</maven.surefire.plugin.version>
     <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
     <maven.install.plugin.version>3.1.0</maven.install.plugin.version>
@@ -238,6 +240,19 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven.javadoc.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>maven-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <version>${maven.resources.plugin.version}</version>
       </plugin>
@@ -319,6 +334,20 @@
               <goal>shade</goal>
             </goals>
             <phase>package</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>${maven.source.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <phase>verify</phase>
           </execution>
         </executions>
       </plugin>

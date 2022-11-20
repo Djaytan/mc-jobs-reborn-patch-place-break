@@ -40,7 +40,7 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlac
  * org.bukkit.event.block.BlockPlaceEvent}), a tag is attached to the block in order to cancel
  * future jobs rewards (payments, experience and points) when breaking this non-naturally placed
  * block (e.g. preventing diamond ores place-and-break exploit). This will be applied for {@link
- * ActionType#BREAK} & {@link ActionType#TNTBREAK} jobs actions.
+ * ActionType#BREAK} and {@link ActionType#TNTBREAK} jobs actions.
  *
  * <p><i>Note: block placed by plugins aren't tagged too.</i>
  *
@@ -56,7 +56,7 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlac
  *
  * <p>A tag can be placed with {@link #putTag(Location, boolean)} method. The {@link
  * #putBackTagOnMovedBlocks(List, Vector)} has a special purpose: to permit to put back tags when
- * blocks are moved (e.g. {@link org.bukkit.event.block.BlockPistonExtendEvent} & {@link
+ * blocks are moved (e.g. {@link org.bukkit.event.block.BlockPistonExtendEvent} and {@link
  * org.bukkit.event.block.BlockPistonRetractEvent}).
  *
  * <p>Finally, this controller give the possibility to check if the jobs ActionType involving a
@@ -84,6 +84,7 @@ public interface PatchPlaceAndBreakJobsController {
    * @param location The block's location to be tagged.
    * @param isEphemeral <code>true</code> if the tag must be "ephemeral", <code>false</code>
    *     otherwise.
+   * @return void
    */
   @NotNull
   CompletableFuture<Void> putTag(@NotNull Location location, boolean isEphemeral);
@@ -100,6 +101,7 @@ public interface PatchPlaceAndBreakJobsController {
    *     org.bukkit.event.block.BlockPistonExtendEvent}.
    * @param direction The move direction of the specified blocks in order to reattach tags to these
    *     new calculated locations.
+   * @return void
    */
   @NotNull
   CompletableFuture<Void> putBackTagOnMovedBlocks(@NotNull List<Block> blocks,
@@ -110,6 +112,7 @@ public interface PatchPlaceAndBreakJobsController {
    * of the block change (e.g. crops like {@link org.bukkit.Material#WHEAT}).
    *
    * @param location The block's location which will have its tag to be removed if exists.
+   * @return void
    */
   @NotNull
   CompletableFuture<Void> removeTag(@NotNull Location location);
@@ -146,6 +149,10 @@ public interface PatchPlaceAndBreakJobsController {
    * @param block The block with a potential place-and-break patch tag.
    * @param isEventCancelled <code>true</code> if the event is cancelled, <code>false</code>
    *     otherwise.
+   * @param player The involved player by the patch.
+   * @param job The involved job by the patch.
+   * @param handlerList The list of event handlers which could be the source of the issue if it exists.
+   * @return void
    */
   @NotNull
   CompletableFuture<Void> verifyPatchApplication(@NotNull ActionType actionType,
