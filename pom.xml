@@ -31,9 +31,6 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
-    <!-- ==================== Minecraft: Bukkit ==================== -->
-    <spigot.api.version>1.8.8-R0.1-SNAPSHOT</spigot.api.version>
-
     <!-- ==================== Formatters ==================== -->
     <formatter.goal>format</formatter.goal>
     <impsort.goal>sort</impsort.goal>
@@ -64,6 +61,7 @@
     <jobs.version>v4.17.2</jobs.version>
     <annotations.jetbrains.version>23.0.0</annotations.jetbrains.version>
     <lombok.version>1.18.24</lombok.version>
+    <spigot.api.version>1.11.2-R0.1-SNAPSHOT</spigot.api.version>
   </properties>
 
   <dependencies>

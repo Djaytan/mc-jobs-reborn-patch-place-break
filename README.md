@@ -1,6 +1,6 @@
 # jobs-reborn-patch-place-break
 ![Target](https://img.shields.io/badge/plugin-Minecraft-blueviolet)
-![Minecraft version](https://img.shields.io/badge/version-1.8%20--%201.19-blue)
+![Minecraft version](https://img.shields.io/badge/version-1.11%20--%201.19-blue)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Djaytan/mc-jobs-reborn-patch-place-break/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Djaytan/mc-jobs-reborn-patch-place-break/tree/main)
 
 A place-and-break patch extension of [JobsReborn plugin](https://www.spigotmc.org/resources/jobs-reborn.4216/)
@@ -56,7 +56,7 @@ Easy and efficient, this does the trick.
 ## Setup
 
 We expect here that you already have a Bukkit server already set up with the JobsReborn plugin
-installed on it.
+installed on it. The server's version must be higher or equals to 1.11.
 
 Simply download the latest `.jar` file from the
 [release section](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/) of this
