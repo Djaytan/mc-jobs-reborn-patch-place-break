@@ -266,6 +266,9 @@
         <configuration>
           <!-- Spigot API is a SNAPSHOT version... No choice to enable this option -->
           <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
+          <checkModificationExcludes>
+            <checkModificationExclude>pom.xml</checkModificationExclude>
+          </checkModificationExcludes>
           <tagNameFormat>v@{project.version}</tagNameFormat>
         </configuration>
       </plugin>
