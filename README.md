@@ -56,7 +56,11 @@ Easy and efficient, this does the trick.
 ## Setup
 
 We expect here that you already have a Bukkit server already set up with the JobsReborn plugin
-installed on it. The server's version must be higher or equals to 1.11.
+installed on it.
+
+The server's version must be higher or equals to 1.11. If you wish to use this plugin on a lower version of the server
+(1.8, 1.9 or 1.10), you should instead use the version
+[1.2.0 of the plugin](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/tag/v1.2.0).
 
 Simply download the latest `.jar` file from the
 [release section](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/) of this
