@@ -168,7 +168,7 @@
           <expandEmptyElements>false</expandEmptyElements>
           <ignoreLineSeparators>false</ignoreLineSeparators>
           <indentBlankLines>false</indentBlankLines>
-          <indentSchemaLocation>true</indentSchemaLocation>
+          <indentSchemaLocation>false</indentSchemaLocation>
           <keepBlankLines>true</keepBlankLines>
           <keepTimestamp>false</keepTimestamp>
           <lineSeparator>\n</lineSeparator>
