@@ -11,7 +11,7 @@ jobs:
       - restore_cache:
           name: 'cache/restore'
           keys:
-            - 'maven-local-repository-cache-{{ checksum "pom.xml" }}'
+            - 'v1-maven-local-repository-cache-{{ checksum "pom.xml" }}'
       - run:
           name: 'mvn/format'
           command: mvn $MAVEN_CLI_OPTS validate
@@ -26,7 +26,7 @@ jobs:
           command: mvn $MAVEN_CLI_OPTS package -DskipTests
       - save_cache:
           name: 'cache/save'
-          key: 'maven-local-repository-cache-{{ checksum "pom.xml" }}'
+          key: 'v1-maven-local-repository-cache-{{ checksum "pom.xml" }}'
           paths:
             - $MAVEN_CONFIG
 
