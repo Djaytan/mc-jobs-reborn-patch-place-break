@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.service;
+package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -33,16 +33,15 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlac
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 
 @Singleton
-public class PatchPlaceAndBreakServiceImpl implements PatchPlaceAndBreakService {
+public class PatchPlaceAndBreakService {
 
   private final PatchPlaceAndBreakTagDao patchPlaceAndBreakTagDao;
 
   @Inject
-  public PatchPlaceAndBreakServiceImpl(@NotNull PatchPlaceAndBreakTagDao patchPlaceAndBreakTagDao) {
+  public PatchPlaceAndBreakService(@NotNull PatchPlaceAndBreakTagDao patchPlaceAndBreakTagDao) {
     this.patchPlaceAndBreakTagDao = patchPlaceAndBreakTagDao;
   }
 
-  @Override
   public @NotNull CompletableFuture<Void> putTag(boolean isEphemeral,
       @NotNull TagLocation tagLocation) {
     return CompletableFuture.runAsync(() -> {
@@ -54,14 +53,12 @@ public class PatchPlaceAndBreakServiceImpl implements PatchPlaceAndBreakService 
     });
   }
 
-  @Override
   public @NotNull CompletableFuture<Optional<PatchPlaceAndBreakTag>> findTagByLocation(
       @NotNull TagLocation tagLocation) {
     return CompletableFuture
         .supplyAsync(() -> patchPlaceAndBreakTagDao.findByLocation(tagLocation));
   }
 
-  @Override
   public @NotNull CompletableFuture<Void> removeTag(@NotNull TagLocation tagLocation) {
     return CompletableFuture.runAsync(() -> patchPlaceAndBreakTagDao.delete(tagLocation));
   }

@@ -20,12 +20,9 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.guice;
 
 import com.google.inject.AbstractModule;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsControllerImpl;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.dao.PatchPlaceAndBreakTagDao;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.dao.PatchPlaceAndBreakTagSqlDao;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.service.PatchPlaceAndBreakService;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.service.PatchPlaceAndBreakServiceImpl;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.PatchPlaceAndBreakService;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SQLiteDataSource;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SQLiteDataSourceInitializer;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.plugin.datasource.SqlDataSource;
@@ -37,8 +34,7 @@ public class GuiceGeneralModule extends AbstractModule {
   protected void configure() {
     bind(SqlDataSource.class).to(SQLiteDataSource.class);
     bind(SqlDataSourceInitializer.class).to(SQLiteDataSourceInitializer.class);
-    bind(PatchPlaceAndBreakJobsController.class).to(PatchPlaceAndBreakJobsControllerImpl.class);
-    bind(PatchPlaceAndBreakService.class).to(PatchPlaceAndBreakServiceImpl.class);
+    bind(PatchPlaceAndBreakService.class).to(PatchPlaceAndBreakService.class);
     bind(PatchPlaceAndBreakTagDao.class).to(PatchPlaceAndBreakTagSqlDao.class);
   }
 }

@@ -18,8 +18,17 @@
 
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -30,8 +39,13 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
+import com.google.common.base.Preconditions;
+import com.google.inject.name.Named;
 
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.PatchPlaceAndBreakService;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.utils.LocationConverter;
 
 /**
  * This interface represents the API to apply place-and-break patch.
@@ -63,7 +77,6 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlac
  * given Block is a place-and-break exploit or no with the method {@link
  * #isPlaceAndBreakAction(ActionType, Location)}.
  *
- * @author Djaytan
  * @see ActionType
  * @see Block
  * @see org.bukkit.event.block.BlockBreakEvent BlockBreakEvent
@@ -72,7 +85,30 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlac
  * @see org.bukkit.event.block.BlockPistonRetractEvent BlockPistonRetractEvent
  * @see org.bukkit.event.block.BlockPlaceEvent BlockPlaceEvent
  */
-public interface PatchPlaceAndBreakJobsController {
+@Singleton
+public class PatchPlaceAndBreakJobsController {
+
+  private static final Duration EPHEMERAL_TAG_DURATION = Duration.ofSeconds(3);
+
+  private final LocationConverter locationConverter;
+  private final Logger logger;
+  private final PatchPlaceAndBreakService patchPlaceAndBreakService;
+
+  /**
+   * Constructor.
+   *
+   * @param locationConverter The location converter.
+   * @param logger The Bukkit logger.
+   * @param patchPlaceAndBreakService The patch place-and-break service.
+   */
+  @Inject
+  public PatchPlaceAndBreakJobsController(@NotNull LocationConverter locationConverter,
+      @NotNull @Named("BukkitLogger") Logger logger,
+      @NotNull PatchPlaceAndBreakService patchPlaceAndBreakService) {
+    this.locationConverter = locationConverter;
+    this.logger = logger;
+    this.patchPlaceAndBreakService = patchPlaceAndBreakService;
+  }
 
   /**
    * This method permits to put a {@link PatchPlaceAndBreakTag} on a given block's location.
@@ -86,8 +122,14 @@ public interface PatchPlaceAndBreakJobsController {
    *     otherwise.
    * @return void
    */
-  @NotNull
-  CompletableFuture<Void> putTag(@NotNull Location location, boolean isEphemeral);
+  public @NotNull CompletableFuture<Void> putTag(@NotNull Location location, boolean isEphemeral) {
+    Preconditions.checkNotNull(location);
+
+    return CompletableFuture.runAsync(() -> {
+      TagLocation tagLocation = locationConverter.convert(location);
+      patchPlaceAndBreakService.putTag(isEphemeral, tagLocation).join();
+    });
+  }
 
   /**
    * This method permits to put back an existing {@link PatchPlaceAndBreakTag} to a moved block,
@@ -103,9 +145,23 @@ public interface PatchPlaceAndBreakJobsController {
    *     new calculated locations.
    * @return void
    */
-  @NotNull
-  CompletableFuture<Void> putBackTagOnMovedBlocks(@NotNull List<Block> blocks,
-      @NotNull Vector direction);
+  public @NotNull CompletableFuture<Void> putBackTagOnMovedBlocks(@NotNull List<Block> blocks,
+      @NotNull Vector direction) {
+    Preconditions.checkNotNull(blocks);
+    Preconditions.checkNotNull(direction);
+
+    return CompletableFuture.runAsync(() -> {
+      for (Block block : blocks) {
+        Optional<PatchPlaceAndBreakTag> tag = getTag(block.getLocation()).join();
+
+        if (!tag.isPresent()) {
+          continue;
+        }
+
+        putTag(block.getLocation().add(direction), false).join();
+      }
+    });
+  }
 
   /**
    * This method permits to remove a tag from a specified Block. This can be useful when the state
@@ -114,8 +170,14 @@ public interface PatchPlaceAndBreakJobsController {
    * @param location The block's location which will have its tag to be removed if exists.
    * @return void
    */
-  @NotNull
-  CompletableFuture<Void> removeTag(@NotNull Location location);
+  public @NotNull CompletableFuture<Void> removeTag(@NotNull Location location) {
+    Preconditions.checkNotNull(location);
+
+    return CompletableFuture.runAsync(() -> {
+      TagLocation tagLocation = locationConverter.convert(location);
+      patchPlaceAndBreakService.removeTag(tagLocation).join();
+    });
+  }
 
   /**
    * This method permit to check if a jobs ActionType with a given Block is a place-and-break
@@ -135,9 +197,28 @@ public interface PatchPlaceAndBreakJobsController {
    * @param location The block's location with a potential place-and-break patch tag.
    * @return <code>true</code> if it's a place-and-break exploit, <code>false</code> otherwise.
    */
-  @NotNull
-  CompletableFuture<Boolean> isPlaceAndBreakAction(@NotNull ActionType actionType,
-      @NotNull Location location);
+  public @NotNull CompletableFuture<Boolean> isPlaceAndBreakAction(@NotNull ActionType actionType,
+      @NotNull Location location) {
+    Preconditions.checkNotNull(actionType);
+    Preconditions.checkNotNull(location);
+
+    return CompletableFuture.supplyAsync(() -> {
+      Optional<PatchPlaceAndBreakTag> tag = getTag(location).join();
+
+      if (!isActionToPatch(actionType) || !tag.isPresent()) {
+        return false;
+      }
+
+      if (!tag.get().isEphemeral()) {
+        return true;
+      }
+
+      LocalDateTime localDateTime = LocalDateTime.now();
+      Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
+
+      return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
+    });
+  }
 
   /**
    * The purpose of this method is to verify the well-application of the patch if required for a
@@ -154,8 +235,38 @@ public interface PatchPlaceAndBreakJobsController {
    * @param handlerList The list of event handlers which could be the source of the issue if it exists.
    * @return void
    */
-  @NotNull
-  CompletableFuture<Void> verifyPatchApplication(@NotNull ActionType actionType,
+  public @NotNull CompletableFuture<Void> verifyPatchApplication(@NotNull ActionType actionType,
       @NotNull Block block, boolean isEventCancelled, @NotNull OfflinePlayer player,
-      @NotNull Job job, @NotNull HandlerList handlerList);
+      @NotNull Job job, @NotNull HandlerList handlerList) {
+    Preconditions.checkNotNull(actionType);
+    Preconditions.checkNotNull(block);
+    Preconditions.checkNotNull(player);
+    Preconditions.checkNotNull(job);
+    Preconditions.checkNotNull(handlerList);
+
+    return CompletableFuture.runAsync(() -> {
+      if (isPlaceAndBreakAction(actionType, block.getLocation()).join() && !isEventCancelled) {
+        logger.warning(String.format(
+            "Violation of a place-and-break patch detected! It's possible that's because of a"
+                + " conflict with another plugin. Please, report this full log message to the"
+                + " developer: player=%s, jobs=%s, actionType=%s, blockMaterial=%s,"
+                + " detectedPotentialConflictingPlugins=%s",
+            player.getName(), job.getName(), actionType.getName(), block.getType().name(),
+            Arrays.stream(handlerList.getRegisteredListeners())
+                .map(registeredListener -> registeredListener.getPlugin().getName()).distinct()
+                .collect(Collectors.toList())));
+      }
+    });
+  }
+
+  private @NotNull CompletableFuture<Optional<PatchPlaceAndBreakTag>> getTag(
+      @NotNull Location location) {
+    TagLocation tagLocation = locationConverter.convert(location);
+    return patchPlaceAndBreakService.findTagByLocation(tagLocation);
+  }
+
+  private boolean isActionToPatch(@NotNull ActionType actionType) {
+    return Arrays.asList(ActionType.BREAK, ActionType.TNTBREAK, ActionType.PLACE)
+        .contains(actionType);
+  }
 }
