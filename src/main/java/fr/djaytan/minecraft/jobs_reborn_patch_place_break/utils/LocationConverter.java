@@ -34,7 +34,7 @@ public class LocationConverter {
     Preconditions.checkNotNull(location);
     Preconditions.checkNotNull(location.getWorld());
 
-    return new TagLocation(location.getWorld().getName(), location.getX(), location.getY(),
+    return TagLocation.of(location.getWorld().getName(), location.getX(), location.getY(),
         location.getZ());
   }
 }

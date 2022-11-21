@@ -42,9 +42,9 @@ import com.gamingmesh.jobs.container.Job;
 import com.google.common.base.Preconditions;
 import com.google.inject.name.Named;
 
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.PatchPlaceAndBreakService;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.PatchPlaceAndBreakService;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.utils.LocationConverter;
 
 /**

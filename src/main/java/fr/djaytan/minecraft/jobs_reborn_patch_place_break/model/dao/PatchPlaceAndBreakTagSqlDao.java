@@ -124,9 +124,9 @@ public class PatchPlaceAndBreakTagSqlDao implements PatchPlaceAndBreakTagDao {
           double y = rs.getDouble("location_y");
           double z = rs.getDouble("location_z");
 
-          TagLocation location = new TagLocation(worldName, x, y, z);
+          TagLocation location = TagLocation.of(worldName, x, y, z);
           PatchPlaceAndBreakTag tag =
-              new PatchPlaceAndBreakTag(tagUuid, initLocalDateTime, isEphemeral, location);
+              PatchPlaceAndBreakTag.of(tagUuid, initLocalDateTime, isEphemeral, location);
           return Optional.of(tag);
         }
         return Optional.empty();

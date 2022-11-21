@@ -48,7 +48,7 @@ public class PatchPlaceAndBreakService {
       UUID tagUuid = UUID.randomUUID();
       LocalDateTime localDateTime = LocalDateTime.now();
       PatchPlaceAndBreakTag patchPlaceAndBreakTag =
-          new PatchPlaceAndBreakTag(tagUuid, localDateTime, isEphemeral, tagLocation);
+          PatchPlaceAndBreakTag.of(tagUuid, localDateTime, isEphemeral, tagLocation);
       patchPlaceAndBreakTagDao.put(patchPlaceAndBreakTag);
     });
   }
