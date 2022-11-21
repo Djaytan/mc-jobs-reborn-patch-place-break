@@ -1,10 +1,12 @@
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.lib.test.factory;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 import org.jetbrains.annotations.NotNull;
+
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 
 public final class PatchPlaceAndBreakTagStubFactory {
 
