@@ -71,6 +71,10 @@
     <annotations.jetbrains.version>23.0.0</annotations.jetbrains.version>
     <spigot.api.version>1.11.2-R0.1-SNAPSHOT</spigot.api.version>
     <bstat.version>3.0.0</bstat.version>
+    <junit.jupiter.version>5.9.1</junit.jupiter.version>
+    <mockito.version>4.9.0</mockito.version>
+    <equalsverifier.version>3.11.1</equalsverifier.version>
+    <tostring.verifier.version>1.4.8</tostring.verifier.version>
   </properties>
 
   <dependencies>
@@ -127,6 +131,36 @@
       <artifactId>spigot-api</artifactId>
       <version>${spigot.api.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.jparams</groupId>
+      <artifactId>to-string-verifier</artifactId>
+      <version>${tostring.verifier.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>nl.jqno.equalsverifier</groupId>
+      <artifactId>equalsverifier</artifactId>
+      <version>${equalsverifier.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
