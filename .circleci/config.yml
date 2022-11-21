@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   maven-job:
     docker:
-      - image: 'maven:3.8.6-eclipse-temurin-8'
+      - image: 'cimg/openjdk:8.0'
     environment:
       MAVEN_CLI_OPTS: '-Pformat-checker -e -C --fail-at-end --no-transfer-progress'
     steps:
@@ -11,7 +11,7 @@ jobs:
       - restore_cache:
           name: 'cache/restore'
           keys:
-            - 'v1-maven-local-repository-cache-{{ checksum "pom.xml" }}'
+            - 'v2-maven-local-repository-cache-{{ checksum "pom.xml" }}'
       - run:
           name: 'mvn/format'
           command: mvn $MAVEN_CLI_OPTS validate
@@ -26,9 +26,9 @@ jobs:
           command: mvn $MAVEN_CLI_OPTS package -DskipTests
       - save_cache:
           name: 'cache/save'
-          key: 'v1-maven-local-repository-cache-{{ checksum "pom.xml" }}'
+          key: 'v2-maven-local-repository-cache-{{ checksum "pom.xml" }}'
           paths:
-            - $MAVEN_CONFIG
+            - '~/.m2'
 
 workflows:
   main:
