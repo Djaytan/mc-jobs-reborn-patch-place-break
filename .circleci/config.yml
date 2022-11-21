@@ -1,25 +1,36 @@
 version: 2.1
 
-environment:
-  PIPENV_VENV_IN_PROJECT: true
-
 jobs:
-  build-and-test:
+  maven-job:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: 'maven:3.8.6-eclipse-temurin-8'
+    environment:
+      MAVEN_CLI_OPTS: '-Pformat-checker -e -C --fail-at-end --no-transfer-progress'
     steps:
       - checkout
+      - restore_cache:
+          name: 'cache/restore'
+          keys:
+            - 'maven-local-repository-cache-{{ checksum "pom.xml" }}'
       - run:
-          name: Define JAVA_1_17_HOME environment variable
-          command: echo 'export JAVA_1_17_HOME="$JAVA_HOME"' >> "$BASH_ENV"
+          name: 'mvn/format'
+          command: mvn $MAVEN_CLI_OPTS validate
       - run:
-          name: Build
-          command: mvn compile -Pformat-checker
+          name: 'mvn/build'
+          command: mvn $MAVEN_CLI_OPTS compile
       - run:
-          name: Test
-          command: mvn test
+          name: 'mvn/test'
+          command: mvn $MAVEN_CLI_OPTS test
+      - run:
+          name: 'mvn/package'
+          command: mvn $MAVEN_CLI_OPTS package -DskipTests
+      - save_cache:
+          name: 'cache/save'
+          key: 'maven-local-repository-cache-{{ checksum "pom.xml" }}'
+          paths:
+            - $MAVEN_CONFIG
 
 workflows:
   main:
     jobs:
-      - build-and-test
+      - maven-job
