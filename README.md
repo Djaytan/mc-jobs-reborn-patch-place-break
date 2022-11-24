@@ -1,4 +1,5 @@
 # jobs-reborn-patch-place-break
+
 ![Target](https://img.shields.io/badge/plugin-Minecraft-blueviolet)
 ![Minecraft version](https://img.shields.io/badge/version-1.11%20--%201.19-blue)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Djaytan/mc-jobs-reborn-patch-place-break/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Djaytan/mc-jobs-reborn-patch-place-break/tree/main)
@@ -23,12 +24,11 @@ place a block for decoration isn't very appreciated by players too.
 
 The place-and-break patch provided by JobsReborn seems to be insufficient: you must specify **for each
 block** a fix amount of time during which breaking the block again will not permit to earn money
-and xp. It's a first step forward, but it's insufficient. Specifying an unlimited time isn't
-sufficient too, because after 14 days maximum the placed blocks will not prevent the payment
+and xp. It's a first step forward, but can go even further. Specifying an unlimited time can be limited too,
+because after 14 days maximum the placed blocks will not prevent the payment
 anymore... And finally, piston exploit isn't taking into account at all.
 
-So, this is why this project exists: doing an obvious and easy patch that would have been done
-a long time ago.
+So, this is why this addon exists: giving an easy and efficient solution to these problematics.
 
 ## How the patch works
 
@@ -40,6 +40,7 @@ will be cancelled. It doesn't matter whose player is the author, so if one playe
 and another one break it, the payment will be cancelled anyway.
 
 There are two main behaviors which have subtle differences:
+
 * When a block is placed, a tag is attached to it: This is useful to patch BREAK and TNTBREAK
   actions (e.g. for breaking diamond ores) ;
 * When a block is broken, a tag is attached to the location where it was: This is useful to
@@ -99,8 +100,15 @@ to use it instead of your own local instance by executing the script `mvnw`
 
 To compile the project, run unit tests and package the plugin into a Jar file, simply run this command
 without any arguments: `mvnw`
-(see [Maven lifecycle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html) for more details).
+(see [Maven lifecycle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html) for more
+details).
 This is equivalent to `mvnw clean install`.
+
+## Remaining work to do
+
+Actually, an existing and known issue is the size of the JAR file which is around ~17 Mo. This is explained by the use
+of libraries and tools among which some of them are particularly heavy without really reasons (e.g. SQLite client which
+take more than the half of the JAR file). I'm currently working on fixing this.
 
 ## Licence
 
