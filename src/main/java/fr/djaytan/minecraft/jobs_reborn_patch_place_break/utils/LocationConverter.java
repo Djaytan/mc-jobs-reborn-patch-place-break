@@ -27,11 +27,23 @@ import com.google.common.base.Preconditions;
 
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 
+/**
+ * Represents a converter between Bukkit {@link Location} and {@link TagLocation}.
+ */
 @Singleton
 public class LocationConverter {
 
+  /**
+   * Converts a Bukkit location to a tag location.
+   * <p>
+   *  <i>Note: the Bukkit world of the Bukkit location shall never be <code>null</code>.</i>
+   * </p>
+   *
+   * @param location The Bukkit location to convert.
+   * @return The converted Bukkit location to a tag location.
+   * @throws NullPointerException if the Bukkit world of the Bukkit location is <code>null</code>.
+   */
   public @NotNull TagLocation convert(@NotNull Location location) {
-    Preconditions.checkNotNull(location);
     Preconditions.checkNotNull(location.getWorld());
 
     return TagLocation.of(location.getWorld().getName(), location.getX(), location.getY(),
