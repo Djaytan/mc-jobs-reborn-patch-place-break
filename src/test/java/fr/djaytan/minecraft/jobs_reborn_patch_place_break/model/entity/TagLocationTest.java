@@ -1,9 +1,5 @@
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity;
 
-import static fr.djaytan.minecraft.jobs_reborn_patch_place_break.test.factory.TagLocationTestFactory.WORLD_NAME;
-import static fr.djaytan.minecraft.jobs_reborn_patch_place_break.test.factory.TagLocationTestFactory.X;
-import static fr.djaytan.minecraft.jobs_reborn_patch_place_break.test.factory.TagLocationTestFactory.Y;
-import static fr.djaytan.minecraft.jobs_reborn_patch_place_break.test.factory.TagLocationTestFactory.Z;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,25 +13,52 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 class TagLocationTest {
 
+  /**
+   * Given required data to create a TagLocation,
+   * When calling the constructor with these data,
+   * Then the TagLocation is created successfully.
+   */
   @Test
-  @DisplayName("Constructor - Nominal case")
-  void constructor_nominalCase() {
-    TagLocation tagLocation = TagLocation.of(WORLD_NAME, X, Y, Z);
+  @DisplayName("Constructor - Successful nominal case")
+  void shouldSuccessWhenCreatingWithNominalValues() {
+    //
+    // Given
+    //
+    String worldName = "world";
+    double x = -54.0D;
+    double y = 67.785D;
+    double z = 4872.45152D;
 
-    assertAll("Getters - Verification", () -> assertEquals(WORLD_NAME, tagLocation.getWorldName()),
-        () -> assertEquals(X, tagLocation.getX()), () -> assertEquals(Y, tagLocation.getY()),
-        () -> assertEquals(Z, tagLocation.getZ()));
+    //
+    // When
+    //
+    TagLocation tagLocation = TagLocation.of(worldName, x, y, z);
+
+    //
+    // Then
+    //
+    assertAll("Verification of returned values from getters",
+        () -> assertEquals(worldName, tagLocation.getWorldName()),
+        () -> assertEquals(x, tagLocation.getX()), () -> assertEquals(y, tagLocation.getY()),
+        () -> assertEquals(z, tagLocation.getZ()));
   }
 
+  /**
+   * Verification of {@link TagLocation#equals(Object)} and {@link TagLocation#hashCode()}
+   * implementations.
+   */
   @Test
-  @DisplayName("equals() and hashCode() - Verification")
-  void equalsAndHashcode_verifier() {
+  @DisplayName("equals() & hashCode() - Verifications")
+  void shouldEqualsAndHashcodeWellImplemented() {
     EqualsVerifier.forClass(TagLocation.class).verify();
   }
 
+  /**
+   * Verification of {@link TagLocation#toString()} implementation.
+   */
   @Test
-  @DisplayName("toString() - Verification")
-  void toString_verifier() {
+  @DisplayName("toString() - Verifications")
+  void shouldToStringWellImplemented() {
     ToStringVerifier.forClass(TagLocation.class).withClassName(NameStyle.SIMPLE_NAME).verify();
   }
 }

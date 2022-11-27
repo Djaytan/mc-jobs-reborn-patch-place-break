@@ -1,11 +1,10 @@
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity;
 
-import static fr.djaytan.minecraft.jobs_reborn_patch_place_break.test.factory.PatchPlaceAndBreakTagTestFactory.INIT_LOCAL_DATE_TIME;
-import static fr.djaytan.minecraft.jobs_reborn_patch_place_break.test.factory.PatchPlaceAndBreakTagTestFactory.IS_EPHEMERAL;
-import static fr.djaytan.minecraft.jobs_reborn_patch_place_break.test.factory.PatchPlaceAndBreakTagTestFactory.PATCH_UUID;
-import static fr.djaytan.minecraft.jobs_reborn_patch_place_break.test.factory.PatchPlaceAndBreakTagTestFactory.TAG_LOCATION;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,27 +16,59 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 class PatchPlaceAndBreakTagTest {
 
+  /**
+   * Given required data to create a PatchPlaceAndBreakTag,
+   * When calling the constructor with these data,
+   * Then the PatchPlaceAndBreakTag is created successfully.
+   */
   @Test
-  @DisplayName("Constructor - Nominal case")
-  void constructor_nominalCase() {
-    PatchPlaceAndBreakTag tag =
-        PatchPlaceAndBreakTag.of(PATCH_UUID, INIT_LOCAL_DATE_TIME, IS_EPHEMERAL, TAG_LOCATION);
+  @DisplayName("Constructor - Successful nominal case")
+  void shouldSuccessWhenCreatingWithNominalValues() {
+    //
+    // Given
+    //
+    UUID uuid = UUID.randomUUID();
+    LocalDateTime localDateTime = LocalDateTime.now();
+    boolean isEphemeral = true;
 
-    assertAll("Getters - Verification", () -> assertEquals(PATCH_UUID, tag.getUuid()),
-        () -> assertEquals(INIT_LOCAL_DATE_TIME, tag.getInitLocalDateTime()),
-        () -> assertEquals(IS_EPHEMERAL, tag.isEphemeral()),
-        () -> assertEquals(TAG_LOCATION, tag.getTagLocation()));
+    String worldName = "world";
+    double x = 52.0D;
+    double y = 68.1223D;
+    double z = 1254.785D;
+    TagLocation tagLocation = TagLocation.of(worldName, x, y, z);
+
+    //
+    // When
+    //
+    PatchPlaceAndBreakTag tag =
+        PatchPlaceAndBreakTag.of(uuid, localDateTime, isEphemeral, tagLocation);
+
+    //
+    // Then
+    //
+    assertAll("Verification of returned values from getters",
+        () -> assertEquals(uuid, tag.getUuid()),
+        () -> assertEquals(localDateTime, tag.getInitLocalDateTime()),
+        () -> assertEquals(isEphemeral, tag.isEphemeral()),
+        () -> assertEquals(tagLocation, tag.getTagLocation()));
   }
 
+  /**
+   * Verification of {@link PatchPlaceAndBreakTag#equals(Object)} and {@link PatchPlaceAndBreakTag#hashCode()}
+   * implementations.
+   */
   @Test
-  @DisplayName("equals() and hashCode() - Verification")
-  void equalsAndHashcode_verifier() {
+  @DisplayName("equals() & hashCode() - Verifications")
+  void equalsAndHashcodeContractVerification() {
     EqualsVerifier.forClass(PatchPlaceAndBreakTag.class).verify();
   }
 
+  /**
+   * Verification of {@link PatchPlaceAndBreakTag#toString()} implementation.
+   */
   @Test
-  @DisplayName("toString() - Verification")
-  void toString_verifier() {
+  @DisplayName("toString() - Verifications")
+  void toStringContractVerification() {
     ToStringVerifier.forClass(PatchPlaceAndBreakTag.class).withClassName(NameStyle.SIMPLE_NAME)
         .verify();
   }

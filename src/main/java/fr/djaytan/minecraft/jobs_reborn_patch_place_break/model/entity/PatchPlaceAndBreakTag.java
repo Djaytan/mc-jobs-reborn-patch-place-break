@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gamingmesh.jobs.container.ActionType;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Preconditions;
 
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 
@@ -75,10 +74,6 @@ public final class PatchPlaceAndBreakTag {
   public static @NotNull PatchPlaceAndBreakTag of(@NotNull UUID uuid,
       @NotNull LocalDateTime initLocalDateTime, boolean isEphemeral,
       @NotNull TagLocation tagLocation) {
-    Preconditions.checkNotNull(uuid);
-    Preconditions.checkNotNull(initLocalDateTime);
-    Preconditions.checkNotNull(tagLocation);
-
     return new PatchPlaceAndBreakTag(uuid, initLocalDateTime, isEphemeral, tagLocation);
   }
 

@@ -23,7 +23,6 @@ import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Preconditions;
 
 /**
  * An immutable and thread-safe tag location.
@@ -43,7 +42,6 @@ public final class TagLocation {
   }
 
   public static @NotNull TagLocation of(@NotNull String worldName, double x, double y, double z) {
-    Preconditions.checkNotNull(worldName);
     return new TagLocation(worldName, x, y, z);
   }
 
