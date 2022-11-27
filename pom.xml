@@ -69,6 +69,7 @@
     <sqlite.version>3.39.4.1</sqlite.version>
     <jobs.version>v4.17.2</jobs.version>
     <annotations.jetbrains.version>23.0.0</annotations.jetbrains.version>
+    <lombok.version>1.18.24</lombok.version>
     <spigot.api.version>1.11.2-R0.1-SNAPSHOT</spigot.api.version>
     <bstat.version>3.0.0</bstat.version>
     <junit.jupiter.version>5.9.1</junit.jupiter.version>
@@ -125,6 +126,12 @@
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
       <version>${annotations.jetbrains.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
