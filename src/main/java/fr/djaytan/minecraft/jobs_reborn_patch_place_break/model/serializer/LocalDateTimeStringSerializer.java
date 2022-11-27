@@ -25,8 +25,6 @@ import javax.inject.Singleton;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.base.Preconditions;
-
 @Singleton
 public class LocalDateTimeStringSerializer implements StringSerializer<LocalDateTime> {
 
@@ -34,13 +32,11 @@ public class LocalDateTimeStringSerializer implements StringSerializer<LocalDate
 
   @Override
   public @NotNull String serialize(@NotNull LocalDateTime localDateTime) {
-    Preconditions.checkNotNull(localDateTime);
     return localDateTime.format(formatter);
   }
 
   @Override
   public @NotNull LocalDateTime deserialize(@NotNull String string) {
-    Preconditions.checkNotNull(string);
     return LocalDateTime.parse(string, formatter);
   }
 }

@@ -27,8 +27,6 @@ import javax.inject.Singleton;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.base.Preconditions;
-
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.TagLocation;
 
@@ -39,16 +37,12 @@ public class PatchPlaceAndBreakTagMemoryDao implements PatchPlaceAndBreakTagDao 
 
   @Override
   public void put(@NotNull PatchPlaceAndBreakTag patchPlaceAndBreakTag) {
-    Preconditions.checkNotNull(patchPlaceAndBreakTag);
-
     delete(patchPlaceAndBreakTag.getTagLocation());
     patchPlaceAndBreakTagMap.put(patchPlaceAndBreakTag.getUuid(), patchPlaceAndBreakTag);
   }
 
   @Override
   public @NotNull Optional<PatchPlaceAndBreakTag> findByLocation(@NotNull TagLocation tagLocation) {
-    Preconditions.checkNotNull(tagLocation);
-
     for (PatchPlaceAndBreakTag patchPlaceAndBreakTag : patchPlaceAndBreakTagMap.values()) {
       if (patchPlaceAndBreakTag.getTagLocation().equals(tagLocation)) {
         return Optional.of(patchPlaceAndBreakTag);
@@ -59,8 +53,6 @@ public class PatchPlaceAndBreakTagMemoryDao implements PatchPlaceAndBreakTagDao 
 
   @Override
   public void delete(@NotNull TagLocation tagLocation) {
-    Preconditions.checkNotNull(tagLocation);
-
     Optional<PatchPlaceAndBreakTag> patchPlaceAndBreakTag = findByLocation(tagLocation);
     patchPlaceAndBreakTag
         .ifPresent(placeAndBreakTag -> patchPlaceAndBreakTagMap.remove(placeAndBreakTag.getUuid()));

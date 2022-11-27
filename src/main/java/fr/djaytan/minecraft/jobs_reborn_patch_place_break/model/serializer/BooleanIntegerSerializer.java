@@ -22,20 +22,16 @@ import javax.inject.Singleton;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.base.Preconditions;
-
 @Singleton
 public class BooleanIntegerSerializer implements IntegerSerializer<Boolean> {
 
   @Override
   public @NotNull Integer serialize(@NotNull Boolean bool) {
-    Preconditions.checkNotNull(bool);
     return Boolean.TRUE.equals(bool) ? 1 : 0;
   }
 
   @Override
   public @NotNull Boolean deserialize(@NotNull Integer integer) {
-    Preconditions.checkNotNull(integer);
     return integer == 1;
   }
 }

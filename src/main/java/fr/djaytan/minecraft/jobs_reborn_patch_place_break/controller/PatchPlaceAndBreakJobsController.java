@@ -22,12 +22,14 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.bukkit.Location;
@@ -39,8 +41,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
-import com.google.common.base.Preconditions;
-import com.google.inject.name.Named;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.PatchPlaceAndBreakService;
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity.PatchPlaceAndBreakTag;
@@ -122,8 +123,9 @@ public class PatchPlaceAndBreakJobsController {
    *     otherwise.
    * @return void
    */
+  @CanIgnoreReturnValue
   public @NotNull CompletableFuture<Void> putTag(@NotNull Location location, boolean isEphemeral) {
-    Preconditions.checkNotNull(location);
+    Objects.requireNonNull(location);
 
     return CompletableFuture.runAsync(() -> {
       TagLocation tagLocation = locationConverter.convert(location);
@@ -145,10 +147,11 @@ public class PatchPlaceAndBreakJobsController {
    *     new calculated locations.
    * @return void
    */
+  @CanIgnoreReturnValue
   public @NotNull CompletableFuture<Void> putBackTagOnMovedBlocks(@NotNull List<Block> blocks,
       @NotNull Vector direction) {
-    Preconditions.checkNotNull(blocks);
-    Preconditions.checkNotNull(direction);
+    Objects.requireNonNull(blocks);
+    Objects.requireNonNull(direction);
 
     return CompletableFuture.runAsync(() -> {
       for (Block block : blocks) {
@@ -170,8 +173,9 @@ public class PatchPlaceAndBreakJobsController {
    * @param location The block's location which will have its tag to be removed if exists.
    * @return void
    */
+  @CanIgnoreReturnValue
   public @NotNull CompletableFuture<Void> removeTag(@NotNull Location location) {
-    Preconditions.checkNotNull(location);
+    Objects.requireNonNull(location);
 
     return CompletableFuture.runAsync(() -> {
       TagLocation tagLocation = locationConverter.convert(location);
@@ -199,8 +203,8 @@ public class PatchPlaceAndBreakJobsController {
    */
   public @NotNull CompletableFuture<Boolean> isPlaceAndBreakAction(@NotNull ActionType actionType,
       @NotNull Location location) {
-    Preconditions.checkNotNull(actionType);
-    Preconditions.checkNotNull(location);
+    Objects.requireNonNull(actionType);
+    Objects.requireNonNull(location);
 
     return CompletableFuture.supplyAsync(() -> {
       Optional<PatchPlaceAndBreakTag> tag = getTag(location).join();
@@ -235,14 +239,15 @@ public class PatchPlaceAndBreakJobsController {
    * @param handlerList The list of event handlers which could be the source of the issue if it exists.
    * @return void
    */
+  @CanIgnoreReturnValue
   public @NotNull CompletableFuture<Void> verifyPatchApplication(@NotNull ActionType actionType,
       @NotNull Block block, boolean isEventCancelled, @NotNull OfflinePlayer player,
       @NotNull Job job, @NotNull HandlerList handlerList) {
-    Preconditions.checkNotNull(actionType);
-    Preconditions.checkNotNull(block);
-    Preconditions.checkNotNull(player);
-    Preconditions.checkNotNull(job);
-    Preconditions.checkNotNull(handlerList);
+    Objects.requireNonNull(actionType);
+    Objects.requireNonNull(block);
+    Objects.requireNonNull(player);
+    Objects.requireNonNull(job);
+    Objects.requireNonNull(handlerList);
 
     return CompletableFuture.runAsync(() -> {
       if (isPlaceAndBreakAction(actionType, block.getLocation()).join() && !isEventCancelled) {

@@ -24,20 +24,16 @@ import javax.inject.Singleton;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.base.Preconditions;
-
 @Singleton
 public class UUIDStringSerializer implements StringSerializer<UUID> {
 
   @Override
   public @NotNull String serialize(@NotNull UUID uuid) {
-    Preconditions.checkNotNull(uuid);
     return uuid.toString();
   }
 
   @Override
   public @NotNull UUID deserialize(@NotNull String string) {
-    Preconditions.checkNotNull(string);
     return UUID.fromString(string);
   }
 }
