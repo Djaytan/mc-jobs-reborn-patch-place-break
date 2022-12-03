@@ -21,12 +21,16 @@ package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.j
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
+import com.gamingmesh.jobs.container.ActionInfo;
+import com.gamingmesh.jobs.container.ActionType;
 
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
 
@@ -68,14 +72,22 @@ public class JobsPrePaymentListener implements Listener {
    */
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onJobsPayment(@NotNull JobsPrePaymentEvent event) {
-    if (event.getBlock() == null || event.getActionInfo() == null
-        || event.getActionInfo().getType() == null) {
+    Block block = event.getBlock();
+    ActionInfo actionInfo = event.getActionInfo();
+
+    if (block == null || actionInfo == null) {
       return;
     }
 
-    if (patchPlaceAndBreakJobsController
-        .isPlaceAndBreakAction(event.getActionInfo().getType(), event.getBlock().getLocation())
-        .join()) {
+    ActionType actionType = actionInfo.getType();
+
+    if (actionType == null) {
+      return;
+    }
+
+    Location blockLocation = block.getLocation();
+
+    if (patchPlaceAndBreakJobsController.isPlaceAndBreakAction(actionType, blockLocation).join()) {
       event.setCancelled(true);
     }
   }

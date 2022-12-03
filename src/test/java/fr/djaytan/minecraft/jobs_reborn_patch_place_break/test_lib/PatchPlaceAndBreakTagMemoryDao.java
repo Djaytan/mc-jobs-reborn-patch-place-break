@@ -16,8 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.dao;
+package fr.djaytan.minecraft.jobs_reborn_patch_place_break.test_lib;
 
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.dao.PatchPlaceAndBreakTagDao;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
