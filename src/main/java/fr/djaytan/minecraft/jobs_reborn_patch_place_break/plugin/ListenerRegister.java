@@ -25,15 +25,15 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockBreakListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockGrowListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockPistonListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockPlaceListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit.BlockSpreadListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsExpGainListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsExpGainVerificationListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsPrePaymentListener;
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs.JobsPrePaymentVerificationListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.listener.bukkit.BlockBreakListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.listener.bukkit.BlockGrowListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.listener.bukkit.BlockPistonListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.listener.bukkit.BlockPlaceListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.listener.bukkit.BlockSpreadListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.listener.jobs.JobsExpGainListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.listener.jobs.JobsExpGainVerificationListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.listener.jobs.JobsPrePaymentListener;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.listener.jobs.JobsPrePaymentVerificationListener;
 
 /**
  * This class represents a register of listeners.

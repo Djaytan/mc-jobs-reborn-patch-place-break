@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller;
+package fr.djaytan.minecraft.jobs_reborn_patch_place_break;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

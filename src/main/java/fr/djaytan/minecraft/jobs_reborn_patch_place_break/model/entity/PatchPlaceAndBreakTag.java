@@ -26,7 +26,7 @@ import org.bukkit.block.Block;
 
 import com.gamingmesh.jobs.container.ActionType;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobsController;
 import lombok.Value;
 
 /**

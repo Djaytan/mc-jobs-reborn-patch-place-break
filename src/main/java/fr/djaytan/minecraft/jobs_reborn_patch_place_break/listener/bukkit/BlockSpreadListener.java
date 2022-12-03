@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.bukkit;
+package fr.djaytan.minecraft.jobs_reborn_patch_place_break.listener.bukkit;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,24 +24,24 @@ import javax.inject.Singleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockGrowEvent;
+import org.bukkit.event.block.BlockSpreadEvent;
 import org.jetbrains.annotations.NotNull;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobsController;
 
 /**
- * This class represents a {@link BlockGrowEvent} listener.
+ * This class represents a {@link BlockSpreadEvent} listener.
  *
- * <p>When a block grow, the metadata stills remains stored in it, which isn't what we want in the
- * context of the patch. Jobs like "farmer" shall be able to get paid when harvesting crops. So, the
- * idea here is simply to remove the corresponding metadata from the grown blocks.
+ * <p>The purpose of this listener is to removed potentially existing place-and-break tag to spread
+ * blocks (e.g. we consider that a player-placed dirt block becoming a grass by spreading event
+ * shall result to a successful job action when breaking it).
  *
  * @author Djaytan
- * @see BlockGrowEvent
+ * @see BlockSpreadEvent
  * @see Listener
  */
 @Singleton
-public class BlockGrowListener implements Listener {
+public class BlockSpreadListener implements Listener {
 
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
@@ -51,22 +51,22 @@ public class BlockGrowListener implements Listener {
    * @param patchPlaceAndBreakJobsController The place-and-break patch controller.
    */
   @Inject
-  public BlockGrowListener(
+  public BlockSpreadListener(
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
   /**
-   * This method is called when a {@link BlockGrowEvent} is dispatched to remove the potentially
-   * existing place-and-break patch tag to the growing block.
+   * This method is called when a {@link BlockSpreadEvent} is dispatched to remove the potentially
+   * existing place-and-break patch tag to the spreading block.
    *
    * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we just want to react when
    * we have the confirmation that the event will occur without modifying its result.
    *
-   * @param event The block grow event.
+   * @param event The block spread event.
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockGrow(@NotNull BlockGrowEvent event) {
+  public void onBlockSpread(@NotNull BlockSpreadEvent event) {
     patchPlaceAndBreakJobsController.removeTag(event.getBlock().getLocation());
   }
 }

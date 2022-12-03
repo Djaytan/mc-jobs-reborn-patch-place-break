@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs;
+package fr.djaytan.minecraft.jobs_reborn_patch_place_break.listener.jobs;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -29,23 +29,23 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
+import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobsController;
 
 /**
- * This class represents a {@link JobsPrePaymentEvent} listener to verify the well-application of
- * the patch if required.
+ * This class represents a {@link JobsExpGainEvent} listener to verify the well-application of the
+ * patch if required.
  *
  * @author Djaytan
- * @see JobsPrePaymentEvent
+ * @see JobsExpGainEvent
  * @see Listener
  */
 @Singleton
-public class JobsPrePaymentVerificationListener implements Listener {
+public class JobsExpGainVerificationListener implements Listener {
 
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
@@ -55,22 +55,22 @@ public class JobsPrePaymentVerificationListener implements Listener {
    * @param patchPlaceAndBreakJobsController The place-and-break patch controller.
    */
   @Inject
-  public JobsPrePaymentVerificationListener(
+  public JobsExpGainVerificationListener(
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
   /**
-   * This method is called when a {@link JobsPrePaymentEvent} is dispatched to verify a
-   * place-and-break action have been well-patched. Otherwise, a warning log is sent.
+   * This method is called when a {@link JobsExpGainEvent} is dispatched to verify a place-and-break
+   * action have been well-patched. Otherwise, a warning log is sent.
    *
    * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we just want to know if
    * the event has been cancelled or no without modifying its result.
    *
-   * @param event The jobs pre-payment event.
+   * @param event The jobs exp-gain event.
    */
   @EventHandler(priority = EventPriority.MONITOR)
-  public void onJobsExpGain(@NotNull JobsPrePaymentEvent event) {
+  public void onJobsExpGain(@NotNull JobsExpGainEvent event) {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 

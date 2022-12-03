@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.listener.jobs;
+package fr.djaytan.minecraft.jobs_reborn_patch_place_break.listener.jobs;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -28,24 +28,24 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-import com.gamingmesh.jobs.api.JobsExpGainEvent;
+import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobsController;
 
 /**
- * This class represents a {@link JobsExpGainEvent} listener.
+ * This class represents a {@link JobsPrePaymentEvent} listener.
  *
- * <p>The purpose of this listener is to cancel exp-gain jobs rewards when the action is considered
- * as a place-and-break one to be patched.
+ * <p>The purpose of this listener is to cancel payments jobs rewards when the action is considered
+ * as a place-and-break one to be patched. This cover both points and incomes.
  *
  * @author Djaytan
- * @see JobsExpGainEvent
+ * @see JobsPrePaymentEvent
  * @see Listener
  */
 @Singleton
-public class JobsExpGainListener implements Listener {
+public class JobsPrePaymentListener implements Listener {
 
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
@@ -55,22 +55,23 @@ public class JobsExpGainListener implements Listener {
    * @param patchPlaceAndBreakJobsController The place-and-break patch controller.
    */
   @Inject
-  public JobsExpGainListener(
+  public JobsPrePaymentListener(
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
   /**
-   * This method is called when a {@link JobsExpGainEvent} is dispatched to cancel it if the
+   * This method is called when a {@link JobsPrePaymentEvent} is dispatched to cancel it if the
    * recorded action is a place-and-break one.
    *
    * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we want to have the final
-   * word about the result of this event (a place-and-break action must be cancelled in all cases).
+   * word about the result of this event (there isn't any reason to not cancel a place-and-break
+   * action).
    *
-   * @param event The jobs exp-gain event.
+   * @param event The jobs pre-payment event.
    */
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void onJobsExpGain(@NotNull JobsExpGainEvent event) {
+  public void onJobsPayment(@NotNull JobsPrePaymentEvent event) {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 
