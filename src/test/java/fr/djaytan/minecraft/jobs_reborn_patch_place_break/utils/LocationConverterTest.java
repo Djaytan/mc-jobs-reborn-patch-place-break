@@ -35,9 +35,7 @@ public class LocationConverterTest {
   @Test
   @DisplayName("convert() - Successful nominal case")
   void shouldSuccessNominalLocationConversion(@Mock World world) {
-    //
     // Given
-    //
     String worldName = "world";
     when(world.getName()).thenReturn(worldName);
 
@@ -46,14 +44,10 @@ public class LocationConverterTest {
     double z = -7854.55D;
     Location location = new Location(world, x, y, z);
 
-    //
     // When
-    //
     TagLocation tagLocation = locationConverter.convert(location);
 
-    //
     // Then
-    //
     TagLocation expectedTagLocation = TagLocation.of(worldName, x, y, z);
     assertEquals(expectedTagLocation, tagLocation);
   }

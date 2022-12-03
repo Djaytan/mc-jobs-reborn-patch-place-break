@@ -31,6 +31,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.utils.BukkitUtils;
 
 /**
  * This class represents a {@link org.bukkit.event.block.BlockPistonEvent} listener. More
@@ -50,6 +51,7 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceA
 @Singleton
 public class BlockPistonListener implements Listener {
 
+  private final BukkitUtils bukkitUtils;
   private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
 
   /**
@@ -58,8 +60,9 @@ public class BlockPistonListener implements Listener {
    * @param patchPlaceAndBreakJobsController The place-and-break patch controller.
    */
   @Inject
-  public BlockPistonListener(
+  public BlockPistonListener(@NotNull BukkitUtils bukkitUtils,
       @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
+    this.bukkitUtils = bukkitUtils;
     this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
   }
 
@@ -75,8 +78,8 @@ public class BlockPistonListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockPistonExtend(@NotNull BlockPistonExtendEvent event) {
     BlockFace blockFace = event.getDirection();
-    Vector blockDirection = getPistonMoveDirection(blockFace);
-    patchPlaceAndBreakJobsController.putBackTagOnMovedBlocks(event.getBlocks(), blockDirection);
+    Vector direction = bukkitUtils.convertToDirection(blockFace);
+    patchPlaceAndBreakJobsController.putBackTagOnMovedBlocks(event.getBlocks(), direction);
   }
 
   /**
@@ -91,11 +94,7 @@ public class BlockPistonListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockPistonRetract(@NotNull BlockPistonRetractEvent event) {
     BlockFace blockFace = event.getDirection();
-    Vector blockDirection = getPistonMoveDirection(blockFace);
-    patchPlaceAndBreakJobsController.putBackTagOnMovedBlocks(event.getBlocks(), blockDirection);
-  }
-
-  private @NotNull Vector getPistonMoveDirection(@NotNull BlockFace blockFace) {
-    return new Vector(blockFace.getModX(), blockFace.getModY(), blockFace.getModZ());
+    Vector direction = bukkitUtils.convertToDirection(blockFace);
+    patchPlaceAndBreakJobsController.putBackTagOnMovedBlocks(event.getBlocks(), direction);
   }
 }
