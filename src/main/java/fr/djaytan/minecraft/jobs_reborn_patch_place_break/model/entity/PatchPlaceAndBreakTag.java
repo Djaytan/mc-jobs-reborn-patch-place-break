@@ -26,7 +26,7 @@ import org.bukkit.block.Block;
 
 import com.gamingmesh.jobs.container.ActionType;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobsApi;
 import lombok.Value;
 
 /**
@@ -35,7 +35,7 @@ import lombok.Value;
  *
  * <p>When an instance of this class is found in the metadata of a given block, this means that the
  * patch must be applied for eligible {@link ActionType}. See {@link
- * PatchPlaceAndBreakJobsController#isPlaceAndBreakAction(ActionType, Location)} for more details about
+ * PatchPlaceAndBreakJobsApi#isPlaceAndBreakAction(ActionType, Location)} for more details about
  * it.
  *
  * <p>This tag contains the following information:
@@ -44,7 +44,7 @@ import lombok.Value;
  *   <li>The initial date-time of when the tag as been created ;
  *   <li>The validity duration of the tag. If null, this means that the tag isn't an "ephemeral" one
  *       and will be persisted forever until removed explicitly from metadata of block (e.g. by
- *       calling {@link PatchPlaceAndBreakJobsController#removeTag(Location)}).
+ *       calling {@link PatchPlaceAndBreakJobsApi#removeTag(Location)}).
  * </ul>
  *
  * This class is thread-safe and immutable.
@@ -52,7 +52,7 @@ import lombok.Value;
  * @author Djaytan
  * @see com.gamingmesh.jobs.container.ActionType ActionType
  * @see org.bukkit.block.Block Block
- * @see PatchPlaceAndBreakJobsController
+ * @see PatchPlaceAndBreakJobsApi
  */
 @Value(staticConstructor = "of")
 public class PatchPlaceAndBreakTag {

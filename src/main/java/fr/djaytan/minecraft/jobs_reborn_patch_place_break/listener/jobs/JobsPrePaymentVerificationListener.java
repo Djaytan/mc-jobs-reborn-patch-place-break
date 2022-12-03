@@ -34,7 +34,7 @@ import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobsApi;
 
 /**
  * This class represents a {@link JobsPrePaymentEvent} listener to verify the well-application of
@@ -47,17 +47,17 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobs
 @Singleton
 public class JobsPrePaymentVerificationListener implements Listener {
 
-  private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
+  private final PatchPlaceAndBreakJobsApi patchPlaceAndBreakJobsApi;
 
   /**
    * Constructor.
    *
-   * @param patchPlaceAndBreakJobsController The place-and-break patch controller.
+   * @param patchPlaceAndBreakJobsApi The place-and-break patch controller.
    */
   @Inject
   public JobsPrePaymentVerificationListener(
-      @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
-    this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
+      @NotNull PatchPlaceAndBreakJobsApi patchPlaceAndBreakJobsApi) {
+    this.patchPlaceAndBreakJobsApi = patchPlaceAndBreakJobsApi;
   }
 
   /**
@@ -89,7 +89,7 @@ public class JobsPrePaymentVerificationListener implements Listener {
     boolean isEventCancelled = event.isCancelled();
     HandlerList handlerList = event.getHandlers();
 
-    patchPlaceAndBreakJobsController.verifyPatchApplication(actionType, block, isEventCancelled,
+    patchPlaceAndBreakJobsApi.verifyPatchApplication(actionType, block, isEventCancelled,
         player, job, handlerList);
   }
 }

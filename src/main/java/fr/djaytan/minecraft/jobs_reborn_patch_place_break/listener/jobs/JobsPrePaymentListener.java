@@ -32,7 +32,7 @@ import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobsApi;
 
 /**
  * This class represents a {@link JobsPrePaymentEvent} listener.
@@ -47,17 +47,17 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobs
 @Singleton
 public class JobsPrePaymentListener implements Listener {
 
-  private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
+  private final PatchPlaceAndBreakJobsApi patchPlaceAndBreakJobsApi;
 
   /**
    * Constructor.
    *
-   * @param patchPlaceAndBreakJobsController The place-and-break patch controller.
+   * @param patchPlaceAndBreakJobsApi The place-and-break patch controller.
    */
   @Inject
   public JobsPrePaymentListener(
-      @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
-    this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
+      @NotNull PatchPlaceAndBreakJobsApi patchPlaceAndBreakJobsApi) {
+    this.patchPlaceAndBreakJobsApi = patchPlaceAndBreakJobsApi;
   }
 
   /**
@@ -87,7 +87,7 @@ public class JobsPrePaymentListener implements Listener {
 
     Location blockLocation = block.getLocation();
 
-    if (patchPlaceAndBreakJobsController.isPlaceAndBreakAction(actionType, blockLocation).join()) {
+    if (patchPlaceAndBreakJobsApi.isPlaceAndBreakAction(actionType, blockLocation).join()) {
       event.setCancelled(true);
     }
   }

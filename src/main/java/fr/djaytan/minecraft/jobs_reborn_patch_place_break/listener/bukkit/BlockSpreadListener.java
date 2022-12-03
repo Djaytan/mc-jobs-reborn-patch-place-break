@@ -27,7 +27,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.jetbrains.annotations.NotNull;
 
-import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobsController;
+import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobsApi;
 
 /**
  * This class represents a {@link BlockSpreadEvent} listener.
@@ -43,17 +43,17 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.PatchPlaceAndBreakJobs
 @Singleton
 public class BlockSpreadListener implements Listener {
 
-  private final PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController;
+  private final PatchPlaceAndBreakJobsApi patchPlaceAndBreakJobsApi;
 
   /**
    * Constructor.
    *
-   * @param patchPlaceAndBreakJobsController The place-and-break patch controller.
+   * @param patchPlaceAndBreakJobsApi The place-and-break patch controller.
    */
   @Inject
   public BlockSpreadListener(
-      @NotNull PatchPlaceAndBreakJobsController patchPlaceAndBreakJobsController) {
-    this.patchPlaceAndBreakJobsController = patchPlaceAndBreakJobsController;
+      @NotNull PatchPlaceAndBreakJobsApi patchPlaceAndBreakJobsApi) {
+    this.patchPlaceAndBreakJobsApi = patchPlaceAndBreakJobsApi;
   }
 
   /**
@@ -67,6 +67,6 @@ public class BlockSpreadListener implements Listener {
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockSpread(@NotNull BlockSpreadEvent event) {
-    patchPlaceAndBreakJobsController.removeTag(event.getBlock().getLocation());
+    patchPlaceAndBreakJobsApi.removeTag(event.getBlock().getLocation());
   }
 }

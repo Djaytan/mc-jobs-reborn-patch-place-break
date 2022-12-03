@@ -87,7 +87,7 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.utils.LocationConverte
  * @see org.bukkit.event.block.BlockPlaceEvent BlockPlaceEvent
  */
 @Singleton
-public class PatchPlaceAndBreakJobsController {
+public class PatchPlaceAndBreakJobsApi {
 
   private static final Duration EPHEMERAL_TAG_DURATION = Duration.ofSeconds(3);
 
@@ -103,7 +103,7 @@ public class PatchPlaceAndBreakJobsController {
    * @param patchPlaceAndBreakService The patch place-and-break service.
    */
   @Inject
-  public PatchPlaceAndBreakJobsController(@NotNull LocationConverter locationConverter,
+  public PatchPlaceAndBreakJobsApi(@NotNull LocationConverter locationConverter,
       @NotNull @Named("BukkitLogger") Logger logger,
       @NotNull PatchPlaceAndBreakService patchPlaceAndBreakService) {
     this.locationConverter = locationConverter;
