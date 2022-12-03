@@ -24,9 +24,7 @@ class PatchPlaceAndBreakTagTest {
   @Test
   @DisplayName("Constructor - Successful nominal case")
   void shouldSuccessWhenCreatingWithNominalValues() {
-    //
     // Given
-    //
     UUID uuid = UUID.randomUUID();
     LocalDateTime localDateTime = LocalDateTime.now();
     boolean isEphemeral = true;
@@ -37,15 +35,11 @@ class PatchPlaceAndBreakTagTest {
     double z = 1254.785D;
     TagLocation tagLocation = TagLocation.of(worldName, x, y, z);
 
-    //
     // When
-    //
     PatchPlaceAndBreakTag tag =
         PatchPlaceAndBreakTag.of(uuid, localDateTime, isEphemeral, tagLocation);
 
-    //
     // Then
-    //
     assertAll("Verification of returned values from getters",
         () -> assertEquals(uuid, tag.getUuid()),
         () -> assertEquals(localDateTime, tag.getInitLocalDateTime()),

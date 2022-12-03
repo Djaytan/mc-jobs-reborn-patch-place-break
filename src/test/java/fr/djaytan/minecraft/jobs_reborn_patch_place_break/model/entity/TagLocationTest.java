@@ -21,22 +21,16 @@ class TagLocationTest {
   @Test
   @DisplayName("Constructor - Successful nominal case")
   void shouldSuccessWhenCreatingWithNominalValues() {
-    //
     // Given
-    //
     String worldName = "world";
     double x = -54.0D;
     double y = 67.785D;
     double z = 4872.45152D;
 
-    //
     // When
-    //
     TagLocation tagLocation = TagLocation.of(worldName, x, y, z);
 
-    //
     // Then
-    //
     assertAll("Verification of returned values from getters",
         () -> assertEquals(worldName, tagLocation.getWorldName()),
         () -> assertEquals(x, tagLocation.getX()), () -> assertEquals(y, tagLocation.getY()),

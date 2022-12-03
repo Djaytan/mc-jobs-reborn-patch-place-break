@@ -19,17 +19,15 @@
 package fr.djaytan.minecraft.jobs_reborn_patch_place_break.model.entity;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.jetbrains.annotations.NotNull;
 
 import com.gamingmesh.jobs.container.ActionType;
-import com.google.common.base.MoreObjects;
 
 import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceAndBreakJobsController;
+import lombok.Value;
 
 /**
  * This class represents a place-and-break tag for the patch. The purpose of this tag is to be
@@ -56,65 +54,11 @@ import fr.djaytan.minecraft.jobs_reborn_patch_place_break.controller.PatchPlaceA
  * @see org.bukkit.block.Block Block
  * @see PatchPlaceAndBreakJobsController
  */
-public final class PatchPlaceAndBreakTag {
+@Value(staticConstructor = "of")
+public class PatchPlaceAndBreakTag {
 
-  private final UUID uuid;
-  private final LocalDateTime initLocalDateTime;
-  private final boolean isEphemeral;
-  private final TagLocation tagLocation;
-
-  private PatchPlaceAndBreakTag(@NotNull UUID uuid, @NotNull LocalDateTime initLocalDateTime,
-      boolean isEphemeral, @NotNull TagLocation tagLocation) {
-    this.uuid = uuid;
-    this.initLocalDateTime = initLocalDateTime;
-    this.isEphemeral = isEphemeral;
-    this.tagLocation = tagLocation;
-  }
-
-  public static @NotNull PatchPlaceAndBreakTag of(@NotNull UUID uuid,
-      @NotNull LocalDateTime initLocalDateTime, boolean isEphemeral,
-      @NotNull TagLocation tagLocation) {
-    return new PatchPlaceAndBreakTag(uuid, initLocalDateTime, isEphemeral, tagLocation);
-  }
-
-  public @NotNull UUID getUuid() {
-    return uuid;
-  }
-
-  public @NotNull LocalDateTime getInitLocalDateTime() {
-    return initLocalDateTime;
-  }
-
-  public boolean isEphemeral() {
-    return isEphemeral;
-  }
-
-  public @NotNull TagLocation getTagLocation() {
-    return tagLocation;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    PatchPlaceAndBreakTag that = (PatchPlaceAndBreakTag) o;
-    return isEphemeral == that.isEphemeral && uuid.equals(that.uuid)
-        && initLocalDateTime.equals(that.initLocalDateTime) && tagLocation.equals(that.tagLocation);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(uuid, initLocalDateTime, isEphemeral, tagLocation);
-  }
-
-  @Override
-  public @NotNull String toString() {
-    return MoreObjects.toStringHelper(this).add("uuid", uuid)
-        .add("initLocalDateTime", initLocalDateTime).add("isEphemeral", isEphemeral)
-        .add("tagLocation", tagLocation).toString();
-  }
+  UUID uuid;
+  LocalDateTime initLocalDateTime;
+  boolean isEphemeral;
+  TagLocation tagLocation;
 }
