@@ -102,7 +102,7 @@ To compile the project, run unit tests and package the plugin into a Jar file, s
 without any arguments: `mvnw`
 (see [Maven lifecycle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html) for more
 details).
-This is equivalent to `mvnw clean install`.
+This is equivalent to `mvn clean install`.
 
 ## Remaining work to do
 
