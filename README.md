@@ -98,11 +98,9 @@ Since a [Maven Wrapper](https://github.com/apache/maven-wrapper) has been set up
 to use it instead of your own local instance by executing the script `mvnw`
 (or `mvnw.cmd` if you are under Windows terminal of Powershell).
 
-To compile the project, run unit tests and package the plugin into a Jar file, simply run this command
-without any arguments: `mvnw`
+To compile the project, run unit tests and package the plugin into a Jar file, simply run this command: `mvnw clean package`
 (see [Maven lifecycle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html) for more
 details).
-This is equivalent to `mvn clean install`.
 
 ## Remaining work to do
 
