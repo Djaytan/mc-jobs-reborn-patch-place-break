@@ -80,6 +80,7 @@
     <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
     <maven.install.plugin.version>3.1.0</maven.install.plugin.version>
     <maven.release.plugin.version>3.0.0-M7</maven.release.plugin.version>
+    <jacoco.maven.plugin.version>0.8.8</jacoco.maven.plugin.version>
 
     <!-- ==================== Dependencies versions ==================== -->
     <guava.version>31.1-jre</guava.version>
@@ -411,6 +412,27 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven.surefire.plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.maven.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <phase>initialize</phase>
+          </execution>
+          <execution>
+            <id>report</id>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <phase>prepare-package</phase>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
