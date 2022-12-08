@@ -267,6 +267,7 @@
         </configuration>
         <executions>
           <execution>
+            <id>${sortpom.executionId}</id>
             <goals>
               <goal>${sortpom.goal}</goal>
             </goals>
@@ -284,10 +285,11 @@
         </configuration>
         <executions>
           <execution>
+            <id>${impsort.executionId}</id>
             <goals>
               <goal>${impsort.goal}</goal>
             </goals>
-            <phase>process-sources</phase>
+            <phase>validate</phase>
           </execution>
         </executions>
       </plugin>
@@ -302,10 +304,11 @@
         </configuration>
         <executions>
           <execution>
+            <id>${formatter.executionId}</id>
             <goals>
               <goal>${formatter.goal}</goal>
             </goals>
-            <phase>process-sources</phase>
+            <phase>validate</phase>
           </execution>
         </executions>
       </plugin>
