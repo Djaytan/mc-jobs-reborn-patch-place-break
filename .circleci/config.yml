@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: 'cimg/openjdk:8.0'
     environment:
-      MAVEN_CLI_OPTS: '-Pformat-checker -e -C --fail-at-end --no-transfer-progress'
+      MAVEN_CLI_OPTS: '-Pcontinuous-integration -e -C --fail-at-end --no-transfer-progress'
     steps:
       - checkout
       - restore_cache:

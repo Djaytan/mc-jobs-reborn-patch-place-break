@@ -22,6 +22,7 @@ import com.google.inject.AbstractModule;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.DataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.PatchPlaceAndBreakTagDao;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.SqlDataSource;
 
 public class GuicePersistenceSqliteModule extends AbstractModule {
 

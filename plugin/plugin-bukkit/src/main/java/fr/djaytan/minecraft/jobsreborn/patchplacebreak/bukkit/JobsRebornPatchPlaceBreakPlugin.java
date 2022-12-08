@@ -79,6 +79,7 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
     if (Files.exists(dataFolder)) {
       logger.info("The plugin data folder already exists: skipping its creation.");
+      return;
     }
 
     logger.info("The plugin data folder doesn't exists yet: creating it.");

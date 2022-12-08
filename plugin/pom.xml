@@ -9,6 +9,8 @@
 
   <artifactId>plugin</artifactId>
   <packaging>pom</packaging>
+  <name>Plugin Aggregator</name>
+  <description>The aggregator of plugins for the place-and-break patch</description>
 
   <modules>
     <module>plugin-bukkit</module>

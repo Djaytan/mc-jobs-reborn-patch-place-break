@@ -9,6 +9,8 @@
 
   <artifactId>patch-place-break</artifactId>
   <packaging>pom</packaging>
+  <name>PatchPlaceBreak Aggregator</name>
+  <description>Aggregator of place-and-break patch modules</description>
 
   <modules>
     <module>patch-place-break-api</module>

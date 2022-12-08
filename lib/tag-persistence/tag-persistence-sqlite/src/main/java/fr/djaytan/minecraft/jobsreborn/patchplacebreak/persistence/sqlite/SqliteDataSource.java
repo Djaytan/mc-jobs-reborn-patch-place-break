@@ -38,6 +38,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.SqlDataSource;
 
 @Singleton
 public class SqliteDataSource implements SqlDataSource {
@@ -76,6 +77,7 @@ public class SqliteDataSource implements SqlDataSource {
       logger.info(
           String.format("The SQLite database '%s' already exists: skipping database creation.",
               sqliteDatabaseFileName));
+      return;
     }
 
     try {

@@ -9,6 +9,7 @@
 
   <artifactId>lib</artifactId>
   <packaging>pom</packaging>
+  <name>Libraries Aggregator</name>
 
   <modules>
     <module>patch-place-break</module>

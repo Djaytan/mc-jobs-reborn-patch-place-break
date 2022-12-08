@@ -8,6 +8,9 @@
   </parent>
 
   <artifactId>patch-place-break-api</artifactId>
+  <packaging>jar</packaging>
+  <name>PatchPlaceBreak API</name>
+  <description>API of the place-break patch</description>
 
   <properties>
     <main.basedir>${project.basedir}/../../..</main.basedir>

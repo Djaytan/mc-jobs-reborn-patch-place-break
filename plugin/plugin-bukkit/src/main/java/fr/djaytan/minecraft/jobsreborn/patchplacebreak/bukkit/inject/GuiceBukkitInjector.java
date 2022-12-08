@@ -24,13 +24,17 @@ import org.jetbrains.annotations.NotNull;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.connector.GuicePersistenceConnectorModule;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite.GuicePersistenceSqliteModule;
+
 public final class GuiceBukkitInjector {
 
   private GuiceBukkitInjector() {}
 
   public static void inject(@NotNull JavaPlugin javaPlugin, @NotNull Logger logger) {
     Injector injector = Guice.createInjector(new GuiceGenericBukkitModule(javaPlugin),
-        new GuiceSpecificBukkitModule(javaPlugin, logger));
+        new GuiceSpecificBukkitModule(javaPlugin, logger), new GuicePersistenceConnectorModule(),
+        new GuicePersistenceSqliteModule());
     injector.injectMembers(javaPlugin);
   }
 }

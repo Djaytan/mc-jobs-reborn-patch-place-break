@@ -16,13 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api;
 
 import java.sql.Connection;
 
 import org.jetbrains.annotations.NotNull;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.DataSource;
 
 // TODO: document it
 public interface SqlDataSource extends DataSource {

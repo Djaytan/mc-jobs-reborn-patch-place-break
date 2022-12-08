@@ -29,20 +29,16 @@
   </scm>
 
   <properties>
-    <main.basedir>${project.basedir}</main.basedir>
-
     <!-- ==================== General ==================== -->
+    <main.basedir>${project.basedir}</main.basedir>
     <project.encoding>UTF-8</project.encoding>
     <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
     <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
-    <package.root>fr.djaytan.minecraft.jobs_reborn_patch_place_break</package.root>
+    <package.root>fr.djaytan.minecraft.jobsreborn.patchplacebreak</package.root>
     <package.lib>${package.root}.lib</package.lib>
     <java.version>8</java.version>
-
-    <!-- ==================== Formatters ==================== -->
-    <formatter.goal>format</formatter.goal>
-    <impsort.goal>sort</impsort.goal>
-    <sortpom.goal>sort</sortpom.goal>
+    <plugin.name>JobsReborn-PatchPlaceBreak</plugin.name>
+    <plugin.finalName>${plugin.name}-${project.version}</plugin.finalName>
 
     <!-- ==================== Plugins versions ==================== -->
     <!-- Latest version of SortPom compatible with Java 8: don't bump it! -->
@@ -85,48 +81,35 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.zaxxer</groupId>
         <artifactId>HikariCP</artifactId>
         <version>${hikaricp.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
-        <version>${commons.lang3.version}</version>
+        <groupId>org.bstats</groupId>
+        <artifactId>bstats-bukkit</artifactId>
+        <version>${bstat.version}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
-      <!-- Use the same logging implementation as Bukkit -->
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-jdk14</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
+      <!-- Use the same logging implementation as Bukkit -->
       <dependency>
         <groupId>com.github.Zrips</groupId>
         <artifactId>Jobs</artifactId>
         <version>${jobs.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.google.errorprone</groupId>
-        <artifactId>error_prone_annotations</artifactId>
-        <version>${error.prone.annotations.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>${guava.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.bstats</groupId>
-        <artifactId>bstats-bukkit</artifactId>
-        <version>${bstat.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
@@ -179,6 +162,17 @@
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
       <version>${guice.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${commons.lang3.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.errorprone</groupId>
+      <artifactId>error_prone_annotations</artifactId>
+      <version>${error.prone.annotations.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.jetbrains</groupId>
@@ -269,6 +263,7 @@
           <sortPlugins>groupId,artifactId</sortPlugins>
           <sortProperties>false</sortProperties>
           <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
+          <verifyFail>stop</verifyFail>
         </configuration>
         <executions>
           <execution>
@@ -342,6 +337,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${maven.javadoc.plugin.version}</version>
+        <configuration>
+          <quiet>true</quiet>
+        </configuration>
         <executions>
           <execution>
             <id>maven-javadocs</id>
@@ -393,10 +391,27 @@
 
   <profiles>
     <profile>
-      <id>format-checker</id>
+      <id>local-dev</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <properties>
+        <formatter.executionId>auto-format</formatter.executionId>
+        <formatter.goal>format</formatter.goal>
+        <impsort.executionId>auto-sort</impsort.executionId>
+        <impsort.goal>sort</impsort.goal>
+        <sortpom.executionId>auto-sort</sortpom.executionId>
+        <sortpom.goal>sort</sortpom.goal>
+      </properties>
+    </profile>
+    <profile>
+      <id>continuous-integration</id>
+      <properties>
+        <formatter.executionId>format-check</formatter.executionId>
         <formatter.goal>validate</formatter.goal>
+        <impsort.executionId>imports-order-check</impsort.executionId>
         <impsort.goal>check</impsort.goal>
+        <sortpom.executionId>pom-check</sortpom.executionId>
         <sortpom.goal>verify</sortpom.goal>
       </properties>
     </profile>

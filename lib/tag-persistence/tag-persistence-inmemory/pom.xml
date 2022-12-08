@@ -8,6 +8,9 @@
   </parent>
 
   <artifactId>tag-persistence-inmemory</artifactId>
+  <packaging>jar</packaging>
+  <name>Tag Persistence InMemory Implementation</name>
+  <description>InMemory implementation of tag persistence (for tests purpose)</description>
 
   <properties>
     <main.basedir>${project.basedir}/../../..</main.basedir>

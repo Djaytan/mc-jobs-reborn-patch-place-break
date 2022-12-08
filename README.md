@@ -102,12 +102,6 @@ To compile the project, run unit tests and package the plugin into a Jar file, s
 (see [Maven lifecycle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html) for more
 details).
 
-## Remaining work to do
-
-Actually, an existing and known issue is the size of the JAR file which is around ~17 Mo. This is explained by the use
-of libraries and tools among which some of them are particularly heavy without really reasons (e.g. SQLite client which
-take more than the half of the JAR file). I'm currently working on fixing this.
-
 ## Licence
 
 This project is under the licence [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).

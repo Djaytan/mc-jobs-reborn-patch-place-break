@@ -9,6 +9,8 @@
 
   <artifactId>tag-persistence</artifactId>
   <packaging>pom</packaging>
+  <name>Tag Persistence Aggregator</name>
+  <description>Aggregator of the place-and-break patch tags persistence modules</description>
 
   <modules>
     <module>tag-persistence-api</module>

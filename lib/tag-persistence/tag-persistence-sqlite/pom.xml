@@ -8,6 +8,9 @@
   </parent>
 
   <artifactId>tag-persistence-sqlite</artifactId>
+  <packaging>jar</packaging>
+  <name>Tag Persistence SQLite Implementation</name>
+  <description>SQLite implementation of tag persistence</description>
 
   <properties>
     <main.basedir>${project.basedir}/../../..</main.basedir>

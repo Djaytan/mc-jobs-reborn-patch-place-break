@@ -8,6 +8,9 @@
   </parent>
 
   <artifactId>patch-place-break-bukkit-adapter</artifactId>
+  <packaging>jar</packaging>
+  <name>PatchPlaceBreak Bukkit Adapter</name>
+  <description>API of the place-and-break patch adapted for Bukkit</description>
 
   <properties>
     <main.basedir>${project.basedir}/../../..</main.basedir>
@@ -22,10 +25,6 @@
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-api</artifactId>
       <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
     </dependency>
     <dependency>
       <groupId>org.spigotmc</groupId>

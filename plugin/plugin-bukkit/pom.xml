@@ -8,6 +8,9 @@
   </parent>
 
   <artifactId>plugin-bukkit</artifactId>
+  <packaging>jar</packaging>
+  <name>Plugin Bukkit</name>
+  <description>The Bukkit plugin of the place-and-break patch</description>
 
   <properties>
     <main.basedir>${project.basedir}/../..</main.basedir>
@@ -17,6 +20,10 @@
     <dependency>
       <groupId>com.github.Zrips</groupId>
       <artifactId>Jobs</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
@@ -43,13 +50,21 @@
       <artifactId>bstats-bukkit</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jdk14</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
     </dependency>
   </dependencies>
 
   <build>
-    <finalName>${project.name}-${project.version}</finalName>
+    <finalName>${plugin.finalName}</finalName>
     <resources>
       <resource>
         <filtering>true</filtering>
