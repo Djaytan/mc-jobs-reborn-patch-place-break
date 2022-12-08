@@ -32,6 +32,7 @@
 
   <name>JobsReborn-PatchPlaceBreak</name>
   <description>This is a place-break patch extension of Jobs Reborn plugin for Bukkit servers</description>
+  <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break</url>
 
   <licenses>
     <license>
@@ -51,6 +52,14 @@
     <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break</url>
   </scm>
 
+  <issueManagement>
+    <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues</url>
+  </issueManagement>
+
+  <ciManagement>
+    <url>https://app.circleci.com/pipelines/github/Djaytan/mc-jobs-reborn-patch-place-break</url>
+  </ciManagement>
+
   <properties>
     <!-- ==================== General ==================== -->
     <main.basedir>${project.basedir}</main.basedir>
@@ -62,6 +71,9 @@
     <java.version>8</java.version>
     <plugin.name>JobsReborn-PatchPlaceBreak</plugin.name>
     <plugin.finalName>${plugin.name}-${project.version}</plugin.finalName>
+    <sonar.projectKey>Djaytan_mc-jobs-reborn-patch-place-break</sonar.projectKey>
+    <sonar.organization>djaytan</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
     <!-- ==================== Plugins versions ==================== -->
     <!-- Latest version of SortPom compatible with Java 8: don't bump it! -->

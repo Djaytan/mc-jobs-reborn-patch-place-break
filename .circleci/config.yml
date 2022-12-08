@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   maven-job:
     docker:
-      - image: 'cimg/openjdk:8.0'
+      - image: 'cimg/openjdk:11.0'
     environment:
       MAVEN_CLI_OPTS: '-Pcontinuous-integration -e -C --fail-at-end --no-transfer-progress'
     steps:
@@ -24,6 +24,13 @@ jobs:
       - run:
           name: 'mvn/package'
           command: mvn $MAVEN_CLI_OPTS package -DskipTests
+      - run:
+          name: 'mvn/verify'
+          # TODO: skip unit tests
+          command: mvn $MAVEN_CLI_OPTS verify
+      - run:
+          name: 'sonar/analysis'
+          command: mvn $MAVEN_CLI_OPTS verify sonar:sonar
       - save_cache:
           name: 'cache/save'
           key: 'v2-maven-local-repository-cache-{{ checksum "pom.xml" }}'
