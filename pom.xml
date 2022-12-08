@@ -94,6 +94,7 @@
     <maven.install.plugin.version>3.1.0</maven.install.plugin.version>
     <maven.release.plugin.version>3.0.0-M7</maven.release.plugin.version>
     <jacoco.maven.plugin.version>0.8.8</jacoco.maven.plugin.version>
+    <sonar.maven.plugin.version>3.9.1.2184</sonar.maven.plugin.version>
 
     <!-- ==================== Dependencies versions ==================== -->
     <guava.version>31.1-jre</guava.version>
@@ -449,6 +450,11 @@
             <phase>prepare-package</phase>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>${sonar.maven.plugin.version}</version>
       </plugin>
     </plugins>
   </build>
