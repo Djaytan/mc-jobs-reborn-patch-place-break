@@ -78,42 +78,42 @@
 
     <!-- ==================== Plugins versions ==================== -->
     <!-- Latest version of SortPom compatible with Java 8: don't bump it! -->
-    <sortpom.maven.plugin.version>3.0.1</sortpom.maven.plugin.version>
+    <sortpomMavenPlugin.version>3.0.1</sortpomMavenPlugin.version>
     <!-- Latest version of ImpSort compatible with Java 8: don't bump it! -->
-    <impsort.maven.plugin.version>1.6.2</impsort.maven.plugin.version>
+    <impsortMavenPlugin.version>1.6.2</impsortMavenPlugin.version>
     <!-- Latest version of Formatter compatible with Java 8: don't bump it! -->
-    <formatter.maven.plugin.version>2.16.0</formatter.maven.plugin.version>
-    <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
-    <maven.shade.plugin.version>3.4.1</maven.shade.plugin.version>
-    <maven.clean.plugin.version>3.2.0</maven.clean.plugin.version>
-    <maven.resources.plugin.version>3.3.0</maven.resources.plugin.version>
-    <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
-    <maven.javadoc.plugin.version>3.4.1</maven.javadoc.plugin.version>
-    <maven.surefire.plugin.version>3.0.0-M7</maven.surefire.plugin.version>
-    <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
-    <maven.install.plugin.version>3.1.0</maven.install.plugin.version>
-    <maven.release.plugin.version>3.0.0-M7</maven.release.plugin.version>
-    <jacoco.maven.plugin.version>0.8.8</jacoco.maven.plugin.version>
-    <sonar.maven.plugin.version>3.9.1.2184</sonar.maven.plugin.version>
+    <formatterMavenPlugin.version>2.16.0</formatterMavenPlugin.version>
+    <mavenCompilerPlugin.version>3.10.1</mavenCompilerPlugin.version>
+    <mavenShadePlugin.version>3.4.1</mavenShadePlugin.version>
+    <mavenCleanPlugin.version>3.2.0</mavenCleanPlugin.version>
+    <mavenResourcesPlugin.version>3.3.0</mavenResourcesPlugin.version>
+    <mavenSourcePlugin.version>3.2.1</mavenSourcePlugin.version>
+    <mavenJavadocPlugin.version>3.4.1</mavenJavadocPlugin.version>
+    <mavenSurefirePlugin.version>3.0.0-M7</mavenSurefirePlugin.version>
+    <mavenJarPlugin.version>3.3.0</mavenJarPlugin.version>
+    <mavenInstallPlugin.version>3.1.0</mavenInstallPlugin.version>
+    <mavenReleasePlugin.version>3.0.0-M7</mavenReleasePlugin.version>
+    <jacocoMavenPlugin.version>0.8.8</jacocoMavenPlugin.version>
+    <sonarMavenPlugin.version>3.9.1.2184</sonarMavenPlugin.version>
 
     <!-- ==================== Dependencies versions ==================== -->
     <guava.version>31.1-jre</guava.version>
     <guice.version>5.1.0</guice.version>
-    <error.prone.annotations.version>2.16</error.prone.annotations.version>
-    <commons.lang3.version>3.12.0</commons.lang3.version>
+    <errorProneAnnotations.version>2.16</errorProneAnnotations.version>
+    <commonsLang3.version>3.12.0</commonsLang3.version>
     <!-- Latest version of HikariCP compatible with Java 8: don't bump it! -->
     <hikaricp.version>4.0.3</hikaricp.version>
     <slf4j.version>2.0.4</slf4j.version>
     <sqlite.version>3.39.4.1</sqlite.version>
     <jobs.version>v4.17.2</jobs.version>
-    <annotations.jetbrains.version>23.0.0</annotations.jetbrains.version>
+    <annotationsJetbrains.version>23.0.0</annotationsJetbrains.version>
     <lombok.version>1.18.24</lombok.version>
-    <spigot.api.version>1.11.2-R0.1-SNAPSHOT</spigot.api.version>
+    <spigotApi.version>1.11.2-R0.1-SNAPSHOT</spigotApi.version>
     <bstat.version>3.0.0</bstat.version>
-    <junit.jupiter.version>5.9.1</junit.jupiter.version>
+    <junitJupiter.version>5.9.1</junitJupiter.version>
     <mockito.version>4.9.0</mockito.version>
     <equalsverifier.version>3.11.1</equalsverifier.version>
-    <tostring.verifier.version>1.4.8</tostring.verifier.version>
+    <tostringVerifier.version>1.4.8</tostringVerifier.version>
   </properties>
 
   <dependencyManagement>
@@ -153,7 +153,7 @@
       <dependency>
         <groupId>org.spigotmc</groupId>
         <artifactId>spigot-api</artifactId>
-        <version>${spigot.api.version}</version>
+        <version>${spigotApi.version}</version>
         <scope>provided</scope>
         <exclusions>
           <exclusion>
@@ -204,18 +204,18 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>${commons.lang3.version}</version>
+      <version>${commonsLang3.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.errorprone</groupId>
       <artifactId>error_prone_annotations</artifactId>
-      <version>${error.prone.annotations.version}</version>
+      <version>${errorProneAnnotations.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
-      <version>${annotations.jetbrains.version}</version>
+      <version>${annotationsJetbrains.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -227,7 +227,7 @@
     <dependency>
       <groupId>com.jparams</groupId>
       <artifactId>to-string-verifier</artifactId>
-      <version>${tostring.verifier.version}</version>
+      <version>${tostringVerifier.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -239,7 +239,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>${junit.jupiter.version}</version>
+      <version>${junitJupiter.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -273,7 +273,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>${maven.shade.plugin.version}</version>
+          <version>${mavenShadePlugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -281,7 +281,7 @@
       <plugin>
         <groupId>com.github.ekryd.sortpom</groupId>
         <artifactId>sortpom-maven-plugin</artifactId>
-        <version>${sortpom.maven.plugin.version}</version>
+        <version>${sortpomMavenPlugin.version}</version>
         <configuration>
           <createBackupFile>false</createBackupFile>
           <encoding>${project.encoding}</encoding>
@@ -316,7 +316,7 @@
       <plugin>
         <groupId>net.revelc.code</groupId>
         <artifactId>impsort-maven-plugin</artifactId>
-        <version>${impsort.maven.plugin.version}</version>
+        <version>${impsortMavenPlugin.version}</version>
         <configuration>
           <groups>java.,javax.,org.,com.</groups>
           <staticGroups>java,*</staticGroups>
@@ -334,7 +334,7 @@
       <plugin>
         <groupId>net.revelc.code.formatter</groupId>
         <artifactId>formatter-maven-plugin</artifactId>
-        <version>${formatter.maven.plugin.version}</version>
+        <version>${formatterMavenPlugin.version}</version>
         <configuration>
           <configFile>${main.basedir}/eclipse-java-google-style.xml</configFile>
           <encoding>${project.encoding}</encoding>
@@ -353,12 +353,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>${maven.clean.plugin.version}</version>
+        <version>${mavenCleanPlugin.version}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compiler.plugin.version}</version>
+        <version>${mavenCompilerPlugin.version}</version>
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
@@ -367,17 +367,17 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
-        <version>${maven.install.plugin.version}</version>
+        <version>${mavenInstallPlugin.version}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>${maven.jar.plugin.version}</version>
+        <version>${mavenJarPlugin.version}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven.javadoc.plugin.version}</version>
+        <version>${mavenJavadocPlugin.version}</version>
         <configuration>
           <quiet>true</quiet>
         </configuration>
@@ -393,7 +393,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>${maven.release.plugin.version}</version>
+        <version>${mavenReleasePlugin.version}</version>
         <configuration>
           <!-- Spigot API is a SNAPSHOT version... No other choice than to enable this option -->
           <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
@@ -406,12 +406,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>${maven.resources.plugin.version}</version>
+        <version>${mavenResourcesPlugin.version}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>${maven.source.plugin.version}</version>
+        <version>${mavenSourcePlugin.version}</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -425,7 +425,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${maven.surefire.plugin.version}</version>
+        <version>${mavenSurefirePlugin.version}</version>
         <configuration>
           <skipTests>${skipUnitTests}</skipTests>
         </configuration>
@@ -433,7 +433,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${jacoco.maven.plugin.version}</version>
+        <version>${jacocoMavenPlugin.version}</version>
         <executions>
           <execution>
             <id>prepare-agent</id>
@@ -454,7 +454,7 @@
       <plugin>
         <groupId>org.sonarsource.scanner.maven</groupId>
         <artifactId>sonar-maven-plugin</artifactId>
-        <version>${sonar.maven.plugin.version}</version>
+        <version>${sonarMavenPlugin.version}</version>
       </plugin>
     </plugins>
   </build>
