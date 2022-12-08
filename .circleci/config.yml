@@ -40,4 +40,5 @@ jobs:
 workflows:
   main:
     jobs:
-      - maven-job
+      - maven-job:
+          context: SonarCloud
