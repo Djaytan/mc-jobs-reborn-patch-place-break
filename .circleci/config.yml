@@ -1,11 +1,20 @@
 version: 2.1
 
-jobs:
-  maven-job:
+executors:
+  build-executor:
+    docker:
+      - image: 'cimg/openjdk:8.0'
+    environment:
+      MAVEN_CLI_OPTS: '-Pcontinuous-integration -e -C --fail-at-end --no-transfer-progress'
+  sonar-executor:
     docker:
       - image: 'cimg/openjdk:11.0'
     environment:
       MAVEN_CLI_OPTS: '-Pcontinuous-integration -e -C --fail-at-end --no-transfer-progress'
+
+jobs:
+  build:
+    executor: build-executor
     steps:
       - checkout
       - restore_cache:
@@ -17,24 +26,48 @@ jobs:
           command: mvn $MAVEN_CLI_OPTS validate
       - run:
           name: 'mvn/build'
-          command: mvn $MAVEN_CLI_OPTS compile
+          command: mvn $MAVEN_CLI_OPTS test-compile
+      - save_cache:
+          name: 'cache/save'
+          key: 'v2-maven-local-repository-cache-{{ checksum "pom.xml" }}'
+          paths:
+            - '~/.m2'
+      - persist_to_workspace:
+          root: .
+          paths:
+            - '*'
+  test:
+    executor: build-executor
+    steps:
+      - attach_workspace:
+          at: .
       - run:
           name: 'mvn/unitTests'
           command: mvn $MAVEN_CLI_OPTS test
       - run:
           name: 'mvn/integrationTests'
           command: mvn $MAVEN_CLI_OPTS verify -DskipUnitTests
-      - run:
-          name: 'sonar/analysis'
-          command: mvn $MAVEN_CLI_OPTS verify sonar:sonar -Dmaven.test.skip=true
-      - save_cache:
-          name: 'cache/save'
-          key: 'v2-maven-local-repository-cache-{{ checksum "pom.xml" }}'
+      - persist_to_workspace:
+          root: .
           paths:
-            - '~/.m2'
+            - '*'
+  analyze:
+    executor: sonar-executor
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: 'sonarQube/analysis'
+          command: mvn $MAVEN_CLI_OPTS verify sonar:sonar -Dmaven.test.skip=true
 
 workflows:
   main:
     jobs:
-      - maven-job:
+      - build
+      - test:
+          requires:
+            - build
+      - analyze:
+          requires:
+            - test
           context: SonarCloud
