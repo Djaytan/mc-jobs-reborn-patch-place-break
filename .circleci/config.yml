@@ -23,14 +23,13 @@ jobs:
           command: mvn $MAVEN_CLI_OPTS test
       - run:
           name: 'mvn/package'
-          command: mvn $MAVEN_CLI_OPTS package -DskipTests
+          command: mvn $MAVEN_CLI_OPTS package -DskipUnitTests
       - run:
           name: 'mvn/verify'
-          # TODO: skip unit tests
-          command: mvn $MAVEN_CLI_OPTS verify
+          command: mvn $MAVEN_CLI_OPTS verify -DskipUnitTests
       - run:
           name: 'sonar/analysis'
-          command: mvn $MAVEN_CLI_OPTS verify sonar:sonar
+          command: mvn $MAVEN_CLI_OPTS verify sonar:sonar -DskipTests
       - save_cache:
           name: 'cache/save'
           key: 'v2-maven-local-repository-cache-{{ checksum "pom.xml" }}'

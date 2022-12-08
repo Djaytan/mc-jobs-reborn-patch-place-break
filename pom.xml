@@ -63,6 +63,7 @@
   <properties>
     <!-- ==================== General ==================== -->
     <main.basedir>${project.basedir}</main.basedir>
+    <skipUnitTests>false</skipUnitTests>
     <project.encoding>UTF-8</project.encoding>
     <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
     <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
@@ -424,6 +425,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven.surefire.plugin.version}</version>
+        <configuration>
+          <skipTests>${skipUnitTests}</skipTests>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
