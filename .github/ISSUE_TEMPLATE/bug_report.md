@@ -29,6 +29,7 @@ If applicable, add screenshots to help explain your problem.
  - API version: [e.g. 1.18.2]
  - Java version: [e.g. 17]
  - JobsReborn plugin version: [e.g. 5.0.3.0]
+ - JobsReborn-PlaceBreakPatch plugin version
  - Potentiel other third-party plugins which can conflict with this one
 
 **Additional context**
