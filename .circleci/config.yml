@@ -18,47 +18,57 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          name: 'cache/restore'
+          name: 'cache/restoreDependencies'
           keys:
             - 'v2-maven-local-repository-cache-{{ checksum "pom.xml" }}'
       - run:
-          name: 'mvn/format'
+          name: 'mvn/validate'
           command: mvn $MAVEN_CLI_OPTS validate
       - run:
           name: 'mvn/build'
           command: mvn $MAVEN_CLI_OPTS test-compile
       - save_cache:
-          name: 'cache/save'
+          name: 'cache/saveDependencies'
           key: 'v2-maven-local-repository-cache-{{ checksum "pom.xml" }}'
           paths:
             - '~/.m2'
       - persist_to_workspace:
-          root: .
+          root: '~/project'
           paths:
             - '*'
   test:
     executor: build-executor
     steps:
       - attach_workspace:
-          at: .
+          at: '~/project'
       - run:
           name: 'mvn/unitTests'
           command: mvn $MAVEN_CLI_OPTS test
       - run:
           name: 'mvn/integrationTests'
           command: mvn $MAVEN_CLI_OPTS verify -DskipUnitTests
+      - run:
+          name: 'mvn/finalize'
+          command: mvn $MAVEN_CLI_OPTS install -Dmaven.test.skip=true
+      - run:
+          name: 'publish/testResults'
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
+      - store_test_results:
+          path: '~/test-results/junit/'
       - persist_to_workspace:
-          root: .
+          root: '~/project'
           paths:
             - '*'
-  analyze:
+  sonar:
     executor: sonar-executor
     steps:
       - attach_workspace:
-          at: .
+          at: '~/project'
       - run:
-          name: 'sonarQube/analysis'
-          command: mvn $MAVEN_CLI_OPTS verify sonar:sonar -Dmaven.test.skip=true
+          name: 'mvn/sonar'
+          command: mvn sonar:sonar -Dsonar.projectKey=Djaytan_mc-jobs-reborn-patch-place-break
 
 workflows:
   main:
@@ -67,7 +77,7 @@ workflows:
       - test:
           requires:
             - build
-      - analyze:
+      - sonar:
           requires:
             - test
           context: SonarCloud
