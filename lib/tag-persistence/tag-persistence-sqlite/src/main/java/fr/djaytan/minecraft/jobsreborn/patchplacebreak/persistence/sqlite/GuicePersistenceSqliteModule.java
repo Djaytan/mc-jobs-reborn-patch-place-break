@@ -27,7 +27,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite;
 import com.google.inject.AbstractModule;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.DataSource;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.PatchPlaceAndBreakTagDao;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.TagDao;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.SqlDataSource;
 
 public class GuicePersistenceSqliteModule extends AbstractModule {
@@ -36,6 +36,6 @@ public class GuicePersistenceSqliteModule extends AbstractModule {
   protected void configure() {
     bind(SqlDataSource.class).to(SqliteDataSource.class);
     bind(DataSource.class).to(SqliteDataSource.class);
-    bind(PatchPlaceAndBreakTagDao.class).to(PatchPlaceAndBreakTagSqliteDao.class);
+    bind(TagDao.class).to(TagSqliteDao.class);
   }
 }

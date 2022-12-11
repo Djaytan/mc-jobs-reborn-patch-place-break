@@ -26,12 +26,12 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.inmemory;
 
 import com.google.inject.AbstractModule;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.PatchPlaceAndBreakTagDao;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.TagDao;
 
 public class GuicePersistenceInmemoryModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(PatchPlaceAndBreakTagDao.class).to(PatchPlaceAndBreakTagMemoryDao.class);
+    bind(TagDao.class).to(TagMemoryDao.class);
   }
 }

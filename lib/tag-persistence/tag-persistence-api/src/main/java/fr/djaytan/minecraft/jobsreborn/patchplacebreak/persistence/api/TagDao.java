@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
 
-public interface PatchPlaceAndBreakTagDao {
+public interface TagDao {
 
   void put(@NotNull Tag tag);
 

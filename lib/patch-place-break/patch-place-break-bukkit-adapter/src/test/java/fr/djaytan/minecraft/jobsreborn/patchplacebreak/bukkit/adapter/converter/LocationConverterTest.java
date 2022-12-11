@@ -50,13 +50,6 @@ class LocationConverterTest {
     locationConverter = new LocationConverter();
   }
 
-  /**
-   * Given a Bukkit location,
-   * When converting it to a Tag location,
-   * Then the conversion should occur successfully.
-   *
-   * @param world The Bukkit world mock.
-   */
   @Test
   @DisplayName("convert() - Successful nominal case")
   void shouldSuccessNominalLocationConversion(@Mock World world) {
@@ -77,11 +70,6 @@ class LocationConverterTest {
     assertEquals(expectedTagLocation, tagLocation);
   }
 
-  /**
-   * Given a Bukkit location with a null Bukkit world,
-   * When converting it to a Tag location,
-   * Then a NullPointerException should be thrown.
-   */
   @Test
   @DisplayName("convert() - Fail when Bukkit world value is null")
   void shouldFailLocationConversionWithNullBukkitWorld() {

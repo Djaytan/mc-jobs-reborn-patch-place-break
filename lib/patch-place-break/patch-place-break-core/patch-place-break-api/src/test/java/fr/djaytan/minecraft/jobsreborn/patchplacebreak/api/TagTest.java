@@ -40,11 +40,6 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 class TagTest {
 
-  /**
-   * Given required data to create a PatchPlaceAndBreakTag,
-   * When calling the constructor with these data,
-   * Then the PatchPlaceAndBreakTag is created successfully.
-   */
   @Test
   @DisplayName("Constructor - Successful nominal case")
   void shouldSuccessWhenCreatingWithNominalValues() {
@@ -70,19 +65,12 @@ class TagTest {
         () -> assertEquals(tagLocation, tag.getTagLocation()));
   }
 
-  /**
-   * Verification of {@link Tag#equals(Object)} and {@link Tag#hashCode()}
-   * implementations.
-   */
   @Test
   @DisplayName("equals() & hashCode() - Verifications")
   void equalsAndHashcodeContractVerification() {
     EqualsVerifier.forClass(Tag.class).verify();
   }
 
-  /**
-   * Verification of {@link Tag#toString()} implementation.
-   */
   @Test
   @DisplayName("toString() - Verifications")
   void toStringContractVerification() {

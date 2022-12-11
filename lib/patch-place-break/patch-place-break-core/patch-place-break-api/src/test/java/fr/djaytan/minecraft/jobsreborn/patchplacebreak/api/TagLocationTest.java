@@ -38,11 +38,6 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 class TagLocationTest {
 
-  /**
-   * Given required data to create a TagLocation,
-   * When calling the constructor with these data,
-   * Then the TagLocation is created successfully.
-   */
   @Test
   @DisplayName("Constructor - Successful nominal case")
   void shouldSuccessWhenCreatingWithNominalValues() {
@@ -62,19 +57,12 @@ class TagLocationTest {
         () -> assertEquals(z, tagLocation.getZ()));
   }
 
-  /**
-   * Verification of {@link TagLocation#equals(Object)} and {@link TagLocation#hashCode()}
-   * implementations.
-   */
   @Test
   @DisplayName("equals() & hashCode() - Verifications")
   void shouldEqualsAndHashcodeWellImplemented() {
     EqualsVerifier.forClass(TagLocation.class).verify();
   }
 
-  /**
-   * Verification of {@link TagLocation#toString()} implementation.
-   */
   @Test
   @DisplayName("toString() - Verifications")
   void shouldToStringWellImplemented() {

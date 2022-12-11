@@ -43,14 +43,14 @@ import com.google.inject.name.Named;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.PatchPlaceAndBreakTagDao;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.TagDao;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.SqlDataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite.serializer.BooleanIntegerSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite.serializer.LocalDateTimeStringSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite.serializer.UUIDStringSerializer;
 
 @Singleton
-public class PatchPlaceAndBreakTagSqliteDao implements PatchPlaceAndBreakTagDao {
+public class TagSqliteDao implements TagDao {
 
   private final BooleanIntegerSerializer booleanIntegerSerializer;
   private final SqlDataSource sqlDataSource;
@@ -59,7 +59,7 @@ public class PatchPlaceAndBreakTagSqliteDao implements PatchPlaceAndBreakTagDao 
   private final UUIDStringSerializer uuidStringSerializer;
 
   @Inject
-  public PatchPlaceAndBreakTagSqliteDao(@NotNull BooleanIntegerSerializer booleanIntegerSerializer,
+  public TagSqliteDao(@NotNull BooleanIntegerSerializer booleanIntegerSerializer,
       @NotNull SqlDataSource sqlDataSource,
       @NotNull LocalDateTimeStringSerializer localDateTimeStringSerializer,
       @NotNull @Named("PatchPlaceBreakLogger") Logger logger,

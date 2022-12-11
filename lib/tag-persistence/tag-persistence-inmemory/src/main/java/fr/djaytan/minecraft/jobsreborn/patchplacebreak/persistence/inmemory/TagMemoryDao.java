@@ -35,22 +35,22 @@ import org.jetbrains.annotations.NotNull;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.PatchPlaceAndBreakTagDao;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.TagDao;
 
 @Singleton
-public class PatchPlaceAndBreakTagMemoryDao implements PatchPlaceAndBreakTagDao {
+public class TagMemoryDao implements TagDao {
 
-  private final Map<UUID, Tag> patchPlaceAndBreakTagMap = new HashMap<>();
+  private final Map<UUID, Tag> tagMap = new HashMap<>();
 
   @Override
   public void put(@NotNull Tag tag) {
     delete(tag.getTagLocation());
-    patchPlaceAndBreakTagMap.put(tag.getUuid(), tag);
+    tagMap.put(tag.getUuid(), tag);
   }
 
   @Override
   public @NotNull Optional<Tag> findByLocation(@NotNull TagLocation tagLocation) {
-    for (Tag tag : patchPlaceAndBreakTagMap.values()) {
+    for (Tag tag : tagMap.values()) {
       if (tag.getTagLocation().equals(tagLocation)) {
         return Optional.of(tag);
       }
@@ -60,8 +60,7 @@ public class PatchPlaceAndBreakTagMemoryDao implements PatchPlaceAndBreakTagDao 
 
   @Override
   public void delete(@NotNull TagLocation tagLocation) {
-    Optional<Tag> patchPlaceAndBreakTag = findByLocation(tagLocation);
-    patchPlaceAndBreakTag
-        .ifPresent(placeAndBreakTag -> patchPlaceAndBreakTagMap.remove(placeAndBreakTag.getUuid()));
+    Optional<Tag> tag = findByLocation(tagLocation);
+    tag.ifPresent(t -> tagMap.remove(t.getUuid()));
   }
 }
