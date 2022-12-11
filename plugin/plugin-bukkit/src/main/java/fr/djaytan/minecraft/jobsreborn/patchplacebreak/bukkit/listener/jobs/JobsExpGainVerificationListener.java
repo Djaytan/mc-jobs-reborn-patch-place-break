@@ -85,7 +85,7 @@ public class JobsExpGainVerificationListener implements Listener {
     boolean isEventCancelled = event.isCancelled();
     HandlerList handlerList = event.getHandlers();
 
-    patchPlaceBreakBukkitAdapter.verifyPatchApplication(actionType, block, isEventCancelled,
-        player, job, handlerList);
+    patchPlaceBreakBukkitAdapter.verifyPatchApplication(actionType, block, isEventCancelled, player,
+        job, handlerList);
   }
 }
