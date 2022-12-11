@@ -6,6 +6,7 @@ executors:
       - image: 'cimg/openjdk:8.0'
     environment:
       MAVEN_CLI_OPTS: '-Pcontinuous-integration -e -C --fail-at-end --no-transfer-progress'
+      POST_BUILD_MAVEN_CLI_OPS: '-Dmaven.compiler.useIncrementalCompilation=false'
   sonar-executor:
     docker:
       - image: 'cimg/openjdk:11.0'
@@ -43,13 +44,13 @@ jobs:
           at: '~/project'
       - run:
           name: 'mvn/unitTests'
-          command: mvn $MAVEN_CLI_OPTS test
+          command: mvn $MAVEN_CLI_OPTS $POST_BUILD_MAVEN_CLI_OPS test
       - run:
           name: 'mvn/integrationTests'
-          command: mvn $MAVEN_CLI_OPTS verify -DskipUnitTests
+          command: mvn $MAVEN_CLI_OPTS $POST_BUILD_MAVEN_CLI_OPS verify -DskipUnitTests
       - run:
           name: 'mvn/finalize'
-          command: mvn $MAVEN_CLI_OPTS install -Dmaven.test.skip=true
+          command: mvn $MAVEN_CLI_OPTS $POST_BUILD_MAVEN_CLI_OPS install -Dmaven.test.skip=true
       - run:
           name: 'publish/testResults'
           command: |
