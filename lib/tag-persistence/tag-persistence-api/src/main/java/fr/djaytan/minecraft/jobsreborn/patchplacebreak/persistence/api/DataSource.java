@@ -24,7 +24,6 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api;
 
-// TODO: document it
 public interface DataSource {
 
   void connect();

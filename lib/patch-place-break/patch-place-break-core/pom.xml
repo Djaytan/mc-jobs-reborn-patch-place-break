@@ -30,10 +30,15 @@
     <version>1.3.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>patch-place-break-api</artifactId>
-  <packaging>jar</packaging>
-  <name>PatchPlaceBreak API</name>
-  <description>API of the place-break patch</description>
+  <artifactId>patch-place-break-core</artifactId>
+  <packaging>pom</packaging>
+  <name>PatchPlaceBreak Core</name>
+  <description>Core components of the patch-place-break</description>
+
+  <modules>
+    <module>patch-place-break-api</module>
+    <module>patch-place-break-impl</module>
+  </modules>
 
   <properties>
     <main.basedir>${project.basedir}/../../..</main.basedir>

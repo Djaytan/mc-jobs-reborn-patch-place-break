@@ -36,8 +36,8 @@
   <description>Aggregator of place-and-break patch modules</description>
 
   <modules>
-    <module>patch-place-break-api</module>
     <module>patch-place-break-bukkit-adapter</module>
+    <module>patch-place-break-core</module>
   </modules>
 
   <properties>

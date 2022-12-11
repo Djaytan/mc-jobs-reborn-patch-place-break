@@ -26,17 +26,17 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-    <artifactId>tag-persistence</artifactId>
+    <artifactId>patch-place-break-core</artifactId>
     <version>1.3.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>tag-persistence-patch-connector</artifactId>
+  <artifactId>patch-place-break-impl</artifactId>
   <packaging>jar</packaging>
-  <name>Tag Persistence Patch Connector</name>
-  <description>Permits to connect the place-and-break patch and the persistence modules together</description>
+  <name>PatchPlaceBreak Implementation</name>
+  <description>The default implementation of the place-break patch API</description>
 
   <properties>
-    <main.basedir>${project.basedir}/../../..</main.basedir>
+    <main.basedir>${project.basedir}/../../../..</main.basedir>
   </properties>
 
   <dependencies>

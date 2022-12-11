@@ -152,7 +152,6 @@ public class SqliteDataSource implements SqlDataSource {
   @Override
   public @NotNull Connection getConnection() {
     if (hikariDataSource == null) {
-      // TODO: create PersistenceException in persistence-api instead
       throw new PatchPlaceBreakException("The connection pool must be setup before using it.");
     }
     try {

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.connector;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -36,16 +36,15 @@ import org.jetbrains.annotations.NotNull;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagPersistenceService;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.PatchPlaceAndBreakTagDao;
 
 @Singleton
-public class TagPersistenceServiceImpl implements TagPersistenceService {
+public class TagPersistenceService {
 
   private final PatchPlaceAndBreakTagDao patchPlaceAndBreakTagDao;
 
   @Inject
-  public TagPersistenceServiceImpl(@NotNull PatchPlaceAndBreakTagDao patchPlaceAndBreakTagDao) {
+  public TagPersistenceService(@NotNull PatchPlaceAndBreakTagDao patchPlaceAndBreakTagDao) {
     this.patchPlaceAndBreakTagDao = patchPlaceAndBreakTagDao;
   }
 
