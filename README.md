@@ -106,4 +106,4 @@ details).
 
 ## Licence
 
-This project is under the licence [MIT](https://opensource.org/licenses/MIT).
+This project is under the [MIT](https://opensource.org/licenses/MIT) license.
