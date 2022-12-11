@@ -80,15 +80,15 @@ public class SqliteDataSource implements SqlDataSource {
     String sqliteDatabaseFileName = sqliteDatabasePath.getFileName().toString();
 
     if (Files.exists(sqliteDatabasePath)) {
-      logger.info(
-          String.format("The SQLite database '%s' already exists: skipping database creation.",
-              sqliteDatabaseFileName));
+      logger.info(() -> String.format(
+          "The SQLite database '%s' already exists: skipping database creation.",
+          sqliteDatabaseFileName));
       return;
     }
 
     try {
       Files.createFile(sqliteDatabasePath);
-      logger.info(String.format("The SQLite database '%s' has been created successfully.",
+      logger.info(() -> String.format("The SQLite database '%s' has been created successfully.",
           sqliteDatabaseFileName));
     } catch (IOException e) {
       throw new PatchPlaceBreakException("Unable to create the SQLite database.", e);
@@ -110,14 +110,14 @@ public class SqliteDataSource implements SqlDataSource {
       connection.setAutoCommit(false);
 
       if (isTableExists(connection)) {
-        logger.info(String.format(
+        logger.info(() -> String.format(
             "The SQLite table '%s' already exists: skipping the table creation.", SQL_TABLE_NAME));
         return;
       }
 
       createTable(connection);
-      logger.info(
-          String.format("The SQLite table '%s' has been created successfully.", SQL_TABLE_NAME));
+      logger.info(() -> String.format("The SQLite table '%s' has been created successfully.",
+          SQL_TABLE_NAME));
     } catch (SQLException e) {
       throw new PatchPlaceBreakException(
           String.format("Failed to create the table '%s'.", SqlDataSource.SQL_TABLE_NAME), e);

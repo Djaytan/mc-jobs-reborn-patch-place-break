@@ -231,8 +231,10 @@ public class PatchPlaceBreakApi {
     Objects.requireNonNull(detectedPotentialConflictingPluginsNames);
 
     return CompletableFuture.runAsync(() -> {
-      if (isPlaceAndBreakAction(patchActionType, tagLocation).join() && !isEventCancelled) {
-        logger.warning(String.format(
+      boolean isPlaceAndBreakAction = isPlaceAndBreakAction(patchActionType, tagLocation).join();
+
+      if (isPlaceAndBreakAction && !isEventCancelled) {
+        logger.warning(() -> String.format(
             "Violation of a place-and-break patch detected! It's possible that's because of a"
                 + " conflict with another plugin. Please, report this full log message to the"
                 + " developer: player=%s, jobs=%s, actionType=%s, blockMaterial=%s,"
