@@ -27,19 +27,19 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.inject;
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.GuicePatchPlaceBreakImplModule;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite.GuicePersistenceSqliteModule;
+import lombok.NonNull;
 
 public final class GuiceBukkitInjector {
 
   private GuiceBukkitInjector() {}
 
-  public static void inject(@NotNull JavaPlugin javaPlugin, @NotNull Logger logger) {
+  public static void inject(@NonNull JavaPlugin javaPlugin, @NonNull Logger logger) {
     Injector injector = Guice.createInjector(new GuiceGenericBukkitModule(javaPlugin),
         new GuiceSpecificBukkitModule(javaPlugin, logger), new GuicePatchPlaceBreakImplModule(),
         new GuicePersistenceSqliteModule());

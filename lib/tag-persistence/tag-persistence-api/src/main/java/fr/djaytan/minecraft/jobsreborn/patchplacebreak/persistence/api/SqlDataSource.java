@@ -26,12 +26,12 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api;
 
 import java.sql.Connection;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 public interface SqlDataSource extends DataSource {
 
   String SQL_TABLE_NAME = "patch_place_and_break_tag";
 
-  @NotNull
+  @NonNull
   Connection getConnection();
 }

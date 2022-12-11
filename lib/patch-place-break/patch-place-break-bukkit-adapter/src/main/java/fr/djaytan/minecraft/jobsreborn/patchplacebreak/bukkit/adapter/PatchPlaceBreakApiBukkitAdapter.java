@@ -26,7 +26,6 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -38,7 +37,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
 
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
@@ -51,6 +49,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagVector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.ActionTypeConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.BlockFaceConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.LocationConverter;
+import lombok.NonNull;
 
 @Singleton
 public class PatchPlaceBreakApiBukkitAdapter {
@@ -61,9 +60,9 @@ public class PatchPlaceBreakApiBukkitAdapter {
   private final BlockFaceConverter blockFaceConverter;
 
   @Inject
-  public PatchPlaceBreakApiBukkitAdapter(@NotNull ActionTypeConverter actionTypeConverter,
-      @NotNull LocationConverter locationConverter, @NotNull PatchPlaceBreakApi patchPlaceBreakApi,
-      @NotNull BlockFaceConverter blockFaceConverter) {
+  public PatchPlaceBreakApiBukkitAdapter(ActionTypeConverter actionTypeConverter,
+      LocationConverter locationConverter, PatchPlaceBreakApi patchPlaceBreakApi,
+      BlockFaceConverter blockFaceConverter) {
     this.actionTypeConverter = actionTypeConverter;
     this.locationConverter = locationConverter;
     this.patchPlaceBreakApi = patchPlaceBreakApi;
@@ -71,14 +70,14 @@ public class PatchPlaceBreakApiBukkitAdapter {
   }
 
   @CanIgnoreReturnValue
-  public @NotNull CompletableFuture<Void> putTag(@NotNull Location location, boolean isEphemeral) {
+  public @NonNull CompletableFuture<Void> putTag(@NonNull Location location, boolean isEphemeral) {
     TagLocation tagLocation = locationConverter.convert(location);
     return patchPlaceBreakApi.putTag(tagLocation, isEphemeral);
   }
 
   @CanIgnoreReturnValue
-  public @NotNull CompletableFuture<Void> putBackTagOnMovedBlocks(@NotNull List<Block> blocks,
-      @NotNull BlockFace blockFace) {
+  public @NonNull CompletableFuture<Void> putBackTagOnMovedBlocks(@NonNull List<Block> blocks,
+      @NonNull BlockFace blockFace) {
     List<TagLocation> tagLocations = blocks.stream().map(Block::getLocation)
         .map(locationConverter::convert).collect(Collectors.toList());
     TagVector tagVector = blockFaceConverter.convert(blockFace);
@@ -86,28 +85,22 @@ public class PatchPlaceBreakApiBukkitAdapter {
   }
 
   @CanIgnoreReturnValue
-  public @NotNull CompletableFuture<Void> removeTag(@NotNull Location location) {
+  public @NonNull CompletableFuture<Void> removeTag(@NonNull Location location) {
     TagLocation tagLocation = locationConverter.convert(location);
     return patchPlaceBreakApi.removeTag(tagLocation);
   }
 
-  public @NotNull CompletableFuture<Boolean> isPlaceAndBreakAction(@NotNull ActionType actionType,
-      @NotNull Location location) {
+  public @NonNull CompletableFuture<Boolean> isPlaceAndBreakAction(@NonNull ActionType actionType,
+      @NonNull Location location) {
     PatchActionType patchActionType = actionTypeConverter.convert(actionType);
     TagLocation tagLocation = locationConverter.convert(location);
     return patchPlaceBreakApi.isPlaceAndBreakAction(patchActionType, tagLocation);
   }
 
   @CanIgnoreReturnValue
-  public @NotNull CompletableFuture<Void> verifyPatchApplication(@NotNull ActionType jobActionType,
-      @NotNull Block block, boolean isEventCancelled, @NotNull OfflinePlayer player,
-      @NotNull Job job, @NotNull HandlerList handlerList) {
-    Objects.requireNonNull(jobActionType);
-    Objects.requireNonNull(block);
-    Objects.requireNonNull(player);
-    Objects.requireNonNull(job);
-    Objects.requireNonNull(handlerList);
-
+  public @NonNull CompletableFuture<Void> verifyPatchApplication(@NonNull ActionType jobActionType,
+      @NonNull Block block, boolean isEventCancelled, @NonNull OfflinePlayer player,
+      @NonNull Job job, @NonNull HandlerList handlerList) {
     Location blockLocation = block.getLocation();
 
     PatchActionType patchActionType = actionTypeConverter.convert(jobActionType);
@@ -121,7 +114,7 @@ public class PatchPlaceBreakApiBukkitAdapter {
         isEventCancelled, playerName, jobName, detectedPotentialConflictingPluginsNames);
   }
 
-  private @NotNull List<String> getHandlerPluginsNames(@NotNull HandlerList handlerList) {
+  private @NonNull List<String> getHandlerPluginsNames(@NonNull HandlerList handlerList) {
     return Arrays.stream(handlerList.getRegisteredListeners())
         .map(registeredListener -> registeredListener.getPlugin().getName()).distinct()
         .collect(Collectors.toList());

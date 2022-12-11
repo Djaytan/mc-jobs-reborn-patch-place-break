@@ -34,7 +34,6 @@ import java.util.logging.Logger;
 import javax.inject.Named;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.CharStreams;
 import com.google.inject.AbstractModule;
@@ -42,6 +41,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.BukkitException;
+import lombok.NonNull;
 
 public class GuiceSpecificBukkitModule extends AbstractModule {
 
@@ -50,7 +50,7 @@ public class GuiceSpecificBukkitModule extends AbstractModule {
   private final JavaPlugin javaPlugin;
   private final Logger logger;
 
-  public GuiceSpecificBukkitModule(@NotNull JavaPlugin javaPlugin, @NotNull Logger logger) {
+  public GuiceSpecificBukkitModule(@NonNull JavaPlugin javaPlugin, @NonNull Logger logger) {
     this.javaPlugin = javaPlugin;
     this.logger = logger;
   }
@@ -58,13 +58,13 @@ public class GuiceSpecificBukkitModule extends AbstractModule {
   @Provides
   @Singleton
   @Named("PatchPlaceBreakLogger")
-  public @NotNull Logger provideLogger() {
+  public @NonNull Logger provideLogger() {
     return logger;
   }
 
   @Provides
   @Named("createTableSqlScript")
-  public @NotNull String provideCreateTableSqlScript() {
+  public @NonNull String provideCreateTableSqlScript() {
     logger.info("Retrieving SQL table creation script...");
     String scriptName = CREATE_TABLE_SQL_SCRIPT_NAME;
     InputStream scriptStream = getCreateTableSqlScriptStream(scriptName);
@@ -76,7 +76,7 @@ public class GuiceSpecificBukkitModule extends AbstractModule {
     }
   }
 
-  private @NotNull InputStream getCreateTableSqlScriptStream(@NotNull String scriptName) {
+  private @NonNull InputStream getCreateTableSqlScriptStream(@NonNull String scriptName) {
     InputStream scriptStream = javaPlugin.getResource(scriptName);
 
     if (scriptStream != null) {
@@ -85,7 +85,7 @@ public class GuiceSpecificBukkitModule extends AbstractModule {
     throw BukkitException.resourceNotFound(scriptName);
   }
 
-  private @NotNull String readScriptContent(InputStream scriptStream) throws IOException {
+  private @NonNull String readScriptContent(@NonNull InputStream scriptStream) throws IOException {
     try (Reader reader = new InputStreamReader(scriptStream, StandardCharsets.UTF_8)) {
       return CharStreams.toString(reader);
     }

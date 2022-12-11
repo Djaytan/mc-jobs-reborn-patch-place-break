@@ -28,18 +28,18 @@ import java.util.UUID;
 
 import javax.inject.Singleton;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 @Singleton
 public class UUIDStringSerializer implements StringSerializer<UUID> {
 
   @Override
-  public @NotNull String serialize(@NotNull UUID uuid) {
+  public @NonNull String serialize(@NonNull UUID uuid) {
     return uuid.toString();
   }
 
   @Override
-  public @NotNull UUID deserialize(@NotNull String string) {
+  public @NonNull UUID deserialize(@NonNull String string) {
     return UUID.fromString(string);
   }
 }

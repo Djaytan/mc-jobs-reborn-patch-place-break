@@ -29,7 +29,6 @@ import javax.inject.Singleton;
 
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
-import org.jetbrains.annotations.NotNull;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block.BlockBreakListener;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block.BlockGrowListener;
@@ -63,15 +62,13 @@ public class ListenerRegister {
   private final JobsPrePaymentVerificationListener jobsPrePaymentVerificationListener;
 
   @Inject
-  public ListenerRegister(@NotNull Plugin plugin, @NotNull PluginManager pluginManager,
-      @NotNull BlockBreakListener blockBreakListener, @NotNull BlockGrowListener blockGrowListener,
-      @NotNull BlockPistonListener blockPistonListener,
-      @NotNull BlockPlaceListener blockPlaceListener,
-      @NotNull BlockSpreadListener blockSpreadListener,
-      @NotNull JobsExpGainListener jobsExpGainListener,
-      @NotNull JobsExpGainVerificationListener jobsExpGainVerificationListener,
-      @NotNull JobsPrePaymentListener jobsPrePaymentListener,
-      @NotNull JobsPrePaymentVerificationListener jobsPrePaymentVerificationListener) {
+  public ListenerRegister(Plugin plugin, PluginManager pluginManager,
+      BlockBreakListener blockBreakListener, BlockGrowListener blockGrowListener,
+      BlockPistonListener blockPistonListener, BlockPlaceListener blockPlaceListener,
+      BlockSpreadListener blockSpreadListener, JobsExpGainListener jobsExpGainListener,
+      JobsExpGainVerificationListener jobsExpGainVerificationListener,
+      JobsPrePaymentListener jobsPrePaymentListener,
+      JobsPrePaymentVerificationListener jobsPrePaymentVerificationListener) {
     this.plugin = plugin;
     this.pluginManager = pluginManager;
 

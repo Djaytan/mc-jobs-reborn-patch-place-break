@@ -26,34 +26,33 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
-import org.jetbrains.annotations.NotNull;
+import javax.inject.Singleton;
 
 import com.gamingmesh.jobs.container.ActionType;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.BukkitAdapterException;
+import lombok.NonNull;
 
+@Singleton
 public class ActionTypeConverter implements UnidirectionalConverter<ActionType, PatchActionType> {
 
   @Override
-  public @NotNull PatchActionType convert(@NotNull ActionType jobActionType) {
-    Objects.requireNonNull(jobActionType);
-
+  public @NonNull PatchActionType convert(@NonNull ActionType jobActionType) {
     if (!isValidJobActionType(jobActionType)) {
       throw BukkitAdapterException.invalidJobType(jobActionType);
     }
     return PatchActionType.valueOf(jobActionType.name());
   }
 
-  private boolean isValidJobActionType(ActionType jobActionType) {
+  private boolean isValidJobActionType(@NonNull ActionType jobActionType) {
     List<ActionType> validJobActionTypes = getValidJobActionTypes();
     return validJobActionTypes.contains(jobActionType);
   }
 
-  private @NotNull List<ActionType> getValidJobActionTypes() {
+  private @NonNull List<ActionType> getValidJobActionTypes() {
     return Arrays.stream(PatchActionType.values()).map(PatchActionType::name)
         .map(ActionType::valueOf).collect(Collectors.toList());
   }

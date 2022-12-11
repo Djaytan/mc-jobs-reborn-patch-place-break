@@ -32,7 +32,6 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.jetbrains.annotations.NotNull;
 
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.container.ActionInfo;
@@ -56,8 +55,7 @@ public class JobsPrePaymentListener implements Listener {
   private final PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter;
 
   @Inject
-  public JobsPrePaymentListener(
-      @NotNull PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter) {
+  public JobsPrePaymentListener(PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter) {
     this.patchPlaceBreakApiBukkitAdapter = patchPlaceBreakApiBukkitAdapter;
   }
 
@@ -72,7 +70,7 @@ public class JobsPrePaymentListener implements Listener {
    * @param event The jobs pre-payment event.
    */
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void onJobsPayment(@NotNull JobsPrePaymentEvent event) {
+  public void onJobsPayment(JobsPrePaymentEvent event) {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 

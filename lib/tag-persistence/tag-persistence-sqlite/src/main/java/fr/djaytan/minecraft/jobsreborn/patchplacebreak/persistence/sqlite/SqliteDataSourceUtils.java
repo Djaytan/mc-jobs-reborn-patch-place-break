@@ -30,7 +30,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 @Singleton
 public class SqliteDataSourceUtils {
@@ -40,15 +40,15 @@ public class SqliteDataSourceUtils {
   private final Path dataFolder;
 
   @Inject
-  public SqliteDataSourceUtils(@NotNull @Named("dataFolder") Path dataFolder) {
+  public SqliteDataSourceUtils(@Named("dataFolder") Path dataFolder) {
     this.dataFolder = dataFolder;
   }
 
-  public @NotNull Path getSqliteDatabasePath() {
+  public @NonNull Path getSqliteDatabasePath() {
     return dataFolder.resolve(SQLITE_DATABASE_FILE_NAME);
   }
 
-  public @NotNull String getJdbcUrl() {
+  public @NonNull String getJdbcUrl() {
     Path sqliteDatabasePath = getSqliteDatabasePath();
     return String.format("jdbc:sqlite:%s", sqliteDatabasePath);
   }

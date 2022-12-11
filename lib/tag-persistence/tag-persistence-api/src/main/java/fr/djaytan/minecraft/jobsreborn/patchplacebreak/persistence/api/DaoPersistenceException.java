@@ -24,8 +24,6 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api;
 
-import org.jetbrains.annotations.NotNull;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
 import lombok.AccessLevel;
@@ -39,19 +37,19 @@ public class DaoPersistenceException extends PersistenceException {
   private static final String FETCH = "Failed to fetch the tag with the following location: %s";
   private static final String PERSIST = "Failed to persist the following tag: %s";
 
-  public static @NotNull DaoPersistenceException delete(@NonNull TagLocation tagLocation,
+  public static @NonNull DaoPersistenceException delete(@NonNull TagLocation tagLocation,
       @NonNull Throwable cause) {
     String message = String.format(DELETE, tagLocation);
     return new DaoPersistenceException(message, cause);
   }
 
-  public static @NotNull DaoPersistenceException fetch(@NonNull TagLocation tagLocation,
+  public static @NonNull DaoPersistenceException fetch(@NonNull TagLocation tagLocation,
       @NonNull Throwable cause) {
     String message = String.format(FETCH, tagLocation);
     return new DaoPersistenceException(message, cause);
   }
 
-  public static @NotNull DaoPersistenceException persist(@NonNull Tag tag,
+  public static @NonNull DaoPersistenceException persist(@NonNull Tag tag,
       @NonNull Throwable cause) {
     String message = String.format(PERSIST, tag);
     return new DaoPersistenceException(message, cause);

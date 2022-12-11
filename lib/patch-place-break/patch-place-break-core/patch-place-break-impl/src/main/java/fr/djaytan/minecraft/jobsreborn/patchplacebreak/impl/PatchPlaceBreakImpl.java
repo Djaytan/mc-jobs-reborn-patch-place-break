@@ -28,7 +28,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
@@ -37,8 +36,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchActionType;
@@ -46,6 +43,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagVector;
+import lombok.NonNull;
 
 @Singleton
 public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
@@ -54,27 +52,22 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   private final TagPersistenceService tagPersistenceService;
 
   @Inject
-  public PatchPlaceBreakImpl(@NotNull @Named("PatchPlaceBreakLogger") Logger logger,
-      @NotNull TagPersistenceService tagPersistenceService) {
+  public PatchPlaceBreakImpl(@Named("PatchPlaceBreakLogger") Logger logger,
+      TagPersistenceService tagPersistenceService) {
     this.logger = logger;
     this.tagPersistenceService = tagPersistenceService;
   }
 
   @CanIgnoreReturnValue
-  public @NotNull CompletableFuture<Void> putTag(@NotNull TagLocation tagLocation,
+  public @NonNull CompletableFuture<Void> putTag(@NonNull TagLocation tagLocation,
       boolean isEphemeral) {
-    Objects.requireNonNull(tagLocation);
-
     return CompletableFuture
         .runAsync(() -> tagPersistenceService.persistTag(isEphemeral, tagLocation).join());
   }
 
   @CanIgnoreReturnValue
-  public @NotNull CompletableFuture<Void> putBackTagOnMovedBlocks(
-      @NotNull List<TagLocation> tagLocations, @NotNull TagVector direction) {
-    Objects.requireNonNull(tagLocations);
-    Objects.requireNonNull(direction);
-
+  public @NonNull CompletableFuture<Void> putBackTagOnMovedBlocks(
+      @NonNull List<TagLocation> tagLocations, @NonNull TagVector direction) {
     return CompletableFuture.runAsync(() -> {
       for (TagLocation tagLocation : tagLocations) {
         Optional<Tag> tag = getTag(tagLocation).join();
@@ -90,17 +83,12 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   }
 
   @CanIgnoreReturnValue
-  public @NotNull CompletableFuture<Void> removeTag(@NotNull TagLocation tagLocation) {
-    Objects.requireNonNull(tagLocation);
-
+  public @NonNull CompletableFuture<Void> removeTag(@NonNull TagLocation tagLocation) {
     return CompletableFuture.runAsync(() -> tagPersistenceService.removeTag(tagLocation).join());
   }
 
-  public @NotNull CompletableFuture<Boolean> isPlaceAndBreakAction(
-      @NotNull PatchActionType patchActionType, @NotNull TagLocation tagLocation) {
-    Objects.requireNonNull(patchActionType);
-    Objects.requireNonNull(tagLocation);
-
+  public @NonNull CompletableFuture<Boolean> isPlaceAndBreakAction(
+      @NonNull PatchActionType patchActionType, @NonNull TagLocation tagLocation) {
     return CompletableFuture.supplyAsync(() -> {
       Optional<Tag> tag = getTag(tagLocation).join();
 
@@ -120,17 +108,10 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   }
 
   @CanIgnoreReturnValue
-  public @NotNull CompletableFuture<Void> verifyPatchApplication(
-      @NotNull PatchActionType patchActionType, @NotNull TagLocation tagLocation,
-      @NotNull String blockTypeName, boolean isEventCancelled, @NotNull String playerName,
-      @NotNull String jobName, @NotNull List<String> detectedPotentialConflictingPluginsNames) {
-    Objects.requireNonNull(patchActionType);
-    Objects.requireNonNull(tagLocation);
-    Objects.requireNonNull(blockTypeName);
-    Objects.requireNonNull(playerName);
-    Objects.requireNonNull(jobName);
-    Objects.requireNonNull(detectedPotentialConflictingPluginsNames);
-
+  public @NonNull CompletableFuture<Void> verifyPatchApplication(
+      @NonNull PatchActionType patchActionType, @NonNull TagLocation tagLocation,
+      @NonNull String blockTypeName, boolean isEventCancelled, @NonNull String playerName,
+      @NonNull String jobName, @NonNull List<String> detectedPotentialConflictingPluginsNames) {
     return CompletableFuture.runAsync(() -> {
       boolean isPlaceAndBreakAction = isPlaceAndBreakAction(patchActionType, tagLocation).join();
 
@@ -146,11 +127,11 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
     });
   }
 
-  private @NotNull CompletableFuture<Optional<Tag>> getTag(@NotNull TagLocation tagLocation) {
+  private @NonNull CompletableFuture<Optional<Tag>> getTag(@NonNull TagLocation tagLocation) {
     return tagPersistenceService.findTagByLocation(tagLocation);
   }
 
-  private boolean isActionToPatch(@NotNull PatchActionType patchActionType) {
+  private boolean isActionToPatch(@NonNull PatchActionType patchActionType) {
     return Arrays.asList(PatchActionType.BREAK, PatchActionType.TNTBREAK, PatchActionType.PLACE)
         .contains(patchActionType);
   }

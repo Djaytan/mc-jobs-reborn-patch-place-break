@@ -36,7 +36,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
-import org.jetbrains.annotations.NotNull;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakApiBukkitAdapter;
 
@@ -61,8 +60,7 @@ public class BlockPistonListener implements Listener {
   private final PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter;
 
   @Inject
-  public BlockPistonListener(
-      @NotNull PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter) {
+  public BlockPistonListener(PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter) {
     this.patchPlaceBreakApiBukkitAdapter = patchPlaceBreakApiBukkitAdapter;
   }
 
@@ -76,7 +74,7 @@ public class BlockPistonListener implements Listener {
    * @param event The block piston extend event.
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockPistonExtend(@NotNull BlockPistonExtendEvent event) {
+  public void onBlockPistonExtend(BlockPistonExtendEvent event) {
     BlockFace blockFace = event.getDirection();
     List<Block> blocks = event.getBlocks();
     patchPlaceBreakApiBukkitAdapter.putBackTagOnMovedBlocks(blocks, blockFace);
@@ -92,7 +90,7 @@ public class BlockPistonListener implements Listener {
    * @param event The block piston retract event.
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockPistonRetract(@NotNull BlockPistonRetractEvent event) {
+  public void onBlockPistonRetract(BlockPistonRetractEvent event) {
     BlockFace blockFace = event.getDirection();
     List<Block> blocks = event.getBlocks();
     patchPlaceBreakApiBukkitAdapter.putBackTagOnMovedBlocks(blocks, blockFace);

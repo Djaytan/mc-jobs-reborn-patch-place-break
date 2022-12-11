@@ -24,14 +24,12 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
 
-import java.util.Objects;
-
 import javax.inject.Singleton;
 
 import org.bukkit.Location;
-import org.jetbrains.annotations.NotNull;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
+import lombok.NonNull;
 
 /**
  * Represents a converter between Bukkit {@link Location} and {@link TagLocation}.
@@ -50,14 +48,11 @@ public class LocationConverter implements UnidirectionalConverter<Location, TagL
    * @throws NullPointerException if the Bukkit world of the Bukkit location is <code>null</code>.
    */
   @Override
-  public @NotNull TagLocation convert(@NotNull Location convertible) {
-    Objects.requireNonNull(convertible.getWorld());
-
+  public @NonNull TagLocation convert(@NonNull Location convertible) {
     String worldName = convertible.getWorld().getName();
     double x = convertible.getX();
     double y = convertible.getY();
     double z = convertible.getZ();
-
     return TagLocation.of(worldName, x, y, z);
   }
 }

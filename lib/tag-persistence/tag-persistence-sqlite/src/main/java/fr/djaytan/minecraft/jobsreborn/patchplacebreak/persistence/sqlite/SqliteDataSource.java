@@ -38,13 +38,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.PersistenceException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.SqlDataSource;
+import lombok.NonNull;
 
 @Singleton
 public class SqliteDataSource implements SqlDataSource {
@@ -56,9 +55,8 @@ public class SqliteDataSource implements SqlDataSource {
   private HikariDataSource hikariDataSource;
 
   @Inject
-  public SqliteDataSource(@NotNull @Named("createTableSqlScript") String createTableSqlScript,
-      @NotNull @Named("PatchPlaceBreakLogger") Logger logger,
-      @NotNull SqliteDataSourceUtils sqliteDataSourceUtils) {
+  public SqliteDataSource(@Named("createTableSqlScript") String createTableSqlScript,
+      @Named("PatchPlaceBreakLogger") Logger logger, SqliteDataSourceUtils sqliteDataSourceUtils) {
     this.createTableSqlScript = createTableSqlScript;
     this.logger = logger;
     this.sqliteDataSourceUtils = sqliteDataSourceUtils;
@@ -130,7 +128,7 @@ public class SqliteDataSource implements SqlDataSource {
     }
   }
 
-  private boolean isTableExists(@NotNull Connection connection) throws SQLException {
+  private boolean isTableExists(@NonNull Connection connection) throws SQLException {
     String sqlQuery = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?";
 
     try (PreparedStatement query = connection.prepareStatement(sqlQuery)) {
@@ -140,7 +138,7 @@ public class SqliteDataSource implements SqlDataSource {
     }
   }
 
-  private void createTable(@NotNull Connection connection) throws SQLException {
+  private void createTable(@NonNull Connection connection) throws SQLException {
     try (Statement dbSqlScriptStmt = connection.createStatement()) {
       dbSqlScriptStmt.addBatch(createTableSqlScript);
       dbSqlScriptStmt.executeBatch();
@@ -156,7 +154,7 @@ public class SqliteDataSource implements SqlDataSource {
   }
 
   @Override
-  public @NotNull Connection getConnection() {
+  public @NonNull Connection getConnection() {
     if (hikariDataSource == null) {
       throw SqlitePersistenceException.connectionPoolNotSetup();
     }

@@ -24,13 +24,13 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite.serializer;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 public interface Serializer<T, U> {
 
-  @NotNull
-  U serialize(@NotNull T object);
+  @NonNull
+  U serialize(@NonNull T object);
 
-  @NotNull
-  T deserialize(@NotNull U object);
+  @NonNull
+  T deserialize(@NonNull U object);
 }

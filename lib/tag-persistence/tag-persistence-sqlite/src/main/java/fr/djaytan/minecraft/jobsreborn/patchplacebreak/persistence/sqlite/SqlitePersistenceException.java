@@ -24,8 +24,6 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite;
 
-import org.jetbrains.annotations.NotNull;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.PersistenceException;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -38,11 +36,11 @@ public class SqlitePersistenceException extends PersistenceException {
       "The connection pool must be setup before using it.";
   private static final String DATABASE_CREATION = "Unable to create the database.";
 
-  public static @NotNull SqlitePersistenceException connectionPoolNotSetup() {
+  public static @NonNull SqlitePersistenceException connectionPoolNotSetup() {
     return new SqlitePersistenceException(CONNECTION_POOL_NOT_SETUP);
   }
 
-  public static @NotNull SqlitePersistenceException databaseCreation(@NonNull Throwable cause) {
+  public static @NonNull SqlitePersistenceException databaseCreation(@NonNull Throwable cause) {
     return new SqlitePersistenceException(DATABASE_CREATION, cause);
   }
 }

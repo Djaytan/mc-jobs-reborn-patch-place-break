@@ -32,7 +32,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockSpreadEvent;
-import org.jetbrains.annotations.NotNull;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakApiBukkitAdapter;
 
@@ -53,8 +52,7 @@ public class BlockSpreadListener implements Listener {
   private final PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter;
 
   @Inject
-  public BlockSpreadListener(
-      @NotNull PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter) {
+  public BlockSpreadListener(PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter) {
     this.patchPlaceBreakApiBukkitAdapter = patchPlaceBreakApiBukkitAdapter;
   }
 
@@ -68,7 +66,7 @@ public class BlockSpreadListener implements Listener {
    * @param event The block spread event.
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockSpread(@NotNull BlockSpreadEvent event) {
+  public void onBlockSpread(BlockSpreadEvent event) {
     Location location = event.getBlock().getLocation();
     patchPlaceBreakApiBukkitAdapter.removeTag(location);
   }

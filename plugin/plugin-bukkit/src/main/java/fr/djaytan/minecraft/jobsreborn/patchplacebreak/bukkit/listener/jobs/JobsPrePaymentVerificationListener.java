@@ -33,7 +33,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.jetbrains.annotations.NotNull;
 
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.container.ActionInfo;
@@ -57,7 +56,7 @@ public class JobsPrePaymentVerificationListener implements Listener {
 
   @Inject
   public JobsPrePaymentVerificationListener(
-      @NotNull PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter) {
+      PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter) {
     this.patchPlaceBreakApiBukkitAdapter = patchPlaceBreakApiBukkitAdapter;
   }
 
@@ -71,7 +70,7 @@ public class JobsPrePaymentVerificationListener implements Listener {
    * @param event The jobs pre-payment event.
    */
   @EventHandler(priority = EventPriority.MONITOR)
-  public void onJobsExpGain(@NotNull JobsPrePaymentEvent event) {
+  public void onJobsExpGain(JobsPrePaymentEvent event) {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 

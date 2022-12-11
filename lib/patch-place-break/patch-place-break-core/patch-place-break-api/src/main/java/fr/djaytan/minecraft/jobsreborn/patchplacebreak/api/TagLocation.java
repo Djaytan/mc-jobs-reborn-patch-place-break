@@ -24,8 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
-import org.jetbrains.annotations.NotNull;
-
+import lombok.NonNull;
 import lombok.Value;
 
 /**
@@ -34,6 +33,7 @@ import lombok.Value;
 @Value(staticConstructor = "of")
 public class TagLocation {
 
+  @NonNull
   String worldName;
   double x;
   double y;
@@ -45,7 +45,7 @@ public class TagLocation {
    * @param tagVector The adjustment to apply to this tag location.
    * @return The new tag location with the applied adjustment.
    */
-  public @NotNull TagLocation adjust(TagVector tagVector) {
+  public @NonNull TagLocation adjust(@NonNull TagVector tagVector) {
     double newX = x + tagVector.getModX();
     double newY = y + tagVector.getModY();
     double newZ = z + tagVector.getModZ();

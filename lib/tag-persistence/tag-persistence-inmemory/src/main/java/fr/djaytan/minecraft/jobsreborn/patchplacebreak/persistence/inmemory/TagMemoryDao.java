@@ -31,11 +31,10 @@ import java.util.UUID;
 
 import javax.inject.Singleton;
 
-import org.jetbrains.annotations.NotNull;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.TagDao;
+import lombok.NonNull;
 
 @Singleton
 public class TagMemoryDao implements TagDao {
@@ -43,13 +42,13 @@ public class TagMemoryDao implements TagDao {
   private final Map<UUID, Tag> tagMap = new HashMap<>();
 
   @Override
-  public void put(@NotNull Tag tag) {
+  public void put(@NonNull Tag tag) {
     delete(tag.getTagLocation());
     tagMap.put(tag.getUuid(), tag);
   }
 
   @Override
-  public @NotNull Optional<Tag> findByLocation(@NotNull TagLocation tagLocation) {
+  public @NonNull Optional<Tag> findByLocation(@NonNull TagLocation tagLocation) {
     for (Tag tag : tagMap.values()) {
       if (tag.getTagLocation().equals(tagLocation)) {
         return Optional.of(tag);
@@ -59,7 +58,7 @@ public class TagMemoryDao implements TagDao {
   }
 
   @Override
-  public void delete(@NotNull TagLocation tagLocation) {
+  public void delete(@NonNull TagLocation tagLocation) {
     Optional<Tag> tag = findByLocation(tagLocation);
     tag.ifPresent(t -> tagMap.remove(t.getUuid()));
   }

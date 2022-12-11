@@ -28,9 +28,9 @@ import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
+import lombok.NonNull;
 
 /**
  * This interface represents the API to apply place-and-break patch.
@@ -83,8 +83,8 @@ public interface PatchPlaceBreakApi {
    * @return void
    */
   @CanIgnoreReturnValue
-  @NotNull
-  CompletableFuture<Void> putTag(@NotNull TagLocation tagLocation, boolean isEphemeral);
+  @NonNull
+  CompletableFuture<Void> putTag(@NonNull TagLocation tagLocation, boolean isEphemeral);
 
 
   /**
@@ -102,9 +102,9 @@ public interface PatchPlaceBreakApi {
    * @return void
    */
   @CanIgnoreReturnValue
-  @NotNull
-  CompletableFuture<Void> putBackTagOnMovedBlocks(@NotNull List<TagLocation> tagLocations,
-      @NotNull TagVector direction);
+  @NonNull
+  CompletableFuture<Void> putBackTagOnMovedBlocks(@NonNull List<TagLocation> tagLocations,
+      @NonNull TagVector direction);
 
 
   /**
@@ -115,8 +115,8 @@ public interface PatchPlaceBreakApi {
    * @return void
    */
   @CanIgnoreReturnValue
-  @NotNull
-  CompletableFuture<Void> removeTag(@NotNull TagLocation tagLocation);
+  @NonNull
+  CompletableFuture<Void> removeTag(@NonNull TagLocation tagLocation);
 
   /**
    * This method permit to check if a jobs ActionType with a given Block is a place-and-break
@@ -136,9 +136,9 @@ public interface PatchPlaceBreakApi {
    * @param tagLocation The block's location with a potential place-and-break patch tag.
    * @return <code>true</code> if it's a place-and-break exploit, <code>false</code> otherwise.
    */
-  @NotNull
-  CompletableFuture<Boolean> isPlaceAndBreakAction(@NotNull PatchActionType patchActionType,
-      @NotNull TagLocation tagLocation);
+  @NonNull
+  CompletableFuture<Boolean> isPlaceAndBreakAction(@NonNull PatchActionType patchActionType,
+      @NonNull TagLocation tagLocation);
 
   /**
    * The purpose of this method is to verify the well-application of the patch if required for a
@@ -158,9 +158,9 @@ public interface PatchPlaceBreakApi {
    * @return void
    */
   @CanIgnoreReturnValue
-  @NotNull
-  CompletableFuture<Void> verifyPatchApplication(@NotNull PatchActionType patchActionType,
-      @NotNull TagLocation tagLocation, @NotNull String blockTypeName, boolean isEventCancelled,
-      @NotNull String playerName, @NotNull String jobName,
-      @NotNull List<String> detectedPotentialConflictingPluginsNames);
+  @NonNull
+  CompletableFuture<Void> verifyPatchApplication(@NonNull PatchActionType patchActionType,
+      @NonNull TagLocation tagLocation, @NonNull String blockTypeName, boolean isEventCancelled,
+      @NonNull String playerName, @NonNull String jobName,
+      @NonNull List<String> detectedPotentialConflictingPluginsNames);
 }

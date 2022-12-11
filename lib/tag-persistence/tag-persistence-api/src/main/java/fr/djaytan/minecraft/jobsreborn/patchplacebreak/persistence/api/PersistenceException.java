@@ -24,8 +24,6 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api;
 
-import org.jetbrains.annotations.NotNull;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -40,17 +38,17 @@ public class PersistenceException extends PatchPlaceBreakException {
   private static final String DATABASE_CONNECTION_RELEASING =
       "Something prevent the database connection releasing.";
 
-  public static @NotNull PersistenceException databaseConnectionEstablishment(
+  public static @NonNull PersistenceException databaseConnectionEstablishment(
       @NonNull Throwable cause) {
     return new PersistenceException(DATABASE_CONNECTION_ESTABLISHMENT, cause);
   }
 
-  public static @NotNull PersistenceException databaseConnectionReleasing(
+  public static @NonNull PersistenceException databaseConnectionReleasing(
       @NonNull Throwable cause) {
     return new PersistenceException(DATABASE_CONNECTION_RELEASING, cause);
   }
 
-  public static @NotNull PersistenceException tableCreation(@NonNull String tableName,
+  public static @NonNull PersistenceException tableCreation(@NonNull String tableName,
       @NonNull Throwable cause) {
     String message = String.format(TABLE_CREATION, tableName);
     return new PersistenceException(message, cause);

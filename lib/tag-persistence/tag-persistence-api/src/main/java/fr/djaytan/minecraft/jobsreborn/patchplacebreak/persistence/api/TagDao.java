@@ -26,17 +26,16 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api;
 
 import java.util.Optional;
 
-import org.jetbrains.annotations.NotNull;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
+import lombok.NonNull;
 
 public interface TagDao {
 
-  void put(@NotNull Tag tag);
+  void put(@NonNull Tag tag);
 
-  @NotNull
-  Optional<Tag> findByLocation(@NotNull TagLocation tagLocation);
+  @NonNull
+  Optional<Tag> findByLocation(@NonNull TagLocation tagLocation);
 
-  void delete(@NotNull TagLocation tagLocation);
+  void delete(@NonNull TagLocation tagLocation);
 }

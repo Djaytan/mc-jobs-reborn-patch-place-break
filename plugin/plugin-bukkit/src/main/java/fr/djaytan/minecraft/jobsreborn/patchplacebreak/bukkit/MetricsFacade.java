@@ -32,7 +32,6 @@ import javax.inject.Singleton;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 @Singleton
 public class MetricsFacade {
@@ -43,8 +42,7 @@ public class MetricsFacade {
   private final Logger logger;
 
   @Inject
-  public MetricsFacade(@NotNull JavaPlugin javaPlugin,
-      @NotNull @Named("PatchPlaceBreakLogger") Logger logger) {
+  public MetricsFacade(JavaPlugin javaPlugin, @Named("PatchPlaceBreakLogger") Logger logger) {
     this.javaPlugin = javaPlugin;
     this.logger = logger;
   }

@@ -105,7 +105,6 @@
     <slf4j.version>2.0.5</slf4j.version>
     <sqlite.version>3.40.0.0</sqlite.version>
     <jobs.version>v4.17.2</jobs.version>
-    <annotationsJetbrains.version>23.1.0</annotationsJetbrains.version>
     <lombok.version>1.18.24</lombok.version>
     <spigotApi.version>1.11.2-R0.1-SNAPSHOT</spigotApi.version>
     <bstat.version>3.0.0</bstat.version>
@@ -212,12 +211,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains</groupId>
-      <artifactId>annotations</artifactId>
-      <version>${annotationsJetbrains.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>${lombok.version}</version>
@@ -319,6 +312,7 @@
         <configuration>
           <groups>java.,javax.,org.,com.</groups>
           <staticGroups>java,*</staticGroups>
+          <removeUnused>true</removeUnused>
         </configuration>
         <executions>
           <execution>

@@ -32,11 +32,10 @@ import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.jetbrains.annotations.NotNull;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.TagDao;
+import lombok.NonNull;
 
 @Singleton
 public class TagPersistenceService {
@@ -44,12 +43,12 @@ public class TagPersistenceService {
   private final TagDao tagDao;
 
   @Inject
-  public TagPersistenceService(@NotNull TagDao tagDao) {
+  public TagPersistenceService(TagDao tagDao) {
     this.tagDao = tagDao;
   }
 
-  public @NotNull CompletableFuture<Void> persistTag(boolean isEphemeral,
-      @NotNull TagLocation tagLocation) {
+  public @NonNull CompletableFuture<Void> persistTag(boolean isEphemeral,
+      @NonNull TagLocation tagLocation) {
     return CompletableFuture.runAsync(() -> {
       UUID tagUuid = UUID.randomUUID();
       LocalDateTime localDateTime = LocalDateTime.now();
@@ -58,12 +57,12 @@ public class TagPersistenceService {
     });
   }
 
-  public @NotNull CompletableFuture<Optional<Tag>> findTagByLocation(
-      @NotNull TagLocation tagLocation) {
+  public @NonNull CompletableFuture<Optional<Tag>> findTagByLocation(
+      @NonNull TagLocation tagLocation) {
     return CompletableFuture.supplyAsync(() -> tagDao.findByLocation(tagLocation));
   }
 
-  public @NotNull CompletableFuture<Void> removeTag(@NotNull TagLocation tagLocation) {
+  public @NonNull CompletableFuture<Void> removeTag(@NonNull TagLocation tagLocation) {
     return CompletableFuture.runAsync(() -> tagDao.delete(tagLocation));
   }
 }

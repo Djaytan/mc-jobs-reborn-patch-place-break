@@ -35,79 +35,80 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.jetbrains.annotations.NotNull;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
+import lombok.NonNull;
+
 public class GuiceGenericBukkitModule extends AbstractModule {
 
   private final JavaPlugin plugin;
 
-  public GuiceGenericBukkitModule(@NotNull JavaPlugin plugin) {
+  public GuiceGenericBukkitModule(@NonNull JavaPlugin plugin) {
     this.plugin = plugin;
   }
 
   @Provides
   @Singleton
-  public @NotNull Plugin providePlugin() {
+  public @NonNull Plugin providePlugin() {
     return plugin;
   }
 
   @Provides
   @Singleton
-  public @NotNull JavaPlugin provideJavaPlugin() {
+  public @NonNull JavaPlugin provideJavaPlugin() {
     return plugin;
   }
 
   @Provides
   @Singleton
-  public @NotNull PluginManager providePluginManager() {
+  public @NonNull PluginManager providePluginManager() {
     return plugin.getServer().getPluginManager();
   }
 
   @Provides
   @Singleton
-  public @NotNull ServicesManager provideServicesManager() {
+  public @NonNull ServicesManager provideServicesManager() {
     return plugin.getServer().getServicesManager();
   }
 
   @Provides
   @Singleton
-  public @NotNull Server provideServer() {
+  public @NonNull Server provideServer() {
     return plugin.getServer();
   }
 
   @Provides
   @Singleton
-  public @NotNull ItemFactory provideItemFactory() {
+  public @NonNull ItemFactory provideItemFactory() {
     return plugin.getServer().getItemFactory();
   }
 
   @Provides
   @Singleton
-  public @NotNull ConsoleCommandSender provideConsoleCommandSender() {
+  public @NonNull ConsoleCommandSender provideConsoleCommandSender() {
     return plugin.getServer().getConsoleSender();
   }
 
   @Provides
   @Singleton
-  public @NotNull BukkitScheduler provideBukkitScheduler() {
+  public @NonNull BukkitScheduler provideBukkitScheduler() {
     return plugin.getServer().getScheduler();
   }
 
   @Provides
   @Named("dataFolder")
   @Singleton
-  public @NotNull Path provideDataFolderPath() {
+  public @NonNull Path provideDataFolderPath() {
     return plugin.getDataFolder().toPath();
   }
 
   @Provides
   @Singleton
-  public @NotNull Executor provideMainThreadExecutor() {
+  public @NonNull Executor provideMainThreadExecutor() {
     return runnable -> plugin.getServer().getScheduler().runTask(plugin, runnable);
   }
 }

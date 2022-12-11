@@ -24,9 +24,8 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit;
 
-import org.jetbrains.annotations.NotNull;
-
 import lombok.AccessLevel;
+import lombok.NonNull;
 import lombok.experimental.StandardException;
 
 @StandardException(access = AccessLevel.PROTECTED)
@@ -35,12 +34,12 @@ public class BukkitException extends RuntimeException {
   private static final String MALFORMED_RESOURCE = "Cannot read the resource '%s'.";
   private static final String RESOURCE_NOT_FOUND = "Resource '%s' not found.";
 
-  public static @NotNull BukkitException malformedResource(@NotNull String resourceName) {
+  public static @NonNull BukkitException malformedResource(@NonNull String resourceName) {
     String message = String.format(MALFORMED_RESOURCE, resourceName);
     return new BukkitException(message);
   }
 
-  public static @NotNull BukkitException resourceNotFound(@NotNull String resourceName) {
+  public static @NonNull BukkitException resourceNotFound(@NonNull String resourceName) {
     String message = String.format(RESOURCE_NOT_FOUND, resourceName);
     return new BukkitException(message);
   }

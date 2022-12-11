@@ -33,7 +33,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.jetbrains.annotations.NotNull;
 
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.container.ActionInfo;
@@ -57,7 +56,7 @@ public class JobsExpGainVerificationListener implements Listener {
 
   @Inject
   public JobsExpGainVerificationListener(
-      @NotNull PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter) {
+      PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter) {
     this.patchPlaceBreakApiBukkitAdapter = patchPlaceBreakApiBukkitAdapter;
   }
 
@@ -71,7 +70,7 @@ public class JobsExpGainVerificationListener implements Listener {
    * @param event The jobs exp-gain event.
    */
   @EventHandler(priority = EventPriority.MONITOR)
-  public void onJobsExpGain(@NotNull JobsExpGainEvent event) {
+  public void onJobsExpGain(JobsExpGainEvent event) {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 

@@ -29,7 +29,7 @@ import java.time.format.DateTimeFormatter;
 
 import javax.inject.Singleton;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 @Singleton
 public class LocalDateTimeStringSerializer implements StringSerializer<LocalDateTime> {
@@ -37,12 +37,12 @@ public class LocalDateTimeStringSerializer implements StringSerializer<LocalDate
   private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 
   @Override
-  public @NotNull String serialize(@NotNull LocalDateTime localDateTime) {
+  public @NonNull String serialize(@NonNull LocalDateTime localDateTime) {
     return localDateTime.format(formatter);
   }
 
   @Override
-  public @NotNull LocalDateTime deserialize(@NotNull String string) {
+  public @NonNull LocalDateTime deserialize(@NonNull String string) {
     return LocalDateTime.parse(string, formatter);
   }
 }

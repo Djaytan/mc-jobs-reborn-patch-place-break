@@ -38,8 +38,6 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.google.inject.name.Named;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.Tag;
@@ -51,6 +49,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.TagDao;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite.serializer.BooleanIntegerSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite.serializer.LocalDateTimeStringSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite.serializer.UUIDStringSerializer;
+import lombok.NonNull;
 
 @Singleton
 public class TagSqliteDao implements TagDao {
@@ -62,11 +61,9 @@ public class TagSqliteDao implements TagDao {
   private final UUIDStringSerializer uuidStringSerializer;
 
   @Inject
-  public TagSqliteDao(@NotNull BooleanIntegerSerializer booleanIntegerSerializer,
-      @NotNull SqlDataSource sqlDataSource,
-      @NotNull LocalDateTimeStringSerializer localDateTimeStringSerializer,
-      @NotNull @Named("PatchPlaceBreakLogger") Logger logger,
-      @NotNull UUIDStringSerializer uuidStringSerializer) {
+  public TagSqliteDao(BooleanIntegerSerializer booleanIntegerSerializer,
+      SqlDataSource sqlDataSource, LocalDateTimeStringSerializer localDateTimeStringSerializer,
+      @Named("PatchPlaceBreakLogger") Logger logger, UUIDStringSerializer uuidStringSerializer) {
     this.booleanIntegerSerializer = booleanIntegerSerializer;
     this.sqlDataSource = sqlDataSource;
     this.localDateTimeStringSerializer = localDateTimeStringSerializer;
@@ -75,7 +72,7 @@ public class TagSqliteDao implements TagDao {
   }
 
   @Override
-  public void put(@NotNull Tag tag) {
+  public void put(@NonNull Tag tag) {
     try (Connection connection = sqlDataSource.getConnection()) {
       String sqlInsert =
           String.format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?, ?)", SQL_TABLE_NAME);
@@ -104,7 +101,7 @@ public class TagSqliteDao implements TagDao {
   }
 
   @Override
-  public @NotNull Optional<Tag> findByLocation(@NotNull TagLocation tagLocation) {
+  public @NonNull Optional<Tag> findByLocation(@NonNull TagLocation tagLocation) {
     try (Connection connection = sqlDataSource.getConnection()) {
       String sqlQuery = String
           .format("SELECT * FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
@@ -145,7 +142,7 @@ public class TagSqliteDao implements TagDao {
   }
 
   @Override
-  public void delete(@NotNull TagLocation tagLocation) {
+  public void delete(@NonNull TagLocation tagLocation) {
     try (Connection connection = sqlDataSource.getConnection()) {
       deleteTag(connection, tagLocation);
     } catch (SQLException e) {
@@ -153,7 +150,7 @@ public class TagSqliteDao implements TagDao {
     }
   }
 
-  private void deleteTag(@NotNull Connection connection, @NotNull TagLocation tagLocation) {
+  private void deleteTag(@NonNull Connection connection, @NonNull TagLocation tagLocation) {
     String sqlDelete = String
         .format("DELETE FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
             + " location_z = ?", SQL_TABLE_NAME);
