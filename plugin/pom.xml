@@ -31,6 +31,7 @@
   </parent>
 
   <artifactId>plugin</artifactId>
+  <version>${parent.version}</version>
   <packaging>pom</packaging>
   <name>Plugin Aggregator</name>
   <description>The aggregator of plugins for the place-and-break patch</description>

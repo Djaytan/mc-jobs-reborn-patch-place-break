@@ -31,6 +31,7 @@
   </parent>
 
   <artifactId>tag-persistence</artifactId>
+  <version>${parent.version}</version>
   <packaging>pom</packaging>
   <name>Tag Persistence Aggregator</name>
   <description>Aggregator of the place-and-break patch tags persistence modules</description>

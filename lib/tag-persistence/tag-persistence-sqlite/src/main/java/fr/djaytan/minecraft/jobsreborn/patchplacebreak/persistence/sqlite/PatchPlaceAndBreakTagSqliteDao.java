@@ -76,9 +76,7 @@ public class PatchPlaceAndBreakTagSqliteDao implements PatchPlaceAndBreakTagDao 
     try (Connection connection = sqlDataSource.getConnection()) {
       connection.setAutoCommit(false);
 
-      try (PreparedStatement deleteStmt = getDeleteStatement(connection, tag.getTagLocation())) {
-        deleteStmt.executeUpdate();
-      }
+      deleteTag(connection, tag.getTagLocation());
 
       String sqlInsert = String.format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?, ?)",
           SqlDataSource.SQL_TABLE_NAME);
@@ -142,25 +140,24 @@ public class PatchPlaceAndBreakTagSqliteDao implements PatchPlaceAndBreakTagDao 
   @Override
   public void delete(@NotNull TagLocation tagLocation) {
     try (Connection connection = sqlDataSource.getConnection()) {
-      try (PreparedStatement deleteStmt = getDeleteStatement(connection, tagLocation)) {
-        deleteStmt.executeUpdate();
-      }
+      deleteTag(connection, tagLocation);
     } catch (SQLException e) {
       throw new PatchPlaceBreakException("Failed to delete a patch place-and-break tag.", e);
     }
   }
 
-  private @NotNull PreparedStatement getDeleteStatement(@NotNull Connection connection,
-      @NotNull TagLocation tagLocation) throws SQLException {
+  private void deleteTag(@NotNull Connection connection, @NotNull TagLocation tagLocation)
+      throws SQLException {
     String sqlDelete = String
         .format("DELETE FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
             + " location_z = ?", SqlDataSource.SQL_TABLE_NAME);
 
-    PreparedStatement deleteStmt = connection.prepareStatement(sqlDelete);
-    deleteStmt.setString(1, tagLocation.getWorldName());
-    deleteStmt.setDouble(2, tagLocation.getX());
-    deleteStmt.setDouble(3, tagLocation.getY());
-    deleteStmt.setDouble(4, tagLocation.getZ());
-    return deleteStmt;
+    try (PreparedStatement deleteStmt = connection.prepareStatement(sqlDelete)) {
+      deleteStmt.setString(1, tagLocation.getWorldName());
+      deleteStmt.setDouble(2, tagLocation.getX());
+      deleteStmt.setDouble(3, tagLocation.getY());
+      deleteStmt.setDouble(4, tagLocation.getZ());
+      deleteStmt.executeUpdate();
+    }
   }
 }
