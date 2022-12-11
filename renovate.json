@@ -7,6 +7,7 @@
     "com.github.ekryd.sortpom:sortpom-maven-plugin",
     "net.revelc.code:impsort-maven-plugin",
     "net.revelc.code.formatter:formatter-maven-plugin",
-    "com.zaxxer:HikariCP"
+    "com.zaxxer:HikariCP",
+    "cimg/openjdk"
   ]
 }
