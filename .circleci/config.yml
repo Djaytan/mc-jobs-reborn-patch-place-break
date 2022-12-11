@@ -37,7 +37,7 @@ jobs:
           root: '~/project'
           paths:
             - '*'
-  unitTests:
+  test:
     executor: build-executor
     steps:
       - attach_workspace:
@@ -46,24 +46,15 @@ jobs:
           name: 'Unit tests'
           command: mvn $MAVEN_CLI_OPTS $POST_BUILD_MAVEN_CLI_OPS test
       - run:
+          name: 'Integration tests & Finalization'
+          command: mvn $MAVEN_CLI_OPTS $POST_BUILD_MAVEN_CLI_OPS install -DskipUnitTests
+      - run:
           name: 'Aggregate test results'
           command: |
             mkdir -p ~/test-results/junit/
             find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
       - store_test_results:
           path: '~/test-results/junit/'
-      - persist_to_workspace:
-          root: '~/project'
-          paths:
-            - '*'
-  integrationTests:
-    executor: build-executor
-    steps:
-      - attach_workspace:
-          at: '~/project'
-      - run:
-          name: 'Integration tests & Finalization'
-          command: mvn $MAVEN_CLI_OPTS $POST_BUILD_MAVEN_CLI_OPS install -DskipUnitTests
       - persist_to_workspace:
           root: '~/project'
           paths:
@@ -81,14 +72,10 @@ workflows:
   main:
     jobs:
       - build
-      - unitTests:
-          requires:
-            - build
-      - integrationTests:
+      - test:
           requires:
             - build
       - sonar:
           requires:
-            - unitTests
-            - integrationTests
+            - test
           context: SonarCloud
