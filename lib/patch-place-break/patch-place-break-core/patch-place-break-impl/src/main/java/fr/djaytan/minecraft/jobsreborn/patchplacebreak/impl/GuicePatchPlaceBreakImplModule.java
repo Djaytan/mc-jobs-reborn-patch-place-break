@@ -22,20 +22,16 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl;
 
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+import com.google.inject.AbstractModule;
 
-import org.jetbrains.annotations.NotNull;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 
-public interface TagPersistenceService {
+public class GuicePatchPlaceBreakImplModule extends AbstractModule {
 
-  @NotNull
-  CompletableFuture<Void> persistTag(boolean isEphemeral, @NotNull TagLocation tagLocation);
-
-  CompletableFuture<Optional<Tag>> findTagByLocation(@NotNull TagLocation tagLocation);
-
-  @NotNull
-  CompletableFuture<Void> removeTag(@NotNull TagLocation tagLocation);
+  @Override
+  protected void configure() {
+    bind(PatchPlaceBreakApi.class).to(PatchPlaceBreakImpl.class);
+  }
 }

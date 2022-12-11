@@ -28,7 +28,6 @@ import java.sql.Connection;
 
 import org.jetbrains.annotations.NotNull;
 
-// TODO: document it
 public interface SqlDataSource extends DataSource {
 
   String SQL_TABLE_NAME = "patch_place_and_break_tag";

@@ -55,12 +55,12 @@
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>tag-persistence-api</artifactId>
+      <artifactId>patch-place-break-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>tag-persistence-patch-connector</artifactId>
+      <artifactId>tag-persistence-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
