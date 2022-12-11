@@ -3,13 +3,13 @@ version: 2.1
 executors:
   build-executor:
     docker:
-      - image: 'cimg/openjdk:8.0'
+      - image: 'cimg/openjdk:19.0'
     environment:
       MAVEN_CLI_OPTS: '-Pcontinuous-integration -e -C --fail-at-end --no-transfer-progress'
       POST_BUILD_MAVEN_CLI_OPS: '-Dmaven.compiler.useIncrementalCompilation=false'
   sonar-executor:
     docker:
-      - image: 'cimg/openjdk:11.0'
+      - image: 'cimg/openjdk:19.0'
     environment:
       MAVEN_CLI_OPTS: '-Pcontinuous-integration -e -C --fail-at-end --no-transfer-progress'
 
