@@ -2,5 +2,11 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base"
+  ],
+  "ignoreDeps": [
+    "com.github.ekryd.sortpom:sortpom-maven-plugin",
+    "net.revelc.code:impsort-maven-plugin",
+    "net.revelc.code.formatter:formatter-maven-plugin",
+    "com.zaxxer:HikariCP"
   ]
 }
