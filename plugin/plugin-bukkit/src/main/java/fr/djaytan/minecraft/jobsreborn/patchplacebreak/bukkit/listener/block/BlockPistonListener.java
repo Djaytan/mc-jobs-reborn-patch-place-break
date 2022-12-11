@@ -47,12 +47,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
  * <p>The purpose of these listeners are to prevent the piston exploit which can be a way to remove
  * a place-and-break patch tag and this isn't what we want. So, the idea is simply to move tags in
  * the same direction as the moved blocks.
- *
- * @author Djaytan
- * @see org.bukkit.event.block.BlockPistonEvent
- * @see BlockPistonExtendEvent
- * @see BlockPistonRetractEvent
- * @see Listener
  */
 @Singleton
 public class BlockPistonListener implements Listener {

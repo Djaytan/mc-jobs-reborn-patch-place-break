@@ -42,8 +42,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.Jobs
 
 /**
  * This class represents a register of listeners.
- *
- * @author Djaytan
  */
 @Singleton
 public class ListenerRegister {

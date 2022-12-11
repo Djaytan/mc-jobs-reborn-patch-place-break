@@ -41,10 +41,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
  * <p>The purpose of this listener is to removed potentially existing place-and-break tag to spread
  * blocks (e.g. we consider that a player-placed dirt block becoming a grass by spreading event
  * shall result to a successful job action when breaking it).
- *
- * @author Djaytan
- * @see BlockSpreadEvent
- * @see Listener
  */
 @Singleton
 public class BlockSpreadListener implements Listener {

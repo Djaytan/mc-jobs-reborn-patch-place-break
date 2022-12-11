@@ -44,10 +44,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
  *
  * <p>The purpose of this listener is to cancel exp-gain jobs rewards when the action is considered
  * as a place-and-break one to be patched.
- *
- * @author Djaytan
- * @see JobsExpGainEvent
- * @see Listener
  */
 @Singleton
 public class JobsExpGainListener implements Listener {

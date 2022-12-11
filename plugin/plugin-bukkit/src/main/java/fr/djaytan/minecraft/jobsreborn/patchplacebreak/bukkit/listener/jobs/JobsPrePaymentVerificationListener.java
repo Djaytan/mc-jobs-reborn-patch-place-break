@@ -44,10 +44,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
 /**
  * This class represents a {@link JobsPrePaymentEvent} listener to verify the well-application of
  * the patch if required.
- *
- * @author Djaytan
- * @see JobsPrePaymentEvent
- * @see Listener
  */
 @Singleton
 public class JobsPrePaymentVerificationListener implements Listener {

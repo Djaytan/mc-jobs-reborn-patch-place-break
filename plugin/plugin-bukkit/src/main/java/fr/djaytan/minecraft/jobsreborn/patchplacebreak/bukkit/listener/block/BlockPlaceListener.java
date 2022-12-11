@@ -40,10 +40,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
  *
  * <p>The purpose of this listener is to put a place-and-break tag to newly placed blocks by a
  * player. This permits to prevent place-and-break exploit with diamond ores for example.
- *
- * @author Djaytan
- * @see BlockPlaceEvent
- * @see Listener
  */
 @Singleton
 public class BlockPlaceListener implements Listener {

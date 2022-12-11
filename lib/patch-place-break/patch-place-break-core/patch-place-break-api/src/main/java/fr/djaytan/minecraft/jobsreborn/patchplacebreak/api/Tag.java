@@ -49,10 +49,6 @@ import lombok.Value;
  * </ul>
  *
  * This class is thread-safe and immutable.
- *
- * @author Djaytan
- * @see PatchActionType
- * @see PatchPlaceBreakApi
  */
 @Value(staticConstructor = "of")
 public class Tag {

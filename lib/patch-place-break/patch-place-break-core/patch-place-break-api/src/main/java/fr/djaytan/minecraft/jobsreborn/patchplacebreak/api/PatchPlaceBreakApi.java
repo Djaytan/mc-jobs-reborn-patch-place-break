@@ -60,8 +60,6 @@ import lombok.NonNull;
  * <p>Finally, this controller give the possibility to check if the jobs ActionType involving a
  * given Block is a place-and-break exploit or no with the method
  * {@link #isPlaceAndBreakAction(PatchActionType, TagLocation)}.
- *
- * @see PatchActionType
  */
 public interface PatchPlaceBreakApi {
 

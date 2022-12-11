@@ -41,10 +41,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
  * <p>When a block grow, the metadata stills remains stored in it, which isn't what we want in the
  * context of the patch. Jobs like "farmer" shall be able to get paid when harvesting crops. So, the
  * idea here is simply to remove the corresponding metadata from the grown blocks.
- *
- * @author Djaytan
- * @see BlockGrowEvent
- * @see Listener
  */
 @Singleton
 public class BlockGrowListener implements Listener {

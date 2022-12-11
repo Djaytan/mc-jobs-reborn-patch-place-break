@@ -38,9 +38,6 @@ import lombok.SneakyThrows;
 
 /**
  * This class represents a JobsReborn patch place-break plugin.
- *
- * @author Djaytan
- * @see JavaPlugin
  */
 public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 

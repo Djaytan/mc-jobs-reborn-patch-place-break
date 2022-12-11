@@ -44,10 +44,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
  *
  * <p>The purpose of this listener is to cancel payments jobs rewards when the action is considered
  * as a place-and-break one to be patched. This cover both points and incomes.
- *
- * @author Djaytan
- * @see JobsPrePaymentEvent
- * @see Listener
  */
 @Singleton
 public class JobsPrePaymentListener implements Listener {

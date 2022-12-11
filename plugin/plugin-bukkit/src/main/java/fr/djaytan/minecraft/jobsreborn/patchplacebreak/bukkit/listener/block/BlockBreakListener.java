@@ -41,10 +41,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
  * <p>The purpose of this listener is to put a place-and-break patch tag to the newly created {@link
  * org.bukkit.Material#AIR} block when the non-air previous one has been broken to prevent exploits
  * like with saplings or sugarcane.
- *
- * @author Djaytan
- * @see BlockBreakEvent
- * @see Listener
  */
 @Singleton
 public class BlockBreakListener implements Listener {
