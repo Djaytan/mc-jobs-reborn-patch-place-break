@@ -24,15 +24,8 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.AccessLevel;
+import lombok.experimental.StandardException;
 
-public class PatchPlaceBreakException extends RuntimeException {
-
-  public PatchPlaceBreakException(@NotNull String message) {
-    super(message);
-  }
-
-  public PatchPlaceBreakException(@NotNull String message, @NotNull Throwable cause) {
-    super(message, cause);
-  }
-}
+@StandardException(access = AccessLevel.PROTECTED)
+public class PatchPlaceBreakException extends RuntimeException {}

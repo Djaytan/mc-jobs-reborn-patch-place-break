@@ -43,7 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.PersistenceException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.SqlDataSource;
 
 @Singleton
@@ -67,7 +67,9 @@ public class SqliteDataSource implements SqlDataSource {
   @Override
   public void connect() {
     if (hikariDataSource != null) {
-      throw new PatchPlaceBreakException("SQLite connection already been done.");
+      logger.warning(
+          "SQLite connection has already been established. Please open an issue for investigation.");
+      return;
     }
 
     createDatabaseIfNotExists();
@@ -91,7 +93,7 @@ public class SqliteDataSource implements SqlDataSource {
       logger.info(() -> String.format("The SQLite database '%s' has been created successfully.",
           sqliteDatabaseFileName));
     } catch (IOException e) {
-      throw new PatchPlaceBreakException("Unable to create the SQLite database.", e);
+      throw SqlitePersistenceException.databaseCreation(e);
     }
   }
 
@@ -107,20 +109,24 @@ public class SqliteDataSource implements SqlDataSource {
 
   private void createTableIfNotExists() {
     try (Connection connection = getConnection()) {
-      connection.setAutoCommit(false);
+      try {
+        connection.setAutoCommit(false);
 
-      if (isTableExists(connection)) {
-        logger.info(() -> String.format(
-            "The SQLite table '%s' already exists: skipping the table creation.", SQL_TABLE_NAME));
-        return;
+        if (isTableExists(connection)) {
+          logger.info(() -> String.format(
+              "The SQLite table '%s' already exists: skipping the table creation.",
+              SQL_TABLE_NAME));
+          return;
+        }
+
+        createTable(connection);
+        logger.info(() -> String.format("The SQLite table '%s' has been created successfully.",
+            SQL_TABLE_NAME));
+      } catch (SQLException e) {
+        throw PersistenceException.tableCreation(SQL_TABLE_NAME, e);
       }
-
-      createTable(connection);
-      logger.info(() -> String.format("The SQLite table '%s' has been created successfully.",
-          SQL_TABLE_NAME));
     } catch (SQLException e) {
-      throw new PatchPlaceBreakException(
-          String.format("Failed to create the table '%s'.", SqlDataSource.SQL_TABLE_NAME), e);
+      throw PersistenceException.databaseConnectionReleasing(e);
     }
   }
 
@@ -128,7 +134,7 @@ public class SqliteDataSource implements SqlDataSource {
     String sqlQuery = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?";
 
     try (PreparedStatement query = connection.prepareStatement(sqlQuery)) {
-      query.setString(1, SqlDataSource.SQL_TABLE_NAME);
+      query.setString(1, SQL_TABLE_NAME);
       ResultSet rs = query.executeQuery();
       return rs.next();
     }
@@ -152,13 +158,13 @@ public class SqliteDataSource implements SqlDataSource {
   @Override
   public @NotNull Connection getConnection() {
     if (hikariDataSource == null) {
-      throw new PatchPlaceBreakException("The connection pool must be setup before using it.");
+      throw SqlitePersistenceException.connectionPoolNotSetup();
     }
+
     try {
       return hikariDataSource.getConnection();
     } catch (SQLException e) {
-      throw new PatchPlaceBreakException("Failed to establish connection to the SQLite database.",
-          e);
+      throw PersistenceException.databaseConnectionEstablishment(e);
     }
   }
 }

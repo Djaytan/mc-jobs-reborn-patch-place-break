@@ -22,26 +22,28 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+import com.gamingmesh.jobs.container.ActionType;
+
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
 import lombok.AccessLevel;
 import lombok.experimental.StandardException;
 
 @StandardException(access = AccessLevel.PROTECTED)
-public class BukkitException extends RuntimeException {
+public class BukkitAdapterException extends PatchPlaceBreakException {
 
-  private static final String MALFORMED_RESOURCE = "Cannot read the resource '%s'.";
-  private static final String RESOURCE_NOT_FOUND = "Resource '%s' not found.";
+  private static final String INVALID_JOB_TYPE =
+      "Invalid job action type '%s' specified. Expecting one of the following: %s";
 
-  public static @NotNull BukkitException malformedResource(@NotNull String resourceName) {
-    String message = String.format(MALFORMED_RESOURCE, resourceName);
-    return new BukkitException(message);
-  }
-
-  public static @NotNull BukkitException resourceNotFound(@NotNull String resourceName) {
-    String message = String.format(RESOURCE_NOT_FOUND, resourceName);
-    return new BukkitException(message);
+  public static @NotNull BukkitAdapterException invalidJobType(
+      @NotNull ActionType invalidJobActionType) {
+    String validPatchActionTypes = StringUtils.join(PatchActionType.values(), ", ");
+    String message = String.format(INVALID_JOB_TYPE, invalidJobActionType, validPatchActionTypes);
+    return new BukkitAdapterException(message);
   }
 }

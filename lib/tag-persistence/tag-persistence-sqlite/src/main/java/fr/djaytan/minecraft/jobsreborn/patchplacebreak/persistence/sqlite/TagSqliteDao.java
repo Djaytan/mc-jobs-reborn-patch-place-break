@@ -24,6 +24,8 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite;
 
+import static fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.SqlDataSource.SQL_TABLE_NAME;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,11 +42,12 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.inject.name.Named;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.TagDao;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.DaoPersistenceException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.PersistenceException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.SqlDataSource;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.TagDao;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite.serializer.BooleanIntegerSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite.serializer.LocalDateTimeStringSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite.serializer.UUIDStringSerializer;
@@ -74,14 +77,14 @@ public class TagSqliteDao implements TagDao {
   @Override
   public void put(@NotNull Tag tag) {
     try (Connection connection = sqlDataSource.getConnection()) {
-      connection.setAutoCommit(false);
-
-      deleteTag(connection, tag.getTagLocation());
-
-      String sqlInsert = String.format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?, ?)",
-          SqlDataSource.SQL_TABLE_NAME);
+      String sqlInsert =
+          String.format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?, ?)", SQL_TABLE_NAME);
 
       try (PreparedStatement insertStmt = connection.prepareStatement(sqlInsert)) {
+        connection.setAutoCommit(false);
+
+        deleteTag(connection, tag.getTagLocation());
+
         insertStmt.setString(1, uuidStringSerializer.serialize(tag.getUuid()));
         insertStmt.setString(2,
             localDateTimeStringSerializer.serialize(tag.getInitLocalDateTime()));
@@ -91,10 +94,12 @@ public class TagSqliteDao implements TagDao {
         insertStmt.setDouble(6, tag.getTagLocation().getY());
         insertStmt.setDouble(7, tag.getTagLocation().getZ());
         insertStmt.executeUpdate();
+      } catch (SQLException e) {
+        throw DaoPersistenceException.persist(tag, e);
       }
       connection.commit();
     } catch (SQLException e) {
-      throw new PatchPlaceBreakException("Failed to persist a patch place-and-break tag.", e);
+      throw PersistenceException.databaseConnectionReleasing(e);
     }
   }
 
@@ -103,7 +108,7 @@ public class TagSqliteDao implements TagDao {
     try (Connection connection = sqlDataSource.getConnection()) {
       String sqlQuery = String
           .format("SELECT * FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
-              + " location_z = ?", SqlDataSource.SQL_TABLE_NAME);
+              + " location_z = ?", SQL_TABLE_NAME);
 
       try (PreparedStatement queryStmt = connection.prepareStatement(sqlQuery)) {
         queryStmt.setString(1, tagLocation.getWorldName());
@@ -131,9 +136,11 @@ public class TagSqliteDao implements TagDao {
           return Optional.of(tag);
         }
         return Optional.empty();
+      } catch (SQLException e) {
+        throw DaoPersistenceException.fetch(tagLocation, e);
       }
     } catch (SQLException e) {
-      throw new PatchPlaceBreakException("Failed to fetch a patch place-and-break tag.", e);
+      throw PersistenceException.databaseConnectionReleasing(e);
     }
   }
 
@@ -142,15 +149,14 @@ public class TagSqliteDao implements TagDao {
     try (Connection connection = sqlDataSource.getConnection()) {
       deleteTag(connection, tagLocation);
     } catch (SQLException e) {
-      throw new PatchPlaceBreakException("Failed to delete a patch place-and-break tag.", e);
+      throw PersistenceException.databaseConnectionReleasing(e);
     }
   }
 
-  private void deleteTag(@NotNull Connection connection, @NotNull TagLocation tagLocation)
-      throws SQLException {
+  private void deleteTag(@NotNull Connection connection, @NotNull TagLocation tagLocation) {
     String sqlDelete = String
         .format("DELETE FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
-            + " location_z = ?", SqlDataSource.SQL_TABLE_NAME);
+            + " location_z = ?", SQL_TABLE_NAME);
 
     try (PreparedStatement deleteStmt = connection.prepareStatement(sqlDelete)) {
       deleteStmt.setString(1, tagLocation.getWorldName());
@@ -158,6 +164,8 @@ public class TagSqliteDao implements TagDao {
       deleteStmt.setDouble(3, tagLocation.getY());
       deleteStmt.setDouble(4, tagLocation.getZ());
       deleteStmt.executeUpdate();
+    } catch (SQLException e) {
+      throw DaoPersistenceException.delete(tagLocation, e);
     }
   }
 }

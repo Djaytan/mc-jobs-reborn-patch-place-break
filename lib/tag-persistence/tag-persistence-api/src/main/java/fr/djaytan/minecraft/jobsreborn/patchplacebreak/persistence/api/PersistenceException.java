@@ -22,32 +22,37 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import com.gamingmesh.jobs.container.ActionType;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
+import lombok.AccessLevel;
+import lombok.NonNull;
+import lombok.experimental.StandardException;
 
-public class BukkitConversionException extends PatchPlaceBreakException {
+@StandardException(access = AccessLevel.PROTECTED)
+public class PersistenceException extends PatchPlaceBreakException {
 
-  private BukkitConversionException(@NotNull String message) {
-    super(message);
+  private static final String TABLE_CREATION = "Unable to create the table '%s'.";
+  private static final String DATABASE_CONNECTION_ESTABLISHMENT =
+      "Failed to establish connection to the database.";
+  private static final String DATABASE_CONNECTION_RELEASING =
+      "Something prevent the database connection releasing.";
+
+  public static @NotNull PersistenceException databaseConnectionEstablishment(
+      @NonNull Throwable cause) {
+    return new PersistenceException(DATABASE_CONNECTION_ESTABLISHMENT, cause);
   }
 
-  public static @NotNull BukkitConversionException invalidJobType(
-      @NotNull ActionType invalidJobActionType) {
-    String validPatchActionTypes = getInlineValidActionTypes();
-    String message =
-        String.format("Invalid job action type '%s' specified. Expecting one of the following: %s",
-            invalidJobActionType, validPatchActionTypes);
-    return new BukkitConversionException(message);
+  public static @NotNull PersistenceException databaseConnectionReleasing(
+      @NonNull Throwable cause) {
+    return new PersistenceException(DATABASE_CONNECTION_RELEASING, cause);
   }
 
-  private static @NotNull String getInlineValidActionTypes() {
-    return StringUtils.join(PatchActionType.values(), ", ");
+  public static @NotNull PersistenceException tableCreation(@NonNull String tableName,
+      @NonNull Throwable cause) {
+    String message = String.format(TABLE_CREATION, tableName);
+    return new PersistenceException(message, cause);
   }
 }

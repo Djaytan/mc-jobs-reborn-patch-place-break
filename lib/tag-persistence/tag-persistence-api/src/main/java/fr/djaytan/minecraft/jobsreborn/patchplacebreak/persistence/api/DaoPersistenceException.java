@@ -22,48 +22,38 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api;
 
 import org.jetbrains.annotations.NotNull;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.TagDao;
+import lombok.AccessLevel;
+import lombok.NonNull;
+import lombok.experimental.StandardException;
 
-@Singleton
-public class TagPersistenceService {
+@StandardException(access = AccessLevel.PROTECTED)
+public class DaoPersistenceException extends PersistenceException {
 
-  private final TagDao tagDao;
+  private static final String DELETE = "Failed to delete the tag with the following location: %s";
+  private static final String FETCH = "Failed to fetch the tag with the following location: %s";
+  private static final String PERSIST = "Failed to persist the following tag: %s";
 
-  @Inject
-  public TagPersistenceService(@NotNull TagDao tagDao) {
-    this.tagDao = tagDao;
+  public static @NotNull DaoPersistenceException delete(@NonNull TagLocation tagLocation,
+      @NonNull Throwable cause) {
+    String message = String.format(DELETE, tagLocation);
+    return new DaoPersistenceException(message, cause);
   }
 
-  public @NotNull CompletableFuture<Void> persistTag(boolean isEphemeral,
-      @NotNull TagLocation tagLocation) {
-    return CompletableFuture.runAsync(() -> {
-      UUID tagUuid = UUID.randomUUID();
-      LocalDateTime localDateTime = LocalDateTime.now();
-      Tag tag = Tag.of(tagUuid, localDateTime, isEphemeral, tagLocation);
-      tagDao.put(tag);
-    });
+  public static @NotNull DaoPersistenceException fetch(@NonNull TagLocation tagLocation,
+      @NonNull Throwable cause) {
+    String message = String.format(FETCH, tagLocation);
+    return new DaoPersistenceException(message, cause);
   }
 
-  public @NotNull CompletableFuture<Optional<Tag>> findTagByLocation(
-      @NotNull TagLocation tagLocation) {
-    return CompletableFuture.supplyAsync(() -> tagDao.findByLocation(tagLocation));
-  }
-
-  public @NotNull CompletableFuture<Void> removeTag(@NotNull TagLocation tagLocation) {
-    return CompletableFuture.runAsync(() -> tagDao.delete(tagLocation));
+  public static @NotNull DaoPersistenceException persist(@NonNull Tag tag,
+      @NonNull Throwable cause) {
+    String message = String.format(PERSIST, tag);
+    return new DaoPersistenceException(message, cause);
   }
 }

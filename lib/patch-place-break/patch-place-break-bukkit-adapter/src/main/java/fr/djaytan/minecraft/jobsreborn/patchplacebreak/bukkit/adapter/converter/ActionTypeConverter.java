@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import com.gamingmesh.jobs.container.ActionType;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.BukkitAdapterException;
 
 public class ActionTypeConverter implements UnidirectionalConverter<ActionType, PatchActionType> {
 
@@ -42,7 +43,7 @@ public class ActionTypeConverter implements UnidirectionalConverter<ActionType, 
     Objects.requireNonNull(jobActionType);
 
     if (!isValidJobActionType(jobActionType)) {
-      throw BukkitConversionException.invalidJobType(jobActionType);
+      throw BukkitAdapterException.invalidJobType(jobActionType);
     }
     return PatchActionType.valueOf(jobActionType.name());
   }

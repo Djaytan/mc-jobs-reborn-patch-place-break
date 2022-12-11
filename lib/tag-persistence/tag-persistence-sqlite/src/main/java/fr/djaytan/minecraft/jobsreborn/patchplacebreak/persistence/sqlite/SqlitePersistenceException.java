@@ -22,26 +22,27 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.sqlite;
 
 import org.jetbrains.annotations.NotNull;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.PersistenceException;
 import lombok.AccessLevel;
+import lombok.NonNull;
 import lombok.experimental.StandardException;
 
 @StandardException(access = AccessLevel.PROTECTED)
-public class BukkitException extends RuntimeException {
+public class SqlitePersistenceException extends PersistenceException {
 
-  private static final String MALFORMED_RESOURCE = "Cannot read the resource '%s'.";
-  private static final String RESOURCE_NOT_FOUND = "Resource '%s' not found.";
+  private static final String CONNECTION_POOL_NOT_SETUP =
+      "The connection pool must be setup before using it.";
+  private static final String DATABASE_CREATION = "Unable to create the database.";
 
-  public static @NotNull BukkitException malformedResource(@NotNull String resourceName) {
-    String message = String.format(MALFORMED_RESOURCE, resourceName);
-    return new BukkitException(message);
+  public static @NotNull SqlitePersistenceException connectionPoolNotSetup() {
+    return new SqlitePersistenceException(CONNECTION_POOL_NOT_SETUP);
   }
 
-  public static @NotNull BukkitException resourceNotFound(@NotNull String resourceName) {
-    String message = String.format(RESOURCE_NOT_FOUND, resourceName);
-    return new BukkitException(message);
+  public static @NotNull SqlitePersistenceException databaseCreation(@NonNull Throwable cause) {
+    return new SqlitePersistenceException(DATABASE_CREATION, cause);
   }
 }
