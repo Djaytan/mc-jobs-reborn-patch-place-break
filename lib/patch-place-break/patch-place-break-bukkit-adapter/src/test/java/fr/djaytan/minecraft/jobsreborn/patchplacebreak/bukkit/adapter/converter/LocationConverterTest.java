@@ -41,12 +41,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
 
 @ExtendWith(MockitoExtension.class)
-public class LocationConverterTest {
+class LocationConverterTest {
 
   private LocationConverter locationConverter;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     locationConverter = new LocationConverter();
   }
 
