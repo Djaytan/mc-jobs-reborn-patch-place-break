@@ -77,7 +77,7 @@
 
     <!-- ==================== Plugins versions ==================== -->
     <!-- Latest version of SortPom compatible with Java 8: don't bump it! -->
-    <sortpomMavenPlugin.version>3.0.1</sortpomMavenPlugin.version>
+    <sortpomMavenPlugin.version>3.2.0</sortpomMavenPlugin.version>
     <!-- Latest version of ImpSort compatible with Java 8: don't bump it! -->
     <impsortMavenPlugin.version>1.6.2</impsortMavenPlugin.version>
     <!-- Latest version of Formatter compatible with Java 8: don't bump it! -->
