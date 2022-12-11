@@ -81,7 +81,7 @@
     <!-- Latest version of ImpSort compatible with Java 8: don't bump it! -->
     <impsortMavenPlugin.version>1.6.2</impsortMavenPlugin.version>
     <!-- Latest version of Formatter compatible with Java 8: don't bump it! -->
-    <formatterMavenPlugin.version>2.16.0</formatterMavenPlugin.version>
+    <formatterMavenPlugin.version>2.21.0</formatterMavenPlugin.version>
     <mavenCompilerPlugin.version>3.10.1</mavenCompilerPlugin.version>
     <mavenShadePlugin.version>3.4.1</mavenShadePlugin.version>
     <mavenCleanPlugin.version>3.2.0</mavenCleanPlugin.version>
