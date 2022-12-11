@@ -31,7 +31,7 @@
   <packaging>pom</packaging>
 
   <name>JobsReborn-PatchPlaceBreak</name>
-  <description>This is a place-break patch extension of Jobs Reborn plugin for Bukkit servers</description>
+  <description>A place-break patch extension of JobsReborn plugin for Bukkit servers (Minecraft)</description>
   <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break</url>
 
   <licenses>
