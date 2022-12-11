@@ -52,7 +52,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.
 import lombok.NonNull;
 
 @Singleton
-public class PatchPlaceBreakApiBukkitAdapter {
+public class PatchPlaceBreakBukkitAdapter {
 
   private final ActionTypeConverter actionTypeConverter;
   private final LocationConverter locationConverter;
@@ -60,7 +60,7 @@ public class PatchPlaceBreakApiBukkitAdapter {
   private final BlockFaceConverter blockFaceConverter;
 
   @Inject
-  public PatchPlaceBreakApiBukkitAdapter(ActionTypeConverter actionTypeConverter,
+  public PatchPlaceBreakBukkitAdapter(ActionTypeConverter actionTypeConverter,
       LocationConverter locationConverter, PatchPlaceBreakApi patchPlaceBreakApi,
       BlockFaceConverter blockFaceConverter) {
     this.actionTypeConverter = actionTypeConverter;

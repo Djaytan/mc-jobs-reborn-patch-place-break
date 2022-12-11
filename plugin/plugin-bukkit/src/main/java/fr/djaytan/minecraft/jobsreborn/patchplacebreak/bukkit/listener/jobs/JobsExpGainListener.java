@@ -37,7 +37,7 @@ import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakApiBukkitAdapter;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 
 /**
  * This class represents a {@link JobsExpGainEvent} listener.
@@ -48,11 +48,11 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
 @Singleton
 public class JobsExpGainListener implements Listener {
 
-  private final PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter;
+  private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
 
   @Inject
-  public JobsExpGainListener(PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter) {
-    this.patchPlaceBreakApiBukkitAdapter = patchPlaceBreakApiBukkitAdapter;
+  public JobsExpGainListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
+    this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
   }
 
   /**
@@ -81,7 +81,7 @@ public class JobsExpGainListener implements Listener {
 
     Location blockLocation = block.getLocation();
 
-    if (patchPlaceBreakApiBukkitAdapter.isPlaceAndBreakAction(actionType, blockLocation).join()) {
+    if (patchPlaceBreakBukkitAdapter.isPlaceAndBreakAction(actionType, blockLocation).join()) {
       event.setCancelled(true);
     }
   }

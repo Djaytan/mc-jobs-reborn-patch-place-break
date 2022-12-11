@@ -33,7 +33,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakApiBukkitAdapter;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 
 /**
  * This class represents a {@link BlockPlaceEvent} listener.
@@ -44,11 +44,11 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
 @Singleton
 public class BlockPlaceListener implements Listener {
 
-  private final PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter;
+  private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
 
   @Inject
-  public BlockPlaceListener(PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter) {
-    this.patchPlaceBreakApiBukkitAdapter = patchPlaceBreakApiBukkitAdapter;
+  public BlockPlaceListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
+    this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
   }
 
   /**
@@ -66,6 +66,6 @@ public class BlockPlaceListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockPlace(BlockPlaceEvent event) {
     Location location = event.getBlockPlaced().getLocation();
-    patchPlaceBreakApiBukkitAdapter.putTag(location, false);
+    patchPlaceBreakBukkitAdapter.putTag(location, false);
   }
 }

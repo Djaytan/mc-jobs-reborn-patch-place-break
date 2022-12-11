@@ -39,7 +39,7 @@ import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakApiBukkitAdapter;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 
 /**
  * This class represents a {@link JobsPrePaymentEvent} listener to verify the well-application of
@@ -48,12 +48,12 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
 @Singleton
 public class JobsPrePaymentVerificationListener implements Listener {
 
-  private final PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter;
+  private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
 
   @Inject
   public JobsPrePaymentVerificationListener(
-      PatchPlaceBreakApiBukkitAdapter patchPlaceBreakApiBukkitAdapter) {
-    this.patchPlaceBreakApiBukkitAdapter = patchPlaceBreakApiBukkitAdapter;
+      PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
+    this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
   }
 
   /**
@@ -85,7 +85,7 @@ public class JobsPrePaymentVerificationListener implements Listener {
     boolean isEventCancelled = event.isCancelled();
     HandlerList handlerList = event.getHandlers();
 
-    patchPlaceBreakApiBukkitAdapter.verifyPatchApplication(actionType, block, isEventCancelled,
+    patchPlaceBreakBukkitAdapter.verifyPatchApplication(actionType, block, isEventCancelled,
         player, job, handlerList);
   }
 }
