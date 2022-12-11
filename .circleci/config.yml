@@ -6,6 +6,7 @@ executors:
       - image: 'cimg/openjdk:8.0'
     environment:
       MAVEN_CLI_OPTS: '-Pcontinuous-integration -e -C --fail-at-end --no-transfer-progress'
+      POST_BUILD_MAVEN_CLI_OPS: '-Dmaven.compiler.useIncrementalCompilation=false'
   sonar-executor:
     docker:
       - image: 'cimg/openjdk:11.0'
@@ -18,17 +19,17 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          name: 'cache/restoreDependencies'
+          name: 'Restoring cached dependencies'
           keys:
             - 'v2-maven-local-repository-cache-{{ checksum "pom.xml" }}'
       - run:
-          name: 'mvn/validate'
+          name: 'Validation'
           command: mvn $MAVEN_CLI_OPTS validate
       - run:
-          name: 'mvn/build'
+          name: 'Build'
           command: mvn $MAVEN_CLI_OPTS test-compile
       - save_cache:
-          name: 'cache/saveDependencies'
+          name: 'Storing dependencies in cache'
           key: 'v2-maven-local-repository-cache-{{ checksum "pom.xml" }}'
           paths:
             - '~/.m2'
@@ -42,16 +43,13 @@ jobs:
       - attach_workspace:
           at: '~/project'
       - run:
-          name: 'mvn/unitTests'
-          command: mvn $MAVEN_CLI_OPTS test
+          name: 'Unit tests'
+          command: mvn $MAVEN_CLI_OPTS $POST_BUILD_MAVEN_CLI_OPS test
       - run:
-          name: 'mvn/integrationTests'
-          command: mvn $MAVEN_CLI_OPTS verify -DskipUnitTests
+          name: 'Integration tests & Finalization'
+          command: mvn $MAVEN_CLI_OPTS $POST_BUILD_MAVEN_CLI_OPS install -DskipUnitTests
       - run:
-          name: 'mvn/finalize'
-          command: mvn $MAVEN_CLI_OPTS install -Dmaven.test.skip=true
-      - run:
-          name: 'publish/testResults'
+          name: 'Aggregate test results'
           command: |
             mkdir -p ~/test-results/junit/
             find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
@@ -67,7 +65,7 @@ jobs:
       - attach_workspace:
           at: '~/project'
       - run:
-          name: 'mvn/sonar'
+          name: 'SonarQube analysis'
           command: mvn sonar:sonar -Dsonar.projectKey=Djaytan_mc-jobs-reborn-patch-place-break
 
 workflows:

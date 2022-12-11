@@ -361,6 +361,9 @@
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
+          <compilerReuseStrategy>reuseSame</compilerReuseStrategy>
+          <failOnWarning>true</failOnWarning>
+          <showDeprecation>true</showDeprecation>
         </configuration>
       </plugin>
       <plugin>
