@@ -24,22 +24,20 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.event.HandlerList;
 
 import com.gamingmesh.jobs.container.ActionType;
-import com.gamingmesh.jobs.container.Job;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchActionType;
@@ -56,15 +54,17 @@ public class PatchPlaceBreakBukkitAdapter {
 
   private final ActionTypeConverter actionTypeConverter;
   private final LocationConverter locationConverter;
+  private final Logger logger;
   private final PatchPlaceBreakApi patchPlaceBreakApi;
   private final BlockFaceConverter blockFaceConverter;
 
   @Inject
   public PatchPlaceBreakBukkitAdapter(ActionTypeConverter actionTypeConverter,
       LocationConverter locationConverter, PatchPlaceBreakApi patchPlaceBreakApi,
-      BlockFaceConverter blockFaceConverter) {
+      @Named("PatchPlaceBreakLogger") Logger logger, BlockFaceConverter blockFaceConverter) {
     this.actionTypeConverter = actionTypeConverter;
     this.locationConverter = locationConverter;
+    this.logger = logger;
     this.patchPlaceBreakApi = patchPlaceBreakApi;
     this.blockFaceConverter = blockFaceConverter;
   }
@@ -97,26 +97,34 @@ public class PatchPlaceBreakBukkitAdapter {
     return patchPlaceBreakApi.isPlaceAndBreakAction(patchActionType, tagLocation);
   }
 
+  /**
+   * The purpose of this method is to verify the well-application of the patch if required for a
+   * given jobs action. If a place-and-break action has been detected (via a call to {@link
+   * #isPlaceAndBreakAction(ActionType, Location)}) but the event still not cancelled then a warning
+   * log will be sent.
+   *
+   * @param environmentState The current state of the environment where the patch is supposed to be applied
+   * @return void
+   */
   @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> verifyPatchApplication(@NonNull ActionType jobActionType,
-      @NonNull Block block, boolean isEventCancelled, @NonNull OfflinePlayer player,
-      @NonNull Job job, @NonNull HandlerList handlerList) {
-    Location blockLocation = block.getLocation();
+  public @NonNull CompletableFuture<Void> verifyPatchApplication(
+      @NonNull BukkitPatchEnvironmentState environmentState) {
+    return CompletableFuture.runAsync(() -> {
+      ActionType jobActionType = environmentState.getJobActionType();
+      Location targetedLocation = environmentState.getTargetedBlock().getLocation();
 
-    PatchActionType patchActionType = actionTypeConverter.convert(jobActionType);
-    TagLocation tagLocation = locationConverter.convert(blockLocation);
-    String blockTypeName = block.getType().name();
-    String playerName = player.getName();
-    String jobName = job.getName();
-    List<String> detectedPotentialConflictingPluginsNames = getHandlerPluginsNames(handlerList);
+      boolean isPlaceAndBreakAction = isPlaceAndBreakAction(jobActionType, targetedLocation).join();
+      boolean isEventCancelled = environmentState.isEventCancelled();
 
-    return patchPlaceBreakApi.verifyPatchApplication(patchActionType, tagLocation, blockTypeName,
-        isEventCancelled, playerName, jobName, detectedPotentialConflictingPluginsNames);
-  }
+      boolean isPatchViolation = isPlaceAndBreakAction && !isEventCancelled;
 
-  private @NonNull List<String> getHandlerPluginsNames(@NonNull HandlerList handlerList) {
-    return Arrays.stream(handlerList.getRegisteredListeners())
-        .map(registeredListener -> registeredListener.getPlugin().getName()).distinct()
-        .collect(Collectors.toList());
+      if (isPatchViolation) {
+        logger.warning(() -> String.format(
+            "Violation of a place-and-break patch detected! It's possible that's because of a"
+                + " conflict with another plugin. Please, report this full log message to the"
+                + " developer: %s",
+            environmentState));
+      }
+    });
   }
 }

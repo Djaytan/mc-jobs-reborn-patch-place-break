@@ -137,28 +137,4 @@ public interface PatchPlaceBreakApi {
   @NonNull
   CompletableFuture<Boolean> isPlaceAndBreakAction(@NonNull PatchActionType patchActionType,
       @NonNull TagLocation tagLocation);
-
-  /**
-   * The purpose of this method is to verify the well-application of the patch if required for a
-   * given jobs action. If a place-and-break action has been detected (via a call to {@link
-   * #isPlaceAndBreakAction(PatchActionType, TagLocation)}) but the event still not cancelled then a warning
-   * log will be sent.
-   *
-   * @param patchActionType The jobs ActionType.
-   * @param tagLocation The tag location.
-   * @param blockTypeName The block with a potential place-and-break patch tag.
-   * @param isEventCancelled <code>true</code> if the event is cancelled, <code>false</code>
-   *                         otherwise.
-   * @param playerName The involved player by the patch.
-   * @param jobName The involved job by the patch.
-   * @param detectedPotentialConflictingPluginsNames The list of event handlers which could be the
-   *                                                 source of the issue if it exists.
-   * @return void
-   */
-  @CanIgnoreReturnValue
-  @NonNull
-  CompletableFuture<Void> verifyPatchApplication(@NonNull PatchActionType patchActionType,
-      @NonNull TagLocation tagLocation, @NonNull String blockTypeName, boolean isEventCancelled,
-      @NonNull String playerName, @NonNull String jobName,
-      @NonNull List<String> detectedPotentialConflictingPluginsNames);
 }
