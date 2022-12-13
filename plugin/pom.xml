@@ -98,14 +98,12 @@
                 <shadedPattern>${package.lib}.org</shadedPattern>
                 <includes>
                   <include>org.aopalliance.**</include>
+                  <include>org.apache.commons.lang3.**</include>
                   <include>org.bstats.**</include>
                   <include>org.checkerframework.**</include>
                   <include>org.sqlite.**</include>
+                  <include>org.slf4j.**</include>
                 </includes>
-                <excludes>
-                  <!-- Seams SLF4J can't be relocated without failure -->
-                  <exclude>org.slf4j.**</exclude>
-                </excludes>
               </relocation>
             </relocations>
             <transformers>
@@ -113,10 +111,6 @@
               <!-- Manifest file is useless for a JAR file to be used as a Bukkit plugin -->
               <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
                 <resource>MANIFEST.MF</resource>
-              </transformer>
-              <!-- Prevent SQLite driver not found issue -->
-              <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                <resource>META-INF/services/java.sql.Driver</resource>
               </transformer>
             </transformers>
           </configuration>

@@ -27,8 +27,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block.BlockBreakListener;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block.BlockGrowListener;
@@ -46,7 +46,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.Jobs
 @Singleton
 public class ListenerRegister {
 
-  private final Plugin plugin;
+  private final JavaPlugin javaPlugin;
   private final PluginManager pluginManager;
 
   private final BlockBreakListener blockBreakListener;
@@ -60,14 +60,14 @@ public class ListenerRegister {
   private final JobsPrePaymentVerificationListener jobsPrePaymentVerificationListener;
 
   @Inject
-  public ListenerRegister(Plugin plugin, PluginManager pluginManager,
+  public ListenerRegister(JavaPlugin javaPlugin, PluginManager pluginManager,
       BlockBreakListener blockBreakListener, BlockGrowListener blockGrowListener,
       BlockPistonListener blockPistonListener, BlockPlaceListener blockPlaceListener,
       BlockSpreadListener blockSpreadListener, JobsExpGainListener jobsExpGainListener,
       JobsExpGainVerificationListener jobsExpGainVerificationListener,
       JobsPrePaymentListener jobsPrePaymentListener,
       JobsPrePaymentVerificationListener jobsPrePaymentVerificationListener) {
-    this.plugin = plugin;
+    this.javaPlugin = javaPlugin;
     this.pluginManager = pluginManager;
 
     this.blockBreakListener = blockBreakListener;
@@ -85,14 +85,14 @@ public class ListenerRegister {
    * The purposes of this method is simple: registering listeners through the {@link PluginManager}.
    */
   public void registerListeners() {
-    pluginManager.registerEvents(blockBreakListener, plugin);
-    pluginManager.registerEvents(blockGrowListener, plugin);
-    pluginManager.registerEvents(blockPistonListener, plugin);
-    pluginManager.registerEvents(blockPlaceListener, plugin);
-    pluginManager.registerEvents(blockSpreadListener, plugin);
-    pluginManager.registerEvents(jobsExpGainListener, plugin);
-    pluginManager.registerEvents(jobsExpGainVerificationListener, plugin);
-    pluginManager.registerEvents(jobsPrePaymentListener, plugin);
-    pluginManager.registerEvents(jobsPrePaymentVerificationListener, plugin);
+    pluginManager.registerEvents(blockBreakListener, javaPlugin);
+    pluginManager.registerEvents(blockGrowListener, javaPlugin);
+    pluginManager.registerEvents(blockPistonListener, javaPlugin);
+    pluginManager.registerEvents(blockPlaceListener, javaPlugin);
+    pluginManager.registerEvents(blockSpreadListener, javaPlugin);
+    pluginManager.registerEvents(jobsExpGainListener, javaPlugin);
+    pluginManager.registerEvents(jobsExpGainVerificationListener, javaPlugin);
+    pluginManager.registerEvents(jobsPrePaymentListener, javaPlugin);
+    pluginManager.registerEvents(jobsPrePaymentVerificationListener, javaPlugin);
   }
 }

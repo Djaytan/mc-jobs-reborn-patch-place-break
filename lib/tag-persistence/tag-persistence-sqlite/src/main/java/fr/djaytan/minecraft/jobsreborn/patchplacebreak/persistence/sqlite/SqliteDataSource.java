@@ -32,11 +32,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+
+import org.slf4j.Logger;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -55,8 +56,8 @@ public class SqliteDataSource implements SqlDataSource {
   private HikariDataSource hikariDataSource;
 
   @Inject
-  public SqliteDataSource(@Named("createTableSqlScript") String createTableSqlScript,
-      @Named("PatchPlaceBreakLogger") Logger logger, SqliteDataSourceUtils sqliteDataSourceUtils) {
+  public SqliteDataSource(@Named("createTableSqlScript") String createTableSqlScript, Logger logger,
+      SqliteDataSourceUtils sqliteDataSourceUtils) {
     this.createTableSqlScript = createTableSqlScript;
     this.logger = logger;
     this.sqliteDataSourceUtils = sqliteDataSourceUtils;
@@ -65,7 +66,7 @@ public class SqliteDataSource implements SqlDataSource {
   @Override
   public void connect() {
     if (hikariDataSource != null) {
-      logger.warning(
+      logger.atWarn().log(
           "SQLite connection has already been established. Please open an issue for investigation.");
       return;
     }
@@ -80,16 +81,15 @@ public class SqliteDataSource implements SqlDataSource {
     String sqliteDatabaseFileName = sqliteDatabasePath.getFileName().toString();
 
     if (Files.exists(sqliteDatabasePath)) {
-      logger.info(() -> String.format(
-          "The SQLite database '%s' already exists: skipping database creation.",
-          sqliteDatabaseFileName));
+      logger.atInfo().log("The SQLite database '{}' already exists: skipping database creation.",
+          sqliteDatabaseFileName);
       return;
     }
 
     try {
       Files.createFile(sqliteDatabasePath);
-      logger.info(() -> String.format("The SQLite database '%s' has been created successfully.",
-          sqliteDatabaseFileName));
+      logger.atInfo().log("The SQLite database '{}' has been created successfully.",
+          sqliteDatabaseFileName);
     } catch (IOException e) {
       throw SqlitePersistenceException.databaseCreation(e);
     }
@@ -111,15 +111,13 @@ public class SqliteDataSource implements SqlDataSource {
         connection.setAutoCommit(false);
 
         if (isTableExists(connection)) {
-          logger.info(() -> String.format(
-              "The SQLite table '%s' already exists: skipping the table creation.",
-              SQL_TABLE_NAME));
+          logger.atInfo().log("The SQLite table '{}' already exists: skipping the table creation.",
+              SQL_TABLE_NAME);
           return;
         }
 
         createTable(connection);
-        logger.info(() -> String.format("The SQLite table '%s' has been created successfully.",
-            SQL_TABLE_NAME));
+        logger.atInfo().log("The SQLite table '{}' has been created successfully.", SQL_TABLE_NAME);
       } catch (SQLException e) {
         throw PersistenceException.tableCreation(SQL_TABLE_NAME, e);
       }

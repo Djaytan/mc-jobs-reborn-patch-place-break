@@ -29,16 +29,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.util.logging.Logger;
 
 import javax.inject.Named;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.slf4j.Logger;
 
 import com.google.common.io.CharStreams;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.BukkitException;
 import lombok.NonNull;
@@ -47,27 +46,13 @@ public class GuiceSpecificBukkitModule extends AbstractModule {
 
   private static final String CREATE_TABLE_SQL_SCRIPT_NAME = "database.sql";
 
-  private final JavaPlugin javaPlugin;
-  private final Logger logger;
-
-  public GuiceSpecificBukkitModule(@NonNull JavaPlugin javaPlugin, @NonNull Logger logger) {
-    this.javaPlugin = javaPlugin;
-    this.logger = logger;
-  }
-
-  @Provides
-  @Singleton
-  @Named("PatchPlaceBreakLogger")
-  public @NonNull Logger provideLogger() {
-    return logger;
-  }
-
   @Provides
   @Named("createTableSqlScript")
-  public @NonNull String provideCreateTableSqlScript() {
-    logger.info("Retrieving SQL table creation script...");
+  public @NonNull String provideCreateTableSqlScript(JavaPlugin javaPlugin, Logger logger) {
+    logger.atInfo().log("Retrieving SQL table creation script...");
     String scriptName = CREATE_TABLE_SQL_SCRIPT_NAME;
-    InputStream scriptStream = getCreateTableSqlScriptStream(scriptName);
+
+    InputStream scriptStream = getCreateTableSqlScriptStream(javaPlugin, scriptName);
 
     try {
       return readScriptContent(scriptStream);
@@ -76,16 +61,18 @@ public class GuiceSpecificBukkitModule extends AbstractModule {
     }
   }
 
-  private @NonNull InputStream getCreateTableSqlScriptStream(@NonNull String scriptName) {
+  private static @NonNull InputStream getCreateTableSqlScriptStream(@NonNull JavaPlugin javaPlugin,
+      @NonNull String scriptName) {
     InputStream scriptStream = javaPlugin.getResource(scriptName);
 
-    if (scriptStream != null) {
-      return scriptStream;
+    if (scriptStream == null) {
+      throw BukkitException.resourceNotFound(scriptName);
     }
-    throw BukkitException.resourceNotFound(scriptName);
+    return scriptStream;
   }
 
-  private @NonNull String readScriptContent(@NonNull InputStream scriptStream) throws IOException {
+  private static @NonNull String readScriptContent(@NonNull InputStream scriptStream)
+      throws IOException {
     try (Reader reader = new InputStreamReader(scriptStream, StandardCharsets.UTF_8)) {
       return CharStreams.toString(reader);
     }

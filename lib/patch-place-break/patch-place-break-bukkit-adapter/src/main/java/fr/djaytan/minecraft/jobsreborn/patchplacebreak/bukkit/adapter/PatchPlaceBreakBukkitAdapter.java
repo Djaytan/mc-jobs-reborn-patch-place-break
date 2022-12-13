@@ -26,16 +26,15 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.slf4j.Logger;
 
 import com.gamingmesh.jobs.container.ActionType;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -60,8 +59,8 @@ public class PatchPlaceBreakBukkitAdapter {
 
   @Inject
   public PatchPlaceBreakBukkitAdapter(ActionTypeConverter actionTypeConverter,
-      LocationConverter locationConverter, PatchPlaceBreakApi patchPlaceBreakApi,
-      @Named("PatchPlaceBreakLogger") Logger logger, BlockFaceConverter blockFaceConverter) {
+      LocationConverter locationConverter, PatchPlaceBreakApi patchPlaceBreakApi, Logger logger,
+      BlockFaceConverter blockFaceConverter) {
     this.actionTypeConverter = actionTypeConverter;
     this.locationConverter = locationConverter;
     this.logger = logger;
@@ -119,11 +118,10 @@ public class PatchPlaceBreakBukkitAdapter {
       boolean isPatchViolation = isPlaceAndBreakAction && !isEventCancelled;
 
       if (isPatchViolation) {
-        logger.warning(() -> String.format(
-            "Violation of a place-and-break patch detected! It's possible that's because of a"
+        logger.atWarn()
+            .log("Violation of a place-and-break patch detected! It's possible that's because of a"
                 + " conflict with another plugin. Please, report this full log message to the"
-                + " developer: %s",
-            environmentState));
+                + " developer: {}", environmentState);
       }
     });
   }

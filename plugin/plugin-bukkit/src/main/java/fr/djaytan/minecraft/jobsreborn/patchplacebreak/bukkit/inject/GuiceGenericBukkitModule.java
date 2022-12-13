@@ -30,11 +30,12 @@ import java.util.concurrent.Executor;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.inventory.ItemFactory;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -53,14 +54,15 @@ public class GuiceGenericBukkitModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public @NonNull Plugin providePlugin() {
+  public @NonNull JavaPlugin provideJavaPlugin() {
     return plugin;
   }
 
   @Provides
   @Singleton
-  public @NonNull JavaPlugin provideJavaPlugin() {
-    return plugin;
+  public @NonNull Logger provideSlf4jLogger() {
+    // The logger name doesn't matter
+    return LoggerFactory.getLogger("");
   }
 
   @Provides

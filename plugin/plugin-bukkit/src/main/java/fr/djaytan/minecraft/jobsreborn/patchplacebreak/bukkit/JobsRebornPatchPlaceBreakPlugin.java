@@ -26,11 +26,11 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.slf4j.Logger;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.inject.GuiceBukkitInjector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.DataSource;
@@ -53,21 +53,21 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
   @Override
   public void onEnable() {
     getLogger().info("Guice injection");
-    GuiceBukkitInjector.inject(this, getLogger());
+    GuiceBukkitInjector.inject(this);
 
-    logger.info("Preparing plugin's data folder");
+    logger.atInfo().log("Preparing plugin's data folder");
     preparePluginDataFolder();
 
-    logger.info("Connection to the database");
+    logger.atInfo().log("Connection to the database");
     dataSource.connect();
 
-    logger.info("Event listeners registration");
+    logger.atInfo().log("Event listeners registration");
     listenerRegister.registerListeners();
 
-    logger.info("Activation of metrics collection");
+    logger.atInfo().log("Activation of metrics collection");
     metricsFacade.activateMetricsCollection();
 
-    logger.info("JobsReborn-PatchPlaceBreak successfully enabled.");
+    logger.atInfo().log("JobsReborn-PatchPlaceBreak successfully enabled.");
   }
 
   @Override
@@ -81,11 +81,11 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
     Path dataFolder = getDataFolder().toPath();
 
     if (Files.exists(dataFolder)) {
-      logger.info("The plugin data folder already exists: skipping its creation.");
+      logger.atInfo().log("The plugin data folder already exists: skipping its creation.");
       return;
     }
 
-    logger.info("The plugin data folder doesn't exists yet: creating it.");
+    logger.atInfo().log("The plugin data folder doesn't exists yet: creating it.");
     Files.createDirectory(dataFolder);
   }
 }

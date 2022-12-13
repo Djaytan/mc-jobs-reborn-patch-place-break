@@ -24,8 +24,6 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.inject;
 
-import java.util.logging.Logger;
-
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.inject.Guice;
@@ -39,9 +37,9 @@ public final class GuiceBukkitInjector {
 
   private GuiceBukkitInjector() {}
 
-  public static void inject(@NonNull JavaPlugin javaPlugin, @NonNull Logger logger) {
+  public static void inject(@NonNull JavaPlugin javaPlugin) {
     Injector injector = Guice.createInjector(new GuiceGenericBukkitModule(javaPlugin),
-        new GuiceSpecificBukkitModule(javaPlugin, logger), new GuicePatchPlaceBreakImplModule(),
+        new GuiceSpecificBukkitModule(), new GuicePatchPlaceBreakImplModule(),
         new GuicePersistenceSqliteModule());
     injector.injectMembers(javaPlugin);
   }

@@ -22,31 +22,29 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.slf4j;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 
-@Singleton
-public class MetricsFacade {
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.JobsRebornPatchPlaceBreakPlugin;
 
-  private static final int BSTATS_ID = 16899;
+/**
+ * /!\ WARNING /!\
+ * <p>
+ *  This class is a copy from the slf4j-jdk14 module:
+ *  <a href="https://github.com/qos-ch/slf4j/edit/master/slf4j-jdk14/src/main/java/org/slf4j/jul/JDK14LoggerFactory.java">source</a>
+ * </p>
+ * <p>
+ *  The purpose is to permit the creation of a SLF4J instance of the Bukkit logger to ease the decoupling.
+ * </p>
+ */
+public class BukkitLoggerFactory implements ILoggerFactory {
 
-  private final JavaPlugin javaPlugin;
-  private final Logger logger;
-
-  @Inject
-  public MetricsFacade(JavaPlugin javaPlugin, Logger logger) {
-    this.javaPlugin = javaPlugin;
-    this.logger = logger;
-  }
-
-  public void activateMetricsCollection() {
-    new Metrics(javaPlugin, BSTATS_ID);
-    logger.atInfo().log("bStats metrics collection activated.");
+  @Override
+  public Logger getLogger(String name) {
+    return new BukkitLoggerAdapter(
+        JavaPlugin.getPlugin(JobsRebornPatchPlaceBreakPlugin.class).getLogger());
   }
 }

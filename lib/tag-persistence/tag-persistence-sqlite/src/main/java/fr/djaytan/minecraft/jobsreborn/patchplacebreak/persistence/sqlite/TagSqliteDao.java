@@ -33,11 +33,11 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
+
+import org.slf4j.Logger;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.TagLocation;
@@ -62,7 +62,7 @@ public class TagSqliteDao implements TagDao {
   @Inject
   public TagSqliteDao(BooleanIntegerSerializer booleanIntegerSerializer,
       SqlDataSource sqlDataSource, LocalDateTimeStringSerializer localDateTimeStringSerializer,
-      @Named("PatchPlaceBreakLogger") Logger logger, UUIDStringSerializer uuidStringSerializer) {
+      Logger logger, UUIDStringSerializer uuidStringSerializer) {
     this.booleanIntegerSerializer = booleanIntegerSerializer;
     this.sqlDataSource = sqlDataSource;
     this.localDateTimeStringSerializer = localDateTimeStringSerializer;
@@ -114,7 +114,8 @@ public class TagSqliteDao implements TagDao {
 
         ResultSet rs = queryStmt.executeQuery();
         if (rs.getFetchSize() > 1) {
-          logger.warning("Multiple tags detected for a same location, selecting the first one.");
+          logger.atWarn()
+              .log("Multiple tags detected for a same location, selecting the first one.");
         }
 
         if (rs.next()) {
