@@ -27,18 +27,16 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
-import com.gamingmesh.jobs.container.Job;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.BukkitPatchEnvironmentState;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 
 /**
@@ -80,12 +78,11 @@ public class JobsPrePaymentVerificationListener implements Listener {
       return;
     }
 
-    OfflinePlayer player = event.getPlayer();
-    Job job = event.getJob();
-    boolean isEventCancelled = event.isCancelled();
-    HandlerList handlerList = event.getHandlers();
+    BukkitPatchEnvironmentState environmentState =
+        BukkitPatchEnvironmentState.builder().jobActionType(actionType).targetedBlock(block)
+            .involvedPlayer(event.getPlayer()).triggeredJob(event.getJob()).eventHandled(event)
+            .isEventCancelled(event.isCancelled()).eventHandlers(event.getHandlers()).build();
 
-    patchPlaceBreakBukkitAdapter.verifyPatchApplication(actionType, block, isEventCancelled, player,
-        job, handlerList);
+    patchPlaceBreakBukkitAdapter.verifyPatchApplication(environmentState);
   }
 }

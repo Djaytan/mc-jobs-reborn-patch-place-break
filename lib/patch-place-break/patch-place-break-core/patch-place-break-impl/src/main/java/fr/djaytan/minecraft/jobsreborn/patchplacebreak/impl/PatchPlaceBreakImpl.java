@@ -30,10 +30,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -48,13 +46,10 @@ import lombok.NonNull;
 @Singleton
 public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
 
-  private final Logger logger;
   private final TagPersistenceService tagPersistenceService;
 
   @Inject
-  public PatchPlaceBreakImpl(@Named("PatchPlaceBreakLogger") Logger logger,
-      TagPersistenceService tagPersistenceService) {
-    this.logger = logger;
+  public PatchPlaceBreakImpl(TagPersistenceService tagPersistenceService) {
     this.tagPersistenceService = tagPersistenceService;
   }
 
@@ -104,26 +99,6 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
       Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
 
       return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
-    });
-  }
-
-  @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> verifyPatchApplication(
-      @NonNull PatchActionType patchActionType, @NonNull TagLocation tagLocation,
-      @NonNull String blockTypeName, boolean isEventCancelled, @NonNull String playerName,
-      @NonNull String jobName, @NonNull List<String> detectedPotentialConflictingPluginsNames) {
-    return CompletableFuture.runAsync(() -> {
-      boolean isPlaceAndBreakAction = isPlaceAndBreakAction(patchActionType, tagLocation).join();
-
-      if (isPlaceAndBreakAction && !isEventCancelled) {
-        logger.warning(() -> String.format(
-            "Violation of a place-and-break patch detected! It's possible that's because of a"
-                + " conflict with another plugin. Please, report this full log message to the"
-                + " developer: player=%s, jobs=%s, actionType=%s, blockMaterial=%s,"
-                + " detectedPotentialConflictingPlugins=%s",
-            playerName, jobName, patchActionType.name(), blockTypeName,
-            detectedPotentialConflictingPluginsNames));
-      }
     });
   }
 
