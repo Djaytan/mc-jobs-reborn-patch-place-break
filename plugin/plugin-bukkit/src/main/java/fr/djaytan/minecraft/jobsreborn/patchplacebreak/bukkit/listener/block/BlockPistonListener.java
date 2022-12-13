@@ -24,7 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block;
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -70,7 +70,7 @@ public class BlockPistonListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockPistonExtend(BlockPistonExtendEvent event) {
     BlockFace blockFace = event.getDirection();
-    List<Block> blocks = event.getBlocks();
+    Collection<Block> blocks = event.getBlocks();
     patchPlaceBreakBukkitAdapter.putBackTagOnMovedBlocks(blocks, blockFace);
   }
 
@@ -86,7 +86,7 @@ public class BlockPistonListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockPistonRetract(BlockPistonRetractEvent event) {
     BlockFace blockFace = event.getDirection();
-    List<Block> blocks = event.getBlocks();
+    Collection<Block> blocks = event.getBlocks();
     patchPlaceBreakBukkitAdapter.putBackTagOnMovedBlocks(blocks, blockFace);
   }
 }

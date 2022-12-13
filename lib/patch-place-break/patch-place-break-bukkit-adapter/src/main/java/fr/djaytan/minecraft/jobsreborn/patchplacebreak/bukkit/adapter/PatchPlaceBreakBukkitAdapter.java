@@ -24,7 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -76,9 +76,9 @@ public class PatchPlaceBreakBukkitAdapter {
   }
 
   @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> putBackTagOnMovedBlocks(@NonNull List<Block> blocks,
+  public @NonNull CompletableFuture<Void> putBackTagOnMovedBlocks(@NonNull Collection<Block> blocks,
       @NonNull BlockFace blockFace) {
-    List<TagLocation> tagLocations = blocks.stream().map(Block::getLocation)
+    Collection<TagLocation> tagLocations = blocks.stream().map(Block::getLocation)
         .map(locationConverter::convert).collect(Collectors.toList());
     TagVector tagVector = blockFaceConverter.convert(blockFace);
     return patchPlaceBreakApi.putBackTagOnMovedBlocks(tagLocations, tagVector);

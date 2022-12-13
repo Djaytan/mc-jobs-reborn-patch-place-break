@@ -25,7 +25,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
@@ -48,11 +48,11 @@ public class ActionTypeConverter implements UnidirectionalConverter<ActionType, 
   }
 
   private boolean isValidJobActionType(@NonNull ActionType jobActionType) {
-    List<ActionType> validJobActionTypes = getValidJobActionTypes();
+    Collection<ActionType> validJobActionTypes = getValidJobActionTypes();
     return validJobActionTypes.contains(jobActionType);
   }
 
-  private @NonNull List<ActionType> getValidJobActionTypes() {
+  private @NonNull Collection<ActionType> getValidJobActionTypes() {
     return Arrays.stream(PatchActionType.values()).map(PatchActionType::name)
         .map(ActionType::valueOf).collect(Collectors.toList());
   }

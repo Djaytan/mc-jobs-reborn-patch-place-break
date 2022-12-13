@@ -25,7 +25,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
 import java.time.Duration;
-import java.util.List;
+import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -54,7 +54,7 @@ import lombok.NonNull;
  * method.
  *
  * <p>A tag can be placed with {@link #putTag(TagLocation, boolean)} method. The
- * {@link #putBackTagOnMovedBlocks(List, TagVector)} has a special purpose: to permit to put back tags
+ * {@link #putBackTagOnMovedBlocks(Collection, TagVector)} has a special purpose: to permit to put back tags
  * when blocks are moved (e.g. by block piston extend and retract events).
  *
  * <p>Finally, this controller give the possibility to check if the jobs ActionType involving a
@@ -101,7 +101,7 @@ public interface PatchPlaceBreakApi {
    */
   @CanIgnoreReturnValue
   @NonNull
-  CompletableFuture<Void> putBackTagOnMovedBlocks(@NonNull List<TagLocation> tagLocations,
+  CompletableFuture<Void> putBackTagOnMovedBlocks(@NonNull Collection<TagLocation> tagLocations,
       @NonNull TagVector direction);
 
 

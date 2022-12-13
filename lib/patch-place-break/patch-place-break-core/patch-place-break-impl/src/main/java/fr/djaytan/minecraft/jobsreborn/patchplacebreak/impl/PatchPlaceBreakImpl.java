@@ -27,7 +27,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -62,7 +62,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
 
   @CanIgnoreReturnValue
   public @NonNull CompletableFuture<Void> putBackTagOnMovedBlocks(
-      @NonNull List<TagLocation> tagLocations, @NonNull TagVector direction) {
+      @NonNull Collection<TagLocation> tagLocations, @NonNull TagVector direction) {
     return CompletableFuture.runAsync(() -> {
       for (TagLocation tagLocation : tagLocations) {
         Optional<Tag> tag = getTag(tagLocation).join();
