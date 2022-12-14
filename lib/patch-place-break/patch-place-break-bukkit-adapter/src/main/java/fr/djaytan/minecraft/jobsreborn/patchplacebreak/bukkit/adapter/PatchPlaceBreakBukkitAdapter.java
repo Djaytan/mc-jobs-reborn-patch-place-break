@@ -34,7 +34,6 @@ import javax.inject.Singleton;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.slf4j.Logger;
 
 import com.gamingmesh.jobs.container.ActionType;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -53,17 +52,15 @@ public class PatchPlaceBreakBukkitAdapter {
 
   private final ActionTypeConverter actionTypeConverter;
   private final LocationConverter locationConverter;
-  private final Logger logger;
   private final PatchPlaceBreakApi patchPlaceBreakApi;
   private final BlockFaceConverter blockFaceConverter;
 
   @Inject
   public PatchPlaceBreakBukkitAdapter(ActionTypeConverter actionTypeConverter,
-      LocationConverter locationConverter, PatchPlaceBreakApi patchPlaceBreakApi, Logger logger,
+      LocationConverter locationConverter, PatchPlaceBreakApi patchPlaceBreakApi,
       BlockFaceConverter blockFaceConverter) {
     this.actionTypeConverter = actionTypeConverter;
     this.locationConverter = locationConverter;
-    this.logger = logger;
     this.patchPlaceBreakApi = patchPlaceBreakApi;
     this.blockFaceConverter = blockFaceConverter;
   }
@@ -94,35 +91,5 @@ public class PatchPlaceBreakBukkitAdapter {
     PatchActionType patchActionType = actionTypeConverter.convert(actionType);
     TagLocation tagLocation = locationConverter.convert(location);
     return patchPlaceBreakApi.isPlaceAndBreakAction(patchActionType, tagLocation);
-  }
-
-  /**
-   * The purpose of this method is to verify the well-application of the patch if required for a
-   * given jobs action. If a place-and-break action has been detected (via a call to {@link
-   * #isPlaceAndBreakAction(ActionType, Location)}) but the event still not cancelled then a warning
-   * log will be sent.
-   *
-   * @param environmentState The current state of the environment where the patch is supposed to be applied
-   * @return void
-   */
-  @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> verifyPatchApplication(
-      @NonNull BukkitPatchEnvironmentState environmentState) {
-    return CompletableFuture.runAsync(() -> {
-      ActionType jobActionType = environmentState.getJobActionType();
-      Location targetedLocation = environmentState.getTargetedBlock().getLocation();
-
-      boolean isPlaceAndBreakAction = isPlaceAndBreakAction(jobActionType, targetedLocation).join();
-      boolean isEventCancelled = environmentState.isEventCancelled();
-
-      boolean isPatchViolation = isPlaceAndBreakAction && !isEventCancelled;
-
-      if (isPatchViolation) {
-        logger.atWarn()
-            .log("Violation of a place-and-break patch detected! It's possible that's because of a"
-                + " conflict with another plugin. Please, report this full log message to the"
-                + " developer: {}", environmentState);
-      }
-    });
   }
 }

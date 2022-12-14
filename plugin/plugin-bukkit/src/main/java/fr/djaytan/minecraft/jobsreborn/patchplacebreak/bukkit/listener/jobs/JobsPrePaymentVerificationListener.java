@@ -37,7 +37,7 @@ import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.BukkitPatchEnvironmentState;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakVerifier;
 
 /**
  * This class represents a {@link JobsPrePaymentEvent} listener to verify the well-application of
@@ -46,12 +46,11 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
 @Singleton
 public class JobsPrePaymentVerificationListener implements Listener {
 
-  private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
+  private final PatchPlaceBreakVerifier patchPlaceBreakVerifier;
 
   @Inject
-  public JobsPrePaymentVerificationListener(
-      PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
-    this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
+  public JobsPrePaymentVerificationListener(PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
+    this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;
   }
 
   /**
@@ -83,6 +82,6 @@ public class JobsPrePaymentVerificationListener implements Listener {
             .involvedPlayer(event.getPlayer()).triggeredJob(event.getJob()).eventHandled(event)
             .isEventCancelled(event.isCancelled()).eventHandlers(event.getHandlers()).build();
 
-    patchPlaceBreakBukkitAdapter.verifyPatchApplication(environmentState);
+    patchPlaceBreakVerifier.verifyAppliance(environmentState);
   }
 }
