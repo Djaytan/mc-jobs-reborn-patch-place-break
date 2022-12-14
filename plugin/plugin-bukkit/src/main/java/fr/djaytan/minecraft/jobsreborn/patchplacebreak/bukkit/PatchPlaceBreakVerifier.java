@@ -22,11 +22,12 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit;
 
 import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import org.bukkit.Location;
@@ -35,49 +36,60 @@ import org.slf4j.Logger;
 import com.gamingmesh.jobs.container.ActionType;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import lombok.NonNull;
 
+/**
+ * Represents the patch-place-break verifier for the Bukkit plugin.
+ * <p>
+ *  After the appliance of a patch (typically done by cancelling the appropriate events from
+ *  JobsReborn API), a risk that it's ignored because of conflicts with other plugins exists.
+ *  The idea of this class is then to provide a way to verify the well-application of the patch
+ *  and try to apply an automatic fix if things go wrong.
+ * </p>
+ */
 @Singleton
 public class PatchPlaceBreakVerifier {
 
+  private final Provider<ListenerRegister> listenerRegister;
   private final Logger logger;
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
 
   @Inject
-  public PatchPlaceBreakVerifier(Logger logger,
+  public PatchPlaceBreakVerifier(Provider<ListenerRegister> listenerRegister, Logger logger,
       PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
+    this.listenerRegister = listenerRegister;
     this.logger = logger;
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
   }
 
-  /**
-   * The purpose of this method is to verify the well-application of the patch if required for a
-   * given jobs action. If a place-and-break action has been detected (via a call to {@link
-   * PatchPlaceBreakBukkitAdapter#isPlaceAndBreakAction(ActionType, Location)}) but the event still
-   * not cancelled then a warning log will be sent.
-   *
-   * @param environmentState The current state of the environment where the patch is supposed to be applied
-   * @return void
-   */
   @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> verifyAppliance(
+  public @NonNull CompletableFuture<Void> checkAndAttemptFixListenersIfRequired(
       @NonNull BukkitPatchEnvironmentState environmentState) {
     return CompletableFuture.runAsync(() -> {
-      ActionType jobActionType = environmentState.getJobActionType();
-      Location targetedLocation = environmentState.getTargetedBlock().getLocation();
+      if (!isPatchExpected(environmentState).join()) {
+        return;
+      }
 
-      boolean isPlaceAndBreakAction = patchPlaceBreakBukkitAdapter
-          .isPlaceAndBreakAction(jobActionType, targetedLocation).join();
-      boolean isEventCancelled = environmentState.isEventCancelled();
-
-      boolean isPatchViolation = isPlaceAndBreakAction && !isEventCancelled;
-
-      if (isPatchViolation) {
+      if (!isPatchApplied(environmentState)) {
         logger.atWarn()
-            .log("Violation of a place-and-break patch detected! It's possible that's because of a"
-                + " conflict with another plugin. Please, report this full log message to the"
-                + " developer: {}", environmentState);
+            .log("Violation of a place-and-break patch detected! It's possible that's"
+                + " because of a conflict with another plugin. Tentative to automatically fix the"
+                + " issue on-going... If this warning persists, please, report this full log"
+                + " message to the developer: {}", environmentState);
+        listenerRegister.get().reloadListeners();
       }
     });
+  }
+
+  private @NonNull CompletableFuture<Boolean> isPatchExpected(
+      @NonNull BukkitPatchEnvironmentState environmentState) {
+    ActionType jobActionType = environmentState.getJobActionType();
+    Location targetedLocation = environmentState.getTargetedBlock().getLocation();
+    return patchPlaceBreakBukkitAdapter.isPlaceAndBreakAction(jobActionType, targetedLocation);
+  }
+
+  private boolean isPatchApplied(@NonNull BukkitPatchEnvironmentState environmentState) {
+    return environmentState.isEventCancelled();
   }
 }

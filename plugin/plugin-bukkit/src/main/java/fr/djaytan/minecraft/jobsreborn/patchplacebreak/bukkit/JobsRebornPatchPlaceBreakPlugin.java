@@ -61,7 +61,6 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
     logger.atInfo().log("Connection to the database");
     dataSource.connect();
 
-    logger.atInfo().log("Event listeners registration");
     listenerRegister.registerListeners();
 
     logger.atInfo().log("Activation of metrics collection");

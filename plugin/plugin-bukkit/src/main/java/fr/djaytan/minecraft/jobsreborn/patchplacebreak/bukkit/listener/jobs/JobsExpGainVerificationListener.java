@@ -36,8 +36,8 @@ import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.BukkitPatchEnvironmentState;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakVerifier;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.BukkitPatchEnvironmentState;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.PatchPlaceBreakVerifier;
 
 /**
  * This class represents a {@link JobsExpGainEvent} listener to verify the well-application of the
@@ -82,6 +82,6 @@ public class JobsExpGainVerificationListener implements Listener {
             .involvedPlayer(event.getPlayer()).triggeredJob(event.getJob()).eventHandled(event)
             .isEventCancelled(event.isCancelled()).eventHandlers(event.getHandlers()).build();
 
-    patchPlaceBreakVerifier.verifyAppliance(environmentState);
+    patchPlaceBreakVerifier.checkAndAttemptFixListenersIfRequired(environmentState);
   }
 }

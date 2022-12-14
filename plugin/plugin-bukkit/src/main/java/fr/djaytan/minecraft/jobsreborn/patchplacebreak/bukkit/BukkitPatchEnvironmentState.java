@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit;
 
 import java.util.Arrays;
 import java.util.Collection;
