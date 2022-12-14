@@ -38,8 +38,8 @@ public final class GuiceBukkitInjector {
   private GuiceBukkitInjector() {}
 
   public static void inject(@NonNull JavaPlugin javaPlugin) {
-    Injector injector = Guice.createInjector(new GuiceGenericBukkitModule(javaPlugin),
-        new GuiceSpecificBukkitModule(), new GuicePatchPlaceBreakImplModule(),
+    Injector injector = Guice.createInjector(new GuiceBukkitModule(javaPlugin),
+        new GuicePatchPlaceBreakPluginModule(), new GuicePatchPlaceBreakImplModule(),
         new GuicePersistenceSqliteModule());
     injector.injectMembers(javaPlugin);
   }

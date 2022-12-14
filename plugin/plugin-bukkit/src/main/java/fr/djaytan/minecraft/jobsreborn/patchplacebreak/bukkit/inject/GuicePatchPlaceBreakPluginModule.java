@@ -33,7 +33,6 @@ import java.nio.charset.StandardCharsets;
 import javax.inject.Named;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.slf4j.Logger;
 
 import com.google.common.io.CharStreams;
 import com.google.inject.AbstractModule;
@@ -42,33 +41,30 @@ import com.google.inject.Provides;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.BukkitException;
 import lombok.NonNull;
 
-public class GuiceSpecificBukkitModule extends AbstractModule {
+public class GuicePatchPlaceBreakPluginModule extends AbstractModule {
 
   private static final String CREATE_TABLE_SQL_SCRIPT_NAME = "database.sql";
 
   @Provides
+  @Named("createTableSqlScriptStream")
+  public @NonNull InputStream provideCreateTableSqlScriptStream(@NonNull JavaPlugin javaPlugin) {
+    InputStream scriptStream = javaPlugin.getResource(CREATE_TABLE_SQL_SCRIPT_NAME);
+
+    if (scriptStream == null) {
+      throw BukkitException.resourceNotFound(CREATE_TABLE_SQL_SCRIPT_NAME);
+    }
+    return scriptStream;
+  }
+
+  @Provides
   @Named("createTableSqlScript")
-  public @NonNull String provideCreateTableSqlScript(JavaPlugin javaPlugin, Logger logger) {
-    logger.atInfo().log("Retrieving SQL table creation script...");
-    String scriptName = CREATE_TABLE_SQL_SCRIPT_NAME;
-
-    InputStream scriptStream = getCreateTableSqlScriptStream(javaPlugin, scriptName);
-
+  public @NonNull String provideCreateTableSqlScript(
+      @NonNull @Named("createTableSqlScriptStream") InputStream scriptStream) {
     try {
       return readScriptContent(scriptStream);
     } catch (IOException e) {
-      throw BukkitException.malformedResource(scriptName);
+      throw BukkitException.malformedResource(CREATE_TABLE_SQL_SCRIPT_NAME);
     }
-  }
-
-  private static @NonNull InputStream getCreateTableSqlScriptStream(@NonNull JavaPlugin javaPlugin,
-      @NonNull String scriptName) {
-    InputStream scriptStream = javaPlugin.getResource(scriptName);
-
-    if (scriptStream == null) {
-      throw BukkitException.resourceNotFound(scriptName);
-    }
-    return scriptStream;
   }
 
   private static @NonNull String readScriptContent(@NonNull InputStream scriptStream)
