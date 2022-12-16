@@ -42,5 +42,6 @@ public final class GuiceBukkitInjector {
         new GuicePatchPlaceBreakPluginModule(), new GuicePatchPlaceBreakImplModule(),
         new GuicePersistenceSqliteModule());
     injector.injectMembers(javaPlugin);
+    javaPlugin.getLogger().info("Dependencies injected with Guice.");
   }
 }

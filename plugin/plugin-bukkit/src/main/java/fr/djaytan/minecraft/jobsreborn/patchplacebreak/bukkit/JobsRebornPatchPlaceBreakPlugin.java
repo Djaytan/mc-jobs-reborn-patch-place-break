@@ -52,27 +52,18 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    getLogger().info("Guice injection");
     GuiceBukkitInjector.inject(this);
-
-    logger.atInfo().log("Preparing plugin's data folder");
     preparePluginDataFolder();
-
-    logger.atInfo().log("Connection to the database");
     dataSource.connect();
-
     listenerRegister.registerListeners();
-
-    logger.atInfo().log("Activation of metrics collection");
     metricsFacade.activateMetricsCollection();
-
     logger.atInfo().log("JobsReborn-PatchPlaceBreak successfully enabled.");
   }
 
   @Override
   public void onDisable() {
-    getLogger().info("Disconnection from the SQLite database");
     dataSource.disconnect();
+    logger.atInfo().log("JobsReborn-PatchPlaceBreak successfully disabled.");
   }
 
   @SneakyThrows
@@ -80,11 +71,10 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
     Path dataFolder = getDataFolder().toPath();
 
     if (Files.exists(dataFolder)) {
-      logger.atInfo().log("The plugin data folder already exists: skipping its creation.");
       return;
     }
 
-    logger.atInfo().log("The plugin data folder doesn't exists yet: creating it.");
     Files.createDirectory(dataFolder);
+    logger.atInfo().log("Plugin data folder created.");
   }
 }

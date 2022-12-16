@@ -66,8 +66,8 @@ public class SqliteDataSource implements SqlDataSource {
   @Override
   public void connect() {
     if (hikariDataSource != null) {
-      logger.atWarn().log(
-          "SQLite connection has already been established. Please open an issue for investigation.");
+      logger.atWarn().log("SQLite connection has already been established."
+          + " Please open an issue to GitHub for investigation.");
       return;
     }
 
@@ -81,8 +81,6 @@ public class SqliteDataSource implements SqlDataSource {
     String sqliteDatabaseFileName = sqliteDatabasePath.getFileName().toString();
 
     if (Files.exists(sqliteDatabasePath)) {
-      logger.atInfo().log("The SQLite database '{}' already exists: skipping database creation.",
-          sqliteDatabaseFileName);
       return;
     }
 
@@ -103,6 +101,8 @@ public class SqliteDataSource implements SqlDataSource {
     hikariConfig.setMaximumPoolSize(10);
     hikariConfig.setMinimumIdle(1);
     hikariDataSource = new HikariDataSource(hikariConfig);
+
+    logger.atInfo().log("Connected to the database '{}'.", jdbcUrl);
   }
 
   private void createTableIfNotExists() {
@@ -111,8 +111,6 @@ public class SqliteDataSource implements SqlDataSource {
         connection.setAutoCommit(false);
 
         if (isTableExists(connection)) {
-          logger.atInfo().log("The SQLite table '{}' already exists: skipping the table creation.",
-              SQL_TABLE_NAME);
           return;
         }
 
@@ -148,6 +146,7 @@ public class SqliteDataSource implements SqlDataSource {
   public void disconnect() {
     if (hikariDataSource != null) {
       hikariDataSource.close();
+      logger.atInfo().log("Disconnected from the database '{}'.", hikariDataSource.getJdbcUrl());
     }
   }
 
