@@ -84,6 +84,7 @@
     <!-- Latest version of Formatter compatible with Java 8: don't bump it! -->
     <formatterMavenPlugin.version>2.16.0</formatterMavenPlugin.version>
     <mavenCompilerPlugin.version>3.10.1</mavenCompilerPlugin.version>
+    <mavenDependencyPlugin.version>3.4.0</mavenDependencyPlugin.version>
     <mavenShadePlugin.version>3.4.1</mavenShadePlugin.version>
     <mavenCleanPlugin.version>3.2.0</mavenCleanPlugin.version>
     <mavenResourcesPlugin.version>3.3.0</mavenResourcesPlugin.version>
@@ -153,11 +154,6 @@
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
-      <!--
-        The SQLite JDBC is provided by the CraftBukkit server implementation
-        Ideally we should not depend on implementation details, but permits here to save
-        ~10 Mo of size which at final permit to upload the plugin into the Spigot website.
-      -->
       <dependency>
         <groupId>org.xerial</groupId>
         <artifactId>sqlite-jdbc</artifactId>
@@ -233,7 +229,7 @@
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter</artifactId>
+        <artifactId>junit-jupiter-api</artifactId>
         <version>${junitJupiter.version}</version>
         <scope>test</scope>
       </dependency>
@@ -363,6 +359,11 @@
           <failOnWarning>true</failOnWarning>
           <showDeprecation>true</showDeprecation>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>${mavenDependencyPlugin.version}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
