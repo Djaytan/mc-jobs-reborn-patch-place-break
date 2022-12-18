@@ -42,8 +42,8 @@
   </licenses>
 
   <modules>
+    <module>bukkit</module>
     <module>patch-place-break</module>
-    <module>plugin-bukkit</module>
   </modules>
 
   <scm>

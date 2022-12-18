@@ -28,15 +28,16 @@
     <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
     <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
     <version>1.4.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>plugin-bukkit</artifactId>
+  <artifactId>bukkit-plugin</artifactId>
   <packaging>jar</packaging>
-  <name>Plugin Bukkit</name>
+  <name>Bukkit Plugin</name>
   <description>The Bukkit plugin of the place-and-break patch</description>
 
   <properties>
-    <main.basedir>${project.basedir}/../</main.basedir>
+    <main.basedir>${project.basedir}/../../</main.basedir>
   </properties>
 
   <dependencies>
@@ -50,7 +51,7 @@
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>patch-place-break-bukkit</artifactId>
+      <artifactId>bukkit-adapter</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

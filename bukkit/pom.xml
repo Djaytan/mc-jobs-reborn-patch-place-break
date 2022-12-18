@@ -28,49 +28,19 @@
     <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
     <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
     <version>1.4.0-SNAPSHOT</version>
-    <relativePath>../../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>persistence-sqlite</artifactId>
-  <packaging>jar</packaging>
-  <name>Persistence SQLite Implementation</name>
-  <description>SQLite implementation of persistence</description>
+  <artifactId>bukkit</artifactId>
+  <packaging>pom</packaging>
+  <name>Bukkit Implementation</name>
+  <description>The Bukkit implementation of the place-and-break patch</description>
+
+  <modules>
+    <module>bukkit-adapter</module>
+    <module>bukkit-plugin</module>
+  </modules>
 
   <properties>
-    <main.basedir>${project.basedir}/../../../</main.basedir>
+    <main.basedir>${project.basedir}/../</main.basedir>
   </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>patch-place-break-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>persistence-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
 </project>

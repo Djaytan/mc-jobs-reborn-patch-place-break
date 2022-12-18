@@ -33,8 +33,8 @@
 
   <artifactId>persistence-api</artifactId>
   <packaging>jar</packaging>
-  <name>Tag Persistence API</name>
-  <description>API to persist tags of the place-and-break patch</description>
+  <name>Persistence API</name>
+  <description>API to persist data of the place-and-break patch</description>
 
   <properties>
     <main.basedir>${project.basedir}/../../../</main.basedir>

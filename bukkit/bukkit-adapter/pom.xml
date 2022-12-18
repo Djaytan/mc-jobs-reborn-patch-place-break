@@ -31,9 +31,9 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>patch-place-break-bukkit</artifactId>
+  <artifactId>bukkit-adapter</artifactId>
   <packaging>jar</packaging>
-  <name>PatchPlaceBreak Bukkit Adapter</name>
+  <name>Bukkit Adapter</name>
   <description>API of the place-and-break patch adapted for Bukkit</description>
 
   <properties>
