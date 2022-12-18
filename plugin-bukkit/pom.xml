@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ MIT License
+  ~
+  ~ Copyright (c) 2022 Loïc DUBOIS-TERMOZ (alias Djaytan)
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+    <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
+    <version>1.4.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>plugin-bukkit</artifactId>
+  <packaging>jar</packaging>
+  <name>Plugin Bukkit</name>
+  <description>The Bukkit plugin of the place-and-break patch</description>
+
+  <properties>
+    <main.basedir>${project.basedir}/../</main.basedir>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>patch-place-break-bukkit</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>patch-place-break-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>persistence-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>persistence-sqlite</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.bstats</groupId>
+      <artifactId>bstats-bukkit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.github.Zrips</groupId>
+      <artifactId>Jobs</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>${plugin.finalName}</finalName>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <configuration>
+          <shadedArtifactAttached>false</shadedArtifactAttached>
+          <createDependencyReducedPom>false</createDependencyReducedPom>
+          <artifactSet>
+            <includes>
+              <include>*:*</include>
+            </includes>
+          </artifactSet>
+          <filters>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>**/module-info.class</exclude>
+                <exclude>META-INF/*.SF</exclude>
+                <exclude>META-INF/*.DSA</exclude>
+                <exclude>META-INF/*.RSA</exclude>
+                <exclude>META-INF/DEPENDENCIES</exclude>
+                <exclude>META-INF/LICENSE*</exclude>
+                <exclude>META-INF/NOTICE</exclude>
+              </excludes>
+            </filter>
+          </filters>
+          <!-- Prevent libraries versions collisions with other Bukkit plugins if loaded as is in classpath -->
+          <relocations>
+            <relocation>
+              <pattern>com</pattern>
+              <shadedPattern>${package.lib}.com</shadedPattern>
+              <includes>
+                <include>com.google.common.**</include>
+                <include>com.google.errorprone.**</include>
+                <include>com.google.inject.**</include>
+                <include>com.google.j2objc.**</include>
+                <include>com.google.thirdparty.**</include>
+                <include>com.zaxxer.hikari.**</include>
+              </includes>
+            </relocation>
+            <relocation>
+              <pattern>javax</pattern>
+              <shadedPattern>${package.lib}.javax</shadedPattern>
+              <includes>
+                <include>javax.annotation.**</include>
+                <include>javax.inject.**</include>
+              </includes>
+            </relocation>
+            <relocation>
+              <pattern>org</pattern>
+              <shadedPattern>${package.lib}.org</shadedPattern>
+              <includes>
+                <include>org.aopalliance.**</include>
+                <include>org.apache.commons.lang3.**</include>
+                <include>org.bstats.**</include>
+                <include>org.checkerframework.**</include>
+                <include>org.sqlite.**</include>
+                <include>org.slf4j.**</include>
+              </includes>
+            </relocation>
+          </relocations>
+          <transformers>
+            <!-- Remove warning messages about duplicate manifest files -->
+            <!-- Manifest file is useless for a JAR file to be used as a Bukkit plugin -->
+            <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+              <resource>MANIFEST.MF</resource>
+            </transformer>
+          </transformers>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <phase>package</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
