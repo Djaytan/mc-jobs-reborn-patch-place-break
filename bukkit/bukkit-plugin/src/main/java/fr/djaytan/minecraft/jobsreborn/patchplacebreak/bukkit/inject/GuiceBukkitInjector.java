@@ -30,7 +30,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.GuicePatchPlaceBreakCoreModule;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite.GuicePersistenceSqliteModule;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite.GuiceStorageSqliteModule;
 import lombok.NonNull;
 
 public final class GuiceBukkitInjector {
@@ -40,7 +40,7 @@ public final class GuiceBukkitInjector {
   public static void inject(@NonNull JavaPlugin javaPlugin) {
     Injector injector = Guice.createInjector(new GuiceBukkitModule(javaPlugin),
         new GuicePatchPlaceBreakPluginModule(), new GuicePatchPlaceBreakCoreModule(),
-        new GuicePersistenceSqliteModule());
+        new GuiceStorageSqliteModule());
     injector.injectMembers(javaPlugin);
     javaPlugin.getLogger().info("Dependencies injected with Guice.");
   }

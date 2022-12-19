@@ -28,7 +28,7 @@ import com.google.inject.AbstractModule;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.TagDao;
 
-public class GuicePersistenceInmemoryModule extends AbstractModule {
+public class GuiceStorageInmemoryModule extends AbstractModule {
 
   @Override
   protected void configure() {

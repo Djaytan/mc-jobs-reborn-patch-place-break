@@ -30,7 +30,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.TagDao;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.SqlDataSource;
 
-public class GuicePersistenceSqliteModule extends AbstractModule {
+public class GuiceStorageSqliteModule extends AbstractModule {
 
   @Override
   protected void configure() {
