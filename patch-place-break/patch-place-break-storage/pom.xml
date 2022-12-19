@@ -31,38 +31,18 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>patch-place-break-core</artifactId>
-  <packaging>jar</packaging>
-  <name>PatchPlaceBreak Implementation</name>
-  <description>The default implementation of the place-break patch API</description>
+  <artifactId>patch-place-break-storage</artifactId>
+  <packaging>pom</packaging>
+  <name>Persistence Aggregator</name>
+  <description>Aggregator of the place-and-break patch persistence modules</description>
+
+  <modules>
+    <module>storage-api</module>
+    <module>storage-inmemory</module>
+    <module>storage-sqlite</module>
+  </modules>
 
   <properties>
     <main.basedir>${project.basedir}/../../</main.basedir>
   </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>patch-place-break-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.errorprone</groupId>
-      <artifactId>error_prone_annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
 </project>

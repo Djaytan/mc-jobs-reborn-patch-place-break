@@ -22,26 +22,11 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
-import org.bukkit.plugin.java.JavaPlugin;
+public interface DataSource {
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+  void connect() throws StorageException;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.GuicePatchPlaceBreakCoreModule;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite.GuicePersistenceSqliteModule;
-import lombok.NonNull;
-
-public final class GuiceBukkitInjector {
-
-  private GuiceBukkitInjector() {}
-
-  public static void inject(@NonNull JavaPlugin javaPlugin) {
-    Injector injector = Guice.createInjector(new GuiceBukkitModule(javaPlugin),
-        new GuicePatchPlaceBreakPluginModule(), new GuicePatchPlaceBreakCoreModule(),
-        new GuicePersistenceSqliteModule());
-    injector.injectMembers(javaPlugin);
-    javaPlugin.getLogger().info("Dependencies injected with Guice.");
-  }
+  void disconnect() throws StorageException;
 }

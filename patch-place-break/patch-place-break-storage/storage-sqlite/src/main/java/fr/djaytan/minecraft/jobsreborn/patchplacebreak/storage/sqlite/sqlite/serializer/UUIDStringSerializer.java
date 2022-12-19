@@ -22,26 +22,24 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite.serializer;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import java.util.UUID;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import javax.inject.Singleton;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.GuicePatchPlaceBreakCoreModule;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite.GuicePersistenceSqliteModule;
 import lombok.NonNull;
 
-public final class GuiceBukkitInjector {
+@Singleton
+public class UUIDStringSerializer implements StringSerializer<UUID> {
 
-  private GuiceBukkitInjector() {}
+  @Override
+  public @NonNull String serialize(@NonNull UUID uuid) {
+    return uuid.toString();
+  }
 
-  public static void inject(@NonNull JavaPlugin javaPlugin) {
-    Injector injector = Guice.createInjector(new GuiceBukkitModule(javaPlugin),
-        new GuicePatchPlaceBreakPluginModule(), new GuicePatchPlaceBreakCoreModule(),
-        new GuicePersistenceSqliteModule());
-    injector.injectMembers(javaPlugin);
-    javaPlugin.getLogger().info("Dependencies injected with Guice.");
+  @Override
+  public @NonNull UUID deserialize(@NonNull String string) {
+    return UUID.fromString(string);
   }
 }

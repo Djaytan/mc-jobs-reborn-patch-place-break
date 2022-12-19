@@ -33,7 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.inject.GuiceBukkitInjector;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.persistence.api.DataSource;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
 import lombok.SneakyThrows;
 
 /**

@@ -22,26 +22,27 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite.serializer;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import javax.inject.Singleton;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.GuicePatchPlaceBreakCoreModule;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite.GuicePersistenceSqliteModule;
 import lombok.NonNull;
 
-public final class GuiceBukkitInjector {
+@Singleton
+public class LocalDateTimeStringSerializer implements StringSerializer<LocalDateTime> {
 
-  private GuiceBukkitInjector() {}
+  private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 
-  public static void inject(@NonNull JavaPlugin javaPlugin) {
-    Injector injector = Guice.createInjector(new GuiceBukkitModule(javaPlugin),
-        new GuicePatchPlaceBreakPluginModule(), new GuicePatchPlaceBreakCoreModule(),
-        new GuicePersistenceSqliteModule());
-    injector.injectMembers(javaPlugin);
-    javaPlugin.getLogger().info("Dependencies injected with Guice.");
+  @Override
+  public @NonNull String serialize(@NonNull LocalDateTime localDateTime) {
+    return localDateTime.format(formatter);
+  }
+
+  @Override
+  public @NonNull LocalDateTime deserialize(@NonNull String string) {
+    return LocalDateTime.parse(string, formatter);
   }
 }

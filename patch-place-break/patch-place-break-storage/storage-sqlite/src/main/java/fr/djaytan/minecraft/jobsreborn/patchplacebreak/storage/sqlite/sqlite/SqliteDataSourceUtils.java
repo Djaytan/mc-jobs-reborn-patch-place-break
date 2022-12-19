@@ -22,26 +22,34 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import java.nio.file.Path;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.GuicePatchPlaceBreakCoreModule;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite.GuicePersistenceSqliteModule;
 import lombok.NonNull;
 
-public final class GuiceBukkitInjector {
+@Singleton
+public class SqliteDataSourceUtils {
 
-  private GuiceBukkitInjector() {}
+  private static final String SQLITE_DATABASE_FILE_NAME = "data.db";
 
-  public static void inject(@NonNull JavaPlugin javaPlugin) {
-    Injector injector = Guice.createInjector(new GuiceBukkitModule(javaPlugin),
-        new GuicePatchPlaceBreakPluginModule(), new GuicePatchPlaceBreakCoreModule(),
-        new GuicePersistenceSqliteModule());
-    injector.injectMembers(javaPlugin);
-    javaPlugin.getLogger().info("Dependencies injected with Guice.");
+  private final Path dataFolder;
+
+  @Inject
+  public SqliteDataSourceUtils(@Named("dataFolder") Path dataFolder) {
+    this.dataFolder = dataFolder;
+  }
+
+  public @NonNull Path getSqliteDatabasePath() {
+    return dataFolder.resolve(SQLITE_DATABASE_FILE_NAME);
+  }
+
+  public @NonNull String getJdbcUrl() {
+    Path sqliteDatabasePath = getSqliteDatabasePath();
+    return String.format("jdbc:sqlite:%s", sqliteDatabasePath);
   }
 }

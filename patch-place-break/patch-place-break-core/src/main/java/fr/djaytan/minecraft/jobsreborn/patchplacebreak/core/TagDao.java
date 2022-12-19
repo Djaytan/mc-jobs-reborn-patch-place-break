@@ -22,26 +22,20 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import java.util.Optional;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.GuicePatchPlaceBreakCoreModule;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite.GuicePersistenceSqliteModule;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import lombok.NonNull;
 
-public final class GuiceBukkitInjector {
+public interface TagDao {
 
-  private GuiceBukkitInjector() {}
+  void put(@NonNull Tag tag) throws DaoException;
 
-  public static void inject(@NonNull JavaPlugin javaPlugin) {
-    Injector injector = Guice.createInjector(new GuiceBukkitModule(javaPlugin),
-        new GuicePatchPlaceBreakPluginModule(), new GuicePatchPlaceBreakCoreModule(),
-        new GuicePersistenceSqliteModule());
-    injector.injectMembers(javaPlugin);
-    javaPlugin.getLogger().info("Dependencies injected with Guice.");
-  }
+  @NonNull
+  Optional<Tag> findByLocation(@NonNull TagLocation tagLocation) throws DaoException;
+
+  void delete(@NonNull TagLocation tagLocation) throws DaoException;
 }

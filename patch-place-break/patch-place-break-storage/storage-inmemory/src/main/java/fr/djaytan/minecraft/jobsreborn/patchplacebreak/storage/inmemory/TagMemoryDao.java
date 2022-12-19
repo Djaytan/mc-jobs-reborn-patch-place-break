@@ -22,26 +22,44 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import javax.inject.Singleton;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.GuicePatchPlaceBreakCoreModule;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite.GuicePersistenceSqliteModule;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.TagDao;
 import lombok.NonNull;
 
-public final class GuiceBukkitInjector {
+@Singleton
+public class TagMemoryDao implements TagDao {
 
-  private GuiceBukkitInjector() {}
+  private final Map<UUID, Tag> tagMap = new HashMap<>();
 
-  public static void inject(@NonNull JavaPlugin javaPlugin) {
-    Injector injector = Guice.createInjector(new GuiceBukkitModule(javaPlugin),
-        new GuicePatchPlaceBreakPluginModule(), new GuicePatchPlaceBreakCoreModule(),
-        new GuicePersistenceSqliteModule());
-    injector.injectMembers(javaPlugin);
-    javaPlugin.getLogger().info("Dependencies injected with Guice.");
+  @Override
+  public void put(@NonNull Tag tag) {
+    delete(tag.getTagLocation());
+    tagMap.put(tag.getUuid(), tag);
+  }
+
+  @Override
+  public @NonNull Optional<Tag> findByLocation(@NonNull TagLocation tagLocation) {
+    for (Tag tag : tagMap.values()) {
+      if (tag.getTagLocation().equals(tagLocation)) {
+        return Optional.of(tag);
+      }
+    }
+    return Optional.empty();
+  }
+
+  @Override
+  public void delete(@NonNull TagLocation tagLocation) {
+    Optional<Tag> tag = findByLocation(tagLocation);
+    tag.ifPresent(t -> tagMap.remove(t.getUuid()));
   }
 }

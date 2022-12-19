@@ -28,36 +28,23 @@
     <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
     <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
     <version>1.4.0-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
+    <relativePath>../../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>patch-place-break-core</artifactId>
+  <artifactId>storage-api</artifactId>
   <packaging>jar</packaging>
-  <name>PatchPlaceBreak Implementation</name>
-  <description>The default implementation of the place-break patch API</description>
+  <name>Persistence API</name>
+  <description>API to persist data of the place-and-break patch</description>
 
   <properties>
-    <main.basedir>${project.basedir}/../../</main.basedir>
+    <main.basedir>${project.basedir}/../../../</main.basedir>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-    </dependency>
-    <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-api</artifactId>
       <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.errorprone</groupId>
-      <artifactId>error_prone_annotations</artifactId>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>

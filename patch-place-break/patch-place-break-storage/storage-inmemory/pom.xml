@@ -28,16 +28,16 @@
     <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
     <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
     <version>1.4.0-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
+    <relativePath>../../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>patch-place-break-core</artifactId>
+  <artifactId>storage-inmemory</artifactId>
   <packaging>jar</packaging>
-  <name>PatchPlaceBreak Implementation</name>
-  <description>The default implementation of the place-break patch API</description>
+  <name>Persistence InMemory Implementation</name>
+  <description>InMemory implementation of persistence (for tests purpose)</description>
 
   <properties>
-    <main.basedir>${project.basedir}/../../</main.basedir>
+    <main.basedir>${project.basedir}/../../../</main.basedir>
   </properties>
 
   <dependencies>
@@ -51,13 +51,18 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>patch-place-break-core</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.google.errorprone</groupId>
-      <artifactId>error_prone_annotations</artifactId>
-      <scope>provided</scope>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>storage-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>

@@ -61,12 +61,12 @@
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>persistence-api</artifactId>
+      <artifactId>storage-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>persistence-sqlite</artifactId>
+      <artifactId>storage-sqlite</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

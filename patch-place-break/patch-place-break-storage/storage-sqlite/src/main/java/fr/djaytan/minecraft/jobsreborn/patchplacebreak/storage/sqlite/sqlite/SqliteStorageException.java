@@ -22,26 +22,25 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.GuicePatchPlaceBreakCoreModule;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite.GuicePersistenceSqliteModule;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.StorageException;
+import lombok.AccessLevel;
 import lombok.NonNull;
+import lombok.experimental.StandardException;
 
-public final class GuiceBukkitInjector {
+@StandardException(access = AccessLevel.PROTECTED)
+public class SqliteStorageException extends StorageException {
 
-  private GuiceBukkitInjector() {}
+  private static final String CONNECTION_POOL_NOT_SETUP =
+      "The connection pool must be setup before using it.";
+  private static final String DATABASE_CREATION = "Unable to create the database.";
 
-  public static void inject(@NonNull JavaPlugin javaPlugin) {
-    Injector injector = Guice.createInjector(new GuiceBukkitModule(javaPlugin),
-        new GuicePatchPlaceBreakPluginModule(), new GuicePatchPlaceBreakCoreModule(),
-        new GuicePersistenceSqliteModule());
-    injector.injectMembers(javaPlugin);
-    javaPlugin.getLogger().info("Dependencies injected with Guice.");
+  public static @NonNull SqliteStorageException connectionPoolNotSetup() {
+    return new SqliteStorageException(CONNECTION_POOL_NOT_SETUP);
+  }
+
+  public static @NonNull SqliteStorageException databaseCreation(@NonNull Throwable cause) {
+    return new SqliteStorageException(DATABASE_CREATION, cause);
   }
 }

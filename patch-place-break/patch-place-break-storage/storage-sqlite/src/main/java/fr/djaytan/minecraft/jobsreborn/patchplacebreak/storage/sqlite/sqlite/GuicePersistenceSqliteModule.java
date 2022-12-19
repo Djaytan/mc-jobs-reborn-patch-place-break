@@ -22,26 +22,20 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import com.google.inject.AbstractModule;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.TagDao;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.SqlDataSource;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.GuicePatchPlaceBreakCoreModule;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.sqlite.GuicePersistenceSqliteModule;
-import lombok.NonNull;
+public class GuicePersistenceSqliteModule extends AbstractModule {
 
-public final class GuiceBukkitInjector {
-
-  private GuiceBukkitInjector() {}
-
-  public static void inject(@NonNull JavaPlugin javaPlugin) {
-    Injector injector = Guice.createInjector(new GuiceBukkitModule(javaPlugin),
-        new GuicePatchPlaceBreakPluginModule(), new GuicePatchPlaceBreakCoreModule(),
-        new GuicePersistenceSqliteModule());
-    injector.injectMembers(javaPlugin);
-    javaPlugin.getLogger().info("Dependencies injected with Guice.");
+  @Override
+  protected void configure() {
+    bind(SqlDataSource.class).to(SqliteDataSource.class);
+    bind(DataSource.class).to(SqliteDataSource.class);
+    bind(TagDao.class).to(TagSqliteDao.class);
   }
 }
