@@ -33,6 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.inject.GuiceBukkitInjector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.slf4j.BukkitLoggerFactory;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
 import lombok.SneakyThrows;
 
@@ -52,6 +53,7 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
   @Override
   public void onEnable() {
+    BukkitLoggerFactory.provideBukkitLogger(getLogger());
     GuiceBukkitInjector.inject(this);
     preparePluginDataFolder();
     dataSource.connect();

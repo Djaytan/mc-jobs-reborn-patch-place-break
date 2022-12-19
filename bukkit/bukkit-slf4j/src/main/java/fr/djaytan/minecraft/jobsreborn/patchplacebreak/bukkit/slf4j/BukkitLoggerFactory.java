@@ -24,11 +24,8 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.slf4j;
 
-import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.JobsRebornPatchPlaceBreakPlugin;
 
 /**
  * /!\ WARNING /!\
@@ -42,9 +39,18 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.JobsRebornPatchPla
  */
 public class BukkitLoggerFactory implements ILoggerFactory {
 
+  private static java.util.logging.Logger bukkitLogger;
+
+  public static void provideBukkitLogger(java.util.logging.Logger bukkitLogger) {
+    if (BukkitLoggerFactory.bukkitLogger != null) {
+      BukkitLoggerFactory.bukkitLogger.warning("The logger has already been provided.");
+      return;
+    }
+    BukkitLoggerFactory.bukkitLogger = bukkitLogger;
+  }
+
   @Override
   public Logger getLogger(String name) {
-    return new BukkitLoggerAdapter(
-        JavaPlugin.getPlugin(JobsRebornPatchPlaceBreakPlugin.class).getLogger());
+    return new BukkitLoggerAdapter(bukkitLogger);
   }
 }
