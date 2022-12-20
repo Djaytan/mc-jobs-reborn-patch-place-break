@@ -38,6 +38,10 @@
 
   <properties>
     <main.basedir>${project.basedir}/../../</main.basedir>
+    <package.root>fr.djaytan.minecraft.jobsreborn.patchplacebreak</package.root>
+    <package.lib>${package.root}.lib</package.lib>
+    <plugin.name>JobsReborn-PatchPlaceBreak</plugin.name>
+    <plugin.finalName>${plugin.name}-${project.version}</plugin.finalName>
   </properties>
 
   <dependencies>

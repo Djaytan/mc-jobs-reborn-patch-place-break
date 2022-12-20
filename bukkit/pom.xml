@@ -32,8 +32,8 @@
 
   <artifactId>bukkit</artifactId>
   <packaging>pom</packaging>
-  <name>Bukkit Implementation</name>
-  <description>The Bukkit implementation of the place-and-break patch</description>
+  <name>Bukkit</name>
+  <description>The Bukkit modules related to the place-and-break patch</description>
 
   <modules>
     <module>bukkit-adapter</module>

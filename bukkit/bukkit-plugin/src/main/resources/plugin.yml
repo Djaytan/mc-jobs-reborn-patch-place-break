@@ -2,5 +2,5 @@ name: ${plugin.name}
 version: ${version}
 author: Djaytan
 api-version: 1.13
-main: ${package.root}.bukkit.JobsRebornPatchPlaceBreakPlugin
+main: ${package.root}.bukkit.plugin.JobsRebornPatchPlaceBreakPlugin
 depend: [Jobs]

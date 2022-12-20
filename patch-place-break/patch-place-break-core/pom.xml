@@ -33,7 +33,7 @@
 
   <artifactId>patch-place-break-core</artifactId>
   <packaging>jar</packaging>
-  <name>PatchPlaceBreak Implementation</name>
+  <name>PatchPlaceBreak Core</name>
   <description>The default implementation of the place-break patch API</description>
 
   <properties>

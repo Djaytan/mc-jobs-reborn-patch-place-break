@@ -68,11 +68,7 @@
     <project.encoding>UTF-8</project.encoding>
     <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
     <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
-    <package.root>fr.djaytan.minecraft.jobsreborn.patchplacebreak</package.root>
-    <package.lib>${package.root}.lib</package.lib>
     <java.version>8</java.version>
-    <plugin.name>JobsReborn-PatchPlaceBreak</plugin.name>
-    <plugin.finalName>${plugin.name}-${project.version}</plugin.finalName>
     <sonar.organization>djaytan</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
