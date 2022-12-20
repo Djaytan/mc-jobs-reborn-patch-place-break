@@ -31,6 +31,8 @@ import lombok.NonNull;
 @Singleton
 public class BooleanIntegerSerializer implements IntegerSerializer<Boolean> {
 
+  BooleanIntegerSerializer() {}
+
   @Override
   public @NonNull Integer serialize(@NonNull Boolean bool) {
     return Boolean.TRUE.equals(bool) ? 1 : 0;

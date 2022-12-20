@@ -60,9 +60,9 @@ public class TagSqliteDao implements TagDao {
   private final UUIDStringSerializer uuidStringSerializer;
 
   @Inject
-  public TagSqliteDao(BooleanIntegerSerializer booleanIntegerSerializer,
-      SqlDataSource sqlDataSource, LocalDateTimeStringSerializer localDateTimeStringSerializer,
-      Logger logger, UUIDStringSerializer uuidStringSerializer) {
+  TagSqliteDao(BooleanIntegerSerializer booleanIntegerSerializer, SqlDataSource sqlDataSource,
+      LocalDateTimeStringSerializer localDateTimeStringSerializer, Logger logger,
+      UUIDStringSerializer uuidStringSerializer) {
     this.booleanIntegerSerializer = booleanIntegerSerializer;
     this.sqlDataSource = sqlDataSource;
     this.localDateTimeStringSerializer = localDateTimeStringSerializer;

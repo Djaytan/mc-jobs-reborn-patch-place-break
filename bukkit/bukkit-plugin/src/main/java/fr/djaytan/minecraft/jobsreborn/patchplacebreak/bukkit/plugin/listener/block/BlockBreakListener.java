@@ -48,7 +48,7 @@ public class BlockBreakListener implements Listener {
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
 
   @Inject
-  public BlockBreakListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
+  BlockBreakListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
   }
 

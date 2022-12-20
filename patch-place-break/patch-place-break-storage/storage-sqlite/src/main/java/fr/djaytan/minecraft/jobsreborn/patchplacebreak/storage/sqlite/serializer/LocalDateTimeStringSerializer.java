@@ -34,6 +34,8 @@ import lombok.NonNull;
 @Singleton
 public class LocalDateTimeStringSerializer implements StringSerializer<LocalDateTime> {
 
+  LocalDateTimeStringSerializer() {}
+
   private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 
   @Override

@@ -40,7 +40,7 @@ public class SqliteDataSourceUtils {
   private final Path dataFolder;
 
   @Inject
-  public SqliteDataSourceUtils(@Named("dataFolder") Path dataFolder) {
+  SqliteDataSourceUtils(@Named("dataFolder") Path dataFolder) {
     this.dataFolder = dataFolder;
   }
 

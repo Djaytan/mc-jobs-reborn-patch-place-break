@@ -40,7 +40,7 @@ public class MetricsFacade {
   private final Logger logger;
 
   @Inject
-  public MetricsFacade(JavaPlugin javaPlugin, Logger logger) {
+  MetricsFacade(JavaPlugin javaPlugin, Logger logger) {
     this.javaPlugin = javaPlugin;
     this.logger = logger;
   }

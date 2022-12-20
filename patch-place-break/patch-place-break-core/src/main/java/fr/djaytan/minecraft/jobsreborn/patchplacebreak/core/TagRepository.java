@@ -42,7 +42,7 @@ public class TagRepository {
   private final TagDao tagDao;
 
   @Inject
-  public TagRepository(TagDao tagDao) {
+  TagRepository(TagDao tagDao) {
     this.tagDao = tagDao;
   }
 

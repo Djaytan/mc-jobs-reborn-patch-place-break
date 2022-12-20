@@ -49,7 +49,7 @@ public class JobsPrePaymentVerificationListener implements Listener {
   private final PatchPlaceBreakVerifier patchPlaceBreakVerifier;
 
   @Inject
-  public JobsPrePaymentVerificationListener(PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
+  JobsPrePaymentVerificationListener(PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
     this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;
   }
 

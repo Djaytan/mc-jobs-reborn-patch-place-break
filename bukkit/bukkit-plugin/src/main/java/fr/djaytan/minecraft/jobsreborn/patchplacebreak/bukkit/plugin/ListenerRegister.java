@@ -63,7 +63,7 @@ public class ListenerRegister {
   private final JobsPrePaymentVerificationListener jobsPrePaymentVerificationListener;
 
   @Inject
-  public ListenerRegister(JavaPlugin javaPlugin, PluginManager pluginManager, Logger logger,
+  ListenerRegister(JavaPlugin javaPlugin, PluginManager pluginManager, Logger logger,
       BlockBreakListener blockBreakListener, BlockGrowListener blockGrowListener,
       BlockPistonListener blockPistonListener, BlockPlaceListener blockPlaceListener,
       BlockSpreadListener blockSpreadListener, JobsExpGainListener jobsExpGainListener,

@@ -39,6 +39,8 @@ import lombok.NonNull;
 @Singleton
 public class ActionTypeConverter implements UnidirectionalConverter<ActionType, PatchActionType> {
 
+  ActionTypeConverter() {}
+
   @Override
   public @NonNull PatchActionType convert(@NonNull ActionType jobActionType) {
     if (!isValidJobActionType(jobActionType)) {

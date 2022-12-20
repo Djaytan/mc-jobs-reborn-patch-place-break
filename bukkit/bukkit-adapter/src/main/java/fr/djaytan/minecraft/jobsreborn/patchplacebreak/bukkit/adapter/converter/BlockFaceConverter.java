@@ -34,6 +34,8 @@ import lombok.NonNull;
 @Singleton
 public class BlockFaceConverter implements UnidirectionalConverter<BlockFace, TagVector> {
 
+  BlockFaceConverter() {}
+
   @Override
   public @NonNull TagVector convert(@NonNull BlockFace blockFace) {
     double modX = blockFace.getModX();

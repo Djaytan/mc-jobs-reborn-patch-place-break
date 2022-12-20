@@ -50,7 +50,7 @@ import org.slf4j.spi.LocationAwareLogger;
  *  The purpose is to permit the creation of a SLF4J instance of the Bukkit logger to ease the decoupling.
  * </p>
  */
-public class BukkitLoggerAdapter extends LegacyAbstractLogger implements LocationAwareLogger {
+final class BukkitLoggerAdapter extends LegacyAbstractLogger implements LocationAwareLogger {
 
   transient final Logger logger;
 

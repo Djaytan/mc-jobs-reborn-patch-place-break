@@ -56,7 +56,7 @@ public class SqliteDataSource implements SqlDataSource {
   private HikariDataSource hikariDataSource;
 
   @Inject
-  public SqliteDataSource(@Named("createTableSqlScript") String createTableSqlScript, Logger logger,
+  SqliteDataSource(@Named("createTableSqlScript") String createTableSqlScript, Logger logger,
       SqliteDataSourceUtils sqliteDataSourceUtils) {
     this.createTableSqlScript = createTableSqlScript;
     this.logger = logger;

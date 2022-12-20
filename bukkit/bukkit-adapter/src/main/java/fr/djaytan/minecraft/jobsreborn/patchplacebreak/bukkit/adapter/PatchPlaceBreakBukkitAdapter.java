@@ -56,7 +56,7 @@ public class PatchPlaceBreakBukkitAdapter {
   private final BlockFaceConverter blockFaceConverter;
 
   @Inject
-  public PatchPlaceBreakBukkitAdapter(ActionTypeConverter actionTypeConverter,
+  PatchPlaceBreakBukkitAdapter(ActionTypeConverter actionTypeConverter,
       LocationConverter locationConverter, PatchPlaceBreakApi patchPlaceBreakApi,
       BlockFaceConverter blockFaceConverter) {
     this.actionTypeConverter = actionTypeConverter;
