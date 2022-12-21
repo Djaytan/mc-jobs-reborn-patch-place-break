@@ -22,44 +22,36 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import static fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlDataSourceInitializer.SQL_DATABASE_NAME;
 
+import java.nio.file.Path;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.TagDao;
 import lombok.NonNull;
 
 @Singleton
-public class TagMemoryDao implements TagDao {
+public class SqliteUtils {
 
-  private final Map<UUID, Tag> tagMap = new HashMap<>();
+  private static final String SQLITE_DATABASE_FILE_NAME_FORMAT = "%s.db";
 
-  @Override
-  public void put(@NonNull Tag tag) {
-    delete(tag.getTagLocation());
-    tagMap.put(tag.getUuid(), tag);
+  private final Path dataFolder;
+
+  @Inject
+  SqliteUtils(@Named("dataFolder") Path dataFolder) {
+    this.dataFolder = dataFolder;
   }
 
-  @Override
-  public @NonNull Optional<Tag> findByLocation(@NonNull TagLocation tagLocation) {
-    for (Tag tag : tagMap.values()) {
-      if (tag.getTagLocation().equals(tagLocation)) {
-        return Optional.of(tag);
-      }
-    }
-    return Optional.empty();
+  public @NonNull Path getSqliteDatabasePath() {
+    return dataFolder.resolve(String.format(SQLITE_DATABASE_FILE_NAME_FORMAT, SQL_DATABASE_NAME));
   }
 
-  @Override
-  public void delete(@NonNull TagLocation tagLocation) {
-    Optional<Tag> tag = findByLocation(tagLocation);
-    tag.ifPresent(t -> tagMap.remove(t.getUuid()));
+  public @NonNull String getJdbcUrl() {
+    Path sqliteDatabasePath = getSqliteDatabasePath();
+    return String.format("jdbc:sqlite:%s", sqliteDatabasePath);
   }
 }

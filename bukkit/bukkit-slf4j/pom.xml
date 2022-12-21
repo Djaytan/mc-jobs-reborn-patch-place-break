@@ -26,9 +26,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-    <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
+    <artifactId>bukkit</artifactId>
     <version>1.4.0-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <artifactId>bukkit-slf4j</artifactId>

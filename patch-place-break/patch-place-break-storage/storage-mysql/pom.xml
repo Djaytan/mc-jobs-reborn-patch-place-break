@@ -31,10 +31,10 @@
     <relativePath>../../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>storage-inmemory</artifactId>
+  <artifactId>storage-mysql</artifactId>
   <packaging>jar</packaging>
-  <name>Storage InMemory</name>
-  <description>InMemory implementation of storage (for tests purpose)</description>
+  <name>Storage MySQL</name>
+  <description>MySQL implementation of storage</description>
 
   <properties>
     <main.basedir>${project.basedir}/../../../</main.basedir>
@@ -44,6 +44,10 @@
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
@@ -61,8 +65,18 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>storage-sql-commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.31</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

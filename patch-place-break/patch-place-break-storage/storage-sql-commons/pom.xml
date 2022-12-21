@@ -31,10 +31,10 @@
     <relativePath>../../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>storage-inmemory</artifactId>
+  <artifactId>storage-sql-commons</artifactId>
   <packaging>jar</packaging>
-  <name>Storage InMemory</name>
-  <description>InMemory implementation of storage (for tests purpose)</description>
+  <name>Storage SQL Commons</name>
+  <description>SQL commons to store data of the place-and-break patch</description>
 
   <properties>
     <main.basedir>${project.basedir}/../../../</main.basedir>
@@ -46,9 +46,8 @@
       <artifactId>guice</artifactId>
     </dependency>
     <dependency>
-      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>patch-place-break-api</artifactId>
-      <version>${project.version}</version>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
@@ -65,13 +64,12 @@
       <artifactId>javax.inject</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
     </dependency>
   </dependencies>
 </project>

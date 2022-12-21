@@ -22,34 +22,6 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer;
 
-import java.nio.file.Path;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
-import lombok.NonNull;
-
-@Singleton
-public class SqliteDataSourceUtils {
-
-  private static final String SQLITE_DATABASE_FILE_NAME = "data.db";
-
-  private final Path dataFolder;
-
-  @Inject
-  SqliteDataSourceUtils(@Named("dataFolder") Path dataFolder) {
-    this.dataFolder = dataFolder;
-  }
-
-  public @NonNull Path getSqliteDatabasePath() {
-    return dataFolder.resolve(SQLITE_DATABASE_FILE_NAME);
-  }
-
-  public @NonNull String getJdbcUrl() {
-    Path sqliteDatabasePath = getSqliteDatabasePath();
-    return String.format("jdbc:sqlite:%s", sqliteDatabasePath);
-  }
-}
+public interface IntegerSerializer<T> extends Serializer<T, Integer> {}

@@ -22,11 +22,29 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
-import lombok.AccessLevel;
-import lombok.experimental.StandardException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@StandardException(access = AccessLevel.PROTECTED)
-public class StorageException extends PatchPlaceBreakException {}
+import javax.inject.Singleton;
+
+import lombok.NonNull;
+
+@Singleton
+public class LocalDateTimeStringSerializer implements StringSerializer<LocalDateTime> {
+
+  LocalDateTimeStringSerializer() {}
+
+  private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
+  @Override
+  public @NonNull String serialize(@NonNull LocalDateTime localDateTime) {
+    return localDateTime.format(formatter);
+  }
+
+  @Override
+  public @NonNull LocalDateTime deserialize(@NonNull String string) {
+    return LocalDateTime.parse(string, formatter);
+  }
+}

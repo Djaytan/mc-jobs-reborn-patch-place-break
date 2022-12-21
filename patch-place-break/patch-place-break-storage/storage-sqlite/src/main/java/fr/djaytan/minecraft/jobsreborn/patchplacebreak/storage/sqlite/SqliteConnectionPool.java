@@ -22,16 +22,29 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite;
 
-import java.sql.Connection;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
+import org.slf4j.Logger;
+
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.ConnectionPool;
 import lombok.NonNull;
 
-public interface SqlDataSource extends DataSource {
+@Singleton
+public class SqliteConnectionPool extends ConnectionPool {
 
-  String SQL_TABLE_NAME = "patch_place_and_break_tag";
+  private final SqliteUtils sqliteUtils;
 
-  @NonNull
-  Connection getConnection() throws StorageException;
+  @Inject
+  SqliteConnectionPool(Logger logger, SqliteUtils sqliteUtils) {
+    super(logger);
+    this.sqliteUtils = sqliteUtils;
+  }
+
+  @Override
+  protected @NonNull String getJdbcUrl() {
+    return sqliteUtils.getJdbcUrl();
+  }
 }

@@ -22,26 +22,15 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.serializer;
-
-import java.util.UUID;
-
-import javax.inject.Singleton;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer;
 
 import lombok.NonNull;
 
-@Singleton
-public class UUIDStringSerializer implements StringSerializer<UUID> {
+public interface Serializer<T, U> {
 
-  UUIDStringSerializer() {}
+  @NonNull
+  U serialize(@NonNull T object);
 
-  @Override
-  public @NonNull String serialize(@NonNull UUID uuid) {
-    return uuid.toString();
-  }
-
-  @Override
-  public @NonNull UUID deserialize(@NonNull String string) {
-    return UUID.fromString(string);
-  }
+  @NonNull
+  T deserialize(@NonNull U object);
 }

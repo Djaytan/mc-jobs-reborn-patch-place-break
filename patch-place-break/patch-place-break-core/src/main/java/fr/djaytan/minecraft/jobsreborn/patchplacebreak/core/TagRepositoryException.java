@@ -22,11 +22,36 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import lombok.AccessLevel;
+import lombok.NonNull;
 import lombok.experimental.StandardException;
 
 @StandardException(access = AccessLevel.PROTECTED)
-public class StorageException extends PatchPlaceBreakException {}
+public class TagRepositoryException extends PatchPlaceBreakException {
+
+  private static final String PUT = "Failed to put the following tag: %s";
+  private static final String FETCH = "Failed to fetch the tag with the following location: %s";
+  private static final String DELETE = "Failed to delete the tag with the following location: %s";
+
+  public static @NonNull TagRepositoryException put(@NonNull Tag tag, @NonNull Throwable cause) {
+    String message = String.format(PUT, tag);
+    return new TagRepositoryException(message, cause);
+  }
+
+  public static @NonNull TagRepositoryException fetch(@NonNull TagLocation tagLocation,
+      @NonNull Throwable cause) {
+    String message = String.format(FETCH, tagLocation);
+    return new TagRepositoryException(message, cause);
+  }
+
+  public static @NonNull TagRepositoryException delete(@NonNull TagLocation tagLocation,
+      @NonNull Throwable cause) {
+    String message = String.format(DELETE, tagLocation);
+    return new TagRepositoryException(message, cause);
+  }
+}
