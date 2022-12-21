@@ -22,16 +22,19 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
-import com.google.inject.AbstractModule;
+public abstract class SqlDataSourceInitializer {
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.TagDao;
+  public static final String SQL_DATABASE_NAME = "patch_place_break";
+  public static final String SQL_TABLE_NAME = "patch_place_break_tag";
 
-public class GuiceStorageInmemoryModule extends AbstractModule {
-
-  @Override
-  protected void configure() {
-    bind(TagDao.class).to(TagMemoryDao.class);
+  public void initialize() {
+    createDatabaseIfNotExists();
+    createTableIfNotExists();
   }
+
+  protected abstract void createDatabaseIfNotExists() throws SqlStorageException;
+
+  protected abstract void createTableIfNotExists() throws SqlStorageException;
 }

@@ -22,20 +22,18 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
 
-import java.util.Optional;
+import com.google.inject.AbstractModule;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
-import lombok.NonNull;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.TagRepository;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
 
-public interface TagDao {
+public class GuiceStorageInMemoryModule extends AbstractModule {
 
-  void put(@NonNull Tag tag) throws DaoException;
-
-  @NonNull
-  Optional<Tag> findByLocation(@NonNull TagLocation tagLocation) throws DaoException;
-
-  void delete(@NonNull TagLocation tagLocation) throws DaoException;
+  @Override
+  protected void configure() {
+    bind(DataSource.class).to(InMemoryDataSource.class);
+    bind(TagRepository.class).to(TagInMemoryRepository.class);
+  }
 }

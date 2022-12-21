@@ -22,6 +22,6 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.serializer;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer;
 
-public interface IntegerSerializer<T> extends Serializer<T, Integer> {}
+public interface StringSerializer<T> extends Serializer<T, String> {}

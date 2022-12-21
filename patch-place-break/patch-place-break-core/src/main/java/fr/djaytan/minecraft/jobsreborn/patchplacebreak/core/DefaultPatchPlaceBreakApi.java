@@ -26,9 +26,9 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
@@ -56,7 +56,12 @@ public class DefaultPatchPlaceBreakApi implements PatchPlaceBreakApi {
   @CanIgnoreReturnValue
   public @NonNull CompletableFuture<Void> putTag(@NonNull TagLocation tagLocation,
       boolean isEphemeral) {
-    return CompletableFuture.runAsync(() -> tagRepository.put(isEphemeral, tagLocation).join());
+    return CompletableFuture.runAsync(() -> {
+      UUID tagUuid = UUID.randomUUID();
+      LocalDateTime localDateTime = LocalDateTime.now();
+      Tag tag = Tag.of(tagUuid, localDateTime, isEphemeral, tagLocation);
+      tagRepository.put(tag);
+    });
   }
 
   @CanIgnoreReturnValue
@@ -64,7 +69,7 @@ public class DefaultPatchPlaceBreakApi implements PatchPlaceBreakApi {
       @NonNull Collection<TagLocation> tagLocations, @NonNull TagVector direction) {
     return CompletableFuture.runAsync(() -> {
       for (TagLocation tagLocation : tagLocations) {
-        Optional<Tag> tag = getTag(tagLocation).join();
+        Optional<Tag> tag = tagRepository.findByLocation(tagLocation);
 
         if (!tag.isPresent()) {
           continue;
@@ -78,15 +83,15 @@ public class DefaultPatchPlaceBreakApi implements PatchPlaceBreakApi {
 
   @CanIgnoreReturnValue
   public @NonNull CompletableFuture<Void> removeTag(@NonNull TagLocation tagLocation) {
-    return CompletableFuture.runAsync(() -> tagRepository.delete(tagLocation).join());
+    return CompletableFuture.runAsync(() -> tagRepository.delete(tagLocation));
   }
 
   public @NonNull CompletableFuture<Boolean> isPlaceAndBreakAction(
       @NonNull PatchActionType patchActionType, @NonNull TagLocation tagLocation) {
     return CompletableFuture.supplyAsync(() -> {
-      Optional<Tag> tag = getTag(tagLocation).join();
+      Optional<Tag> tag = tagRepository.findByLocation(tagLocation);
 
-      if (!isActionToPatch(patchActionType) || !tag.isPresent()) {
+      if (!tag.isPresent()) {
         return false;
       }
 
@@ -99,14 +104,5 @@ public class DefaultPatchPlaceBreakApi implements PatchPlaceBreakApi {
 
       return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
     });
-  }
-
-  private @NonNull CompletableFuture<Optional<Tag>> getTag(@NonNull TagLocation tagLocation) {
-    return tagRepository.findByLocation(tagLocation);
-  }
-
-  private boolean isActionToPatch(@NonNull PatchActionType patchActionType) {
-    return Arrays.asList(PatchActionType.BREAK, PatchActionType.TNTBREAK, PatchActionType.PLACE)
-        .contains(patchActionType);
   }
 }

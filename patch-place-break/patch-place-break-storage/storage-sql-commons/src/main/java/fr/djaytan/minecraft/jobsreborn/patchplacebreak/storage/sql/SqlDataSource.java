@@ -22,6 +22,34 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.serializer;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
-public interface StringSerializer<T> extends Serializer<T, String> {}
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.StorageException;
+
+@Singleton
+public class SqlDataSource implements DataSource {
+
+  private final ConnectionPool connectionPool;
+  private final SqlDataSourceInitializer sqlDataSourceInitializer;
+
+  @Inject
+  SqlDataSource(ConnectionPool connectionPool, SqlDataSourceInitializer sqlDataSourceInitializer) {
+    this.connectionPool = connectionPool;
+    this.sqlDataSourceInitializer = sqlDataSourceInitializer;
+  }
+
+  @Override
+  public void connect() throws StorageException {
+    connectionPool.connect();
+    sqlDataSourceInitializer.initialize();
+  }
+
+  @Override
+  public void disconnect() throws StorageException {
+    connectionPool.disconnect();
+  }
+}

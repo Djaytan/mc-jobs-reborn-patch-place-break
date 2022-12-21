@@ -22,24 +22,26 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.serializer;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer;
+
+import java.util.UUID;
 
 import javax.inject.Singleton;
 
 import lombok.NonNull;
 
 @Singleton
-public class BooleanIntegerSerializer implements IntegerSerializer<Boolean> {
+public class UUIDStringSerializer implements StringSerializer<UUID> {
 
-  BooleanIntegerSerializer() {}
+  UUIDStringSerializer() {}
 
   @Override
-  public @NonNull Integer serialize(@NonNull Boolean bool) {
-    return Boolean.TRUE.equals(bool) ? 1 : 0;
+  public @NonNull String serialize(@NonNull UUID uuid) {
+    return uuid.toString();
   }
 
   @Override
-  public @NonNull Boolean deserialize(@NonNull Integer integer) {
-    return integer == 1;
+  public @NonNull UUID deserialize(@NonNull String string) {
+    return UUID.fromString(string);
   }
 }

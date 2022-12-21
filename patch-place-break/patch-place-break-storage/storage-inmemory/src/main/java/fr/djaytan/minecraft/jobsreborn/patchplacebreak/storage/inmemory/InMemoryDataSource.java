@@ -22,29 +22,33 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.serializer;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import lombok.NonNull;
+import org.slf4j.Logger;
+
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.StorageException;
 
 @Singleton
-public class LocalDateTimeStringSerializer implements StringSerializer<LocalDateTime> {
+public class InMemoryDataSource implements DataSource {
 
-  LocalDateTimeStringSerializer() {}
+  private final Logger logger;
 
-  private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-
-  @Override
-  public @NonNull String serialize(@NonNull LocalDateTime localDateTime) {
-    return localDateTime.format(formatter);
+  @Inject
+  InMemoryDataSource(Logger logger) {
+    this.logger = logger;
   }
 
   @Override
-  public @NonNull LocalDateTime deserialize(@NonNull String string) {
-    return LocalDateTime.parse(string, formatter);
+  public void connect() throws StorageException {
+    logger.atInfo().log("Nothing to do when connecting to the InMemory datasource.");
+  }
+
+  @Override
+  public void disconnect() throws StorageException {
+    logger.atInfo().log("Nothing to do when disconnecting from the InMemory datasource.");
   }
 }

@@ -22,15 +22,24 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.serializer;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer;
+
+import javax.inject.Singleton;
 
 import lombok.NonNull;
 
-public interface Serializer<T, U> {
+@Singleton
+public class BooleanIntegerSerializer implements IntegerSerializer<Boolean> {
 
-  @NonNull
-  U serialize(@NonNull T object);
+  BooleanIntegerSerializer() {}
 
-  @NonNull
-  T deserialize(@NonNull U object);
+  @Override
+  public @NonNull Integer serialize(@NonNull Boolean bool) {
+    return Boolean.TRUE.equals(bool) ? 1 : 0;
+  }
+
+  @Override
+  public @NonNull Boolean deserialize(@NonNull Integer integer) {
+    return integer == 1;
+  }
 }

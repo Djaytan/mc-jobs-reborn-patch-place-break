@@ -26,16 +26,22 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite;
 
 import com.google.inject.AbstractModule;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.TagDao;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.TagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.SqlDataSource;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.ConnectionPool;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlDataSource;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlDataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.TagSqlDao;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.TagSqlRepository;
 
 public class GuiceStorageSqliteModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(SqlDataSource.class).to(SqliteDataSource.class);
-    bind(DataSource.class).to(SqliteDataSource.class);
-    bind(TagDao.class).to(TagSqliteDao.class);
+    bind(ConnectionPool.class).to(SqliteConnectionPool.class);
+    bind(DataSource.class).to(SqlDataSource.class);
+    bind(SqlDataSourceInitializer.class).to(SqliteDataSourceInitializer.class);
+    bind(TagRepository.class).to(TagSqlRepository.class);
+    bind(TagSqlDao.class).to(TagSqliteDao.class);
   }
 }

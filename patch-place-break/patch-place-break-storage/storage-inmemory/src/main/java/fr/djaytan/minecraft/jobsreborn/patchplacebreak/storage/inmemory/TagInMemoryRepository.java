@@ -22,36 +22,39 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
+import javax.inject.Singleton;
+
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
-import lombok.AccessLevel;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.TagRepository;
 import lombok.NonNull;
-import lombok.experimental.StandardException;
 
-@StandardException(access = AccessLevel.PROTECTED)
-public class DaoException extends PatchPlaceBreakException {
+@Singleton
+public class TagInMemoryRepository implements TagRepository {
 
-  private static final String PUT = "Failed to put the following tag: %s";
-  private static final String FETCH = "Failed to fetch the tag with the following location: %s";
-  private static final String DELETE = "Failed to delete the tag with the following location: %s";
+  private final Map<UUID, Tag> tagMap = new HashMap<>();
 
-  public static @NonNull DaoException put(@NonNull Tag tag, @NonNull Throwable cause) {
-    String message = String.format(PUT, tag);
-    return new DaoException(message, cause);
+  @Override
+  public void put(@NonNull Tag tag) {
+    tagMap.put(tag.getUuid(), tag);
   }
 
-  public static @NonNull DaoException fetch(@NonNull TagLocation tagLocation,
-      @NonNull Throwable cause) {
-    String message = String.format(FETCH, tagLocation);
-    return new DaoException(message, cause);
+  @Override
+  public @NonNull Optional<Tag> findByLocation(@NonNull TagLocation tagLocation) {
+    return tagMap.values().stream().filter(tag -> tag.getTagLocation().equals(tagLocation))
+        .findFirst();
   }
 
-  public static @NonNull DaoException delete(@NonNull TagLocation tagLocation,
-      @NonNull Throwable cause) {
-    String message = String.format(DELETE, tagLocation);
-    return new DaoException(message, cause);
+  @Override
+  public void delete(@NonNull TagLocation tagLocation) {
+    Optional<Tag> tag = findByLocation(tagLocation);
+    tag.ifPresent(t -> tagMap.remove(t.getUuid()));
   }
 }

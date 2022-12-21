@@ -24,44 +24,18 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import lombok.NonNull;
 
-@Singleton
-public class TagRepository {
+public interface TagRepository {
 
-  private final TagDao tagDao;
+  void put(@NonNull Tag tag) throws TagRepositoryException;
 
-  @Inject
-  TagRepository(TagDao tagDao) {
-    this.tagDao = tagDao;
-  }
+  @NonNull
+  Optional<Tag> findByLocation(@NonNull TagLocation tagLocation) throws TagRepositoryException;
 
-  public @NonNull CompletableFuture<Void> put(boolean isEphemeral,
-      @NonNull TagLocation tagLocation) {
-    return CompletableFuture.runAsync(() -> {
-      UUID tagUuid = UUID.randomUUID();
-      LocalDateTime localDateTime = LocalDateTime.now();
-      Tag tag = Tag.of(tagUuid, localDateTime, isEphemeral, tagLocation);
-      tagDao.put(tag);
-    });
-  }
-
-  public @NonNull CompletableFuture<Optional<Tag>> findByLocation(
-      @NonNull TagLocation tagLocation) {
-    return CompletableFuture.supplyAsync(() -> tagDao.findByLocation(tagLocation));
-  }
-
-  public @NonNull CompletableFuture<Void> delete(@NonNull TagLocation tagLocation) {
-    return CompletableFuture.runAsync(() -> tagDao.delete(tagLocation));
-  }
+  void delete(@NonNull TagLocation tagLocation) throws TagRepositoryException;
 }
