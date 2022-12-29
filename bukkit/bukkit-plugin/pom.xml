@@ -74,16 +74,13 @@
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-core</artifactId>
       <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>storage-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>storage-sqlite</artifactId>
-      <version>${project.version}</version>
+      <exclusions>
+        <!-- Use bukkit-slf4j as logger implementation instead -->
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>javax.inject</groupId>

@@ -42,10 +42,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
     </dependency>
@@ -56,7 +52,7 @@
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>patch-place-break-core</artifactId>
+      <artifactId>patch-place-break-internal</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -66,7 +62,7 @@
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>storage-sql-commons</artifactId>
+      <artifactId>storage-sql</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
