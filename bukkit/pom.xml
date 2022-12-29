@@ -46,12 +46,18 @@
     <main.basedir>${project.basedir}/../</main.basedir>
 
     <!-- ==================== Dependencies versions ==================== -->
+    <bstat.version>3.0.0</bstat.version>
     <spigotApi.version>1.11.2-R0.1-SNAPSHOT</spigotApi.version>
     <jobsReborn.version>v4.17.2</jobsReborn.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.bstats</groupId>
+        <artifactId>bstats-bukkit</artifactId>
+        <version>${bstat.version}</version>
+      </dependency>
       <!-- The JobsReborn plugin must be installed on the Bukkit server -->
       <dependency>
         <groupId>com.github.Zrips</groupId>

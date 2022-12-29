@@ -94,26 +94,31 @@
     <sonarMavenPlugin.version>3.9.1.2184</sonarMavenPlugin.version>
 
     <!-- ==================== Dependencies versions ==================== -->
+    <commonsLang3.version>3.12.0</commonsLang3.version>
+    <equalsverifier.version>3.12.3</equalsverifier.version>
+    <errorProneAnnotations.version>2.16</errorProneAnnotations.version>
+    <!-- Latest version of HikariCP compatible with Java 8: don't bump it! -->
+    <hikaricp.version>4.0.3</hikaricp.version>
     <guava.version>31.1-jre</guava.version>
     <guice.version>5.1.0</guice.version>
     <javaxInject.version>1</javaxInject.version>
-    <errorProneAnnotations.version>2.16</errorProneAnnotations.version>
-    <commonsLang3.version>3.12.0</commonsLang3.version>
-    <!-- Latest version of HikariCP compatible with Java 8: don't bump it! -->
-    <hikaricp.version>4.0.3</hikaricp.version>
-    <sqlite.version>3.40.0.0</sqlite.version>
+    <junitJupiter.version>5.9.1</junitJupiter.version>
+    <logback.version>1.4.5</logback.version>
+    <lombok.version>1.18.24</lombok.version>
+    <mockito.version>4.10.0</mockito.version>
     <mysql.version>8.0.31</mysql.version>
     <slf4j.version>2.0.6</slf4j.version>
-    <lombok.version>1.18.24</lombok.version>
-    <bstat.version>3.0.0</bstat.version>
-    <junitJupiter.version>5.9.1</junitJupiter.version>
-    <mockito.version>4.10.0</mockito.version>
-    <equalsverifier.version>3.12.3</equalsverifier.version>
-    <tostringVerifier.version>1.4.8</tostringVerifier.version>
+    <sqlite.version>3.40.0.0</sqlite.version>
+    <toStringVerifier.version>1.4.8</toStringVerifier.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
@@ -145,11 +150,6 @@
         <version>${commonsLang3.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.bstats</groupId>
-        <artifactId>bstats-bukkit</artifactId>
-        <version>${bstat.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
@@ -174,7 +174,7 @@
       <dependency>
         <groupId>com.jparams</groupId>
         <artifactId>to-string-verifier</artifactId>
-        <version>${tostringVerifier.version}</version>
+        <version>${toStringVerifier.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>

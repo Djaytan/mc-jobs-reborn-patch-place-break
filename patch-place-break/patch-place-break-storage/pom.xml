@@ -40,7 +40,7 @@
     <module>storage-api</module>
     <module>storage-inmemory</module>
     <module>storage-mysql</module>
-    <module>storage-sql-commons</module>
+    <module>storage-sql</module>
     <module>storage-sqlite</module>
   </modules>
 

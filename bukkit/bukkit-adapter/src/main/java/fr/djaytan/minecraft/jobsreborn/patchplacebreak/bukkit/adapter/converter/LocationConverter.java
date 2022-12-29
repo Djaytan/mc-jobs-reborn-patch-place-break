@@ -31,9 +31,7 @@ import org.bukkit.Location;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import lombok.NonNull;
 
-/**
- * Represents a converter between Bukkit {@link Location} and {@link TagLocation}.
- */
+/** Represents a converter between Bukkit {@link Location} and {@link TagLocation}. */
 @Singleton
 public class LocationConverter implements UnidirectionalConverter<Location, TagLocation> {
 
@@ -41,9 +39,8 @@ public class LocationConverter implements UnidirectionalConverter<Location, TagL
 
   /**
    * Converts a Bukkit location to a tag location.
-   * <p>
-   *  <i>Note: the Bukkit world of the Bukkit location shall never be <code>null</code>.</i>
-   * </p>
+   *
+   * <p><i>Note: the Bukkit world of the Bukkit location shall never be <code>null</code>.</i>
    *
    * @param convertible The Bukkit location to convert.
    * @return The converted Bukkit location to a tag location.

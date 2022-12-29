@@ -42,17 +42,13 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-    </dependency>
-    <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>patch-place-break-core</artifactId>
+      <artifactId>patch-place-break-internal</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

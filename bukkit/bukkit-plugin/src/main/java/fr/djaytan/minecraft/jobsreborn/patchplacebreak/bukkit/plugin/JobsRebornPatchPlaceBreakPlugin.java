@@ -30,46 +30,43 @@ import java.nio.file.Path;
 import javax.inject.Inject;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.slf4j.Logger;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject.GuiceBukkitInjector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.slf4j.BukkitLoggerFactory;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreak;
 import lombok.SneakyThrows;
 
-/**
- * This class represents a JobsReborn patch place-break plugin.
- */
+/** This class represents a JobsReborn patch place-break plugin. */
 public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
   @Inject
-  private DataSource dataSource;
-  @Inject
   private ListenerRegister listenerRegister;
   @Inject
-  private Logger logger;
-  @Inject
   private MetricsFacade metricsFacade;
+  @Inject
+  private PatchPlaceBreak patchPlaceBreak;
 
   @Override
   public void onEnable() {
     BukkitLoggerFactory.provideBukkitLogger(getLogger());
+    prepareDataFolder();
+
     GuiceBukkitInjector.inject(this);
-    preparePluginDataFolder();
-    dataSource.connect();
+
     listenerRegister.registerListeners();
     metricsFacade.activateMetricsCollection();
-    logger.atInfo().log("JobsReborn-PatchPlaceBreak successfully enabled.");
+
+    getLogger().info("JobsReborn-PatchPlaceBreak successfully enabled.");
   }
 
   @Override
   public void onDisable() {
-    dataSource.disconnect();
-    logger.atInfo().log("JobsReborn-PatchPlaceBreak successfully disabled.");
+    patchPlaceBreak.disable();
+    getLogger().info("JobsReborn-PatchPlaceBreak successfully disabled.");
   }
 
   @SneakyThrows
-  private void preparePluginDataFolder() {
+  private void prepareDataFolder() {
     Path dataFolder = getDataFolder().toPath();
 
     if (Files.exists(dataFolder)) {
@@ -77,6 +74,6 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
     }
 
     Files.createDirectory(dataFolder);
-    logger.atInfo().log("Plugin data folder created.");
+    getLogger().info("Plugin data folder created.");
   }
 }

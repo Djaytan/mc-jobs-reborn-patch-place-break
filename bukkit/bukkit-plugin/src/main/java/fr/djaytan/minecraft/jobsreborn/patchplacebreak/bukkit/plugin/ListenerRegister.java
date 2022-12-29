@@ -30,7 +30,6 @@ import javax.inject.Singleton;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.slf4j.Logger;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.block.BlockBreakListener;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.block.BlockGrowListener;
@@ -41,15 +40,14 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.jo
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.jobs.JobsExpGainVerificationListener;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.jobs.JobsPrePaymentListener;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.jobs.JobsPrePaymentVerificationListener;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * This class represents a register of listeners.
- */
+/** This class represents a register of listeners. */
+@Slf4j
 @Singleton
 public class ListenerRegister {
 
   private final JavaPlugin javaPlugin;
-  private final Logger logger;
   private final PluginManager pluginManager;
 
   private final BlockBreakListener blockBreakListener;
@@ -63,7 +61,7 @@ public class ListenerRegister {
   private final JobsPrePaymentVerificationListener jobsPrePaymentVerificationListener;
 
   @Inject
-  ListenerRegister(JavaPlugin javaPlugin, PluginManager pluginManager, Logger logger,
+  ListenerRegister(JavaPlugin javaPlugin, PluginManager pluginManager,
       BlockBreakListener blockBreakListener, BlockGrowListener blockGrowListener,
       BlockPistonListener blockPistonListener, BlockPlaceListener blockPlaceListener,
       BlockSpreadListener blockSpreadListener, JobsExpGainListener jobsExpGainListener,
@@ -71,7 +69,6 @@ public class ListenerRegister {
       JobsPrePaymentListener jobsPrePaymentListener,
       JobsPrePaymentVerificationListener jobsPrePaymentVerificationListener) {
     this.javaPlugin = javaPlugin;
-    this.logger = logger;
     this.pluginManager = pluginManager;
 
     this.blockBreakListener = blockBreakListener;
@@ -98,18 +95,18 @@ public class ListenerRegister {
     pluginManager.registerEvents(jobsExpGainVerificationListener, javaPlugin);
     pluginManager.registerEvents(jobsPrePaymentListener, javaPlugin);
     pluginManager.registerEvents(jobsPrePaymentVerificationListener, javaPlugin);
-    logger.atInfo().log("Event listeners registered.");
+    log.atInfo().log("Event listeners registered.");
   }
 
   public void reloadListeners() {
-    logger.atInfo().log("Reloading event listeners...");
+    log.atInfo().log("Reloading event listeners...");
     unregisterListeners();
     registerListeners();
-    logger.atInfo().log("Event listeners reloaded.");
+    log.atInfo().log("Event listeners reloaded.");
   }
 
   private void unregisterListeners() {
     HandlerList.unregisterAll(javaPlugin);
-    logger.atInfo().log("Event listeners unregistered.");
+    log.atInfo().log("Event listeners unregistered.");
   }
 }

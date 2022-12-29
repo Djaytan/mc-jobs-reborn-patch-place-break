@@ -31,35 +31,37 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import org.bukkit.Location;
-import org.slf4j.Logger;
 
 import com.gamingmesh.jobs.container.ActionType;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Represents the patch-place-break verifier for the Bukkit plugin.
- * <p>
- *  After the appliance of a patch (typically done by cancelling the appropriate events from
- *  JobsReborn API), a risk that it's ignored because of conflicts with other plugins exists.
- *  The idea of this class is then to provide a way to verify the well-application of the patch
- *  and try to apply an automatic fix if things go wrong.
- * </p>
+ *
+ * <p>After the appliance of a patch (typically done by cancelling the appropriate events from
+ * JobsReborn API), a risk that it's ignored because of conflicts with other plugins exists. The
+ * idea of this class is then to provide a way to verify the well-application of the patch and try
+ * to apply an automatic fix if things go wrong.
  */
+@Slf4j
 @Singleton
 public class PatchPlaceBreakVerifier {
 
+  /*
+   * Cyclic dependency: PatchPlaceBreakVerifier -> ListenerRegister
+   *  -> a listener (e.g. JobsExpGainVerificationListener) -> PatchPlaceBreakVerifier
+   */
   private final Provider<ListenerRegister> listenerRegister;
-  private final Logger logger;
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
 
   @Inject
-  PatchPlaceBreakVerifier(Provider<ListenerRegister> listenerRegister, Logger logger,
+  PatchPlaceBreakVerifier(Provider<ListenerRegister> listenerRegister,
       PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
     this.listenerRegister = listenerRegister;
-    this.logger = logger;
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
   }
 
@@ -72,7 +74,7 @@ public class PatchPlaceBreakVerifier {
       }
 
       if (!isPatchApplied(environmentState)) {
-        logger.atWarn()
+        log.atWarn()
             .log("Violation of a place-and-break patch detected! It's possible that's"
                 + " because of a conflict with another plugin. Tentative to automatically fix the"
                 + " issue on-going... If this warning persists, please, report this full log"

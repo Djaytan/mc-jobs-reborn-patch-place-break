@@ -29,24 +29,24 @@ import javax.inject.Singleton;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.slf4j.Logger;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Singleton
 public class MetricsFacade {
 
   private static final int BSTATS_ID = 16899;
 
   private final JavaPlugin javaPlugin;
-  private final Logger logger;
 
   @Inject
-  MetricsFacade(JavaPlugin javaPlugin, Logger logger) {
+  MetricsFacade(JavaPlugin javaPlugin) {
     this.javaPlugin = javaPlugin;
-    this.logger = logger;
   }
 
   public void activateMetricsCollection() {
     new Metrics(javaPlugin, BSTATS_ID);
-    logger.atInfo().log("bStats metrics collection activated.");
+    log.atInfo().log("bStats metrics collection activated.");
   }
 }
