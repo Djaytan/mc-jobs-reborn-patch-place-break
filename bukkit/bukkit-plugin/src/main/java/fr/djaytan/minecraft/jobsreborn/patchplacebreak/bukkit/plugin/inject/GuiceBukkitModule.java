@@ -53,6 +53,7 @@ public class GuiceBukkitModule extends AbstractModule {
   @Override
   protected void configure() {
     bind(JavaPlugin.class).toInstance(javaPlugin);
+    bind(ClassLoader.class).toInstance(javaPlugin.getClass().getClassLoader());
     bind(Server.class).toInstance(javaPlugin.getServer());
     bind(PluginManager.class).toInstance(javaPlugin.getServer().getPluginManager());
     bind(ServicesManager.class).toInstance(javaPlugin.getServer().getServicesManager());

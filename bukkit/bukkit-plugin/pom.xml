@@ -178,6 +178,7 @@
                 <include>org.checkerframework.**</include>
                 <include>org.sqlite.**</include>
                 <include>org.slf4j.**</include>
+                <include>org.spongepowered.configurate.**</include>
               </includes>
             </relocation>
           </relocations>

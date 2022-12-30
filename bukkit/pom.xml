@@ -58,6 +58,11 @@
         <artifactId>bstats-bukkit</artifactId>
         <version>${bstat.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.spongepowered</groupId>
+        <artifactId>configurate-yaml</artifactId>
+        <version>${configurate.version}</version>
+      </dependency>
       <!-- The JobsReborn plugin must be installed on the Bukkit server -->
       <dependency>
         <groupId>com.github.Zrips</groupId>
@@ -65,7 +70,11 @@
         <version>${jobsReborn.version}</version>
         <scope>provided</scope>
       </dependency>
-      <!-- Same logic followed here than for the SQLite client dependency -->
+      <!--
+        The MySQL JDBC client is provided by the CraftBukkit server implementation
+        Ideally we should not depend on implementation details, but permits here to save
+        ~10 Mo of size which at final permit to upload the plugin into the Spigot website.
+      -->
       <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
@@ -110,11 +119,7 @@
           </exclusion>
         </exclusions>
       </dependency>
-      <!--
-        The SQLite JDBC is provided by the CraftBukkit server implementation
-        Ideally we should not depend on implementation details, but permits here to save
-        ~10 Mo of size which at final permit to upload the plugin into the Spigot website.
-      -->
+      <!-- Same logic followed here than for the MySQL client dependency -->
       <dependency>
         <groupId>org.xerial</groupId>
         <artifactId>sqlite-jdbc</artifactId>

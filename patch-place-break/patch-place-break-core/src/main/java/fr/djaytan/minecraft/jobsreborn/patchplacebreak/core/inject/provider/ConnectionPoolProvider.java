@@ -3,7 +3,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakStandaloneException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCoreException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.mysql.MysqlConnectionPool;
@@ -38,7 +38,7 @@ public class ConnectionPoolProvider implements Provider<ConnectionPool> {
         return sqliteConnectionPool;
       }
       default: {
-        throw PatchPlaceBreakStandaloneException.unsupportedDataSourceType(dataSourceType);
+        throw PatchPlaceBreakCoreException.unsupportedDataSourceType(dataSourceType);
       }
     }
   }
