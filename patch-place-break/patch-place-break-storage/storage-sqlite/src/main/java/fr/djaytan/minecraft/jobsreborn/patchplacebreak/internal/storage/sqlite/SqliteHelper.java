@@ -29,6 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
@@ -43,14 +44,16 @@ public class SqliteHelper {
   private static final String SQLITE_DATABASE_FILE_NAME_FORMAT = "%s.db";
 
   private final DataSourceProperties dataSourceProperties;
+  private final Path dataFolder;
 
   @Inject
-  SqliteHelper(DataSourceProperties dataSourceProperties) {
+  SqliteHelper(DataSourceProperties dataSourceProperties, @Named("dataFolder") Path dataFolder) {
     this.dataSourceProperties = dataSourceProperties;
+    this.dataFolder = dataFolder;
   }
 
   public @NonNull Path getSqliteDatabasePath() {
-    return dataSourceProperties.getDataFolder().resolve(
+    return dataFolder.resolve(
         String.format(SQLITE_DATABASE_FILE_NAME_FORMAT, dataSourceProperties.getDatabaseName()));
   }
 

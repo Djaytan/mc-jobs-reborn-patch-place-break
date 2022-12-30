@@ -3,7 +3,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakStandaloneException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCoreException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.TagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceType;
@@ -37,7 +37,7 @@ public class TagRepositoryProvider implements Provider<TagRepository> {
         return tagSqlRepository;
       }
       default: {
-        throw PatchPlaceBreakStandaloneException.unrecognisedDataSourceType(dataSourceType);
+        throw PatchPlaceBreakCoreException.unrecognisedDataSourceType(dataSourceType);
       }
     }
   }

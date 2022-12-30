@@ -1,0 +1,28 @@
+##################################
+### JobsReborn-PatchPlaceBreak ###
+##################################
+
+# Define where to store and retrieve patch tags.
+dataSource:
+  # The database manager to use.
+  # Available values:
+  # - SQLITE: use a local file as database (easy setup)
+  # - MYSQL: use a MySQL database server (better performances)
+  type: 'SQLITE'
+
+  # Not applicable for SQLite database.
+  host:
+    hostName: 'localhost'
+    port: 3306
+    isSslEnabled: true
+
+  # Not applicable for SQLite database.
+  credentials:
+    username: 'username'
+    password: 'password'
+
+  # Name of the database
+  databaseName: 'patch_place_break'
+
+  # Name of the patch tags table in database
+  tableName: 'patch_place_break_tag'

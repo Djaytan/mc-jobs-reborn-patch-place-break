@@ -95,6 +95,7 @@
 
     <!-- ==================== Dependencies versions ==================== -->
     <commonsLang3.version>3.12.0</commonsLang3.version>
+    <configurate.version>4.1.2</configurate.version>
     <equalsverifier.version>3.12.3</equalsverifier.version>
     <errorProneAnnotations.version>2.16</errorProneAnnotations.version>
     <!-- Latest version of HikariCP compatible with Java 8: don't bump it! -->
@@ -153,6 +154,11 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.spongepowered</groupId>
+        <artifactId>configurate-yaml</artifactId>
+        <version>${configurate.version}</version>
       </dependency>
       <dependency>
         <groupId>org.xerial</groupId>

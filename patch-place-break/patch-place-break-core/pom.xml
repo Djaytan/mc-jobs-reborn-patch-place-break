@@ -69,5 +69,9 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.spongepowered</groupId>
+      <artifactId>configurate-yaml</artifactId>
+    </dependency>
   </dependencies>
 </project>
