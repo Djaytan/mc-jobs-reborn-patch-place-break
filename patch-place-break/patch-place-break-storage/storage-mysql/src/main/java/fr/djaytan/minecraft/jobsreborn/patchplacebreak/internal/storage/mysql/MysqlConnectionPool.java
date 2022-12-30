@@ -1,5 +1,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.mysql;
 
+import java.time.ZoneOffset;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -10,6 +12,8 @@ import lombok.NonNull;
 @Singleton
 public class MysqlConnectionPool extends ConnectionPool {
 
+  private static final ZoneOffset serverTimeZone = ZoneOffset.UTC;
+
   private final DataSourceProperties dataSourceProperties;
 
   @Inject
@@ -18,7 +22,7 @@ public class MysqlConnectionPool extends ConnectionPool {
   }
 
   private static final String MYSQL_JDBC_URL_TEMPLATE =
-      "jdbc:mysql://%s:%s@%s:%d?useSSL=%s&serverTimezone=UTC";
+      "jdbc:mysql://%s:%s@%s:%d?useSSL=%s&serverTimezone=%s";
 
   @Override
   protected @NonNull String getJdbcUrl() {
@@ -27,6 +31,7 @@ public class MysqlConnectionPool extends ConnectionPool {
     String hostName = dataSourceProperties.getHost().getHostName();
     int port = dataSourceProperties.getHost().getPort();
     boolean isSslEnabled = dataSourceProperties.getHost().isSslEnabled();
-    return String.format(MYSQL_JDBC_URL_TEMPLATE, username, password, hostName, port, isSslEnabled);
+    return String.format(MYSQL_JDBC_URL_TEMPLATE, username, password, hostName, port, isSslEnabled,
+        serverTimeZone.getId());
   }
 }
