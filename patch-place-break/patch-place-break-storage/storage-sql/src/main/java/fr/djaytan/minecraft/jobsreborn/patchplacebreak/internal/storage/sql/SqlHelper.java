@@ -25,42 +25,6 @@ public class SqlHelper {
     this.tagSqlDataDefiner = tagSqlDataDefiner;
   }
 
-  public void createDatabaseIfNotExists() throws SqlStorageException {
-    String databaseName = dataSourceProperties.getDatabaseName();
-
-    try (Connection connection = connectionPool.getConnection()) {
-      try {
-        connection.setAutoCommit(false);
-
-        if (tagSqlDataDefiner.isDatabaseExists(connection)) {
-          return;
-        }
-        tagSqlDataDefiner.createDatabase(connection);
-        connection.commit();
-        log.atInfo().log("The SQL database '{}' has been created successfully.", databaseName);
-      } catch (SQLException e) {
-        throw SqlStorageException.databaseCreation(databaseName, e);
-      }
-    } catch (SQLException e) {
-      throw SqlStorageException.databaseConnectionReleasing(e);
-    }
-  }
-
-  public void switchToDatabase() throws SqlStorageException {
-    String databaseName = dataSourceProperties.getDatabaseName();
-
-    try (Connection connection = connectionPool.getConnection()) {
-      try {
-        tagSqlDataDefiner.useDatabase(connection);
-        log.atInfo().log("Switching to the database '{}'.", databaseName);
-      } catch (SQLException e) {
-        throw SqlStorageException.databaseSwitch(databaseName, e);
-      }
-    } catch (SQLException e) {
-      throw SqlStorageException.databaseConnectionReleasing(e);
-    }
-  }
-
   public void createTableIfNotExists() throws SqlStorageException {
     String tableName = dataSourceProperties.getTableName();
 

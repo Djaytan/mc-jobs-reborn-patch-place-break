@@ -92,8 +92,10 @@ public class TagSqlDao {
       preparedStatement.setDouble(2, tagLocation.getX());
       preparedStatement.setDouble(3, tagLocation.getY());
       preparedStatement.setDouble(4, tagLocation.getZ());
-      ResultSet resultSet = preparedStatement.executeQuery();
-      return extractTag(resultSet);
+
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        return extractTag(resultSet);
+      }
     }
   }
 

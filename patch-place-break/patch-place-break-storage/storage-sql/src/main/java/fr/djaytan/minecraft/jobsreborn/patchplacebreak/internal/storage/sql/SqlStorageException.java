@@ -34,6 +34,8 @@ public class SqlStorageException extends StorageException {
 
   private static final String CONNECTION_POOL_NOT_SETUP =
       "The connection pool must be setup before using it.";
+  private static final String CONNECTION_POOL_LOGIN_TIMEOUT =
+      "Failed to define the connection pool login timeout.";
   private static final String DATABASE_CONNECTION_ESTABLISHMENT =
       "Failed to establish connection to the database.";
   private static final String DATABASE_CONNECTION_RELEASING =
@@ -45,6 +47,10 @@ public class SqlStorageException extends StorageException {
 
   public static @NonNull SqlStorageException connectionPoolNotSetup() {
     return new SqlStorageException(CONNECTION_POOL_NOT_SETUP);
+  }
+
+  public static @NonNull SqlStorageException connectionPoolLoginTimeout(@NonNull Throwable cause) {
+    return new SqlStorageException(CONNECTION_POOL_LOGIN_TIMEOUT, cause);
   }
 
   public static @NonNull SqlStorageException databaseConnectionEstablishment(
@@ -59,12 +65,6 @@ public class SqlStorageException extends StorageException {
   public static @NonNull SqlStorageException databaseCreation(@NonNull String databaseName,
       @NonNull Throwable cause) {
     String message = String.format(DATABASE_CREATION, databaseName);
-    return new SqlStorageException(message, cause);
-  }
-
-  public static @NonNull SqlStorageException databaseSwitch(@NonNull String targetDatabaseName,
-      @NonNull Throwable cause) {
-    String message = String.format(DATABASE_SWITCH, targetDatabaseName);
     return new SqlStorageException(message, cause);
   }
 

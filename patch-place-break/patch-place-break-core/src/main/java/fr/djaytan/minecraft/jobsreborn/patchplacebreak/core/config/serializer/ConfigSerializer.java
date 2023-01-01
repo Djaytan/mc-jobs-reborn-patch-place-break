@@ -1,12 +1,14 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.serializer;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.Config;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
 import java.lang.reflect.Type;
+
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
+
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.Config;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
 
 public class ConfigSerializer implements TypeSerializer<Config> {
 

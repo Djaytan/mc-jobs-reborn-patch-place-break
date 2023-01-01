@@ -28,6 +28,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -39,22 +40,9 @@ import lombok.NonNull;
 @Singleton
 public class TagSqliteDataDefiner extends TagSqlDataDefiner {
 
-  private static final String UNSUPPORTED_SQL_DATABASE_CREATION =
-      "Database creation through SQL isn't supported with SQLite.";
-
   @Inject
   TagSqliteDataDefiner(DataSourceProperties dataSourceProperties) {
     super(dataSourceProperties);
-  }
-
-  @Override
-  public boolean isDatabaseExists(@NonNull Connection connection) {
-    throw new UnsupportedOperationException(UNSUPPORTED_SQL_DATABASE_CREATION);
-  }
-
-  @Override
-  public void createDatabase(@NonNull Connection connection) {
-    throw new UnsupportedOperationException(UNSUPPORTED_SQL_DATABASE_CREATION);
   }
 
   @Override
@@ -63,8 +51,21 @@ public class TagSqliteDataDefiner extends TagSqlDataDefiner {
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setString(1, dataSourceProperties.getTableName());
-      ResultSet rs = preparedStatement.executeQuery();
-      return rs.next();
+
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        return resultSet.next();
+      }
+    }
+  }
+
+  public void createTable(@NonNull Connection connection) throws SQLException {
+    String sql = "CREATE TABLE %s (\n" + "  tag_uuid TEXT PRIMARY KEY NOT NULL,\n"
+        + "  init_timestamp TEXT NOT NULL,\n" + "  is_ephemeral INTEGER NOT NULL,\n"
+        + "  world_name TEXT NOT NULL,\n" + "  location_x REAL NOT NULL,\n"
+        + "  location_y REAL NOT NULL,\n" + "  location_z REAL NOT NULL\n" + ");";
+
+    try (Statement statement = connection.createStatement()) {
+      statement.execute(String.format(sql, dataSourceProperties.getTableName()));
     }
   }
 }

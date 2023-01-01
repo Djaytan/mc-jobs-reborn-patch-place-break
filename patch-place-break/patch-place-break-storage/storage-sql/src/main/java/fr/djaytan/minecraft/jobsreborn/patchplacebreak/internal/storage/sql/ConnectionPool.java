@@ -49,12 +49,26 @@ public abstract class ConnectionPool {
     hikariConfig.setMinimumIdle(1);
     hikariDataSource = new HikariDataSource(hikariConfig);
 
-    log.atInfo().log("Connected to the database '{}'.", jdbcUrl);
+    setLoginTimeout();
+
+    log.atInfo().log("Connected to the database successfully.");
+  }
+
+  private void setLoginTimeout() {
+    try {
+      hikariDataSource.setLoginTimeout(30);
+    } catch (SQLException e) {
+      throw SqlStorageException.connectionPoolLoginTimeout(e);
+    }
   }
 
   public void disconnect() {
     if (hikariDataSource == null) {
       log.atWarn().log("Database disconnection impossible: no existing connection.");
+      return;
+    }
+    if (hikariDataSource.isClosed()) {
+      log.atWarn().log("Database disconnection impossible: connection already closed.");
       return;
     }
     hikariDataSource.close();

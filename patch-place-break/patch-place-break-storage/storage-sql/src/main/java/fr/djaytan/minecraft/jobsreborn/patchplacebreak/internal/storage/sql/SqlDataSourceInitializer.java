@@ -24,9 +24,17 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql;
 
-public interface SqlDataSourceInitializer {
+public abstract class SqlDataSourceInitializer {
 
-  void initialize() throws SqlStorageException;
+  private final SqlHelper sqlHelper;
 
-  void postConnection() throws SqlStorageException;
+  protected SqlDataSourceInitializer(SqlHelper sqlHelper) {
+    this.sqlHelper = sqlHelper;
+  }
+
+  public abstract void initialize() throws SqlStorageException;
+
+  public final void postConnection() throws SqlStorageException {
+    sqlHelper.createTableIfNotExists();
+  }
 }

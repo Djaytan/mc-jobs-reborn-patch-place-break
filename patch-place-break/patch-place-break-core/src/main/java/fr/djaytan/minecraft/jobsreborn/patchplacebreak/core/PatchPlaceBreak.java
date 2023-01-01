@@ -2,6 +2,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
 import java.nio.file.Path;
 
+import javax.inject.Singleton;
+
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.PatchPlaceBreakInjector;
@@ -21,6 +23,7 @@ import lombok.NonNull;
  *
  * <p>Only one instance of this class is expected to be run at once.
  */
+@Singleton
 public class PatchPlaceBreak {
 
   private DataSource dataSource;

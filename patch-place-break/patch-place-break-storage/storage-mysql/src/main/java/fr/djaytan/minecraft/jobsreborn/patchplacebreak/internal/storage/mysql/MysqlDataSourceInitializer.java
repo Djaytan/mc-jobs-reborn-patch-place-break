@@ -12,27 +12,19 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.SqlD
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.SqlHelper;
 
 @Singleton
-public class MysqlDataSourceInitializer implements SqlDataSourceInitializer {
+public class MysqlDataSourceInitializer extends SqlDataSourceInitializer {
 
   private final DataSourceProperties dataSourceProperties;
-  private final SqlHelper sqlHelper;
 
   @Inject
   MysqlDataSourceInitializer(DataSourceProperties dataSourceProperties, SqlHelper sqlHelper) {
+    super(sqlHelper);
     this.dataSourceProperties = dataSourceProperties;
-    this.sqlHelper = sqlHelper;
   }
 
   @Override
   public void initialize() throws StorageException {
     checkState(dataSourceProperties.getType() == DataSourceType.MYSQL,
         "The data source type is expected to be 'MYSQL'.");
-  }
-
-  @Override
-  public void postConnection() throws StorageException {
-    sqlHelper.createDatabaseIfNotExists();
-    sqlHelper.switchToDatabase();
-    sqlHelper.createTableIfNotExists();
   }
 }
