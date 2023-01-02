@@ -29,6 +29,7 @@ import java.nio.file.Path;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.ConnectionPool;
 import lombok.NonNull;
 
@@ -38,7 +39,8 @@ public class SqliteConnectionPool extends ConnectionPool {
   private final SqliteHelper sqliteHelper;
 
   @Inject
-  SqliteConnectionPool(SqliteHelper sqliteHelper) {
+  SqliteConnectionPool(DataSourceProperties dataSourceProperties, SqliteHelper sqliteHelper) {
+    super(dataSourceProperties);
     this.sqliteHelper = sqliteHelper;
   }
 
