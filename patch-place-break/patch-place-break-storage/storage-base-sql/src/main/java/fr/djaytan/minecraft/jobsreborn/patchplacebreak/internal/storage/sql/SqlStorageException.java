@@ -40,8 +40,6 @@ public class SqlStorageException extends StorageException {
       "Failed to establish connection to the database.";
   private static final String DATABASE_CONNECTION_RELEASING =
       "Something prevent the database connection releasing.";
-  private static final String DATABASE_SWITCH =
-      "Something prevent the switch to the database '%s'.";
   private static final String DATABASE_CREATION = "Unable to create the database '%s'.";
   private static final String TABLE_CREATION = "Unable to create the table '%s'.";
 
