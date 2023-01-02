@@ -30,13 +30,19 @@ import java.sql.SQLException;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class ConnectionPool {
 
+  protected final DataSourceProperties dataSourceProperties;
   private HikariDataSource hikariDataSource;
+
+  protected ConnectionPool(DataSourceProperties dataSourceProperties) {
+    this.dataSourceProperties = dataSourceProperties;
+  }
 
   public void connect() {
     String jdbcUrl = getJdbcUrl();
@@ -47,6 +53,8 @@ public abstract class ConnectionPool {
     hikariConfig.setJdbcUrl(jdbcUrl);
     hikariConfig.setMaximumPoolSize(10);
     hikariConfig.setMinimumIdle(1);
+    hikariConfig.setUsername(dataSourceProperties.getCredentials().getUsername());
+    hikariConfig.setPassword(dataSourceProperties.getCredentials().getPassword());
     hikariDataSource = new HikariDataSource(hikariConfig);
 
     setLoginTimeout();
