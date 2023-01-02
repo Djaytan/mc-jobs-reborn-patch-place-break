@@ -31,7 +31,7 @@
     <relativePath>../../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>storage-sql</artifactId>
+  <artifactId>storage-base-sql</artifactId>
   <packaging>jar</packaging>
   <name>Storage SQL</name>
   <description>SQL commons to store data of the place-and-break patch</description>

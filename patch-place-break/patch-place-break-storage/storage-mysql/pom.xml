@@ -62,7 +62,7 @@
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>storage-sql</artifactId>
+      <artifactId>storage-base-sql</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
