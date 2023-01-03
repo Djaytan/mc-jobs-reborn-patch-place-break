@@ -1,5 +1,6 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties;
 
+import lombok.NonNull;
 import lombok.ToString;
 import lombok.Value;
 
@@ -7,6 +8,8 @@ import lombok.Value;
 @ToString(exclude = {"password"})
 public class CredentialsProperties {
 
+  @NonNull
   String username;
+  @NonNull
   String password;
 }

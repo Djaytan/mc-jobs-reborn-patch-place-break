@@ -10,5 +10,6 @@ public class DataSourceProperties {
   DataSourceType type;
   @NonNull
   String table;
+  @NonNull
   DbmsServerProperties dbmsServer;
 }

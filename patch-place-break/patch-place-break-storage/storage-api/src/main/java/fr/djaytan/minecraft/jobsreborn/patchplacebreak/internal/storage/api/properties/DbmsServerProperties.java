@@ -24,12 +24,16 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties;
 
+import lombok.NonNull;
 import lombok.Value;
 
 @Value(staticConstructor = "of")
 public class DbmsServerProperties {
 
+  @NonNull
   HostProperties host;
+  @NonNull
   CredentialsProperties credentials;
+  @NonNull
   String database;
 }
