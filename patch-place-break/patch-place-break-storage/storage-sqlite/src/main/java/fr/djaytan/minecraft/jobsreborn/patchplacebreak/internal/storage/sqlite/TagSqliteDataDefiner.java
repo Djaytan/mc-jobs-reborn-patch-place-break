@@ -50,7 +50,7 @@ public class TagSqliteDataDefiner extends TagSqlDataDefiner {
     String sql = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?";
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      preparedStatement.setString(1, dataSourceProperties.getTableName());
+      preparedStatement.setString(1, dataSourceProperties.getTable());
 
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         return resultSet.next();
@@ -65,7 +65,7 @@ public class TagSqliteDataDefiner extends TagSqlDataDefiner {
         + "  location_y REAL NOT NULL,\n" + "  location_z REAL NOT NULL\n" + ");";
 
     try (Statement statement = connection.createStatement()) {
-      statement.execute(String.format(sql, dataSourceProperties.getTableName()));
+      statement.execute(String.format(sql, dataSourceProperties.getTable()));
     }
   }
 }

@@ -10,19 +10,16 @@ dataSource:
   # - MYSQL: use a MySQL database server (better performances)
   type: 'SQLITE'
 
-  # Not applicable for SQLite database.
-  host:
-    hostName: 'localhost'
-    port: 3306
-    isSslEnabled: true
+  # The table name where data will be stored.
+  table: 'patch_place_break_tag'
 
-  # Not applicable for SQLite database.
-  credentials:
-    username: 'username'
-    password: 'password'
-
-  # Name of the database
-  databaseName: 'patch_place_break'
-
-  # Name of the patch tags table in database
-  tableName: 'patch_place_break_tag'
+  # If type is set to 'SQLITE', dbmsServer part can be ignored.
+  dbmsServer:
+    host:
+      hostname: 'localhost'
+      port: 3306
+      isSslEnabled: true
+    credentials:
+      username: 'username'
+      password: 'password'
+    database: 'patch_place_break'

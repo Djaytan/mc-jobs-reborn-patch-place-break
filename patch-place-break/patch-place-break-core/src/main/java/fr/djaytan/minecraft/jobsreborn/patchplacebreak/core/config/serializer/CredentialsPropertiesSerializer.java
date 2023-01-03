@@ -9,26 +9,24 @@ import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceCredentialsProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.CredentialsProperties;
 
 @Singleton
-final class DataSourceCredentialsPropertiesSerializer
-    implements TypeSerializer<DataSourceCredentialsProperties> {
+final class CredentialsPropertiesSerializer implements TypeSerializer<CredentialsProperties> {
 
   private static final String USERNAME = "username";
   private static final String PASSWORD = "password";
 
   @Override
-  public DataSourceCredentialsProperties deserialize(Type type, ConfigurationNode node)
+  public CredentialsProperties deserialize(Type type, ConfigurationNode node)
       throws SerializationException {
     String username = node.node(USERNAME).require(String.class);
     String password = node.node(PASSWORD).require(String.class);
-    return DataSourceCredentialsProperties.of(username, password);
+    return CredentialsProperties.of(username, password);
   }
 
   @Override
-  public void serialize(Type type, @Nullable DataSourceCredentialsProperties obj,
-      ConfigurationNode node) {
+  public void serialize(Type type, @Nullable CredentialsProperties obj, ConfigurationNode node) {
     throw ConfigSerializationException.unexpectedSerialization();
   }
 }

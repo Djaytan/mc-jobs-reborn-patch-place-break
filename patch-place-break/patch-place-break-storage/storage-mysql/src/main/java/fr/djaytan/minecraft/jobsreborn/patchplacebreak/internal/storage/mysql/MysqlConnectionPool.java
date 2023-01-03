@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DbmsServerProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.ConnectionPool;
 import lombok.NonNull;
 
@@ -22,11 +23,12 @@ public class MysqlConnectionPool extends ConnectionPool {
 
   @Override
   protected @NonNull String getJdbcUrl() {
-    String hostName = dataSourceProperties.getHost().getHostName();
-    int port = dataSourceProperties.getHost().getPort();
-    String database = dataSourceProperties.getDatabaseName();
-    boolean isSslEnabled = dataSourceProperties.getHost().isSslEnabled();
-    return String.format(MYSQL_JDBC_URL_TEMPLATE, hostName, port, database, isSslEnabled,
+    DbmsServerProperties dbmsServerProperties = dataSourceProperties.getDbmsServer();
+    String hostname = dbmsServerProperties.getHost().getHostname();
+    int port = dbmsServerProperties.getHost().getPort();
+    String database = dbmsServerProperties.getDatabase();
+    boolean isSslEnabled = dbmsServerProperties.getHost().isSslEnabled();
+    return String.format(MYSQL_JDBC_URL_TEMPLATE, hostname, port, database, isSslEnabled,
         SERVER_TIME_ZONE);
   }
 }

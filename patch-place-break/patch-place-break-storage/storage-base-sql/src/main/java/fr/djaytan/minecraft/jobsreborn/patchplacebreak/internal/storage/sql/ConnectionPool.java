@@ -53,8 +53,8 @@ public abstract class ConnectionPool {
     hikariConfig.setJdbcUrl(jdbcUrl);
     hikariConfig.setMaximumPoolSize(10);
     hikariConfig.setMinimumIdle(1);
-    hikariConfig.setUsername(dataSourceProperties.getCredentials().getUsername());
-    hikariConfig.setPassword(dataSourceProperties.getCredentials().getPassword());
+    hikariConfig.setUsername(dataSourceProperties.getDbmsServer().getCredentials().getUsername());
+    hikariConfig.setPassword(dataSourceProperties.getDbmsServer().getCredentials().getPassword());
     hikariDataSource = new HikariDataSource(hikariConfig);
 
     setLoginTimeout();

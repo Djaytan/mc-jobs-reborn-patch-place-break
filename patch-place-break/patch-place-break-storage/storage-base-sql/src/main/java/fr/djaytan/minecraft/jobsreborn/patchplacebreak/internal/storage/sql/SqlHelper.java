@@ -26,7 +26,7 @@ public class SqlHelper {
   }
 
   public void createTableIfNotExists() throws SqlStorageException {
-    String tableName = dataSourceProperties.getTableName();
+    String table = dataSourceProperties.getTable();
 
     try (Connection connection = connectionPool.getConnection()) {
       try {
@@ -37,9 +37,9 @@ public class SqlHelper {
         }
         tagSqlDataDefiner.createTable(connection);
         connection.commit();
-        log.atInfo().log("The SQL table '{}' has been created successfully.", tableName);
+        log.atInfo().log("The SQL table '{}' has been created successfully.", table);
       } catch (SQLException e) {
-        throw SqlStorageException.tableCreation(tableName, e);
+        throw SqlStorageException.tableCreation(table, e);
       }
     } catch (SQLException e) {
       throw SqlStorageException.databaseConnectionReleasing(e);

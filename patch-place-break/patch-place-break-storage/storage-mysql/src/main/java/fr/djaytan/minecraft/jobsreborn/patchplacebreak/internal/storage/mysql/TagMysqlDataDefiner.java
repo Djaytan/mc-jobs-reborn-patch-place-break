@@ -27,8 +27,8 @@ public class TagMysqlDataDefiner extends TagSqlDataDefiner {
         + "WHERE table_schema = ? " + "AND table_type = 'BASE TABLE' " + "AND table_name = ?";
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      preparedStatement.setString(1, dataSourceProperties.getDatabaseName());
-      preparedStatement.setString(2, dataSourceProperties.getTableName());
+      preparedStatement.setString(1, dataSourceProperties.getDbmsServer().getDatabase());
+      preparedStatement.setString(2, dataSourceProperties.getTable());
 
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         return resultSet.next();
@@ -43,7 +43,7 @@ public class TagMysqlDataDefiner extends TagSqlDataDefiner {
         + "  location_y DOUBLE NOT NULL,\n" + "  location_z DOUBLE NOT NULL\n" + ");";
 
     try (Statement statement = connection.createStatement()) {
-      statement.execute(String.format(sql, dataSourceProperties.getTableName()));
+      statement.execute(String.format(sql, dataSourceProperties.getTable()));
     }
   }
 }
