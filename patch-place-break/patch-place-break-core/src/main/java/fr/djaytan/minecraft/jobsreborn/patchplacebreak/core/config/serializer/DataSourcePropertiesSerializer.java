@@ -9,6 +9,7 @@ import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.ConnectionPoolProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DbmsServerProperties;
@@ -19,6 +20,7 @@ final class DataSourcePropertiesSerializer implements TypeSerializer<DataSourceP
   private static final String TYPE = "type";
   private static final String TABLE = "table";
   private static final String DBMS_SERVER = "dbmsServer";
+  private static final String CONNECTION_POOL = "connectionPool";
 
   @Override
   public DataSourceProperties deserialize(Type type, ConfigurationNode node)
@@ -26,7 +28,9 @@ final class DataSourcePropertiesSerializer implements TypeSerializer<DataSourceP
     DataSourceType dataSourceType = node.node(TYPE).require(DataSourceType.class);
     String table = node.node(TABLE).require(String.class);
     DbmsServerProperties dbmsServer = node.node(DBMS_SERVER).require(DbmsServerProperties.class);
-    return DataSourceProperties.of(dataSourceType, table, dbmsServer);
+    ConnectionPoolProperties connectionPool =
+        node.node(CONNECTION_POOL).require(ConnectionPoolProperties.class);
+    return DataSourceProperties.of(dataSourceType, table, dbmsServer, connectionPool);
   }
 
   @Override

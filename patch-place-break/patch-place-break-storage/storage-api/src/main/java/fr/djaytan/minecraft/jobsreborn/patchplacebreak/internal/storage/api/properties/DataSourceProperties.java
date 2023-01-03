@@ -12,4 +12,6 @@ public class DataSourceProperties {
   String table;
   @NonNull
   DbmsServerProperties dbmsServer;
+  @NonNull
+  ConnectionPoolProperties connectionPool;
 }
