@@ -66,7 +66,7 @@ public class TagSqlDao {
 
   public void insert(@NonNull Connection connection, @NonNull Tag tag) throws SQLException {
     String sql = String.format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?, ?)",
-        dataSourceProperties.getTableName());
+        dataSourceProperties.getTable());
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setString(1, uuidStringSerializer.serialize(tag.getUuid()));
@@ -85,7 +85,7 @@ public class TagSqlDao {
       @NonNull TagLocation tagLocation) throws SQLException {
     String sql = String
         .format("SELECT * FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
-            + " location_z = ?", dataSourceProperties.getTableName());
+            + " location_z = ?", dataSourceProperties.getTable());
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setString(1, tagLocation.getWorldName());
@@ -127,7 +127,7 @@ public class TagSqlDao {
       throws SQLException {
     String sqlDelete = String
         .format("DELETE FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
-            + " location_z = ?", dataSourceProperties.getTableName());
+            + " location_z = ?", dataSourceProperties.getTable());
 
     try (PreparedStatement deleteStmt = connection.prepareStatement(sqlDelete)) {
       deleteStmt.setString(1, tagLocation.getWorldName());

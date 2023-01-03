@@ -1,12 +1,11 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties;
 
-import lombok.ToString;
 import lombok.Value;
 
 @Value(staticConstructor = "of")
-@ToString(exclude = {"password"})
-public class DataSourceCredentialsProperties {
+public class HostProperties {
 
-  String username;
-  String password;
+  String hostname;
+  int port;
+  boolean isSslEnabled;
 }

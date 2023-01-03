@@ -8,10 +8,7 @@ public class DataSourceProperties {
 
   @NonNull
   DataSourceType type;
-  DataSourceHostProperties host;
-  DataSourceCredentialsProperties credentials;
   @NonNull
-  String databaseName;
-  @NonNull
-  String tableName;
+  String table;
+  DbmsServerProperties dbmsServer;
 }
