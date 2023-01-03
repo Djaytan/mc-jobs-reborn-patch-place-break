@@ -32,7 +32,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.SqlStorageException;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -41,20 +40,17 @@ import lombok.extern.slf4j.Slf4j;
 @Singleton
 public class SqliteHelper {
 
-  private static final String SQLITE_DATABASE_FILE_NAME_FORMAT = "%s.db";
+  private static final String SQLITE_DATABASE_FILE_NAME = "sqlite-data.db";
 
-  private final DataSourceProperties dataSourceProperties;
   private final Path dataFolder;
 
   @Inject
-  SqliteHelper(DataSourceProperties dataSourceProperties, @Named("dataFolder") Path dataFolder) {
-    this.dataSourceProperties = dataSourceProperties;
+  SqliteHelper(@Named("dataFolder") Path dataFolder) {
     this.dataFolder = dataFolder;
   }
 
   public @NonNull Path getSqliteDatabasePath() {
-    return dataFolder.resolve(
-        String.format(SQLITE_DATABASE_FILE_NAME_FORMAT, dataSourceProperties.getDatabaseName()));
+    return dataFolder.resolve(SQLITE_DATABASE_FILE_NAME);
   }
 
   public void createDatabaseIfNotExists() throws SqlStorageException {
