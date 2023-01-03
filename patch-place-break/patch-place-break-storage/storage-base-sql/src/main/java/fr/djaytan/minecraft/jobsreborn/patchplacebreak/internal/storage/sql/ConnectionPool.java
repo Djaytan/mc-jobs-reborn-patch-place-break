@@ -51,23 +51,14 @@ public abstract class ConnectionPool {
 
     HikariConfig hikariConfig = new HikariConfig();
     hikariConfig.setJdbcUrl(jdbcUrl);
-    hikariConfig.setMaximumPoolSize(10);
-    hikariConfig.setMinimumIdle(1);
+    hikariConfig
+        .setConnectionTimeout(dataSourceProperties.getConnectionPool().getConnectionTimeout());
+    hikariConfig.setMaximumPoolSize(dataSourceProperties.getConnectionPool().getPoolSize());
     hikariConfig.setUsername(dataSourceProperties.getDbmsServer().getCredentials().getUsername());
     hikariConfig.setPassword(dataSourceProperties.getDbmsServer().getCredentials().getPassword());
     hikariDataSource = new HikariDataSource(hikariConfig);
 
-    setLoginTimeout();
-
     log.atInfo().log("Connected to the database successfully.");
-  }
-
-  private void setLoginTimeout() {
-    try {
-      hikariDataSource.setLoginTimeout(30);
-    } catch (SQLException e) {
-      throw SqlStorageException.connectionPoolLoginTimeout(e);
-    }
   }
 
   public void disconnect() {
