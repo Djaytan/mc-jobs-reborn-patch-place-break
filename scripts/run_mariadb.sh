@@ -23,8 +23,8 @@
 # SOFTWARE.
 #
 
-docker run --name ppb-mysql \
-  -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
-  -e MYSQL_DATABASE=patch_place_break \
+docker run --name ppb-mariadb \
+  -e MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes \
+  -e MARIADB_DATABASE=patch_place_break \
   -p 3306:3306 \
-  --rm mysql:8.0.31-oracle
+  --rm mariadb:10.10.2-jammy
