@@ -45,37 +45,41 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.github.Zrips</groupId>
-      <artifactId>Jobs</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.errorprone</groupId>
-      <artifactId>error_prone_annotations</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
+      <scope>compile</scope>
+      <!-- Guava version of CraftBukkit is incompatible with Guice: must shade it in plugin -->
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>bukkit-adapter</artifactId>
       <version>${project.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>bukkit-slf4j</artifactId>
       <version>${project.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>patch-place-break-api</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-core</artifactId>
       <version>${project.version}</version>
+      <scope>compile</scope>
       <exclusions>
-        <!-- Use bukkit-slf4j as logger implementation instead -->
+        <!-- CraftBukkit already provides its implementation -->
         <exclusion>
           <groupId>ch.qos.logback</groupId>
           <artifactId>logback-classic</artifactId>
@@ -85,30 +89,53 @@
     <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.bstats</groupId>
       <artifactId>bstats-bukkit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.Zrips</groupId>
+      <artifactId>Jobs</artifactId>
+      <scope>provided</scope>
+      <!-- Server must have JobsReborn plugin installed -->
+    </dependency>
+    <dependency>
+      <groupId>com.google.errorprone</groupId>
+      <artifactId>error_prone_annotations</artifactId>
+      <scope>provided</scope>
+      <!-- Annotations useful only at compile time -->
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <scope>provided</scope>
+      <!-- Provided by CraftBukkit at runtime -->
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+      <!-- Useful only before compile time for code generation -->
     </dependency>
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
+      <scope>provided</scope>
+      <!-- The server must be a Spigot one or a derivative one (e.g. PaperMC) -->
     </dependency>
     <dependency>
       <groupId>org.xerial</groupId>
       <artifactId>sqlite-jdbc</artifactId>
+      <scope>provided</scope>
+      <!-- Provided by CraftBukkit at runtime -->
     </dependency>
   </dependencies>
 
@@ -121,6 +148,16 @@
       </resource>
     </resources>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <configuration>
+          <ignoredUnusedDeclaredDependencies combine.children="append">
+            <ignoredUnusedDeclaredDependency>mysql:mysql-connector-java</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>org.xerial:sqlite-jdbc</ignoredUnusedDeclaredDependency>
+          </ignoredUnusedDeclaredDependencies>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -179,6 +216,7 @@
                 <include>org.sqlite.**</include>
                 <include>org.slf4j.**</include>
                 <include>org.spongepowered.configurate.**</include>
+                <include>org.yaml.snakeyaml.**</include>
               </includes>
             </relocation>
           </relocations>

@@ -19,59 +19,86 @@
 
   <dependencies>
     <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-api</artifactId>
       <version>${project.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-internal</artifactId>
       <version>${project.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>storage-api</artifactId>
       <version>${project.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>storage-base-sql</artifactId>
       <version>${project.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>storage-inmemory</artifactId>
       <version>${project.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>storage-mysql</artifactId>
       <version>${project.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>storage-sqlite</artifactId>
       <version>${project.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
+      <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spongepowered</groupId>
+      <artifactId>configurate-core</artifactId>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.spongepowered</groupId>
       <artifactId>configurate-yaml</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>checker-qual</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 </project>
