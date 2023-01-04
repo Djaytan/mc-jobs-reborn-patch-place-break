@@ -198,6 +198,13 @@
               </includes>
             </relocation>
             <relocation>
+              <pattern>io</pattern>
+              <shadedPattern>${package.lib}.io</shadedPattern>
+              <includes>
+                <include>io.leangen.geantyref.**</include>
+              </includes>
+            </relocation>
+            <relocation>
               <pattern>javax</pattern>
               <shadedPattern>${package.lib}.javax</shadedPattern>
               <includes>
