@@ -30,7 +30,7 @@
     <version>1.4.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>bukkit-adapter</artifactId>
+  <artifactId>bukkit-patch-adapter</artifactId>
   <packaging>jar</packaging>
   <name>Bukkit Adapter</name>
   <description>API of the place-and-break patch adapted for Bukkit</description>

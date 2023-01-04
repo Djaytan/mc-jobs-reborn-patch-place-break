@@ -57,7 +57,7 @@
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>bukkit-adapter</artifactId>
+      <artifactId>bukkit-patch-adapter</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
