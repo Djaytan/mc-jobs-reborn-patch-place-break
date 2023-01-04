@@ -36,7 +36,7 @@
   <description>The Bukkit modules related to the place-and-break patch</description>
 
   <modules>
-    <module>bukkit-adapter</module>
+    <module>bukkit-patch-adapter</module>
     <module>bukkit-plugin</module>
     <module>bukkit-slf4j</module>
   </modules>
