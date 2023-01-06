@@ -38,6 +38,8 @@ import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.BukkitPatchEnvironmentState;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlaceBreakVerifier;
 
 /**
  * This class represents a {@link JobsPrePaymentEvent} listener.
@@ -49,10 +51,13 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
 public class JobsPrePaymentListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
+  private final PatchPlaceBreakVerifier patchPlaceBreakVerifier;
 
   @Inject
-  JobsPrePaymentListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
+  JobsPrePaymentListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter,
+      PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
+    this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;
   }
 
   /**
@@ -66,7 +71,7 @@ public class JobsPrePaymentListener implements Listener {
    * @param event The jobs pre-payment event.
    */
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void onJobsPayment(JobsPrePaymentEvent event) {
+  public void patchOnJobsPrePayment(JobsPrePaymentEvent event) {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 
@@ -85,5 +90,37 @@ public class JobsPrePaymentListener implements Listener {
     if (patchPlaceBreakBukkitAdapter.isPlaceAndBreakAction(actionType, blockLocation).join()) {
       event.setCancelled(true);
     }
+  }
+
+  /**
+   * This method is called when a {@link JobsPrePaymentEvent} is dispatched to verify a
+   * place-and-break action have been well-patched. Otherwise, a warning log is sent.
+   *
+   * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we just want to know if
+   * the event has been cancelled or not without modifying its result.
+   *
+   * @param event The jobs pre-payment event.
+   */
+  @EventHandler(priority = EventPriority.MONITOR)
+  public void verifyPatchOnJobsPrePayment(JobsPrePaymentEvent event) {
+    Block block = event.getBlock();
+    ActionInfo actionInfo = event.getActionInfo();
+
+    if (block == null || actionInfo == null) {
+      return;
+    }
+
+    ActionType actionType = actionInfo.getType();
+
+    if (actionType == null) {
+      return;
+    }
+
+    BukkitPatchEnvironmentState environmentState =
+        BukkitPatchEnvironmentState.builder().jobActionType(actionType).targetedBlock(block)
+            .involvedPlayer(event.getPlayer()).triggeredJob(event.getJob()).eventHandled(event)
+            .isEventCancelled(event.isCancelled()).eventHandlers(event.getHandlers()).build();
+
+    patchPlaceBreakVerifier.checkAndAttemptFixListenersIfRequired(environmentState);
   }
 }
