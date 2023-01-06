@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -31,15 +31,15 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.block.BlockBreakListener;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.block.BlockGrowListener;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.block.BlockPistonListener;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.block.BlockPlaceListener;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.block.BlockSpreadListener;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.jobs.JobsExpGainListener;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.jobs.JobsExpGainVerificationListener;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.jobs.JobsPrePaymentListener;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.jobs.JobsPrePaymentVerificationListener;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block.BlockBreakListener;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block.BlockGrowListener;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block.BlockPistonListener;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block.BlockPlaceListener;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block.BlockSpreadListener;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.JobsExpGainListener;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.JobsExpGainVerificationListener;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.JobsPrePaymentListener;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.JobsPrePaymentVerificationListener;
 import lombok.extern.slf4j.Slf4j;
 
 /** This class represents a register of listeners. */
