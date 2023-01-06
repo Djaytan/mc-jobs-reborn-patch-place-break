@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,67 +22,50 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.jobs;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-
-import com.gamingmesh.jobs.api.JobsExpGainEvent;
-import com.gamingmesh.jobs.container.ActionInfo;
-import com.gamingmesh.jobs.container.ActionType;
+import org.bukkit.event.block.BlockPlaceEvent;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 
 /**
- * This class represents a {@link JobsExpGainEvent} listener.
+ * This class represents a {@link BlockPlaceEvent} listener.
  *
- * <p>The purpose of this listener is to cancel exp-gain jobs rewards when the action is considered
- * as a place-and-break one to be patched.
+ * <p>The purpose of this listener is to put a place-and-break tag to newly placed blocks by a
+ * player. This permits to prevent place-and-break exploit with diamond ores for example.
  */
 @Singleton
-public class JobsExpGainListener implements Listener {
+public class BlockPlaceListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
 
   @Inject
-  JobsExpGainListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
+  BlockPlaceListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
   }
 
   /**
-   * This method is called when a {@link JobsExpGainEvent} is dispatched to cancel it if the
-   * recorded action is a place-and-break one.
+   * This method is called when a {@link BlockPlaceEvent} is dispatched to put the place-and-break
+   * patch tag.
    *
-   * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we want to have the final
-   * word about the result of this event (a place-and-break action must be cancelled in all cases).
+   * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we just want to react when
+   * we have the confirmation that the event will occur without modifying its result. Furthermore,
+   * because this plugin will always be enabled before the JobsReborn one (enhance the "depend"
+   * plugin.yml line), we have the guarantee that this listener will always be called before the one
+   * registered by JobsReborn at the same priority level.
    *
-   * @param event The jobs exp-gain event.
+   * @param event The block place event.
    */
-  @EventHandler(priority = EventPriority.HIGHEST)
-  public void onJobsExpGain(JobsExpGainEvent event) {
-    Block block = event.getBlock();
-    ActionInfo actionInfo = event.getActionInfo();
-
-    if (block == null || actionInfo == null) {
-      return;
-    }
-
-    ActionType actionType = actionInfo.getType();
-
-    if (actionType == null) {
-      return;
-    }
-
-    Location blockLocation = block.getLocation();
-
-    if (patchPlaceBreakBukkitAdapter.isPlaceAndBreakAction(actionType, blockLocation).join()) {
-      event.setCancelled(true);
-    }
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onBlockPlace(BlockPlaceEvent event) {
+    Location location = event.getBlockPlaced().getLocation();
+    patchPlaceBreakBukkitAdapter.putTag(location, false);
   }
 }

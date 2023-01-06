@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.block;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -31,28 +31,29 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockBreakEvent;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 
 /**
- * This class represents a {@link BlockPlaceEvent} listener.
+ * This class represents a {@link BlockBreakEvent} listener.
  *
- * <p>The purpose of this listener is to put a place-and-break tag to newly placed blocks by a
- * player. This permits to prevent place-and-break exploit with diamond ores for example.
+ * <p>The purpose of this listener is to put a place-and-break patch tag to the newly created {@link
+ * org.bukkit.Material#AIR} block when the non-air previous one has been broken to prevent exploits
+ * like with saplings or sugarcane.
  */
 @Singleton
-public class BlockPlaceListener implements Listener {
+public class BlockBreakListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
 
   @Inject
-  BlockPlaceListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
+  BlockBreakListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
   }
 
   /**
-   * This method is called when a {@link BlockPlaceEvent} is dispatched to put the place-and-break
+   * This method is called when a {@link BlockBreakEvent} is dispatched to put the place-and-break
    * patch tag.
    *
    * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we just want to react when
@@ -61,11 +62,11 @@ public class BlockPlaceListener implements Listener {
    * plugin.yml line), we have the guarantee that this listener will always be called before the one
    * registered by JobsReborn at the same priority level.
    *
-   * @param event The block place event.
+   * @param event The block break event.
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockPlace(BlockPlaceEvent event) {
-    Location location = event.getBlockPlaced().getLocation();
-    patchPlaceBreakBukkitAdapter.putTag(location, false);
+  public void onBlockBreak(BlockBreakEvent event) {
+    Location location = event.getBlock().getLocation();
+    patchPlaceBreakBukkitAdapter.putTag(location, true);
   }
 }

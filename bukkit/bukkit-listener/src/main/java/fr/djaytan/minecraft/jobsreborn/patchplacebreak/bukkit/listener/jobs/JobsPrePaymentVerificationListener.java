@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +22,11 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.jobs;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,36 +36,34 @@ import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.BukkitPatchEnvironmentState;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlaceBreakVerifier;
 
 /**
- * This class represents a {@link JobsPrePaymentEvent} listener.
- *
- * <p>The purpose of this listener is to cancel payments jobs rewards when the action is considered
- * as a place-and-break one to be patched. This cover both points and incomes.
+ * This class represents a {@link JobsPrePaymentEvent} listener to verify the well-application of
+ * the patch if required.
  */
 @Singleton
-public class JobsPrePaymentListener implements Listener {
+public class JobsPrePaymentVerificationListener implements Listener {
 
-  private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
+  private final PatchPlaceBreakVerifier patchPlaceBreakVerifier;
 
   @Inject
-  JobsPrePaymentListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
-    this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
+  JobsPrePaymentVerificationListener(PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
+    this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;
   }
 
   /**
-   * This method is called when a {@link JobsPrePaymentEvent} is dispatched to cancel it if the
-   * recorded action is a place-and-break one.
+   * This method is called when a {@link JobsPrePaymentEvent} is dispatched to verify a
+   * place-and-break action have been well-patched. Otherwise, a warning log is sent.
    *
-   * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we want to have the final
-   * word about the result of this event (there isn't any reason to not cancel a place-and-break
-   * action).
+   * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we just want to know if
+   * the event has been cancelled or no without modifying its result.
    *
    * @param event The jobs pre-payment event.
    */
-  @EventHandler(priority = EventPriority.HIGHEST)
-  public void onJobsPayment(JobsPrePaymentEvent event) {
+  @EventHandler(priority = EventPriority.MONITOR)
+  public void onJobsExpGain(JobsPrePaymentEvent event) {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 
@@ -80,10 +77,11 @@ public class JobsPrePaymentListener implements Listener {
       return;
     }
 
-    Location blockLocation = block.getLocation();
+    BukkitPatchEnvironmentState environmentState =
+        BukkitPatchEnvironmentState.builder().jobActionType(actionType).targetedBlock(block)
+            .involvedPlayer(event.getPlayer()).triggeredJob(event.getJob()).eventHandled(event)
+            .isEventCancelled(event.isCancelled()).eventHandlers(event.getHandlers()).build();
 
-    if (patchPlaceBreakBukkitAdapter.isPlaceAndBreakAction(actionType, blockLocation).join()) {
-      event.setCancelled(true);
-    }
+    patchPlaceBreakVerifier.checkAndAttemptFixListenersIfRequired(environmentState);
   }
 }

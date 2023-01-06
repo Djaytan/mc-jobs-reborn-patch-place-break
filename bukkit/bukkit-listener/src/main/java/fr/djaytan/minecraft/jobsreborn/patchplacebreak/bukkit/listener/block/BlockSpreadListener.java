@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.listener.block;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -31,38 +31,38 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockGrowEvent;
+import org.bukkit.event.block.BlockSpreadEvent;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 
 /**
- * This class represents a {@link BlockGrowEvent} listener.
+ * This class represents a {@link BlockSpreadEvent} listener.
  *
- * <p>When a block grow, the metadata stills remains stored in it, which isn't what we want in the
- * context of the patch. Jobs like "farmer" shall be able to get paid when harvesting crops. So, the
- * idea here is simply to remove the corresponding metadata from the grown blocks.
+ * <p>The purpose of this listener is to removed potentially existing place-and-break tag to spread
+ * blocks (e.g. we consider that a player-placed dirt block becoming a grass by spreading event
+ * shall result to a successful job action when breaking it).
  */
 @Singleton
-public class BlockGrowListener implements Listener {
+public class BlockSpreadListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
 
   @Inject
-  BlockGrowListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
+  BlockSpreadListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
   }
 
   /**
-   * This method is called when a {@link BlockGrowEvent} is dispatched to remove the potentially
-   * existing place-and-break patch tag to the growing block.
+   * This method is called when a {@link BlockSpreadEvent} is dispatched to remove the potentially
+   * existing place-and-break patch tag to the spreading block.
    *
    * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we just want to react when
    * we have the confirmation that the event will occur without modifying its result.
    *
-   * @param event The block grow event.
+   * @param event The block spread event.
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockGrow(BlockGrowEvent event) {
+  public void onBlockSpread(BlockSpreadEvent event) {
     Location location = event.getBlock().getLocation();
     patchPlaceBreakBukkitAdapter.removeTag(location);
   }

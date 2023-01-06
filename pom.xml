@@ -123,11 +123,6 @@
         <version>${logback.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.google.errorprone</groupId>
-        <artifactId>error_prone_annotations</artifactId>
-        <version>${errorProneAnnotations.version}</version>
-      </dependency>
-      <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>${guava.version}</version>
@@ -188,11 +183,6 @@
         <version>${mockito.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>${lombok.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
@@ -216,6 +206,20 @@
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
         <version>${snakeyaml.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.errorprone</groupId>
+        <artifactId>error_prone_annotations</artifactId>
+        <version>${errorProneAnnotations.version}</version>
+        <scope>provided</scope>
+        <!-- Useful only at compile time for non-runtime annotations -->
+      </dependency>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>provided</scope>
+        <!-- Useful only before compile time for code generation -->
       </dependency>
     </dependencies>
   </dependencyManagement>
