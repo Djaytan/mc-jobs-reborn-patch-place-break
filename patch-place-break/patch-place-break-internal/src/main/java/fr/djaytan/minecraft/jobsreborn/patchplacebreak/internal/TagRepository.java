@@ -46,12 +46,12 @@ import lombok.NonNull;
 public interface TagRepository {
 
   /**
-   * Puts the tag into the storage.
+   * Puts a tag at the targeted {@link TagLocation}.
    *
-   * <p>If the tag doesn't exist (i.e. no tag with the same {@link TagLocation} is already stored),
-   * a new resource is created. Otherwise, the existing tag is overridden.
+   * <p>If no tag exist at the targeted location, a new resource is created. Otherwise,
+   * the existing tag is overridden.
    *
-   * @param tag The tag to be put in storage.
+   * @param tag The tag to be put at the targeted location.
    * @throws TagRepositoryException If something prevents the tag to be put into the storage.
    */
   void put(@NonNull Tag tag) throws TagRepositoryException;
