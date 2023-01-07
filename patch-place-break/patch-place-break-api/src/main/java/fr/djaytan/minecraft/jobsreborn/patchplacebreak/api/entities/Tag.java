@@ -51,7 +51,6 @@ import lombok.Value;
  *
  * This class is thread-safe and immutable.
  */
-// TODO: remove UUID field: useless since the primary key is TagLocation
 @Value(staticConstructor = "of")
 public class Tag {
 

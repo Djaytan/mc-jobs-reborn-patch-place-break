@@ -43,7 +43,6 @@ import lombok.NonNull;
  * the type of storage, or no particular type wished as been provided, then the default type must
  * be a persistent one.
  */
-// TODO: explicitly ask an ID parameter for methods (instead of TagLocation)
 public interface TagRepository {
 
   /**
