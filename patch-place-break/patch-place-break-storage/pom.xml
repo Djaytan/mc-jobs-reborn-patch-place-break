@@ -2,7 +2,7 @@
 <!--
   ~ MIT License
   ~
-  ~ Copyright (c) 2022 Loïc DUBOIS-TERMOZ (alias Djaytan)
+  ~ Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,9 @@
 
   <modules>
     <module>storage-api</module>
+    <module>storage-base-sql</module>
     <module>storage-inmemory</module>
+    <module>storage-mysql</module>
     <module>storage-sqlite</module>
   </modules>
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,8 +34,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -52,59 +50,22 @@ public class GuiceBukkitModule extends AbstractModule {
     this.javaPlugin = javaPlugin;
   }
 
-  @Provides
-  @Singleton
-  public @NonNull JavaPlugin provideJavaPlugin() {
-    return javaPlugin;
-  }
-
-  @Provides
-  @Singleton
-  public @NonNull Logger provideSlf4jLogger() {
-    // The logger name doesn't matter
-    return LoggerFactory.getLogger("");
-  }
-
-  @Provides
-  @Singleton
-  public @NonNull Server provideServer() {
-    return javaPlugin.getServer();
-  }
-
-  @Provides
-  @Singleton
-  public @NonNull PluginManager providePluginManager(@NonNull Server server) {
-    return server.getPluginManager();
-  }
-
-  @Provides
-  @Singleton
-  public @NonNull ServicesManager provideServicesManager(@NonNull Server server) {
-    return server.getServicesManager();
-  }
-
-  @Provides
-  @Singleton
-  public @NonNull ItemFactory provideItemFactory(@NonNull Server server) {
-    return server.getItemFactory();
-  }
-
-  @Provides
-  @Singleton
-  public @NonNull ConsoleCommandSender provideConsoleCommandSender(@NonNull Server server) {
-    return server.getConsoleSender();
-  }
-
-  @Provides
-  @Singleton
-  public @NonNull BukkitScheduler provideBukkitScheduler(@NonNull Server server) {
-    return server.getScheduler();
+  @Override
+  protected void configure() {
+    bind(JavaPlugin.class).toInstance(javaPlugin);
+    bind(ClassLoader.class).toInstance(javaPlugin.getClass().getClassLoader());
+    bind(Server.class).toInstance(javaPlugin.getServer());
+    bind(PluginManager.class).toInstance(javaPlugin.getServer().getPluginManager());
+    bind(ServicesManager.class).toInstance(javaPlugin.getServer().getServicesManager());
+    bind(ItemFactory.class).toInstance(javaPlugin.getServer().getItemFactory());
+    bind(ConsoleCommandSender.class).toInstance(javaPlugin.getServer().getConsoleSender());
+    bind(BukkitScheduler.class).toInstance(javaPlugin.getServer().getScheduler());
   }
 
   @Provides
   @Named("dataFolder")
   @Singleton
-  public @NonNull Path provideDataFolderPath() {
+  public @NonNull Path provideDataFolder() {
     return javaPlugin.getDataFolder().toPath();
   }
 

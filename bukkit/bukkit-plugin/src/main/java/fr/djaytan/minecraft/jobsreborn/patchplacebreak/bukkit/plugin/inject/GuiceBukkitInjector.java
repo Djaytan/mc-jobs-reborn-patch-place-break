@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,19 +29,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.GuicePatchPlaceBreakCoreModule;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.GuiceStorageSqliteModule;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public final class GuiceBukkitInjector {
 
   private GuiceBukkitInjector() {}
 
   public static void inject(@NonNull JavaPlugin javaPlugin) {
-    Injector injector = Guice.createInjector(new GuiceBukkitModule(javaPlugin),
-        new GuicePatchPlaceBreakPluginModule(), new GuicePatchPlaceBreakCoreModule(),
-        new GuiceStorageSqliteModule());
+    GuiceBukkitModule bukkitModule = new GuiceBukkitModule(javaPlugin);
+    GuiceJobsRebornPatchPlaceBreakModule jobsRebornPatchPlaceBreakModule =
+        new GuiceJobsRebornPatchPlaceBreakModule();
+    Injector injector = Guice.createInjector(bukkitModule, jobsRebornPatchPlaceBreakModule);
     injector.injectMembers(javaPlugin);
-    javaPlugin.getLogger().info("Dependencies injected with Guice.");
+    log.atInfo().log("Dependencies injected with Guice.");
   }
 }
