@@ -94,7 +94,7 @@
     <sonarMavenPlugin.version>3.9.1.2184</sonarMavenPlugin.version>
 
     <!-- ==================== Dependencies versions ==================== -->
-    <checkerframework.version>3.8.0</checkerframework.version>
+    <checkerframework.version>3.29.0</checkerframework.version>
     <commonsLang3.version>3.12.0</commonsLang3.version>
     <configurate.version>4.1.2</configurate.version>
     <equalsverifier.version>3.12.3</equalsverifier.version>
@@ -110,7 +110,7 @@
     <mockito.version>4.11.0</mockito.version>
     <mysql.version>8.0.31</mysql.version>
     <slf4j.version>2.0.6</slf4j.version>
-    <snakeyaml.version>1.28</snakeyaml.version>
+    <snakeyaml.version>1.33</snakeyaml.version>
     <sqlite.version>3.40.0.0</sqlite.version>
     <toStringVerifier.version>1.4.8</toStringVerifier.version>
   </properties>
