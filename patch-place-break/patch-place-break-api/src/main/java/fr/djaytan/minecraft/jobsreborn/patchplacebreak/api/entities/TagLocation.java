@@ -30,6 +30,7 @@ import lombok.Value;
 /**
  * An immutable and thread-safe tag location.
  */
+// TODO: should use only integer values for coordinates
 @Value(staticConstructor = "of")
 public class TagLocation {
 
