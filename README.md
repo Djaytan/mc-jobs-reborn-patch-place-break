@@ -110,6 +110,11 @@ version is compatible with the plugin.
 Installation steps of a Spigot server are described
 [here](https://www.spigotmc.org/wiki/spigot-installation/).
 
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the
+[tags on this repository](https://github.com/your/project/tags).
+
 ## Licence
 
 This project is under the [MIT](https://opensource.org/licenses/MIT) license.
