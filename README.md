@@ -113,7 +113,15 @@ Installation steps of a Spigot server are described
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the
-[tags on this repository](https://github.com/your/project/tags).
+[tags on this repository](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/tags).
+
+## Authors
+
+* **Loïc Dubois-Termoz** - *Initial work* - [Djaytan](https://github.com/Djaytan)
+
+See also the list of
+[contributors](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/graphs/contributors)
+who participated in this project.
 
 ## Licence
 
