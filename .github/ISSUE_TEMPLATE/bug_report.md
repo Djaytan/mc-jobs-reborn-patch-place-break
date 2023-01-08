@@ -23,14 +23,13 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Minecraft (please complete the following information):**
- - Server platform: [e.g. Bukkit or Sponge]
- - Server platform implementation: [e.g. Spigot, PaperMC, PurpurMC, ...]
- - API version: [e.g. 1.18.2]
- - Java version: [e.g. 17]
- - JobsReborn plugin version: [e.g. 5.0.3.0]
- - JobsReborn-PlaceBreakPatch plugin version
- - Potentiel other third-party plugins which can conflict with this one
+**Environment (please complete the following information):**
+ - Minecraft Server Platform: [e.g. Spigot, PaperMC, ...]
+ - Minecraft Game Version: [e.g. 1.19.3]
+ - Java Version: [e.g. 17]
+ - JobsReborn Plugin Version: [e.g. 5.1.2.0]
+ - JobsReborn-PatchPlaceBreak Plugin Version: [e.g. 1.3.0]
+ - Relevant Third-Party Plugins (Remove if not needed): [e.g. McMMO]
 
 **Additional context**
 Add any other context about the problem here.
