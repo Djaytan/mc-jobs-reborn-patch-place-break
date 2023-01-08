@@ -94,15 +94,21 @@ PlaceAndBreak:
   SilkTouchProtection: false
 ```
 
-## How to compile the project
+## How to get started
 
-Since a [Maven Wrapper](https://github.com/apache/maven-wrapper) has been set up for this project, it's recommended
-to use it instead of your own local instance by executing the script `mvnw`
-(or `mvnw.cmd` if you are under Windows terminal of Powershell).
+The only prerequisites that you need before starting working is the following ones:
+* JDK 8+
+* Maven 3.6+
 
-To compile the project, run unit tests and package the plugin into a Jar file, simply run this command: `./mvnw clean package`
-(see [Maven lifecycle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html) for more
-details).
+Then, you can simply build the project by typing this command at the root project:
+
+    mvn clean package
+
+You will find the packaged JAR file of the Bukkit plugin at `bukkit/bukkit-plugin/target`.
+If you want to test it, copy it into your local Spigot server by taking care that the server
+version is compatible with the plugin.
+Installation steps of a Spigot server are described
+[here](https://www.spigotmc.org/wiki/spigot-installation/).
 
 ## Licence
 
