@@ -102,7 +102,7 @@ The only prerequisites that you need before starting working is the following on
 
 Then, you can simply build the project by typing this command at the root project:
 
-    mvn clean package
+    $ mvn clean package
 
 You will find the packaged JAR file of the Bukkit plugin at `bukkit/bukkit-plugin/target`.
 If you want to test it, copy it into your local Spigot server by taking care that the server
