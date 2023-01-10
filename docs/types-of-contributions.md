@@ -5,7 +5,7 @@ discuss and collaborate!
 ### :mega: Discussions
 Discussions are where we have conversations.
 
-If you'd like help troubleshooting a docs PR you're working on, have a great new idea, or want to
+If you'd like help troubleshooting a PR you're working on, have a great new idea, or want to
 share something amazing you've experimented with our patch, join us in
 [discussions](https://github.com/github/docs/discussions).
 
