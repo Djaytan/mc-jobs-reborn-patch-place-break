@@ -56,7 +56,7 @@ As a comparison point, this behavior can have similarities with the one implemen
 
 Easy and efficient, this does the trick.
 
-## Setup
+## Setup of the Bukkit plugin
 
 We expect here that you already have a Bukkit server already set up with the JobsReborn plugin
 installed on it.
@@ -94,21 +94,30 @@ PlaceAndBreak:
   SilkTouchProtection: false
 ```
 
-## How to get started
+## Getting Started (as contributor)
 
-The only prerequisites that you need before starting working is the following ones:
-* JDK 8+
-* Maven 3.6+
+These instructions will get you a copy of the project up and running on your local machine for
+development and testing purposes. See deployment for notes on how to deploy the project on
+a live system.
 
-Then, you can simply build the project by typing this command at the root project:
+### Prerequisites
+
+Working on this project requires the following dependencies installed on your local environment:
+* JDK 8+ ([Download Link](https://adoptium.net/en-GB/temurin/releases/?version=8))
+* Maven 3.6+ ([Download Link](https://maven.apache.org/download.cgi) | [Install Guide](https://maven.apache.org/install.html))
+
+### Installing
+
+Currently, we suppose you know how to install a Minecraft server. However, we plan to automate it:
+https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/39
+
+To retrieve the plugin, you can simply build the project by typing this command at the root project:
 
     $ mvn clean package
 
 You will find the packaged JAR file of the Bukkit plugin at `bukkit/bukkit-plugin/target`.
 If you want to test it, copy it into your local Spigot server by taking care that the server
 version is compatible with the plugin.
-Installation steps of a Spigot server are described
-[here](https://www.spigotmc.org/wiki/spigot-installation/).
 
 ## Versioning
 
