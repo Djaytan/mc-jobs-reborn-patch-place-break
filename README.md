@@ -119,6 +119,12 @@ You will find the packaged JAR file of the Bukkit plugin at `bukkit/bukkit-plugi
 If you want to test it, copy it into your local Spigot server by taking care that the server
 version is compatible with the plugin.
 
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on ways to help us.
+
+Take care to always follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the
