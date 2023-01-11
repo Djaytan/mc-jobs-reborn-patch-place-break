@@ -86,7 +86,7 @@
     <mavenResourcesPlugin.version>3.3.0</mavenResourcesPlugin.version>
     <mavenSourcePlugin.version>3.2.1</mavenSourcePlugin.version>
     <mavenJavadocPlugin.version>3.4.1</mavenJavadocPlugin.version>
-    <mavenSurefirePlugin.version>3.0.0-M7</mavenSurefirePlugin.version>
+    <mavenSurefirePlugin.version>3.0.0-M8</mavenSurefirePlugin.version>
     <mavenJarPlugin.version>3.3.0</mavenJarPlugin.version>
     <mavenInstallPlugin.version>3.1.0</mavenInstallPlugin.version>
     <mavenReleasePlugin.version>3.0.0-M7</mavenReleasePlugin.version>
