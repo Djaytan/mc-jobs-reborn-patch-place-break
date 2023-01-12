@@ -162,9 +162,7 @@
                 <exclude>META-INF/*.SF</exclude>
                 <exclude>META-INF/*.DSA</exclude>
                 <exclude>META-INF/*.RSA</exclude>
-                <exclude>META-INF/DEPENDENCIES</exclude>
-                <exclude>META-INF/LICENSE*</exclude>
-                <exclude>META-INF/NOTICE</exclude>
+                <exclude>META-INF/MANIFEST*</exclude>
               </excludes>
             </filter>
           </filters>
@@ -213,10 +211,19 @@
             </relocation>
           </relocations>
           <transformers>
-            <!-- Remove warning messages about duplicate manifest files -->
-            <!-- Manifest file is useless for a JAR file to be used as a Bukkit plugin -->
-            <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
-              <resource>MANIFEST.MF</resource>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+              <resource>META-INF/README.md</resource>
+              <file>${main.basedir}/README.md</file>
+            </transformer>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+              <resource>META-INF/LICENSE.md</resource>
+              <file>${main.basedir}/LICENSE.md</file>
+            </transformer>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
+              <addHeader>true</addHeader>
             </transformer>
           </transformers>
         </configuration>
