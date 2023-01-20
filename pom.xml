@@ -73,24 +73,25 @@
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
     <!-- ==================== Plugins versions ==================== -->
-    <!-- Latest version of SortPom compatible with Java 8: don't bump it! -->
-    <sortpomMavenPlugin.version>3.0.1</sortpomMavenPlugin.version>
-    <!-- Latest version of ImpSort compatible with Java 8: don't bump it! -->
-    <impsortMavenPlugin.version>1.6.2</impsortMavenPlugin.version>
     <!-- Latest version of Formatter compatible with Java 8: don't bump it! -->
     <formatterMavenPlugin.version>2.16.0</formatterMavenPlugin.version>
+    <!-- Latest version of ImpSort compatible with Java 8: don't bump it! -->
+    <impsortMavenPlugin.version>1.6.2</impsortMavenPlugin.version>
+    <jacocoMavenPlugin.version>0.8.8</jacocoMavenPlugin.version>
+    <mavenCleanPlugin.version>3.2.0</mavenCleanPlugin.version>
     <mavenCompilerPlugin.version>3.10.1</mavenCompilerPlugin.version>
     <mavenDependencyPlugin.version>3.5.0</mavenDependencyPlugin.version>
-    <mavenShadePlugin.version>3.4.1</mavenShadePlugin.version>
-    <mavenCleanPlugin.version>3.2.0</mavenCleanPlugin.version>
-    <mavenResourcesPlugin.version>3.3.0</mavenResourcesPlugin.version>
-    <mavenSourcePlugin.version>3.2.1</mavenSourcePlugin.version>
-    <mavenJavadocPlugin.version>3.4.1</mavenJavadocPlugin.version>
-    <mavenSurefirePlugin.version>3.0.0-M8</mavenSurefirePlugin.version>
-    <mavenJarPlugin.version>3.3.0</mavenJarPlugin.version>
+    <mavenEnforcerPlugin.version>3.0.0-M3</mavenEnforcerPlugin.version>
     <mavenInstallPlugin.version>3.1.0</mavenInstallPlugin.version>
+    <mavenJarPlugin.version>3.3.0</mavenJarPlugin.version>
+    <mavenJavadocPlugin.version>3.4.1</mavenJavadocPlugin.version>
     <mavenReleasePlugin.version>3.0.0-M7</mavenReleasePlugin.version>
-    <jacocoMavenPlugin.version>0.8.8</jacocoMavenPlugin.version>
+    <mavenResourcesPlugin.version>3.3.0</mavenResourcesPlugin.version>
+    <mavenShadePlugin.version>3.4.1</mavenShadePlugin.version>
+    <mavenSourcePlugin.version>3.2.1</mavenSourcePlugin.version>
+    <mavenSurefirePlugin.version>3.0.0-M8</mavenSurefirePlugin.version>
+    <!-- Latest version of SortPom compatible with Java 8: don't bump it! -->
+    <sortpomMavenPlugin.version>3.0.1</sortpomMavenPlugin.version>
     <sonarMavenPlugin.version>3.9.1.2184</sonarMavenPlugin.version>
 
     <!-- ==================== Dependencies versions ==================== -->
@@ -354,6 +355,67 @@
               <goal>analyze-duplicate</goal>
             </goals>
             <phase>test-compile</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>${mavenEnforcerPlugin.version}</version>
+        <configuration>
+          <fail>true</fail>
+          <failFast>true</failFast>
+          <rules>
+            <bannedDependencies>
+              <message>One or several dependencies are not properly defined (do their scope is correct?)</message>
+              <excludes>
+                <exclude>com.jparams:to-string-verifier</exclude>
+                <exclude>nl.jqno.equalsverifier:equalsverifier</exclude>
+                <exclude>org.junit.jupiter</exclude>
+                <exclude>org.mockito</exclude>
+                <exclude>org.projectlombok:lombok</exclude>
+              </excludes>
+              <includes>
+                <include>com.jparams:to-string-verifier:*:*:test</include>
+                <include>nl.jqno.equalsverifier:equalsverifier:*:*:test</include>
+                <include>org.junit.jupiter:*:*:*:test</include>
+                <include>org.mockito:*:*:*:test</include>
+                <exclude>org.projectlombok:lombok:*:*:provided</exclude>
+              </includes>
+            </bannedDependencies>
+            <banDuplicatePomDependencyVersions />
+            <dependencyConvergence />
+            <reactorModuleConvergence />
+            <requireJavaVersion>
+              <version>[1.8,1.9)</version>
+            </requireJavaVersion>
+            <requireMavenVersion>
+              <version>[3.6,)</version>
+            </requireMavenVersion>
+            <requirePluginVersions>
+              <banLatest>true</banLatest>
+              <banRelease>true</banRelease>
+              <banSnapshots>true</banSnapshots>
+              <!-- "deploy" and "site" phases are not applicable for this project -->
+              <unCheckedPluginList>org.apache.maven.plugins:maven-site-plugin,org.apache.maven.plugins:maven-deploy-plugin</unCheckedPluginList>
+            </requirePluginVersions>
+            <requireReleaseDeps>
+              <searchTransitive>true</searchTransitive>
+              <onlyWhenRelease>true</onlyWhenRelease>
+            </requireReleaseDeps>
+            <requireUpperBoundDeps />
+          </rules>
+        </configuration>
+        <executions>
+          <execution>
+            <id>enforce-validation</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <phase>validate</phase>
+            <configuration>
+
+            </configuration>
           </execution>
         </executions>
       </plugin>
