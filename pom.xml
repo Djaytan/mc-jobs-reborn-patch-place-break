@@ -79,7 +79,7 @@
     <mavenCleanPlugin.version>3.2.0</mavenCleanPlugin.version>
     <mavenCompilerPlugin.version>3.10.1</mavenCompilerPlugin.version>
     <mavenDependencyPlugin.version>3.5.0</mavenDependencyPlugin.version>
-    <mavenEnforcerPlugin.version>3.0.0-M3</mavenEnforcerPlugin.version>
+    <mavenEnforcerPlugin.version>3.1.0</mavenEnforcerPlugin.version>
     <mavenInstallPlugin.version>3.1.0</mavenInstallPlugin.version>
     <mavenJarPlugin.version>3.3.0</mavenJarPlugin.version>
     <mavenJavadocPlugin.version>3.4.1</mavenJavadocPlugin.version>
