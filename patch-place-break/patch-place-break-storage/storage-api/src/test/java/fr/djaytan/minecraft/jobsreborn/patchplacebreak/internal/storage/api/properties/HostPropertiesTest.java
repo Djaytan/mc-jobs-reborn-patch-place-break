@@ -22,7 +22,7 @@ class HostPropertiesTest {
     boolean isSslEnabled = true;
 
     // When
-    HostProperties hostProperties = HostProperties.of("host", 80, true);
+    DbmsHostProperties hostProperties = DbmsHostProperties.of("host", 80, true);
 
     // Then
     assertAll("Verification of returned values from getters",
@@ -34,12 +34,13 @@ class HostPropertiesTest {
   @Test
   @DisplayName("equals() & hashCode() - Verifications")
   void equalsAndHashcodeContractVerification() {
-    EqualsVerifier.forClass(HostProperties.class).verify();
+    EqualsVerifier.forClass(DbmsHostProperties.class).verify();
   }
 
   @Test
   @DisplayName("toString() - Verifications")
   void toStringContractVerification() {
-    ToStringVerifier.forClass(HostProperties.class).withClassName(NameStyle.SIMPLE_NAME).verify();
+    ToStringVerifier.forClass(DbmsHostProperties.class).withClassName(NameStyle.SIMPLE_NAME)
+        .verify();
   }
 }

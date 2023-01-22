@@ -31,7 +31,7 @@ import lombok.Value;
 public class DbmsServerProperties {
 
   @NonNull
-  HostProperties host;
+  DbmsHostProperties host;
   @NonNull
   CredentialsProperties credentials;
   @NonNull

@@ -39,12 +39,26 @@ to help you for getting started.
 ## Pull Requests
 
 1. Try to open several smaller PRs instead of only a big one, it will make the job of the reviewers
-easier.
-2. Give a summary of the changes provided by your PR. Link any related issue, discussion or documentation
-that could help the reviewer understand your work, the impacts and the plus-value.
+   easier.
+2. Give a summary of the changes provided by your PR. Link any related issue, discussion or
+   documentation that could help the reviewer understand your work, the impacts and the plus-value.
 3. You will need at least one approval of a reviewer before being able to merge the PR.
 4. All automatic jobs must pass (CircleCI, SonarQube analysis, formatting verification, ...) before
-merging.
+   merging.
+
+## Windows - Long Paths
+
+> "Git has a limit of 4096 characters for a filename, except on Windows when Git is compiled with
+> msys. It uses an older version of the Windows API and there's a limit of 260 characters for a
+> filename." - _From StackOverflow answer: https://stackoverflow.com/a/22575737_
+
+Since some files in project exceed 265 characters long, it is required to overcome this limitation.
+
+To solve the issue, run with administrator rights the following command:
+
+```
+$ git config --system core.longpaths true
+```
 
 ## Code Formatting
 

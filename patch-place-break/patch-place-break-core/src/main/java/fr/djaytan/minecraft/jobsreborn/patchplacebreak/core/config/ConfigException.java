@@ -35,7 +35,8 @@ import lombok.experimental.StandardException;
 public class ConfigException extends PatchPlaceBreakCoreException {
 
   private static final String CREATE_DEFAULT = "Failed to create default config file '%s'.";
-  private static final String READ_CONFIG = "Failed to read config file '%s'.";
+  private static final String READ_CONFIG =
+      "Failed to read config file '%s'. Is config file empty?";
   private static final String RESOURCE_NOT_FOUND = "Resource '%s' not found in classpath.";
   private static final String UNEXPECTED_EMPTY_DEFAULT_CONFIG =
       "The default config file '%s' is empty: this is unexpected."

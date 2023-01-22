@@ -47,7 +47,7 @@ public abstract class ConnectionPool {
   public void connect() {
     String jdbcUrl = getJdbcUrl();
 
-    log.atInfo().log("Connecting to '{}'...", jdbcUrl);
+    log.atInfo().log("Connecting to database '{}'...", jdbcUrl);
 
     HikariConfig hikariConfig = new HikariConfig();
     hikariConfig.setJdbcUrl(jdbcUrl);

@@ -17,7 +17,7 @@ class DbmsServerPropertiesTest {
   @DisplayName("Constructor - Successful nominal case")
   void shouldSuccessWhenCreatingWithNominalValues() {
     // Given
-    HostProperties hostProperties = HostProperties.of("host", 80, true);
+    DbmsHostProperties hostProperties = DbmsHostProperties.of("host", 80, true);
     CredentialsProperties credentialsProperties = CredentialsProperties.of("username", "password");
     String database = "testdb";
 

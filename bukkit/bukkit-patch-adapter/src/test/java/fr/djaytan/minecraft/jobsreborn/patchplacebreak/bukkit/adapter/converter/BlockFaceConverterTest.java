@@ -38,12 +38,12 @@ class BlockFaceConverterTest {
   private BlockFaceConverter blockFaceConverter;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     blockFaceConverter = new BlockFaceConverter();
   }
 
-  @DisplayName("Conversion from a north direction")
   @Test
+  @DisplayName("Conversion from a north direction")
   void shouldReturnNorthDirectionEquivalentVector() {
     // Given
     BlockFace blockFace = BlockFace.NORTH;
@@ -56,8 +56,8 @@ class BlockFaceConverterTest {
     assertEquals(expectedTagVector, tagVector);
   }
 
-  @DisplayName("Conversion from a south-east direction")
   @Test
+  @DisplayName("Conversion from a south-east direction")
   void shouldReturnSouthEastDirectionEquivalentVector() {
     // Given
     BlockFace blockFace = BlockFace.SOUTH_EAST;

@@ -26,7 +26,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -46,7 +46,7 @@ class LocationConverterTest {
   private LocationConverter locationConverter;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     locationConverter = new LocationConverter();
   }
 
@@ -55,7 +55,7 @@ class LocationConverterTest {
   void shouldSuccessNominalLocationConversion(@Mock World world) {
     // Given
     String worldName = "world";
-    when(world.getName()).thenReturn(worldName);
+    given(world.getName()).willReturn(worldName);
 
     double x = -96.0D;
     double y = 5.7788D;
