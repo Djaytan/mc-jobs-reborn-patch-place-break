@@ -1,0 +1,3 @@
+hostname: "example.com"
+port: 1234
+is-ssl-enabled: true

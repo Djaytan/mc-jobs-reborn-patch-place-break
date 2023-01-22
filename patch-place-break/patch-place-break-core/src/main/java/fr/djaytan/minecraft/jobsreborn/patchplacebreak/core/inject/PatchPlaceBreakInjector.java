@@ -28,7 +28,6 @@ import java.nio.file.Path;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCoreException;
@@ -40,8 +39,8 @@ public final class PatchPlaceBreakInjector {
   private Injector injector;
 
   public void inject(@NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
-    Module patchPlaceBreakModule = new GuicePatchPlaceBreakModule(classLoader, dataFolder);
-    injector = Guice.createInjector(patchPlaceBreakModule);
+    injector = Guice.createInjector(new ConfigModule(), new ValidationModule(),
+        new PatchPlaceBreakModule(classLoader, dataFolder));
   }
 
   public @NonNull PatchPlaceBreakApi getPatchApi() {

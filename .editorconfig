@@ -10,8 +10,5 @@ indent_size = 2
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{cmd, bat}]
-end_of_line = crlf
-
 [*.{md, properties}]
 trim_trailing_whitespace = false

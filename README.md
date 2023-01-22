@@ -6,10 +6,12 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
 
-A place-and-break patch extension of [JobsReborn plugin](https://www.spigotmc.org/resources/jobs-reborn.4216/)
+A place-and-break patch extension
+of [JobsReborn plugin](https://www.spigotmc.org/resources/jobs-reborn.4216/)
 for Bukkit servers.
 
-The resource is available on [Spigot](https://www.spigotmc.org/resources/jobsreborn-patchplacebreak.102779/).
+The resource is available
+on [Spigot](https://www.spigotmc.org/resources/jobsreborn-patchplacebreak.102779/).
 
 ## Place-and-break issue
 
@@ -24,10 +26,10 @@ for whatever reason, the amount of money to give when the block is broken will b
 the amount to be retrieved when placing the same one. And... well... losing money and xp when you
 place a block for decoration isn't very appreciated by players too.
 
-The place-and-break patch provided by JobsReborn seems to be insufficient: you must specify **for each
-block** a fix amount of time during which breaking the block again will not permit to earn money
-and xp. It's a first step forward, but can go even further. Specifying an unlimited time can be limited too,
-because after 14 days maximum the placed blocks will not prevent the payment
+The place-and-break patch provided by JobsReborn seems to be insufficient: you must specify **for
+each block** a fix amount of time during which breaking the block again will not permit to earn
+money and xp. It's a first step forward, but can go even further. Specifying an unlimited time can
+be limited too, because after 14 days maximum the placed blocks will not prevent the payment
 anymore... And finally, piston exploit isn't taking into account at all.
 
 So, this is why this addon exists: giving an easy and efficient solution to these problematics.
@@ -61,17 +63,18 @@ Easy and efficient, this does the trick.
 We expect here that you already have a Bukkit server already set up with the JobsReborn plugin
 installed on it.
 
-The server's version must be higher or equals to 1.11. If you wish to use this plugin on a lower version of the server
-(1.8, 1.9 or 1.10), you should instead use the version
-[1.2.0](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/tag/v1.2.0) of the plugin.
+The server's version must be higher or equals to 1.11. If you wish to use this plugin on a lower
+version of the server (1.8, 1.9 or 1.10), you should instead use the version
+[1.2.0](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/tag/v1.2.0) of the
+plugin.
 
 Simply download the latest `.jar` file from the
 [release section](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/) of this
 repository and put it into the `plugins/` folder, and you'll be done! After restarting the server,
 the plugin should now appear green in the list displayed by the `/plugins` command.
 
-At this point, you should simply turn off all options of the "PlaceAndBreak" config part of JobsReborn.
-This would lead to a similar result as the following one:
+At this point, you should simply turn off all options of the "PlaceAndBreak" config part of
+JobsReborn. This would lead to a similar result as the following one:
 
 ```yaml
 PlaceAndBreak:
@@ -103,8 +106,10 @@ a live system.
 ### Prerequisites
 
 Working on this project requires the following dependencies installed on your local environment:
+
 * JDK 11+ ([Download Link](https://adoptium.net/en-GB/temurin/releases/?version=11))
-* Maven 3.6+ ([Download Link](https://maven.apache.org/download.cgi) | [Install Guide](https://maven.apache.org/install.html))
+* Maven
+  3.6+ ([Download Link](https://maven.apache.org/download.cgi) | [Install Guide](https://maven.apache.org/install.html))
 
 ### Installing
 

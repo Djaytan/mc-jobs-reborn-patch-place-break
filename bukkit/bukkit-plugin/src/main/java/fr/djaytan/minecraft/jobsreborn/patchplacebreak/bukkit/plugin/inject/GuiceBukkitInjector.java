@@ -43,6 +43,6 @@ public final class GuiceBukkitInjector {
         new GuiceJobsRebornPatchPlaceBreakModule();
     Injector injector = Guice.createInjector(bukkitModule, jobsRebornPatchPlaceBreakModule);
     injector.injectMembers(javaPlugin);
-    log.atInfo().log("Dependencies injected with Guice.");
+    log.atInfo().log("Dependencies injected.");
   }
 }

@@ -1,0 +1,16 @@
+dataSource:
+  type: 'SQLITE'
+  table: 'patch_place_break_tag'
+  dbmsServer:
+    host:
+      hostname: 'localhost'
+      # CONSTRAINT VIOLATION HERE
+      port: -1
+      isSslEnabled: true
+    credentials:
+      username: 'username'
+      password: 'password'
+    database: 'database'
+  connectionPool:
+    connectionTimeout: 30000
+    poolSize: 10

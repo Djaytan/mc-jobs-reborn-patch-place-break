@@ -4,7 +4,11 @@
     "config:base"
   ],
   "ignoreDeps": [
+    "ch.qos.logback:logback-classic",
+    "cimg/openjdk",
     "com.zaxxer:HikariCP",
-    "cimg/openjdk"
+    "jakarta.platform:jakarta.jakartaee-bom",
+    "org.glassfish:jakarta.el",
+    "org.hibernate.validator:hibernate-validator"
   ]
 }

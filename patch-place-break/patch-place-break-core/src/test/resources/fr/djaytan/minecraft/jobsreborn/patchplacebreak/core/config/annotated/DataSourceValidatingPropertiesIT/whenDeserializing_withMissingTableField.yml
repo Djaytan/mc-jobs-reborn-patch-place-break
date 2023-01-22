@@ -1,0 +1,13 @@
+type: "MYSQL"
+dbmsServer:
+  host:
+    hostname: "example.com"
+    port: 1234
+    isSslEnabled: true
+  credentials:
+    username: "foo"
+    password: "bar"
+  database: "patch_database"
+connectionPool:
+  connectionTimeout: 60000
+  poolSize: 10

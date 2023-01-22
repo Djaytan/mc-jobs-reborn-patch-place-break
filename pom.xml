@@ -43,6 +43,7 @@
 
   <modules>
     <module>bukkit</module>
+    <module>commons-test</module>
     <module>patch-place-break</module>
   </modules>
 
@@ -73,6 +74,7 @@
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
     <!-- ==================== Plugins versions ==================== -->
+    <builderHelperMavenPlugin.version>3.3.0</builderHelperMavenPlugin.version>
     <formatterMavenPlugin.version>2.21.0</formatterMavenPlugin.version>
     <impsortMavenPlugin.version>1.8.0</impsortMavenPlugin.version>
     <jacocoMavenPlugin.version>0.8.8</jacocoMavenPlugin.version>
@@ -80,6 +82,7 @@
     <mavenCompilerPlugin.version>3.10.1</mavenCompilerPlugin.version>
     <mavenDependencyPlugin.version>3.5.0</mavenDependencyPlugin.version>
     <mavenEnforcerPlugin.version>3.2.1</mavenEnforcerPlugin.version>
+    <mavenFailsafePlugin.version>3.0.0-M8</mavenFailsafePlugin.version>
     <mavenInstallPlugin.version>3.1.0</mavenInstallPlugin.version>
     <mavenJarPlugin.version>3.3.0</mavenJarPlugin.version>
     <mavenJavadocPlugin.version>3.4.1</mavenJavadocPlugin.version>
@@ -92,29 +95,55 @@
     <sonarMavenPlugin.version>3.9.1.2184</sonarMavenPlugin.version>
 
     <!-- ==================== Dependencies versions ==================== -->
+    <byteBuddy.version>1.12.22</byteBuddy.version>
     <checkerframework.version>3.30.0</checkerframework.version>
+    <commons.io.version>2.11.0</commons.io.version>
     <commonsLang3.version>3.12.0</commonsLang3.version>
     <configurate.version>4.1.2</configurate.version>
-    <equalsverifier.version>3.13</equalsverifier.version>
     <errorProneAnnotations.version>2.18.0</errorProneAnnotations.version>
     <!-- Latest version of HikariCP compatible with Java 8: don't bump it! -->
     <hikaricp.version>4.0.3</hikaricp.version>
     <guava.version>31.1-jre</guava.version>
     <guice.version>5.1.0</guice.version>
+    <!-- JEE v10+ requires JDK 11: don't bump it! -->
+    <jakarta.ee.api.version>9.1.0</jakarta.ee.api.version>
+    <!--
+      Latest version of Hibernate Validator compatible with Java 8: don't bump it!
+      As well compatible with JEE 9, bumping this implementation imply bumping Jakarta as well.
+    -->
+    <jakarta.validation.hibernate.version>7.0.5.Final</jakarta.validation.hibernate.version>
+    <!-- Glassfish EL v4 is compatible with JEE 9 -->
+    <jakarta.el.glassfish.version>4.0.2</jakarta.el.glassfish.version>
     <javaxInject.version>1</javaxInject.version>
-    <junitJupiter.version>5.9.2</junitJupiter.version>
-    <logback.version>1.4.5</logback.version>
+    <jboss.logging.version>3.5.0.Final</jboss.logging.version>
+    <jboss.logging.annotations.version>2.2.1.Final</jboss.logging.annotations.version>
+    <jboss.logging.processor.version>2.2.1.Final</jboss.logging.processor.version>
+    <jimfs.version>1.2</jimfs.version>
+    <!-- Logback v1.4.0+ require JDK 11: don't bump it!!! -->
+    <logback.version>1.3.5</logback.version>
     <lombok.version>1.18.26</lombok.version>
-    <mockito.version>4.11.0</mockito.version>
     <mysql.version>8.0.32</mysql.version>
     <slf4j.version>2.0.6</slf4j.version>
     <snakeyaml.version>1.33</snakeyaml.version>
     <sqlite.version>3.40.1.0</sqlite.version>
+
+    <!-- ==================== Test Dependencies versions ==================== -->
+    <assertj.version>3.24.1</assertj.version>
+    <equalsverifier.version>3.13</equalsverifier.version>
+    <junitJupiter.version>5.9.2</junitJupiter.version>
+    <mockito.version>4.11.0</mockito.version>
     <toStringVerifier.version>1.4.8</toStringVerifier.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>jakarta.platform</groupId>
+        <artifactId>jakarta.jakartaee-bom</artifactId>
+        <version>${jakarta.ee.api.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
@@ -129,6 +158,11 @@
         <groupId>com.google.inject</groupId>
         <artifactId>guice</artifactId>
         <version>${guice.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.jimfs</groupId>
+        <artifactId>jimfs</artifactId>
+        <version>${jimfs.version}</version>
       </dependency>
       <dependency>
         <groupId>com.jparams</groupId>
@@ -146,9 +180,19 @@
         <version>${hikaricp.version}</version>
       </dependency>
       <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons.io.version}</version>
+      </dependency>
+      <dependency>
         <groupId>javax.inject</groupId>
         <artifactId>javax.inject</artifactId>
         <version>${javaxInject.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.bytebuddy</groupId>
+        <artifactId>byte-buddy</artifactId>
+        <version>${byteBuddy.version}</version>
       </dependency>
       <dependency>
         <groupId>nl.jqno.equalsverifier</groupId>
@@ -158,12 +202,37 @@
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
-        <version>${commonsLang3.version}</version>
+        <version>${commons.lang3.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.checkerframework</groupId>
-        <artifactId>checker-qual</artifactId>
-        <version>${checkerframework.version}</version>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${assertj.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish</groupId>
+        <artifactId>jakarta.el</artifactId>
+        <version>${jakarta.el.glassfish.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate.validator</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>${jakarta.validation.hibernate.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.logging</groupId>
+        <artifactId>jboss-logging</artifactId>
+        <version>${jboss.logging.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.logging</groupId>
+        <artifactId>jboss-logging-annotations</artifactId>
+        <version>${jboss.logging.annotations.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.logging</groupId>
+        <artifactId>jboss-logging-processor</artifactId>
+        <version>${jboss.logging.processor.version}</version>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
@@ -171,8 +240,18 @@
         <version>${junitJupiter.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
+        <version>${junitJupiter.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
+        <version>${mockito.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-inline</artifactId>
         <version>${mockito.version}</version>
       </dependency>
       <dependency>
@@ -341,6 +420,12 @@
           <failBuild>true</failBuild>
           <failOnWarning>true</failOnWarning>
           <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
+          <ignoredUnusedDeclaredDependencies>
+            <ignoredUnusedDeclaredDependency>
+              org.mockito:mockito-inline
+              <!-- Required for static mock -->
+            </ignoredUnusedDeclaredDependency>
+          </ignoredUnusedDeclaredDependencies>
         </configuration>
         <executions>
           <execution>
@@ -363,7 +448,8 @@
           <failFast>true</failFast>
           <rules>
             <bannedDependencies>
-              <message>One or several dependencies are not properly defined (do their scope is correct?)</message>
+              <message>One or several dependencies are not properly defined (do their scope is
+                correct?)</message>
               <excludes>
                 <exclude>com.jparams:to-string-verifier</exclude>
                 <exclude>nl.jqno.equalsverifier:equalsverifier</exclude>
@@ -409,6 +495,23 @@
               <goal>enforce</goal>
             </goals>
             <phase>validate</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${mavenFailsafePlugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <includes>
+                <include>**/*IT.java</include>
+              </includes>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -477,8 +580,35 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${mavenSurefirePlugin.version}</version>
         <configuration>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+          <systemPropertyVariables>
+            <!-- jboss-logging shall use SLF4J as logger provider -->
+            <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
+          </systemPropertyVariables>
           <skipTests>${skipUnitTests}</skipTests>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>${builderHelperMavenPlugin.version}</version>
+        <executions>
+          <execution>
+            <id>add-unit-and-integration-tests-sources</id>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <phase>generate-test-sources</phase>
+            <configuration>
+              <sources>
+                <source>src/test/ut/java</source>
+                <source>src/test/it/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>

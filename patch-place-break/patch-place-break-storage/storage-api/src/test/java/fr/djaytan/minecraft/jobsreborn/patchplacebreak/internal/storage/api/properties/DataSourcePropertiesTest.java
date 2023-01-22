@@ -18,7 +18,7 @@ class DataSourcePropertiesTest {
   void shouldSuccessWhenCreatingWithNominalValues() {
     // Given
     DbmsServerProperties dbmsServerProperties =
-        DbmsServerProperties.of(HostProperties.of("host", 80, true),
+        DbmsServerProperties.of(DbmsHostProperties.of("host", 80, true),
             CredentialsProperties.of("username", "passwoord"), "testdb");
     ConnectionPoolProperties connectionPoolProperties = ConnectionPoolProperties.of(120, 2);
     DataSourceType dataSourceType = DataSourceType.MYSQL;

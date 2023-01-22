@@ -96,7 +96,7 @@
           </exclusion>
           <exclusion>
             <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
+            <artifactId>commons-lang3</artifactId>
           </exclusion>
           <exclusion>
             <groupId>junit</groupId>

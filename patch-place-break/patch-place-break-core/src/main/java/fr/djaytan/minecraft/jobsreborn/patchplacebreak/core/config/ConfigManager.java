@@ -28,19 +28,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
-import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.loader.ConfigurationLoader;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.annotated.ConfigValidatingProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.validation.PropertiesValidationException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.validation.PropertiesValidator;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.utils.YamlDeserializer;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Manages config creation and manipulations.
+ *
+ * <p>The method {@link #createIfNotExists()} permits to create the config if missing at
+ * a predefined location. Then, {@link #readAndValidate()} can be used to read
+ * and validate it.
+ *
+ * <p>The predefined location definition responsibility is let to the patch enabler (e.g. the
+ * Bukkit plugin enabling and calling the patch).
+ */
 @Slf4j
 @Singleton
 public class ConfigManager {
@@ -48,26 +60,34 @@ public class ConfigManager {
   public static final String CONFIG_FILE_NAME = "config.yml";
 
   private final ClassLoader classLoader;
-  private final ConfigurationLoader<CommentedConfigurationNode> configurationLoader;
   private final Path configFile;
+  private final PropertiesValidator propertiesValidator;
+  private final YamlDeserializer yamlDeserializer;
 
   @Inject
-  ConfigManager(ClassLoader classLoader,
-      ConfigurationLoader<CommentedConfigurationNode> configurationLoader,
-      @Named("configFile") Path configFile) {
+  ConfigManager(ClassLoader classLoader, @Named("configFile") Path configFile,
+      PropertiesValidator propertiesValidator, YamlDeserializer yamlDeserializer) {
     this.classLoader = classLoader;
-    this.configurationLoader = configurationLoader;
     this.configFile = configFile;
+    this.propertiesValidator = propertiesValidator;
+    this.yamlDeserializer = yamlDeserializer;
   }
 
-  public void createDefaultIfNotExists() throws ConfigException {
+  /**
+   * Creates default config file if it doesn't exist yet to a predefined location.
+   *
+   * @throws ConfigException If the default file to be copied can't be found
+   *    or something else prevent the default config file to be copied successfully.
+   */
+  public void createIfNotExists() throws ConfigException {
     if (Files.exists(configFile)) {
       return;
     }
-    createDefault();
+    log.atInfo().log("No config file detected: creating default one.");
+    create();
   }
 
-  private void createDefault() {
+  private void create() {
     try (InputStream configFileIs = classLoader.getResourceAsStream(CONFIG_FILE_NAME)) {
       if (configFileIs == null) {
         throw ConfigException.resourceNotFound(CONFIG_FILE_NAME);
@@ -87,15 +107,33 @@ public class ConfigManager {
     }
   }
 
-  public @NonNull Config readConfig() throws ConfigException {
-    try {
-      ConfigurationNode rootNode = configurationLoader.load();
-      Config config = rootNode.get(Config.class);
+  /**
+   * Reads config file from a predefined location. It is recommended to call
+   * {@link #createIfNotExists()} first at least one time.
+   *
+   * @return The config properties to be validated.
+   * @throws ConfigException If the config file doesn't exist at the predefined location
+   *    or something else prevent config file reading.
+   * @throws PropertiesValidationException If read config isn't valid.
+   */
+  public @NonNull ConfigProperties readAndValidate() throws ConfigException {
+    ConfigValidatingProperties configValidatingProperties = readAndDeserializeConfigToValidate();
+    return propertiesValidator.validate(configValidatingProperties);
+  }
 
-      if (config == null) {
+  private @NonNull ConfigValidatingProperties readAndDeserializeConfigToValidate() {
+    try {
+      log.atInfo().log("Reading '{}' file...", CONFIG_FILE_NAME);
+      Optional<ConfigValidatingProperties> configValidatingProperties =
+          yamlDeserializer.deserialize(configFile, ConfigValidatingProperties.class);
+
+      if (!configValidatingProperties.isPresent()) {
         throw ConfigException.failedReadingConfig(configFile);
       }
-      return config;
+
+      ConfigValidatingProperties readConfig = configValidatingProperties.get();
+      log.atInfo().log("File '{}' read successfully.", CONFIG_FILE_NAME);
+      return readConfig;
     } catch (ConfigurateException e) {
       throw ConfigException.failedReadingConfig(configFile, e);
     }
