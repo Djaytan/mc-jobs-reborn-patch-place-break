@@ -132,7 +132,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Loïc Dubois-Termoz** - *Initial work* - [Djaytan](https://github.com/Djaytan)
+* [Djaytan](https://github.com/Djaytan) - *Initial work*
 
 See also the list of
 [contributors](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/graphs/contributors)
