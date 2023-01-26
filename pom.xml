@@ -73,8 +73,10 @@
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
     <!-- ==================== Plugins versions ==================== -->
-    <formatterMavenPlugin.version>2.21.0</formatterMavenPlugin.version>
-    <impsortMavenPlugin.version>1.8.0</impsortMavenPlugin.version>
+    <!-- Latest version of Formatter compatible with Java 8: don't bump it! -->
+    <formatterMavenPlugin.version>2.16.0</formatterMavenPlugin.version>
+    <!-- Latest version of ImpSort compatible with Java 8: don't bump it! -->
+    <impsortMavenPlugin.version>1.6.2</impsortMavenPlugin.version>
     <jacocoMavenPlugin.version>0.8.8</jacocoMavenPlugin.version>
     <mavenCleanPlugin.version>3.2.0</mavenCleanPlugin.version>
     <mavenCompilerPlugin.version>3.10.1</mavenCompilerPlugin.version>
@@ -88,7 +90,8 @@
     <mavenShadePlugin.version>3.4.1</mavenShadePlugin.version>
     <mavenSourcePlugin.version>3.2.1</mavenSourcePlugin.version>
     <mavenSurefirePlugin.version>3.0.0-M8</mavenSurefirePlugin.version>
-    <sortpomMavenPlugin.version>3.2.0</sortpomMavenPlugin.version>
+    <!-- Latest version of SortPom compatible with Java 8: don't bump it! -->
+    <sortpomMavenPlugin.version>3.0.1</sortpomMavenPlugin.version>
     <sonarMavenPlugin.version>3.9.1.2184</sonarMavenPlugin.version>
 
     <!-- ==================== Dependencies versions ==================== -->
@@ -327,7 +330,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${mavenCompilerPlugin.version}</version>
         <configuration>
-          <release>${java.version}</release>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
           <compilerReuseStrategy>reuseSame</compilerReuseStrategy>
           <failOnWarning>true</failOnWarning>
           <showDeprecation>true</showDeprecation>
@@ -383,7 +387,7 @@
             <dependencyConvergence />
             <reactorModuleConvergence />
             <requireJavaVersion>
-              <version>[11,)</version>
+              <version>[1.8,1.9)</version>
             </requireJavaVersion>
             <requireMavenVersion>
               <version>[3.6,)</version>
@@ -409,6 +413,9 @@
               <goal>enforce</goal>
             </goals>
             <phase>validate</phase>
+            <configuration>
+
+            </configuration>
           </execution>
         </executions>
       </plugin>
