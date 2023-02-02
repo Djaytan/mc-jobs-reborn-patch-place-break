@@ -95,7 +95,7 @@
     <checkerframework.version>3.29.0</checkerframework.version>
     <commonsLang3.version>3.12.0</commonsLang3.version>
     <configurate.version>4.1.2</configurate.version>
-    <equalsverifier.version>3.12.3</equalsverifier.version>
+    <equalsverifier.version>3.13</equalsverifier.version>
     <errorProneAnnotations.version>2.18.0</errorProneAnnotations.version>
     <!-- Latest version of HikariCP compatible with Java 8: don't bump it! -->
     <hikaricp.version>4.0.3</hikaricp.version>
