@@ -104,7 +104,7 @@
     <javaxInject.version>1</javaxInject.version>
     <junitJupiter.version>5.9.2</junitJupiter.version>
     <logback.version>1.4.5</logback.version>
-    <lombok.version>1.18.24</lombok.version>
+    <lombok.version>1.18.26</lombok.version>
     <mockito.version>4.11.0</mockito.version>
     <mysql.version>8.0.32</mysql.version>
     <slf4j.version>2.0.6</slf4j.version>
