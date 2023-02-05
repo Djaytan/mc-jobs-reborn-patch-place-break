@@ -116,8 +116,7 @@ class ConfigValidatingPropertiesIT {
     void withValidContent_shouldMatchExpectedValue(String yamlFileName,
         ConfigValidatingProperties expectedValue) {
       // Given
-      Path yamlFile =
-          TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(), yamlFileName);
+      Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
       Optional<ConfigValidatingProperties> optionalConfigValidatingProperties =
@@ -159,8 +158,7 @@ class ConfigValidatingPropertiesIT {
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
       String yamlFileName = "whenDeserializing_withEmptyContent.yml";
-      Path yamlFile =
-          TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(), yamlFileName);
+      Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
       Optional<ConfigValidatingProperties> configValidatingProperties =

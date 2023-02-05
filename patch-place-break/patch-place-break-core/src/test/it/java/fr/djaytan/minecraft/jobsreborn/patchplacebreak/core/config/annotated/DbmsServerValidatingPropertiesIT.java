@@ -179,8 +179,7 @@ class DbmsServerValidatingPropertiesIT {
     void withValidContent_shouldMatchExpectedValue(String yamlFileName,
         DbmsServerValidatingProperties expectedValue) {
       // Given
-      Path yamlFile =
-          TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(), yamlFileName);
+      Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
       Optional<DbmsServerValidatingProperties> optionalDbmsServerValidatingProperties =
@@ -213,8 +212,7 @@ class DbmsServerValidatingPropertiesIT {
     @DisplayName("With invalid content")
     void withInvalidContent_shouldThrowSerializationException(String yamlFileName) {
       // Given
-      Path yamlFile =
-          TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(), yamlFileName);
+      Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
       ThrowingCallable throwingCallable = () -> YamlDeserializerTestWrapper.deserialize(yamlFile,
@@ -239,8 +237,7 @@ class DbmsServerValidatingPropertiesIT {
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
       String yamlFileName = "whenDeserializing_withEmptyContent.yml";
-      Path yamlFile =
-          TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(), yamlFileName);
+      Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
       Optional<DbmsServerValidatingProperties> dbmsServerValidatingProperties =

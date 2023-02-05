@@ -32,7 +32,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -85,8 +84,8 @@ class ConstraintViolationFormatterTest {
 
       // Then
       String fileName = "whenFormatting_withOneConstraintViolation.txt";
-      String expectedFormattedText = StringUtils
-          .chop(TestResourcesHelper.getResourceFromTestClassAsString(this.getClass(), fileName));
+      String expectedFormattedText =
+          TestResourcesHelper.getClassResourceAsString(this.getClass(), fileName, true);
       assertThat(actualFormattedText).isEqualTo(expectedFormattedText);
     }
 
@@ -116,8 +115,8 @@ class ConstraintViolationFormatterTest {
 
       // Then
       String fileName = "whenFormatting_withSeveralConstraintViolations.txt";
-      String expectedFormattedText = StringUtils
-          .chop(TestResourcesHelper.getResourceFromTestClassAsString(this.getClass(), fileName));
+      String expectedFormattedText =
+          TestResourcesHelper.getClassResourceAsString(this.getClass(), fileName, true);
       assertThat(actualFormattedText).isEqualTo(expectedFormattedText);
     }
   }
