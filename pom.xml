@@ -99,7 +99,7 @@
     <byteBuddy.version>1.12.22</byteBuddy.version>
     <checkerframework.version>3.30.0</checkerframework.version>
     <commons.io.version>2.11.0</commons.io.version>
-    <commonsLang3.version>3.12.0</commonsLang3.version>
+    <commons.lang3.version>3.12.0</commons.lang3.version>
     <configurate.version>4.1.2</configurate.version>
     <errorProneAnnotations.version>2.18.0</errorProneAnnotations.version>
     <!-- Latest version of HikariCP compatible with Java 8: don't bump it! -->

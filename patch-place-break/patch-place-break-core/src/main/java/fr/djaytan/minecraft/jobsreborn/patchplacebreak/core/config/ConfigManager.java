@@ -135,6 +135,7 @@ public class ConfigManager {
       log.atInfo().log("File '{}' read successfully.", CONFIG_FILE_NAME);
       return readConfig;
     } catch (ConfigurateException e) {
+      // TODO: not depend to configurate directly here
       throw ConfigException.failedReadingConfig(configFile, e);
     }
   }

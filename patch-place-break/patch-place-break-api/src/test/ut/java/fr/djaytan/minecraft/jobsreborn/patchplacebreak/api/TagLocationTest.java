@@ -24,9 +24,8 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,9 +53,10 @@ class TagLocationTest {
 
     // Then
     assertAll("Verification of returned values from getters",
-        () -> assertEquals(worldName, tagLocation.getWorldName()),
-        () -> assertEquals(x, tagLocation.getX()), () -> assertEquals(y, tagLocation.getY()),
-        () -> assertEquals(z, tagLocation.getZ()));
+        () -> assertThat(tagLocation.getWorldName()).isEqualTo(worldName),
+        () -> assertThat(tagLocation.getX()).isEqualTo(x),
+        () -> assertThat(tagLocation.getY()).isEqualTo(y),
+        () -> assertThat(tagLocation.getZ()).isEqualTo(z));
   }
 
   @Test
@@ -97,8 +97,8 @@ class TagLocationTest {
     TagLocation expectedTagLocation =
         TagLocation.of(expectedWorld, expectedX, expectedY, expectedZ);
 
-    assertAll(() -> assertEquals(expectedTagLocation, adjustedTagLocation),
-        () -> assertNotSame(tagLocation, adjustedTagLocation));
+    assertAll(() -> assertThat(adjustedTagLocation).isEqualTo(expectedTagLocation),
+        () -> assertThat(adjustedTagLocation).isNotSameAs(tagLocation));
   }
 
   @Test
@@ -127,8 +127,8 @@ class TagLocationTest {
     TagLocation expectedTagLocation =
         TagLocation.of(expectedWorld, expectedX, expectedY, expectedZ);
 
-    assertAll(() -> assertEquals(expectedTagLocation, adjustedTagLocation),
-        () -> assertNotSame(tagLocation, adjustedTagLocation));
+    assertAll(() -> assertThat(adjustedTagLocation).isEqualTo(expectedTagLocation),
+        () -> assertThat(adjustedTagLocation).isNotSameAs(tagLocation));
   }
 
   @Test
@@ -157,7 +157,7 @@ class TagLocationTest {
     TagLocation expectedTagLocation =
         TagLocation.of(expectedWorld, expectedX, expectedY, expectedZ);
 
-    assertAll(() -> assertEquals(expectedTagLocation, adjustedTagLocation),
-        () -> assertNotSame(tagLocation, adjustedTagLocation));
+    assertAll(() -> assertThat(adjustedTagLocation).isEqualTo(expectedTagLocation),
+        () -> assertThat(adjustedTagLocation).isNotSameAs(tagLocation));
   }
 }

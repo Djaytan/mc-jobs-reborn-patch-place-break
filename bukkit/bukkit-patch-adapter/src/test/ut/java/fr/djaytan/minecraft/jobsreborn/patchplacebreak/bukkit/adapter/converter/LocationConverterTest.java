@@ -24,7 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.BDDMockito.given;
 
@@ -66,8 +66,7 @@ class LocationConverterTest {
     TagLocation tagLocation = locationConverter.convert(location);
 
     // Then
-    TagLocation expectedTagLocation = TagLocation.of(worldName, x, y, z);
-    assertEquals(expectedTagLocation, tagLocation);
+    assertThat(tagLocation).isEqualTo(TagLocation.of(worldName, x, y, z));
   }
 
   @Test

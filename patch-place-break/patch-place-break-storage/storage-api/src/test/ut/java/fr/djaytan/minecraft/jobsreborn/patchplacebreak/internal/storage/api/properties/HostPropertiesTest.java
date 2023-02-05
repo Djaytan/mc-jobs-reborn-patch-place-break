@@ -1,7 +1,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,9 +26,9 @@ class HostPropertiesTest {
 
     // Then
     assertAll("Verification of returned values from getters",
-        () -> assertEquals(hostname, hostProperties.getHostname()),
-        () -> assertEquals(port, hostProperties.getPort()),
-        () -> assertEquals(isSslEnabled, hostProperties.isSslEnabled()));
+        () -> assertThat(hostProperties.getHostname()).isEqualTo(hostname),
+        () -> assertThat(hostProperties.getPort()).isEqualTo(port),
+        () -> assertThat(hostProperties.isSslEnabled()).isEqualTo(isSslEnabled));
   }
 
   @Test

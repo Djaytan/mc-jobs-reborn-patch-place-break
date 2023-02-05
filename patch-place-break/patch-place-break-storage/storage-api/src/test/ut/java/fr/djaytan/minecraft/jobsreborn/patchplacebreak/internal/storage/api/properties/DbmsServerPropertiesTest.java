@@ -1,7 +1,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,9 +27,9 @@ class DbmsServerPropertiesTest {
 
     // Then
     assertAll("Verification of returned values from getters",
-        () -> assertEquals(hostProperties, dbmsServerProperties.getHost()),
-        () -> assertEquals(credentialsProperties, dbmsServerProperties.getCredentials()),
-        () -> assertEquals(database, dbmsServerProperties.getDatabase()));
+        () -> assertThat(dbmsServerProperties.getHost()).isEqualTo(hostProperties),
+        () -> assertThat(dbmsServerProperties.getCredentials()).isEqualTo(credentialsProperties),
+        () -> assertThat(dbmsServerProperties.getDatabase()).isEqualTo(database));
   }
 
   @Test
