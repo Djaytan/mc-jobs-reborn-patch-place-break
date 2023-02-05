@@ -72,6 +72,7 @@
     <java.version>8</java.version>
     <sonar.organization>djaytan</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco-merged-test-coverage-report/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 
     <!-- ==================== Plugins versions ==================== -->
     <builderHelperMavenPlugin.version>3.3.0</builderHelperMavenPlugin.version>
@@ -502,10 +503,15 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>${mavenFailsafePlugin.version}</version>
+        <configuration>
+          <!--suppress UnresolvedMavenProperty - Defined at runtime by JaCoCo -->
+          <argLine>${failsafe.jacoco.args}</argLine>
+        </configuration>
         <executions>
           <execution>
             <goals>
               <goal>integration-test</goal>
+              <goal>verify</goal>
             </goals>
             <configuration>
               <includes>
@@ -580,6 +586,8 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${mavenSurefirePlugin.version}</version>
         <configuration>
+          <!--suppress UnresolvedMavenProperty - Defined at runtime by JaCoCo -->
+          <argLine>${surefire.jacoco.args}</argLine>
           <includes>
             <include>**/*Test.java</include>
           </includes>
@@ -616,19 +624,105 @@
         <version>${jacocoMavenPlugin.version}</version>
         <executions>
           <execution>
-            <id>prepare-agent</id>
+            <id>before-unit-test-execution</id>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
             <phase>initialize</phase>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-output/jacoco-unit-tests.exec</destFile>
+              <propertyName>surefire.jacoco.args</propertyName>
+            </configuration>
           </execution>
           <execution>
-            <id>report</id>
+            <id>after-unit-test-execution</id>
             <goals>
               <goal>report</goal>
             </goals>
             <phase>prepare-package</phase>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco-output/jacoco-unit-tests.exec</dataFile>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco-unit-test-coverage-report</outputDirectory>
+            </configuration>
           </execution>
+          <execution>
+            <id>before-integration-test-execution</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-output/jacoco-integration-tests.exec</destFile>
+              <propertyName>failsafe.jacoco.args</propertyName>
+            </configuration>
+          </execution>
+          <execution>
+            <id>after-integration-test-execution</id>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco-output/jacoco-integration-tests.exec</dataFile>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco-integration-test-coverage-report</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>merge-unit-and-integration</id>
+            <goals>
+              <goal>merge</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+            <configuration>
+              <fileSets>
+                <fileSet>
+                  <directory>${project.build.directory}/jacoco-output/</directory>
+                  <includes>
+                    <include>*.exec</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+              <destFile>${project.build.directory}/jacoco-output/merged.exec</destFile>
+            </configuration>
+          </execution>
+          <execution>
+            <id>create-merged-report</id>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco-output/merged.exec</dataFile>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco-merged-test-coverage-report</outputDirectory>
+            </configuration>
+          </execution>
+          <!--          <execution>-->
+          <!--            <id>check</id>-->
+          <!--            <goals>-->
+          <!--              <goal>check</goal>-->
+          <!--            </goals>-->
+          <!--            <phase>verify</phase>-->
+          <!--            TODO: activate code coverage check (just uncomment and adapt following lines)-->
+          <!--            <configuration>-->
+          <!--              <rules>-->
+          <!--                <rule>-->
+          <!--                  <element>CLASS</element>-->
+          <!--                  <excludes>-->
+          <!--                    <exclude>*Test</exclude>-->
+          <!--                    <exclude>*IT</exclude>-->
+          <!--                  </excludes>-->
+          <!--                  <limits>-->
+          <!--                    <limit>-->
+          <!--                      <counter>LINE</counter>-->
+          <!--                      <value>COVEREDRATIO</value>-->
+          <!--                      <minimum>100%</minimum>-->
+          <!--                    </limit>-->
+          <!--                  </limits>-->
+          <!--                </rule>-->
+          <!--              </rules>-->
+          <!--              <dataFile>${project.build.directory}/jacoco-output/merged.exec</dataFile>-->
+          <!--            </configuration>-->
+          <!--          </execution>-->
         </executions>
       </plugin>
       <plugin>
