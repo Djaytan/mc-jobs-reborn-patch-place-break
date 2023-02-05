@@ -88,7 +88,7 @@
     <mavenShadePlugin.version>3.4.1</mavenShadePlugin.version>
     <mavenSourcePlugin.version>3.2.1</mavenSourcePlugin.version>
     <mavenSurefirePlugin.version>3.0.0-M8</mavenSurefirePlugin.version>
-    <sortpomMavenPlugin.version>3.2.0</sortpomMavenPlugin.version>
+    <sortpomMavenPlugin.version>3.2.1</sortpomMavenPlugin.version>
     <sonarMavenPlugin.version>3.9.1.2184</sonarMavenPlugin.version>
 
     <!-- ==================== Dependencies versions ==================== -->
