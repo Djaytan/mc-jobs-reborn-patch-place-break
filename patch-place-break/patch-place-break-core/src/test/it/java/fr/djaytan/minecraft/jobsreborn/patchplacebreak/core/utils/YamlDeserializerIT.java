@@ -60,8 +60,7 @@ class YamlDeserializerIT {
     void withNominalValues_shouldSuccess() {
       // Given
       String yamlFileName = "whenDeserializing_withNominalValues.yml";
-      Path yamlFile =
-          TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(), yamlFileName);
+      Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
       ThrowingSupplier<Optional<DbmsHostValidatingProperties>> executable =
@@ -79,8 +78,7 @@ class YamlDeserializerIT {
     void withCamelCaseFields_shouldSuccess() {
       // Given
       String yamlFileName = "whenDeserializing_withCamelCaseFields.yml";
-      Path yamlFile =
-          TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(), yamlFileName);
+      Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
       ThrowingSupplier<Optional<DbmsHostValidatingProperties>> executable =
@@ -98,8 +96,7 @@ class YamlDeserializerIT {
     void withKebabCaseFields_shouldNonCamelCaseCompatibleFieldsIgnored() {
       // Given
       String yamlFileName = "whenDeserializing_withKebabCaseFields.yml";
-      Path yamlFile =
-          TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(), yamlFileName);
+      Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
       ThrowingCallable throwingCallable =

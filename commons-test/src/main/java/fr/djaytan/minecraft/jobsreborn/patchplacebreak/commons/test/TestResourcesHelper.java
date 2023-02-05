@@ -24,92 +24,95 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import lombok.NonNull;
 import lombok.SneakyThrows;
 
 /**
- * A helper class for resources management.
+ * A helper class for resources management with tests.
  *
- * <p>The methods {@link #getResourceFromTestClassAsPath(Class, String)} (Class, String)} and
- * {@link #getResourceFromTestClassAsString(Class, String)} permits to retrieve a resource
- * associated to a given test class.
+ * <p>The methods {@link #getClassResourceAsAbsolutePath(Class, String)} and
+ * {@link #getClassResourceAsString(Class, String, boolean)} permits to retrieve a resource
+ * associated to a given class.
  */
 public final class TestResourcesHelper {
-
-  private static final Pattern DOTS_REGEX_PATTERN = Pattern.compile("\\.");
-  private static final Pattern INNER_CLASS_REGEX_PATTERN = Pattern.compile("\\$.*");
 
   private TestResourcesHelper() {
     // Static class
   }
 
   /**
-   * Retrieves the sought resource path with resource being associated to the specified test class.
+   * Retrieves class' resource as an absolute path.
    *
-   * <p>Resources of a given test class are located at the same folder hierarchy level as for
-   * the package one, but in the "resources" folder.
+   * <p>Resources of a given class are expected to be located in a folder located at
+   * the same hierarchy level as for the class.
    *
    * <p><i>Example: <br/>
-   * - Package: fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.annotated.HostValidatingPropertiesTest<br/>
-   * - Equivalent "resources" folder: fr/djaytan/minecraft/jobsreborn/patchplacebreak/core/config/annotated/HostValidatingPropertiesTest
+   * - Class' path:
+   * fr/djaytan/minecraft/jobsreborn/patchplacebreak/core/config/annotated/HostValidatingPropertiesTest.class<br/>
+   * - Class' resources path:
+   * fr/djaytan/minecraft/jobsreborn/patchplacebreak/core/config/annotated/HostValidatingPropertiesTest/*
    *
-   * @param testClass The test class from which to retrieve a resource.
+   * @param clazz        The class from which to retrieve a resource.
    * @param resourceName The sought resource name.
-   * @return The sought resource path with resource being associated to the specified test class.
+   * @return The class' resource as an absolute path.
    */
   @SneakyThrows
-  public static @NonNull Path getResourceFromTestClassAsPath(@NonNull Class<?> testClass,
+  public static @NonNull Path getClassResourceAsAbsolutePath(@NonNull Class<?> clazz,
       @NonNull String resourceName) {
-    String testClassResourcesFolder = getTestClassResourcesFolder(testClass);
-    Path relativeResourcePath = Paths.get(testClassResourcesFolder, resourceName);
-    URL resourceUrl =
-        IOUtils.resourceToURL(relativeResourcePath.toString(), testClass.getClassLoader());
-    return Paths.get(resourceUrl.toURI());
+    Path relativeResourcePath = getClassResourceRelativePath(clazz, resourceName);
+    return resourceToAbsolutePath(relativeResourcePath, clazz.getClassLoader());
   }
 
   /**
-   * Retrieves the sought resource as a string encoded with UTF_8 charset with resource being
-   * associated to the specified test class.
+   * Retrieves class' resource as a string encoded with UTF_8 charset.
    *
-   * <p>Resources of a given test class are located at the same folder hierarchy level as for
-   * the package one, but in the "resources" folder.
+   * <p>Resources of a given class are expected to be located in a folder located at
+   * the same hierarchy level as for the class.
    *
    * <p><i>Example: <br/>
-   * - Package: fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.annotated.HostValidatingPropertiesTest<br/>
-   * - Equivalent "resources" folder: fr/djaytan/minecraft/jobsreborn/patchplacebreak/core/config/annotated/HostValidatingPropertiesTest
+   * - Class' path:
+   * fr/djaytan/minecraft/jobsreborn/patchplacebreak/core/config/annotated/HostValidatingPropertiesTest.class<br/>
+   * - Class' resources path:
+   * fr/djaytan/minecraft/jobsreborn/patchplacebreak/core/config/annotated/HostValidatingPropertiesTest/*
    *
-   * @param testClass The test class from which to retrieve a resource.
+   * @param clazz        The class from which to retrieve a resource.
    * @param resourceName The sought resource name.
-   * @return The sought resource as string encoded with UTF_8 charset with resource being associated
-   *    to the specified test class.
+   * @param chopContent  Whether the content must be chopped or not with
+   *                     {@link StringUtils#chop(String)}
+   * @return The class' resource as a string encoded with UTF_8 charset.
    */
   @SneakyThrows
-  public static @NonNull String getResourceFromTestClassAsString(@NonNull Class<?> testClass,
+  public static @NonNull String getClassResourceAsString(@NonNull Class<?> clazz,
+      @NonNull String resourceName, boolean chopContent) {
+    Path resourceRelativePath = getClassResourceRelativePath(clazz, resourceName);
+    String resourceContent = IOUtils.resourceToString(resourceRelativePath.toString(),
+        StandardCharsets.UTF_8, clazz.getClassLoader());
+    return chopContent ? StringUtils.chop(resourceContent) : resourceContent;
+  }
+
+  private static @NonNull Path getClassResourceRelativePath(@NonNull Class<?> clazz,
       @NonNull String resourceName) {
-    String testClassResourcesFolder = getTestClassResourcesFolder(testClass);
-    Path relativeResourcePath = Paths.get(testClassResourcesFolder, resourceName);
-    return IOUtils.resourceToString(relativeResourcePath.toString(), StandardCharsets.UTF_8,
-        testClass.getClassLoader());
+    ClassToFsPathConverter classToFsPathConverter =
+        new ClassToFsPathConverter(FileSystems.getDefault());
+    Path classResourcesFolder = classToFsPathConverter.convertClassToFsPath(clazz);
+    return classResourcesFolder.resolve(resourceName);
   }
 
-  private static @NonNull String getTestClassResourcesFolder(@NonNull Class<?> testClass) {
-    String className = testClass.getName();
-    return getWithInnerClassesFiltered(getWithDotsReplacedBySlashes(className));
-  }
-
-  private static @NonNull String getWithDotsReplacedBySlashes(@NonNull String className) {
-    return DOTS_REGEX_PATTERN.matcher(className).replaceAll("/");
-  }
-
-  private static @NonNull String getWithInnerClassesFiltered(@NonNull String className) {
-    return INNER_CLASS_REGEX_PATTERN.matcher(className).replaceAll("");
+  private static @NonNull Path resourceToAbsolutePath(@NonNull Path relativeResourcePath,
+      @NonNull ClassLoader classLoader) throws IOException, URISyntaxException {
+    // /!\ Not retrieving absolute path from class loader lead to wrong path
+    URL url = IOUtils.resourceToURL(relativeResourcePath.toString(), classLoader);
+    return Paths.get(url.toURI());
   }
 }

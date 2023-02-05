@@ -34,7 +34,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mockStatic;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.validation.PropertiesValidationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystem;
@@ -58,6 +57,7 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.validation.PropertiesValidationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.validation.PropertiesValidator;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.testutils.ValidatorTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.utils.YamlDeserializer;
@@ -116,8 +116,8 @@ class ConfigManagerIT {
     void withIOExceptionThrown_shouldThrowConfigException() throws IOException {
       // Given
       String defaultConfigFileName = "whenCreatingConfig_withIOExceptionThrown.yml";
-      Path defaultConfigFile = TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(),
-          defaultConfigFileName);
+      Path defaultConfigFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), defaultConfigFileName);
 
       given(classLoaderMocked.getResourceAsStream(anyString()))
           .willReturn(Files.newInputStream(defaultConfigFile));
@@ -164,8 +164,8 @@ class ConfigManagerIT {
           // Given
           String defaultConfigFileName =
               "whenCreatingConfig_withoutExistingOne_andWithDefaultOne_beingNotEmpty.yml";
-          Path defaultConfigFile = TestResourcesHelper
-              .getResourceFromTestClassAsPath(this.getClass(), defaultConfigFileName);
+          Path defaultConfigFile =
+              TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), defaultConfigFileName);
 
           given(classLoaderMocked.getResourceAsStream(anyString()))
               .willReturn(Files.newInputStream(defaultConfigFile));
@@ -183,8 +183,8 @@ class ConfigManagerIT {
           // Given
           String defaultConfigFileName =
               "whenCreatingConfig_withoutExistingOne_andWithDefaultOne_beingEmpty.yml";
-          Path defaultConfigFile = TestResourcesHelper
-              .getResourceFromTestClassAsPath(this.getClass(), defaultConfigFileName);
+          Path defaultConfigFile =
+              TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), defaultConfigFileName);
 
           given(classLoaderMocked.getResourceAsStream(anyString()))
               .willReturn(Files.newInputStream(defaultConfigFile));
@@ -209,8 +209,8 @@ class ConfigManagerIT {
     void withNominalConfigFile_shouldSuccess() throws IOException {
       // Given
       String nominalConfigFileName = "whenReadingAndValidatingConfig_withNominalConfigFile.yml";
-      Path nominalConfigFile = TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(),
-          nominalConfigFileName);
+      Path nominalConfigFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), nominalConfigFileName);
       Files.copy(nominalConfigFile, configFile);
 
       // When
@@ -230,8 +230,8 @@ class ConfigManagerIT {
       // Given
       String invalidConfigFileName =
           "whenReadingAndValidatingConfig_withMissingRequiredFieldsInConfigFile.yml";
-      Path invalidConfigFile = TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(),
-          invalidConfigFileName);
+      Path invalidConfigFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), invalidConfigFileName);
       Files.copy(invalidConfigFile, configFile);
 
       // When
@@ -247,8 +247,8 @@ class ConfigManagerIT {
     void withInvalidConfigFile_shouldThrowPropertiesValidationException() throws IOException {
       // Given
       String invalidConfigFileName = "whenReadingAndValidatingConfig_withInvalidConfigFile.yml";
-      Path invalidConfigFile = TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(),
-          invalidConfigFileName);
+      Path invalidConfigFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), invalidConfigFileName);
       Files.copy(invalidConfigFile, configFile);
 
       // When
@@ -264,7 +264,7 @@ class ConfigManagerIT {
       // Given
       String emptyConfigFileName = "whenReadingAndValidatingConfig_withEmptyConfigFile.yml";
       Path emptyConfigFile =
-          TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(), emptyConfigFileName);
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), emptyConfigFileName);
       Files.copy(emptyConfigFile, configFile);
 
       // When

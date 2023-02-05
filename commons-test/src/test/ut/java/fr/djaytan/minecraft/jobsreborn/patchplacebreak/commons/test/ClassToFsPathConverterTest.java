@@ -1,0 +1,153 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.lang.annotation.Retention;
+import java.nio.file.FileSystem;
+import java.nio.file.Path;
+
+import org.assertj.core.api.Assertions;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
+
+class ClassToFsPathConverterTest {
+
+  private ClassToFsPathConverter classToFsPathConverter;
+  private FileSystem fileSystem;
+
+  @BeforeEach
+  void beforeEach() {
+    this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
+    this.classToFsPathConverter = new ClassToFsPathConverter(fileSystem);
+  }
+
+  @AfterEach
+  void afterEach() throws IOException {
+    fileSystem.close();
+  }
+
+  @Nested
+  @DisplayName("When converting")
+  class WhenConverting {
+
+    @Test
+    @DisplayName("With top-level class")
+    void withTopLevelClass_shouldMatchExpectedPath() {
+      // Given
+      Class<?> topLevelClass = ClassToFsPathConverterTest.class;
+
+      // When
+      Path path = classToFsPathConverter.convertClassToFsPath(topLevelClass);
+
+      // Then
+      assertThat(path).hasToString(
+          "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/ClassToFsPathConverterTest");
+    }
+
+    @Test
+    @DisplayName("With inner class")
+    void withInnerClass_shouldMatchExpectedPath() {
+      // Given
+      Class<?> topLevelClass = WhenConverting.class;
+
+      // When
+      Path path = classToFsPathConverter.convertClassToFsPath(topLevelClass);
+
+      // Then
+      assertThat(path).hasToString(
+          "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/ClassToFsPathConverterTest");
+    }
+
+    @Test
+    @DisplayName("With anonymous class")
+    void withAnonymousClass_shouldMatchExpectedPath() {
+      // Given
+      Class<?> topLevelClass = new Serializable() {}.getClass();
+
+      // When
+      Path path = classToFsPathConverter.convertClassToFsPath(topLevelClass);
+
+      // Then
+      assertThat(path).hasToString(
+          "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/ClassToFsPathConverterTest");
+    }
+
+    @Test
+    @DisplayName("With primitive class")
+    void withPrimitiveClass_shouldThrowUnsupportedClassException() {
+      // Given
+      Class<?> primitiveClass = int.class;
+
+      // When
+      ThrowingCallable throwingCallable =
+          () -> classToFsPathConverter.convertClassToFsPath(primitiveClass);
+
+      // Then
+      Assertions.assertThatThrownBy(throwingCallable)
+          .isExactlyInstanceOf(UnsupportedClassException.class);
+    }
+
+    @Test
+    @DisplayName("With array class")
+    void withArrayClass_shouldThrowUnsupportedClassException() {
+      // Given
+      Class<?> arrayClass = Object[].class;
+
+      // When
+      ThrowingCallable throwingCallable =
+          () -> classToFsPathConverter.convertClassToFsPath(arrayClass);
+
+      // Then
+      Assertions.assertThatThrownBy(throwingCallable)
+          .isExactlyInstanceOf(UnsupportedClassException.class);
+    }
+
+    @Test
+    @DisplayName("With annotation class")
+    void withAnnotationClass_shouldThrowUnsupportedClassException() {
+      // Given
+      Class<?> arrayClass = Retention.class;
+
+      // When
+      ThrowingCallable throwingCallable =
+          () -> classToFsPathConverter.convertClassToFsPath(arrayClass);
+
+      // Then
+      Assertions.assertThatThrownBy(throwingCallable)
+          .isExactlyInstanceOf(UnsupportedClassException.class);
+    }
+  }
+}

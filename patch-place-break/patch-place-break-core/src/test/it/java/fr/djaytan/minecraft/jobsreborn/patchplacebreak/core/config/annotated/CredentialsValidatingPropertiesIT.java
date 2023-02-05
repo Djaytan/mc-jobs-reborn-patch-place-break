@@ -213,8 +213,7 @@ class CredentialsValidatingPropertiesIT {
     void withValidContent_shouldMatchExpectedValue(String yamlFileName,
         CredentialsValidatingProperties expectedValue) {
       // Given
-      Path yamlFile =
-          TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(), yamlFileName);
+      Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
       Optional<CredentialsValidatingProperties> optionalCredentialsValidatingProperties =
@@ -242,8 +241,7 @@ class CredentialsValidatingPropertiesIT {
     @DisplayName("With invalid content")
     void withInvalidContent_shouldThrowSerializationException(String yamlFileName) {
       // Given
-      Path yamlFile =
-          TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(), yamlFileName);
+      Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
       ThrowingCallable throwingCallable = () -> YamlDeserializerTestWrapper.deserialize(yamlFile,
@@ -266,8 +264,7 @@ class CredentialsValidatingPropertiesIT {
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
       String yamlFileName = "whenDeserializing_withEmptyContent.yml";
-      Path yamlFile =
-          TestResourcesHelper.getResourceFromTestClassAsPath(this.getClass(), yamlFileName);
+      Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
       Optional<CredentialsValidatingProperties> credentialsValidatingProperties =
