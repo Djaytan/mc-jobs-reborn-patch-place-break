@@ -24,8 +24,8 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -61,10 +61,10 @@ class TagTest {
 
     // Then
     assertAll("Verification of returned values from getters",
-        () -> assertEquals(uuid, tag.getUuid()),
-        () -> assertEquals(localDateTime, tag.getInitLocalDateTime()),
-        () -> assertEquals(isEphemeral, tag.isEphemeral()),
-        () -> assertEquals(tagLocation, tag.getTagLocation()));
+        () -> assertThat(tag.getUuid()).isEqualTo(uuid),
+        () -> assertThat(tag.getInitLocalDateTime()).isEqualTo(localDateTime),
+        () -> assertThat(tag.isEphemeral()).isEqualTo(isEphemeral),
+        () -> assertThat(tag.getTagLocation()).isEqualTo(tagLocation));
   }
 
   @Test

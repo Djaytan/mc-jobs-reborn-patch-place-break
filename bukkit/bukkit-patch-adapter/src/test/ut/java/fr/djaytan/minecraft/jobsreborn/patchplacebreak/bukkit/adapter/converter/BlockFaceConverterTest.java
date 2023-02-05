@@ -24,7 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.bukkit.block.BlockFace;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,8 +52,7 @@ class BlockFaceConverterTest {
     TagVector tagVector = blockFaceConverter.convert(blockFace);
 
     // Then
-    TagVector expectedTagVector = TagVector.of(0, 0, -1);
-    assertEquals(expectedTagVector, tagVector);
+    assertThat(tagVector).isEqualTo(TagVector.of(0, 0, -1));
   }
 
   @Test
@@ -66,8 +65,7 @@ class BlockFaceConverterTest {
     TagVector tagVector = blockFaceConverter.convert(blockFace);
 
     // Then
-    TagVector expectedTagVector = TagVector.of(1, 0, 1);
-    assertEquals(expectedTagVector, tagVector);
+    assertThat(tagVector).isEqualTo(TagVector.of(1, 0, 1));
   }
 
   @DisplayName("Conversion from a self-oriented direction")
@@ -80,8 +78,7 @@ class BlockFaceConverterTest {
     TagVector tagVector = blockFaceConverter.convert(blockFace);
 
     // Then
-    TagVector expectedTagVector = TagVector.of(2, 0, -1);
-    assertEquals(expectedTagVector, tagVector);
+    assertThat(tagVector).isEqualTo(TagVector.of(2, 0, -1));
   }
 
   @DisplayName("Conversion from a self-oriented direction")
@@ -94,7 +91,6 @@ class BlockFaceConverterTest {
     TagVector tagVector = blockFaceConverter.convert(blockFace);
 
     // Then
-    TagVector expectedTagVector = TagVector.of(0, 0, 0);
-    assertEquals(expectedTagVector, tagVector);
+    assertThat(tagVector).isEqualTo(TagVector.of(0, 0, 0));
   }
 }

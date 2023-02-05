@@ -30,12 +30,11 @@ import lombok.NonNull;
 import lombok.experimental.StandardException;
 
 @StandardException(access = AccessLevel.PROTECTED)
+@SuppressWarnings("java:S110") // Not an issue for exception classes
 public class SqlStorageException extends StorageException {
 
   private static final String CONNECTION_POOL_NOT_SETUP =
       "The connection pool must be setup before using it.";
-  private static final String CONNECTION_POOL_LOGIN_TIMEOUT =
-      "Failed to define the connection pool login timeout.";
   private static final String DATABASE_CONNECTION_ESTABLISHMENT =
       "Failed to establish connection to the database.";
   private static final String DATABASE_CONNECTION_RELEASING =
@@ -45,10 +44,6 @@ public class SqlStorageException extends StorageException {
 
   public static @NonNull SqlStorageException connectionPoolNotSetup() {
     return new SqlStorageException(CONNECTION_POOL_NOT_SETUP);
-  }
-
-  public static @NonNull SqlStorageException connectionPoolLoginTimeout(@NonNull Throwable cause) {
-    return new SqlStorageException(CONNECTION_POOL_LOGIN_TIMEOUT, cause);
   }
 
   public static @NonNull SqlStorageException databaseConnectionEstablishment(

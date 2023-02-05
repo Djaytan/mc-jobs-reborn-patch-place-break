@@ -1,7 +1,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,9 +27,9 @@ class TagVectorTest {
 
     // Then
     assertAll("Verification of returned values from getters",
-        () -> assertEquals(modX, tagVector.getModX()),
-        () -> assertEquals(modY, tagVector.getModY()),
-        () -> assertEquals(modZ, tagVector.getModZ()));
+        () -> assertThat(tagVector.getModX()).isEqualTo(modX),
+        () -> assertThat(tagVector.getModY()).isEqualTo(modY),
+        () -> assertThat(tagVector.getModZ()).isEqualTo(modZ));
   }
 
   @Test

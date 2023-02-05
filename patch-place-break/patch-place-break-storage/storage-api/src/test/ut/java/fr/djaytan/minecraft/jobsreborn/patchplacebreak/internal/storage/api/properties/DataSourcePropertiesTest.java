@@ -1,7 +1,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,10 +31,11 @@ class DataSourcePropertiesTest {
 
     // Then
     assertAll("Verification of returned values from getters",
-        () -> assertEquals(dataSourceType, dataSourceProperties.getType()),
-        () -> assertEquals(table, dataSourceProperties.getTable()),
-        () -> assertEquals(dbmsServerProperties, dataSourceProperties.getDbmsServer()),
-        () -> assertEquals(connectionPoolProperties, dataSourceProperties.getConnectionPool()));
+        () -> assertThat(dataSourceProperties.getType()).isEqualTo(dataSourceType),
+        () -> assertThat(dataSourceProperties.getTable()).isEqualTo(table),
+        () -> assertThat(dataSourceProperties.getDbmsServer()).isEqualTo(dbmsServerProperties),
+        () -> assertThat(dataSourceProperties.getConnectionPool())
+            .isEqualTo(connectionPoolProperties));
   }
 
   @Test
