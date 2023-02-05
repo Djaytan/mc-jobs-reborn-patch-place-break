@@ -109,7 +109,7 @@
     <mysql.version>8.0.32</mysql.version>
     <slf4j.version>2.0.6</slf4j.version>
     <snakeyaml.version>1.33</snakeyaml.version>
-    <sqlite.version>3.40.0.0</sqlite.version>
+    <sqlite.version>3.40.1.0</sqlite.version>
     <toStringVerifier.version>1.4.8</toStringVerifier.version>
   </properties>
 
