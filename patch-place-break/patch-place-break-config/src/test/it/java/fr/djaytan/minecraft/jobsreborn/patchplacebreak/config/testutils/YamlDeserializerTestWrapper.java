@@ -22,34 +22,26 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils;
 
 import java.nio.file.Path;
+import java.util.Optional;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigManager;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization.YamlDeserializationException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization.YamlDeserializer;
+import lombok.NonNull;
 
 /**
- * Represents config related configs (config of a config... You get it).
+ * Wrapper class for YAML deserialization in tests.
  */
-public class ConfigModule extends AbstractModule {
+public final class YamlDeserializerTestWrapper {
 
-  @Provides
-  @Named("configFile")
-  @Singleton
-  public Path provideConfigFile(@Named("dataFolder") Path dataFolder) {
-    return dataFolder.resolve(ConfigManager.CONFIG_FILE_NAME);
-  }
-
-  @Provides
-  @Singleton
-  public ConfigProperties provideConfigProperties(ConfigManager configManager) {
-    configManager.createIfNotExists();
-    return configManager.readAndValidate();
+  /**
+   * @see YamlDeserializer#deserialize(Path, Class)
+   */
+  public static <T> @NonNull Optional<T> deserialize(@NonNull Path yamlFile, @NonNull Class<T> type)
+      throws YamlDeserializationException {
+    YamlDeserializer yamlDeserializer = new YamlDeserializer();
+    return yamlDeserializer.deserialize(yamlFile, type);
   }
 }

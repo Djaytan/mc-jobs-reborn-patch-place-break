@@ -22,34 +22,13 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 
-import java.nio.file.Path;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
+import lombok.Value;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
+@Value(staticConstructor = "of")
+public class ConfigProperties {
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigManager;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigProperties;
-
-/**
- * Represents config related configs (config of a config... You get it).
- */
-public class ConfigModule extends AbstractModule {
-
-  @Provides
-  @Named("configFile")
-  @Singleton
-  public Path provideConfigFile(@Named("dataFolder") Path dataFolder) {
-    return dataFolder.resolve(ConfigManager.CONFIG_FILE_NAME);
-  }
-
-  @Provides
-  @Singleton
-  public ConfigProperties provideConfigProperties(ConfigManager configManager) {
-    configManager.createIfNotExists();
-    return configManager.readAndValidate();
-  }
+  DataSourceProperties dataSource;
 }

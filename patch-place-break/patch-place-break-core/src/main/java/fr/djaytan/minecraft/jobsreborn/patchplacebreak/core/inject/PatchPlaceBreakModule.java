@@ -32,7 +32,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.ConfigProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.ConnectionPoolProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.DataSourceProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.SqlDataSourceInitializerProvider;

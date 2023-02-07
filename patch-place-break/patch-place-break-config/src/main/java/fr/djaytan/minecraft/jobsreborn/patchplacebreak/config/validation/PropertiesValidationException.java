@@ -22,34 +22,26 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 
-import java.nio.file.Path;
+import java.util.Set;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigException;
+import jakarta.validation.ConstraintViolation;
+import lombok.AccessLevel;
+import lombok.NonNull;
+import lombok.experimental.StandardException;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigManager;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigProperties;
+@StandardException(access = AccessLevel.PROTECTED)
+@SuppressWarnings("java:S110") // Not an issue for exception classes
+public class PropertiesValidationException extends ConfigException {
 
-/**
- * Represents config related configs (config of a config... You get it).
- */
-public class ConfigModule extends AbstractModule {
+  private static final String CONFIG_CONSTRAINT_VIOLATIONS =
+      "Detected config constraint violations: %s";
 
-  @Provides
-  @Named("configFile")
-  @Singleton
-  public Path provideConfigFile(@Named("dataFolder") Path dataFolder) {
-    return dataFolder.resolve(ConfigManager.CONFIG_FILE_NAME);
-  }
-
-  @Provides
-  @Singleton
-  public ConfigProperties provideConfigProperties(ConfigManager configManager) {
-    configManager.createIfNotExists();
-    return configManager.readAndValidate();
+  public static <T> @NonNull PropertiesValidationException constraintViolations(
+      Set<ConstraintViolation<T>> constraintViolations) {
+    String message = String.format(CONFIG_CONSTRAINT_VIOLATIONS, constraintViolations);
+    return new PropertiesValidationException(message);
   }
 }
