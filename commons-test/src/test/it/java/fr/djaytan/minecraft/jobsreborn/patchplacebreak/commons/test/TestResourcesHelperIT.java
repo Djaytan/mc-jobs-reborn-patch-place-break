@@ -43,8 +43,8 @@ class TestResourcesHelperIT {
   class WhenRetrievingClassResource {
 
     @Nested
-    @DisplayName("As path")
-    class AsPath {
+    @DisplayName("As absolute path")
+    class AsAbsolutePath {
 
       @Test
       @DisplayName("With existing resource")

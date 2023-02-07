@@ -14,8 +14,8 @@ dataSource:
   # Value can't be empty or blank
   table: 'patch_place_break_tag'
 
-  # The DBMS server properties to establish connections
-  # If type is set to 'SQLITE', this part can be safely ignored
+  # The DBMS server properties for connection establishment
+  # Not applicable for SQLite
   dbmsServer:
     # Host properties of the DBMS server
     host:
@@ -31,7 +31,7 @@ dataSource:
 
     # Credentials for authentication with the DBMS server
     credentials:
-      # User to use when connected to the DBMS server
+      # Under behalf of who user to connect on the DBMS server
       # Value can't be empty or blank
       username: 'username'
       # Password of the user (optional but highly recommended)

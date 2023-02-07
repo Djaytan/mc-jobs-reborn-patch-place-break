@@ -57,8 +57,8 @@ final class ConstraintViolationFormatter {
     StringJoiner stringJoiner = new StringJoiner("\n");
 
     for (ConstraintViolation<T> constraintViolation : constraintViolations) {
-      String formattedConstraintViolation = format(constraintViolation);
-      stringJoiner.add(formattedConstraintViolation);
+      String formatted = format(constraintViolation);
+      stringJoiner.add(formatted);
     }
     return stringJoiner.toString();
   }

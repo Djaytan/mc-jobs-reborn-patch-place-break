@@ -70,7 +70,7 @@ public final class TestResourcesHelper {
   @SneakyThrows
   public static @NonNull Path getClassResourceAsAbsolutePath(@NonNull Class<?> clazz,
       @NonNull String resourceName) {
-    Path relativeResourcePath = getClassResourceRelativePath(clazz, resourceName);
+    Path relativeResourcePath = getClassResourceAsRelativePath(clazz, resourceName);
     return resourceToAbsolutePath(relativeResourcePath, clazz.getClassLoader());
   }
 
@@ -95,13 +95,13 @@ public final class TestResourcesHelper {
   @SneakyThrows
   public static @NonNull String getClassResourceAsString(@NonNull Class<?> clazz,
       @NonNull String resourceName, boolean chopContent) {
-    Path resourceRelativePath = getClassResourceRelativePath(clazz, resourceName);
+    Path resourceRelativePath = getClassResourceAsRelativePath(clazz, resourceName);
     String resourceContent = IOUtils.resourceToString(resourceRelativePath.toString(),
         StandardCharsets.UTF_8, clazz.getClassLoader());
     return chopContent ? StringUtils.chop(resourceContent) : resourceContent;
   }
 
-  private static @NonNull Path getClassResourceRelativePath(@NonNull Class<?> clazz,
+  private static @NonNull Path getClassResourceAsRelativePath(@NonNull Class<?> clazz,
       @NonNull String resourceName) {
     ClassToFsPathConverter classToFsPathConverter =
         new ClassToFsPathConverter(FileSystems.getDefault());
@@ -111,7 +111,7 @@ public final class TestResourcesHelper {
 
   private static @NonNull Path resourceToAbsolutePath(@NonNull Path relativeResourcePath,
       @NonNull ClassLoader classLoader) throws IOException, URISyntaxException {
-    // /!\ Not retrieving absolute path from class loader lead to wrong path
+    // /!\ Not retrieving absolute path from class loader can lead to wrong path depending cases
     URL url = IOUtils.resourceToURL(relativeResourcePath.toString(), classLoader);
     return Paths.get(url.toURI());
   }

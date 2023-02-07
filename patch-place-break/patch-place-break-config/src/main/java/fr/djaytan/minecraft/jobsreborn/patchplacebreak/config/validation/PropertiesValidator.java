@@ -50,11 +50,12 @@ public class PropertiesValidator {
 
   /**
    * Validates the specified {@link ValidatingConvertibleProperties} and convert it
-   * to the specified target type.
+   * to the corresponding final data structure.
    *
-   * @param validatingConvertibleProperties The properties to validate and convert.
+   * @param validatingConvertibleProperties The properties to validate and then convert
+   *                                        to the final data structure.
    * @param <T> The targeted type for the conversion.
-   * @return The validated config.
+   * @return The validated config converted to the final data structure.
    * @throws PropertiesValidationException If {@link ConstraintViolation}s are detected.
    */
   public <T> @NonNull T validate(
@@ -67,8 +68,8 @@ public class PropertiesValidator {
         validator.validate(validatingConvertibleProperties);
 
     if (!constraintViolations.isEmpty()) {
-      String userFriendlyErrorMessage = ConstraintViolationFormatter.format(constraintViolations);
-      log.atError().log("Detected constraint violations:\n{}", userFriendlyErrorMessage);
+      String formatted = ConstraintViolationFormatter.format(constraintViolations);
+      log.atError().log("Detected constraint violations:\n{}", formatted);
       throw PropertiesValidationException.constraintViolations(constraintViolations);
     }
 

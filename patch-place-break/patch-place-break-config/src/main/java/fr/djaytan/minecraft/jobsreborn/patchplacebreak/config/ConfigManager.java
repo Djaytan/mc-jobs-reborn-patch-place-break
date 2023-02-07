@@ -110,9 +110,9 @@ public class ConfigManager {
    * Reads config file from a predefined location. It is recommended to call
    * {@link #createIfNotExists()} first at least one time.
    *
-   * @return The config properties to be validated.
+   * @return The validated config properties.
    * @throws ConfigException If the config file doesn't exist at the predefined location
-   *    or something else prevent config file reading.
+   *    or something else prevent config file reading or validation.
    * @throws PropertiesValidationException If read config isn't valid.
    */
   public @NonNull ConfigProperties readAndValidate() throws PropertiesValidationException {
