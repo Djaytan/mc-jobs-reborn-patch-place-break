@@ -44,10 +44,10 @@ import lombok.NonNull;
 public final class YamlDeserializer {
 
   /**
-   * Deserializes the given YAML file into the specified type.
+   * Deserializes the given YAML file to the specified targeted type.
    *
    * @param yamlFile The YAML content to deserialize.
-   * @param type The expected type of the YAML content.
+   * @param type The targeted type of YAML deserialization.
    * @return The deserialized value if present and of valid type.
    * @param <T> The expected type to be obtained from deserialization.
    * @throws YamlDeserializationException If something prevent the deserialization.

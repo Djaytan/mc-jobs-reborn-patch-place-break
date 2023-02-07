@@ -26,7 +26,6 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.nio.file.Path;
 import java.util.Optional;
@@ -36,7 +35,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.ThrowingSupplier;
 import org.spongepowered.configurate.serialize.SerializationException;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
@@ -64,12 +62,10 @@ class YamlDeserializerIT {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
-      ThrowingSupplier<Optional<DbmsHostValidatingProperties>> executable =
-          () -> yamlDeserializer.deserialize(yamlFile, DbmsHostValidatingProperties.class);
+      Optional<DbmsHostValidatingProperties> optionalHostValidatingProperties =
+          yamlDeserializer.deserialize(yamlFile, DbmsHostValidatingProperties.class);
 
       // Then
-      Optional<DbmsHostValidatingProperties> optionalHostValidatingProperties =
-          assertDoesNotThrow(executable);
       assertThat(optionalHostValidatingProperties).isPresent().get()
           .isEqualTo(DbmsHostValidatingProperties.of("example.com", 1234, true));
     }
@@ -83,12 +79,10 @@ class YamlDeserializerIT {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
-      ThrowingSupplier<Optional<DbmsHostValidatingProperties>> executable =
-          () -> yamlDeserializer.deserialize(yamlFile, DbmsHostValidatingProperties.class);
+      Optional<DbmsHostValidatingProperties> optionalHostValidatingProperties =
+          yamlDeserializer.deserialize(yamlFile, DbmsHostValidatingProperties.class);
 
       // Then
-      Optional<DbmsHostValidatingProperties> optionalHostValidatingProperties =
-          assertDoesNotThrow(executable);
       assertThat(optionalHostValidatingProperties).isPresent().get()
           .isEqualTo(DbmsHostValidatingProperties.of("example.com", 1234, true));
     }
@@ -104,7 +98,6 @@ class YamlDeserializerIT {
       // When
       ThrowingCallable throwingCallable =
           () -> yamlDeserializer.deserialize(yamlFile, DbmsHostValidatingProperties.class);
-
 
       // Then
       assertThatThrownBy(throwingCallable).isExactlyInstanceOf(YamlDeserializationException.class)

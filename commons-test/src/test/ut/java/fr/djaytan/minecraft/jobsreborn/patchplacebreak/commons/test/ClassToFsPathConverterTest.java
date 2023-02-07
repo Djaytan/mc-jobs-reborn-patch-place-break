@@ -67,10 +67,10 @@ class ClassToFsPathConverterTest {
     @DisplayName("With top-level class")
     void withTopLevelClass_shouldMatchExpectedPath() {
       // Given
-      Class<?> topLevelClass = ClassToFsPathConverterTest.class;
+      Class<?> clazz = ClassToFsPathConverterTest.class;
 
       // When
-      Path path = classToFsPathConverter.convertClassToFsPath(topLevelClass);
+      Path path = classToFsPathConverter.convertClassToFsPath(clazz);
 
       // Then
       assertThat(path).hasToString(
@@ -81,10 +81,10 @@ class ClassToFsPathConverterTest {
     @DisplayName("With inner class")
     void withInnerClass_shouldMatchExpectedPath() {
       // Given
-      Class<?> topLevelClass = WhenConverting.class;
+      Class<?> clazz = WhenConverting.class;
 
       // When
-      Path path = classToFsPathConverter.convertClassToFsPath(topLevelClass);
+      Path path = classToFsPathConverter.convertClassToFsPath(clazz);
 
       // Then
       assertThat(path).hasToString(
@@ -95,10 +95,10 @@ class ClassToFsPathConverterTest {
     @DisplayName("With anonymous class")
     void withAnonymousClass_shouldMatchExpectedPath() {
       // Given
-      Class<?> topLevelClass = new Serializable() {}.getClass();
+      Class<?> clazz = new Serializable() {}.getClass();
 
       // When
-      Path path = classToFsPathConverter.convertClassToFsPath(topLevelClass);
+      Path path = classToFsPathConverter.convertClassToFsPath(clazz);
 
       // Then
       assertThat(path).hasToString(
@@ -109,11 +109,10 @@ class ClassToFsPathConverterTest {
     @DisplayName("With primitive class")
     void withPrimitiveClass_shouldThrowUnsupportedClassException() {
       // Given
-      Class<?> primitiveClass = int.class;
+      Class<?> clazz = int.class;
 
       // When
-      ThrowingCallable throwingCallable =
-          () -> classToFsPathConverter.convertClassToFsPath(primitiveClass);
+      ThrowingCallable throwingCallable = () -> classToFsPathConverter.convertClassToFsPath(clazz);
 
       // Then
       Assertions.assertThatThrownBy(throwingCallable)
@@ -124,11 +123,10 @@ class ClassToFsPathConverterTest {
     @DisplayName("With array class")
     void withArrayClass_shouldThrowUnsupportedClassException() {
       // Given
-      Class<?> arrayClass = Object[].class;
+      Class<?> clazz = Object[].class;
 
       // When
-      ThrowingCallable throwingCallable =
-          () -> classToFsPathConverter.convertClassToFsPath(arrayClass);
+      ThrowingCallable throwingCallable = () -> classToFsPathConverter.convertClassToFsPath(clazz);
 
       // Then
       Assertions.assertThatThrownBy(throwingCallable)
@@ -139,11 +137,10 @@ class ClassToFsPathConverterTest {
     @DisplayName("With annotation class")
     void withAnnotationClass_shouldThrowUnsupportedClassException() {
       // Given
-      Class<?> arrayClass = Retention.class;
+      Class<?> clazz = Retention.class;
 
       // When
-      ThrowingCallable throwingCallable =
-          () -> classToFsPathConverter.convertClassToFsPath(arrayClass);
+      ThrowingCallable throwingCallable = () -> classToFsPathConverter.convertClassToFsPath(clazz);
 
       // Then
       Assertions.assertThatThrownBy(throwingCallable)
