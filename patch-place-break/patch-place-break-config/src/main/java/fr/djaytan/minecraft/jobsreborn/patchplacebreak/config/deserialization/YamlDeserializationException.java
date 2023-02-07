@@ -22,34 +22,18 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization;
 
-import java.nio.file.Path;
+import lombok.AccessLevel;
+import lombok.NonNull;
+import lombok.experimental.StandardException;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
+@StandardException(access = AccessLevel.PROTECTED)
+public class YamlDeserializationException extends RuntimeException {
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigManager;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigProperties;
+  private static final String FAIL_TO_DESERIALIZE = "Fail to deserialize";
 
-/**
- * Represents config related configs (config of a config... You get it).
- */
-public class ConfigModule extends AbstractModule {
-
-  @Provides
-  @Named("configFile")
-  @Singleton
-  public Path provideConfigFile(@Named("dataFolder") Path dataFolder) {
-    return dataFolder.resolve(ConfigManager.CONFIG_FILE_NAME);
-  }
-
-  @Provides
-  @Singleton
-  public ConfigProperties provideConfigProperties(ConfigManager configManager) {
-    configManager.createIfNotExists();
-    return configManager.readAndValidate();
+  public static @NonNull YamlDeserializationException failToDeserialize(@NonNull Throwable cause) {
+    return new YamlDeserializationException(FAIL_TO_DESERIALIZE, cause);
   }
 }

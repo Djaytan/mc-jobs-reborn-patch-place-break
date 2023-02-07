@@ -37,6 +37,7 @@
 
   <modules>
     <module>patch-place-break-api</module>
+    <module>patch-place-break-config</module>
     <module>patch-place-break-core</module>
     <module>patch-place-break-internal</module>
     <module>patch-place-break-storage</module>
