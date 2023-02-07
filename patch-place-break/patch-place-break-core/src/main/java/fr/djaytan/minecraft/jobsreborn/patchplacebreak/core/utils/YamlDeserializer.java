@@ -50,12 +50,16 @@ public final class YamlDeserializer {
    * @param type The expected type of the YAML content.
    * @return The deserialized value if present and of valid type.
    * @param <T> The expected type to be obtained from deserialization.
-   * @throws ConfigurateException If something prevent the deserialization.
+   * @throws YamlDeserializationException If something prevent the deserialization.
    */
   public <T> @NonNull Optional<T> deserialize(@NonNull Path yamlFile, @NonNull Class<T> type)
-      throws ConfigurateException {
-    ConfigurationNode rootNode = buildYamlConfigurationNode(yamlFile);
-    return Optional.ofNullable(rootNode.get(type));
+      throws YamlDeserializationException {
+    try {
+      ConfigurationNode rootNode = buildYamlConfigurationNode(yamlFile);
+      return Optional.ofNullable(rootNode.get(type));
+    } catch (ConfigurateException e) {
+      throw YamlDeserializationException.failToDeserialize(e);
+    }
   }
 
   private static @NonNull ConfigurationNode buildYamlConfigurationNode(@NonNull Path yamlFile)

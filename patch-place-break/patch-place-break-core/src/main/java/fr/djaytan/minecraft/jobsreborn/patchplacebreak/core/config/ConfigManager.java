@@ -34,11 +34,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.spongepowered.configurate.ConfigurateException;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.annotated.ConfigValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.validation.PropertiesValidationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.validation.PropertiesValidator;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.utils.YamlDeserializationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.utils.YamlDeserializer;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -134,8 +133,7 @@ public class ConfigManager {
       ConfigValidatingProperties readConfig = configValidatingProperties.get();
       log.atInfo().log("File '{}' read successfully.", CONFIG_FILE_NAME);
       return readConfig;
-    } catch (ConfigurateException e) {
-      // TODO: not depend to configurate directly here
+    } catch (YamlDeserializationException e) {
       throw ConfigException.failedReadingConfig(configFile, e);
     }
   }
