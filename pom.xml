@@ -42,9 +42,9 @@
   </licenses>
 
   <modules>
-    <module>bukkit</module>
-    <module>commons-test</module>
-    <module>patch-place-break</module>
+    <module>src/bukkit</module>
+    <module>src/commons-test</module>
+    <module>src/patch-place-break</module>
   </modules>
 
   <scm>
