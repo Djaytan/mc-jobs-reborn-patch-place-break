@@ -27,26 +27,66 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.spongepowered.configurate.serialize.SerializationException;
 
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
+
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DbmsHostValidatingProperties;
+import lombok.SneakyThrows;
 
 class ConfigSerializerTest {
 
   private ConfigSerializer configSerializer = new ConfigSerializer();
+  private FileSystem imfs;
 
   @BeforeEach
   void beforeEach() {
     configSerializer = new ConfigSerializer();
+    imfs = Jimfs.newFileSystem(Configuration.unix());
+  }
+
+  @AfterEach
+  @SneakyThrows
+  void afterEach() {
+    imfs.close();
+  }
+
+  @Nested
+  @DisplayName("When serializing")
+  class WhenSerializing {
+
+    @Test
+    @DisplayName("With nominal values")
+    @SneakyThrows
+    void withNominalValues_shouldCreateAndFillYamlFile() {
+      // Given
+      Path targetFileLocation = imfs.getPath("test.yml");
+      DbmsHostValidatingProperties dbmsHostValidatingProperties =
+          DbmsHostValidatingProperties.of("example.com", 1234, true);
+
+      // When
+      configSerializer.serialize(targetFileLocation, dbmsHostValidatingProperties);
+
+      // Then
+      String expectedYamlFile = "whenSerializing_withNominalValues.yml";
+      String expectedYaml =
+          TestResourcesHelper.getClassResourceAsString(this.getClass(), expectedYamlFile, false);
+      String actualYaml = new String(Files.readAllBytes(targetFileLocation));
+      assertThat(actualYaml).isEqualTo(expectedYaml);
+    }
   }
 
   @Nested
