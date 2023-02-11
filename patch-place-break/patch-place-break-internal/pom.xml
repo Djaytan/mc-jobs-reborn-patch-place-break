@@ -33,8 +33,8 @@
 
   <artifactId>patch-place-break-internal</artifactId>
   <packaging>jar</packaging>
-  <name>PatchPlaceBreak Default Implementation</name>
-  <description>The default implementation of the place-break patch API</description>
+  <name>PatchPlaceBreak Internal Implementation</name>
+  <description>The internal implementation of the place-break patch API</description>
 
   <properties>
     <main.basedir>${project.basedir}/../../</main.basedir>
