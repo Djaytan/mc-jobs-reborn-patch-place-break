@@ -408,7 +408,6 @@
         <version>${mavenCompilerPlugin.version}</version>
         <configuration>
           <release>${java.version}</release>
-          <compilerReuseStrategy>reuseSame</compilerReuseStrategy>
           <failOnWarning>true</failOnWarning>
           <showDeprecation>true</showDeprecation>
         </configuration>
@@ -470,7 +469,7 @@
             <dependencyConvergence />
             <reactorModuleConvergence />
             <requireJavaVersion>
-              <version>[11,)</version>
+              <version>[11,12)</version>
             </requireJavaVersion>
             <requireMavenVersion>
               <version>[3.6,)</version>
