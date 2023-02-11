@@ -137,7 +137,7 @@ class CredentialsValidatingPropertiesTest {
 
     @Test
     @DisplayName("With properties not marked as validated")
-    void withPropertiesNotMarkedAsValidated_shouldThrowIllegalStateException() {
+    void withPropertiesNotMarkedAsValidated_shouldThrowException() {
       // Given
       CredentialsValidatingProperties credentialsValidatingProperties =
           CredentialsValidatingProperties.of("foo", "bar");
@@ -338,7 +338,7 @@ class CredentialsValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With invalid content")
-    void withInvalidContent_shouldThrowYamlDeserializationException(String yamlFileName) {
+    void withInvalidContent_shouldThrowException(String yamlFileName) {
       // Given
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
@@ -352,7 +352,7 @@ class CredentialsValidatingPropertiesTest {
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
-    private Stream<Arguments> withInvalidContent_shouldThrowYamlDeserializationException() {
+    private Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
           Arguments.of(Named.of("With missing 'username' field",
               "whenDeserializing_withMissingUsernameField.yml")),

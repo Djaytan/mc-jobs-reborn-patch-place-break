@@ -101,7 +101,7 @@ class PropertiesValidatorTest {
 
   @Test
   @DisplayName("When validating with invalid values")
-  void whenValidating_withInvalidValues_shouldThrowConfigValidationException(
+  void whenValidating_withInvalidValues_shouldThrowException(
       @Mock ConfigValidatingProperties configValidatingPropertiesMocked,
       @Mock ConstraintViolation<ConfigValidatingProperties> constraintViolationMocked) {
     // Given
