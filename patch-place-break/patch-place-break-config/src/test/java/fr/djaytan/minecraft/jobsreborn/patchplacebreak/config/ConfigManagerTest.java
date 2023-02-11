@@ -113,7 +113,7 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With IOException thrown")
-    void withIOExceptionThrown_shouldThrowConfigException() throws IOException {
+    void withIOExceptionThrown_shouldThrowException() throws IOException {
       // Given
       String defaultConfigFileName = "whenCreatingConfig_withIOExceptionThrown.yml";
       Path defaultConfigFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(),
@@ -142,7 +142,7 @@ class ConfigManagerTest {
 
       @Test
       @DisplayName("And without default one")
-      void andWithoutDefaultConfigFile_shouldThrowConfigException() {
+      void andWithoutDefaultConfigFile_shouldThrowException() {
         // Given
         given(classLoaderMocked.getResourceAsStream(anyString())).willReturn(null);
 
@@ -226,7 +226,7 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With missing required fields in config file")
-    void withMissingRequiredFieldsInConfigFile_shouldThrowConfigException() throws IOException {
+    void withMissingRequiredFieldsInConfigFile_shouldThrowException() throws IOException {
       // Given
       String invalidConfigFileName =
           "whenReadingAndValidatingConfig_withMissingRequiredFieldsInConfigFile.yml";
@@ -244,7 +244,7 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With invalid config file")
-    void withInvalidConfigFile_shouldThrowPropertiesValidationException() throws IOException {
+    void withInvalidConfigFile_shouldThrowException() throws IOException {
       // Given
       String invalidConfigFileName = "whenReadingAndValidatingConfig_withInvalidConfigFile.yml";
       Path invalidConfigFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(),
@@ -260,7 +260,7 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With empty config file")
-    void withEmptyConfigFile_shouldThrowConfigException() throws IOException {
+    void withEmptyConfigFile_shouldThrowException() throws IOException {
       // Given
       String emptyConfigFileName = "whenReadingAndValidatingConfig_withEmptyConfigFile.yml";
       Path emptyConfigFile =
@@ -276,7 +276,7 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("Without existing config file")
-    void withoutExistingConfigFile_shouldThrowConfigException() {
+    void withoutExistingConfigFile_shouldThrowException() {
       // Given
 
       // When

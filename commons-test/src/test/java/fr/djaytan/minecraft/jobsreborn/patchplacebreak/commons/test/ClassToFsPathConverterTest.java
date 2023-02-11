@@ -107,7 +107,7 @@ class ClassToFsPathConverterTest {
 
     @Test
     @DisplayName("With primitive class")
-    void withPrimitiveClass_shouldThrowUnsupportedClassException() {
+    void withPrimitiveClass_shouldThrowException() {
       // Given
       Class<?> clazz = int.class;
 
@@ -121,7 +121,7 @@ class ClassToFsPathConverterTest {
 
     @Test
     @DisplayName("With array class")
-    void withArrayClass_shouldThrowUnsupportedClassException() {
+    void withArrayClass_shouldThrowException() {
       // Given
       Class<?> clazz = Object[].class;
 
@@ -135,7 +135,7 @@ class ClassToFsPathConverterTest {
 
     @Test
     @DisplayName("With annotation class")
-    void withAnnotationClass_shouldThrowUnsupportedClassException() {
+    void withAnnotationClass_shouldThrowException() {
       // Given
       Class<?> clazz = Retention.class;
 

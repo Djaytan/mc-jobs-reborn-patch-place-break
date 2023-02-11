@@ -64,7 +64,7 @@ class TestResourcesHelperTest {
 
       @Test
       @DisplayName("Without existing resource")
-      void withoutExistingResource_shouldThrowIOException() {
+      void withoutExistingResource_shouldThrowException() {
         // Given
         Class<?> clazz = TestResourcesHelperTest.class;
         String resourceName = "notExistingResource";
@@ -122,7 +122,7 @@ class TestResourcesHelperTest {
 
       @Test
       @DisplayName("Without existing resource")
-      void withoutExistingResource_shouldThrowIOException() {
+      void withoutExistingResource_shouldThrowException() {
         // Given
         Class<?> clazz = TestResourcesHelperTest.class;
         String resourceName = "notExistingResource";

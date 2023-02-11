@@ -163,7 +163,7 @@ class DataSourceValidatingPropertiesTest {
 
     @Test
     @DisplayName("With properties not marked as validated")
-    void withPropertiesNotMarkedAsValidated_shouldThrowIllegalStateException() {
+    void withPropertiesNotMarkedAsValidated_shouldThrowException() {
       // Given
       DataSourceValidatingProperties dataSourceValidatingProperties =
           DataSourceValidatingProperties.of(DataSourceType.MYSQL, "patch_place_break",
@@ -352,7 +352,7 @@ class DataSourceValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With invalid content")
-    void withInvalidContent_shouldThrowYamlDeserializationException(String yamlFileName) {
+    void withInvalidContent_shouldThrowException(String yamlFileName) {
       // Given
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
@@ -366,7 +366,7 @@ class DataSourceValidatingPropertiesTest {
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
-    private Stream<Arguments> withInvalidContent_shouldThrowYamlDeserializationException() {
+    private Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
           Arguments.of(
               Named.of("With missing 'type' field", "whenDeserializing_withMissingTypeField.yml")),

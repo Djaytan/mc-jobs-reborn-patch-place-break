@@ -141,7 +141,7 @@ class DbmsHostValidatingPropertiesTest {
 
     @Test
     @DisplayName("With properties not marked as validated")
-    void withPropertiesNotMarkedAsValidated_shouldThrowIllegalStateException() {
+    void withPropertiesNotMarkedAsValidated_shouldThrowException() {
       // Given
       DbmsHostValidatingProperties dbmsHostValidatingProperties =
           DbmsHostValidatingProperties.of("example.com", 1234, true);
@@ -351,7 +351,7 @@ class DbmsHostValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With invalid content")
-    void withInvalidContent_shouldThrowYamlDeserializationException(String yamlFileName) {
+    void withInvalidContent_shouldThrowException(String yamlFileName) {
       // Given
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
@@ -365,7 +365,7 @@ class DbmsHostValidatingPropertiesTest {
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
-    private Stream<Arguments> withInvalidContent_shouldThrowYamlDeserializationException() {
+    private Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
           Arguments.of(Named.of("With missing 'hostname' field",
               "whenDeserializing_withMissingHostnameField.yml")),

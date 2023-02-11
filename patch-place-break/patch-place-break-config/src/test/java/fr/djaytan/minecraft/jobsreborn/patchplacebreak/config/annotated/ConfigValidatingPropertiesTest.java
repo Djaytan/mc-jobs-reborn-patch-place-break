@@ -147,7 +147,7 @@ class ConfigValidatingPropertiesTest {
 
     @Test
     @DisplayName("With properties not marked as validated")
-    void withPropertiesNotMarkedAsValidated_shouldThrowIllegalStateException() {
+    void withPropertiesNotMarkedAsValidated_shouldThrowException() {
       // Given
       ConfigValidatingProperties configValidatingProperties = ConfigValidatingProperties
           .of(DataSourceValidatingProperties.of(DataSourceType.MYSQL, "patch_place_break",

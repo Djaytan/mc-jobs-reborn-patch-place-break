@@ -53,7 +53,7 @@ class ConstraintViolationFormatterTest {
 
     @Test
     @DisplayName("Without any constraint violation")
-    void withoutAnyConstraintViolation_shouldThrowIllegalArgumentException() {
+    void withoutAnyConstraintViolation_shouldThrowException() {
       // Given
       Collection<ConstraintViolation<Object>> constraintViolations = Collections.emptySet();
 
