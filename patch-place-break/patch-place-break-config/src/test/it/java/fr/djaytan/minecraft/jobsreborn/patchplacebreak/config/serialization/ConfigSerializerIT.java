@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -40,35 +40,18 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DbmsHostValidatingProperties;
 
-class YamlDeserializerIT {
+class ConfigSerializerIT {
 
-  private YamlDeserializer yamlDeserializer = new YamlDeserializer();
+  private ConfigSerializer configSerializer = new ConfigSerializer();
 
   @BeforeEach
   void beforeEach() {
-    yamlDeserializer = new YamlDeserializer();
+    configSerializer = new ConfigSerializer();
   }
 
   @Nested
   @DisplayName("When deserializing")
   class WhenDeserializing {
-
-    @Test
-    @DisplayName("With nominal values")
-    void withNominalValues_shouldSuccess() {
-      // Given
-      String yamlFileName = "whenDeserializing_withNominalValues.yml";
-      Path yamlFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
-
-      // When
-      Optional<DbmsHostValidatingProperties> optionalHostValidatingProperties =
-          yamlDeserializer.deserialize(yamlFile, DbmsHostValidatingProperties.class);
-
-      // Then
-      assertThat(optionalHostValidatingProperties).isPresent().get()
-          .isEqualTo(DbmsHostValidatingProperties.of("example.com", 1234, true));
-    }
 
     @Test
     @DisplayName("With camelCase fields")
@@ -80,7 +63,7 @@ class YamlDeserializerIT {
 
       // When
       Optional<DbmsHostValidatingProperties> optionalHostValidatingProperties =
-          yamlDeserializer.deserialize(yamlFile, DbmsHostValidatingProperties.class);
+          configSerializer.deserialize(yamlFile, DbmsHostValidatingProperties.class);
 
       // Then
       assertThat(optionalHostValidatingProperties).isPresent().get()
@@ -89,7 +72,7 @@ class YamlDeserializerIT {
 
     @Test
     @DisplayName("With kebab-case fields")
-    void withKebabCaseFields_shouldThrowYamlDeserializationException() {
+    void withKebabCaseFields_shouldThrowException() {
       // Given
       String yamlFileName = "whenDeserializing_withKebabCaseFields.yml";
       Path yamlFile =
@@ -97,10 +80,10 @@ class YamlDeserializerIT {
 
       // When
       ThrowingCallable throwingCallable =
-          () -> yamlDeserializer.deserialize(yamlFile, DbmsHostValidatingProperties.class);
+          () -> configSerializer.deserialize(yamlFile, DbmsHostValidatingProperties.class);
 
       // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(YamlDeserializationException.class)
+      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigSerializationException.class)
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
   }

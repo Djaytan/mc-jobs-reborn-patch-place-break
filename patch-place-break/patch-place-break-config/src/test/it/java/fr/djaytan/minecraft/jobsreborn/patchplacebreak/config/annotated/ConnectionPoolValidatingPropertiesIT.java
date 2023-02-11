@@ -27,7 +27,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization.YamlDeserializationException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
@@ -48,7 +48,7 @@ import org.spongepowered.configurate.serialize.SerializationException;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.YamlDeserializerTestWrapper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
 import jakarta.validation.ConstraintViolation;
 
 class ConnectionPoolValidatingPropertiesIT {
@@ -211,7 +211,7 @@ class ConnectionPoolValidatingPropertiesIT {
 
       // When
       Optional<ConnectionPoolValidatingProperties> optionalConnectionPoolValidatingProperties =
-          YamlDeserializerTestWrapper.deserialize(yamlFile,
+          ConfigSerializerTestWrapper.deserialize(yamlFile,
               ConnectionPoolValidatingProperties.class);
 
       // Then
@@ -239,11 +239,11 @@ class ConnectionPoolValidatingPropertiesIT {
       Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
-      ThrowingCallable throwingCallable = () -> YamlDeserializerTestWrapper.deserialize(yamlFile,
+      ThrowingCallable throwingCallable = () -> ConfigSerializerTestWrapper.deserialize(yamlFile,
           ConnectionPoolValidatingProperties.class);
 
       // Then
-      assertThatThrownBy(throwingCallable).isInstanceOf(YamlDeserializationException.class)
+      assertThatThrownBy(throwingCallable).isInstanceOf(ConfigSerializationException.class)
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
@@ -264,7 +264,7 @@ class ConnectionPoolValidatingPropertiesIT {
 
       // When
       Optional<ConnectionPoolValidatingProperties> connectionPoolValidatingProperties =
-          YamlDeserializerTestWrapper.deserialize(yamlFile,
+          ConfigSerializerTestWrapper.deserialize(yamlFile,
               ConnectionPoolValidatingProperties.class);
 
       // Then

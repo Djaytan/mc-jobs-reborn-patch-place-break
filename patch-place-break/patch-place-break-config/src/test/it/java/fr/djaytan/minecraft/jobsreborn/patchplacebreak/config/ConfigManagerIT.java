@@ -56,8 +56,8 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization.YamlDeserializationException;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization.YamlDeserializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidator;
@@ -84,9 +84,9 @@ class ConfigManagerIT {
     configFile = fileSystem.getPath(CONFIG_FILE_NAME);
     PropertiesValidator propertiesValidator =
         new PropertiesValidator(ValidatorTestWrapper.getValidator());
-    YamlDeserializer yamlDeserializer = new YamlDeserializer();
+    ConfigSerializer configSerializer = new ConfigSerializer();
     configManager =
-        new ConfigManager(classLoaderMocked, configFile, propertiesValidator, yamlDeserializer);
+        new ConfigManager(classLoaderMocked, configFile, propertiesValidator, configSerializer);
   }
 
   @AfterEach
@@ -239,7 +239,7 @@ class ConfigManagerIT {
 
       // Then
       assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigException.class)
-          .hasCauseExactlyInstanceOf(YamlDeserializationException.class);
+          .hasCauseExactlyInstanceOf(ConfigSerializationException.class);
     }
 
     @Test

@@ -27,7 +27,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization.YamlDeserializationException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
@@ -50,7 +50,7 @@ import com.google.common.base.Strings;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.YamlDeserializerTestWrapper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
 import jakarta.validation.ConstraintViolation;
 
 class CredentialsValidatingPropertiesIT {
@@ -218,7 +218,7 @@ class CredentialsValidatingPropertiesIT {
 
       // When
       Optional<CredentialsValidatingProperties> optionalCredentialsValidatingProperties =
-          YamlDeserializerTestWrapper.deserialize(yamlFile, CredentialsValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(yamlFile, CredentialsValidatingProperties.class);
 
       // Then
       assertThat(optionalCredentialsValidatingProperties).isPresent().get()
@@ -245,11 +245,11 @@ class CredentialsValidatingPropertiesIT {
       Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
-      ThrowingCallable throwingCallable = () -> YamlDeserializerTestWrapper.deserialize(yamlFile,
+      ThrowingCallable throwingCallable = () -> ConfigSerializerTestWrapper.deserialize(yamlFile,
           CredentialsValidatingProperties.class);
 
       // Then
-      assertThatThrownBy(throwingCallable).isInstanceOf(YamlDeserializationException.class)
+      assertThatThrownBy(throwingCallable).isInstanceOf(ConfigSerializationException.class)
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
@@ -270,7 +270,7 @@ class CredentialsValidatingPropertiesIT {
 
       // When
       Optional<CredentialsValidatingProperties> credentialsValidatingProperties =
-          YamlDeserializerTestWrapper.deserialize(yamlFile, CredentialsValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(yamlFile, CredentialsValidatingProperties.class);
 
       // Then
       assertThat(credentialsValidatingProperties).isNotPresent();
