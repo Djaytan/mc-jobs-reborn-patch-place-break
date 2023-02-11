@@ -48,9 +48,9 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import com.google.common.base.Strings;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization.YamlDeserializationException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.YamlDeserializerTestWrapper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
 import jakarta.validation.ConstraintViolation;
 
 class DbmsServerValidatingPropertiesIT {
@@ -185,7 +185,7 @@ class DbmsServerValidatingPropertiesIT {
 
       // When
       Optional<DbmsServerValidatingProperties> optionalDbmsServerValidatingProperties =
-          YamlDeserializerTestWrapper.deserialize(yamlFile, DbmsServerValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(yamlFile, DbmsServerValidatingProperties.class);
 
       // Then
       assertThat(optionalDbmsServerValidatingProperties).isPresent().get().isEqualTo(expectedValue);
@@ -218,11 +218,11 @@ class DbmsServerValidatingPropertiesIT {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
-      ThrowingCallable throwingCallable = () -> YamlDeserializerTestWrapper.deserialize(yamlFile,
+      ThrowingCallable throwingCallable = () -> ConfigSerializerTestWrapper.deserialize(yamlFile,
           DbmsServerValidatingProperties.class);
 
       // Then
-      assertThatThrownBy(throwingCallable).isInstanceOf(YamlDeserializationException.class)
+      assertThatThrownBy(throwingCallable).isInstanceOf(ConfigSerializationException.class)
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
@@ -246,7 +246,7 @@ class DbmsServerValidatingPropertiesIT {
 
       // When
       Optional<DbmsServerValidatingProperties> dbmsServerValidatingProperties =
-          YamlDeserializerTestWrapper.deserialize(yamlFile, DbmsServerValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(yamlFile, DbmsServerValidatingProperties.class);
 
       // Then
       assertThat(dbmsServerValidatingProperties).isNotPresent();

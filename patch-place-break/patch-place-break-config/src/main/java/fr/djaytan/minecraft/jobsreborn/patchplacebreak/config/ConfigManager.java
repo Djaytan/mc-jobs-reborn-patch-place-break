@@ -35,8 +35,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.ConfigValidatingProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization.YamlDeserializationException;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization.YamlDeserializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidator;
 import lombok.NonNull;
@@ -61,15 +61,15 @@ public class ConfigManager {
   private final ClassLoader classLoader;
   private final Path configFile;
   private final PropertiesValidator propertiesValidator;
-  private final YamlDeserializer yamlDeserializer;
+  private final ConfigSerializer configSerializer;
 
   @Inject
   ConfigManager(ClassLoader classLoader, @Named("configFile") Path configFile,
-      PropertiesValidator propertiesValidator, YamlDeserializer yamlDeserializer) {
+      PropertiesValidator propertiesValidator, ConfigSerializer configSerializer) {
     this.classLoader = classLoader;
     this.configFile = configFile;
     this.propertiesValidator = propertiesValidator;
-    this.yamlDeserializer = yamlDeserializer;
+    this.configSerializer = configSerializer;
   }
 
   /**
@@ -124,7 +124,7 @@ public class ConfigManager {
     try {
       log.atInfo().log("Reading '{}' file...", CONFIG_FILE_NAME);
       Optional<ConfigValidatingProperties> configValidatingProperties =
-          yamlDeserializer.deserialize(configFile, ConfigValidatingProperties.class);
+          configSerializer.deserialize(configFile, ConfigValidatingProperties.class);
 
       if (!configValidatingProperties.isPresent()) {
         throw ConfigException.failedReadingConfig(configFile);
@@ -133,7 +133,7 @@ public class ConfigManager {
       ConfigValidatingProperties readConfig = configValidatingProperties.get();
       log.atInfo().log("File '{}' read successfully.", CONFIG_FILE_NAME);
       return readConfig;
-    } catch (YamlDeserializationException e) {
+    } catch (ConfigSerializationException e) {
       throw ConfigException.failedReadingConfig(configFile, e);
     }
   }

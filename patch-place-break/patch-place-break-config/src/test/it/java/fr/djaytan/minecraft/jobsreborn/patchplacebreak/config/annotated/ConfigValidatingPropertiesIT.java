@@ -43,7 +43,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.YamlDeserializerTestWrapper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceType;
 import jakarta.validation.ConstraintViolation;
 
@@ -120,7 +120,7 @@ class ConfigValidatingPropertiesIT {
 
       // When
       Optional<ConfigValidatingProperties> optionalConfigValidatingProperties =
-          YamlDeserializerTestWrapper.deserialize(yamlFile, ConfigValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(yamlFile, ConfigValidatingProperties.class);
 
       // Then
       assertThat(optionalConfigValidatingProperties).isPresent().get().isEqualTo(expectedValue);
@@ -162,7 +162,7 @@ class ConfigValidatingPropertiesIT {
 
       // When
       Optional<ConfigValidatingProperties> configValidatingProperties =
-          YamlDeserializerTestWrapper.deserialize(yamlFile, ConfigValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(yamlFile, ConfigValidatingProperties.class);
 
       // Then
       assertThat(configValidatingProperties).isNotPresent();

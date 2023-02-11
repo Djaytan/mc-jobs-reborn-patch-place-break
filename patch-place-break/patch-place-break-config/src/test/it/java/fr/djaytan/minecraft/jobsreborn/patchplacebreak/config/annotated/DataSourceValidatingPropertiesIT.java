@@ -27,7 +27,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization.YamlDeserializationException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
@@ -50,7 +50,7 @@ import com.google.common.base.Strings;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.YamlDeserializerTestWrapper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceType;
 import jakarta.validation.ConstraintViolation;
 
@@ -192,7 +192,7 @@ class DataSourceValidatingPropertiesIT {
 
       // When
       Optional<DataSourceValidatingProperties> optionalDataSourceValidatingProperties =
-          YamlDeserializerTestWrapper.deserialize(yamlFile, DataSourceValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(yamlFile, DataSourceValidatingProperties.class);
 
       // Then
       assertThat(optionalDataSourceValidatingProperties).isPresent().get().isEqualTo(expectedValue);
@@ -230,11 +230,11 @@ class DataSourceValidatingPropertiesIT {
       Path yamlFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
       // When
-      ThrowingCallable throwingCallable = () -> YamlDeserializerTestWrapper.deserialize(yamlFile,
+      ThrowingCallable throwingCallable = () -> ConfigSerializerTestWrapper.deserialize(yamlFile,
           DataSourceValidatingProperties.class);
 
       // Then
-      assertThatThrownBy(throwingCallable).isInstanceOf(YamlDeserializationException.class)
+      assertThatThrownBy(throwingCallable).isInstanceOf(ConfigSerializationException.class)
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
@@ -259,7 +259,7 @@ class DataSourceValidatingPropertiesIT {
 
       // When
       Optional<DataSourceValidatingProperties> dataSourceValidatingProperties =
-          YamlDeserializerTestWrapper.deserialize(yamlFile, DataSourceValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(yamlFile, DataSourceValidatingProperties.class);
 
       // Then
       assertThat(dataSourceValidatingProperties).isNotPresent();

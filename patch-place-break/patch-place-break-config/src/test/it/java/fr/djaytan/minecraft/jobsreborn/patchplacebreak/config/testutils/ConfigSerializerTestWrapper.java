@@ -27,21 +27,21 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization.YamlDeserializationException;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.deserialization.YamlDeserializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializer;
 import lombok.NonNull;
 
 /**
- * Wrapper class for YAML deserialization in tests.
+ * Wrapper class for config serialization in tests.
  */
-public final class YamlDeserializerTestWrapper {
+public final class ConfigSerializerTestWrapper {
 
   /**
-   * @see YamlDeserializer#deserialize(Path, Class)
+   * @see ConfigSerializer#deserialize(Path, Class)
    */
-  public static <T> @NonNull Optional<T> deserialize(@NonNull Path yamlFile, @NonNull Class<T> type)
-      throws YamlDeserializationException {
-    YamlDeserializer yamlDeserializer = new YamlDeserializer();
-    return yamlDeserializer.deserialize(yamlFile, type);
+  public static <T> @NonNull Optional<T> deserialize(@NonNull Path srcFile, @NonNull Class<T> type)
+      throws ConfigSerializationException {
+    ConfigSerializer configSerializer = new ConfigSerializer();
+    return configSerializer.deserialize(srcFile, type);
   }
 }
