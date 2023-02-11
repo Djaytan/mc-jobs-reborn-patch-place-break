@@ -129,7 +129,7 @@
     <sqlite.version>3.40.1.0</sqlite.version>
 
     <!-- ==================== Test Dependencies versions ==================== -->
-    <assertj.version>3.24.1</assertj.version>
+    <assertj.version>3.24.2</assertj.version>
     <equalsverifier.version>3.13</equalsverifier.version>
     <junitJupiter.version>5.9.2</junitJupiter.version>
     <mockito.version>4.11.0</mockito.version>
