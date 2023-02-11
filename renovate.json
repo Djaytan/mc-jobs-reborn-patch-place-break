@@ -10,5 +10,18 @@
     "jakarta.platform:jakarta.jakartaee-bom",
     "org.glassfish:jakarta.el",
     "org.hibernate.validator:hibernate-validator"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true,
+      "automergeStrategy": "fast-forward",
+      "automergeType": "pr",
+      "platformAutomerge": true
+    }
   ]
 }
