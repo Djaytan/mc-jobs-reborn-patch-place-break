@@ -33,6 +33,7 @@ import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.objectmapping.ObjectMapper;
 import org.spongepowered.configurate.util.NamingSchemes;
+import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import lombok.NonNull;
@@ -40,13 +41,33 @@ import lombok.NonNull;
 /**
  * Config serializer.
  *
- * <p>For now, only deserialization is supported through {@link #deserialize(Path, Class)} method.
- * Due to an existing issue (https://github.com/SpongePowered/Configurate/issues/379) from the
- * Configurate library the serialization for YAML, serialization is not possible yet unless using
- * alternative.
+ * <p>Two methods are exposed for serialization: {@link #serialize(Path, Object)} and
+ * {@link #deserialize(Path, Class)}.
  */
 @Singleton
 public final class ConfigSerializer {
+
+  /**
+   * Serializes the given object into the specified destination file.
+   *
+   * @param destFile The destination file into which serialize object.
+   * @param object The object to serialize.
+   * @throws ConfigSerializationException If something prevent the serialization.
+   */
+  public void serialize(@NonNull Path destFile, Object object) {
+    YamlConfigurationLoader loader = createYamlLoader(destFile);
+
+    if (!loader.canSave()) {
+      throw ConfigSerializationException.failToSerialize();
+    }
+
+    try {
+      ConfigurationNode configurationNode = loader.createNode(node -> node.set(object));
+      loader.save(configurationNode);
+    } catch (ConfigurateException e) {
+      throw ConfigSerializationException.failToSerialize(e);
+    }
+  }
 
   /**
    * Deserializes the given source file to the specified targeted type.
@@ -77,7 +98,7 @@ public final class ConfigSerializer {
     ObjectMapper.Factory customFactory =
         ObjectMapper.factoryBuilder().defaultNamingScheme(NamingSchemes.CAMEL_CASE).build();
 
-    return YamlConfigurationLoader.builder().path(yamlFile)
+    return YamlConfigurationLoader.builder().path(yamlFile).nodeStyle(NodeStyle.BLOCK)
         .defaultOptions(
             opts -> opts.serializers(builder -> builder.registerAnnotatedObjects(customFactory)))
         .build();
