@@ -53,11 +53,11 @@ public final class ConnectionPoolValidatingProperties
   @Max(600000)
   @Positive
   @Required
-  private long connectionTimeout;
+  private long connectionTimeout = 60000;
   @Max(100)
   @Positive
   @Required
-  private int poolSize;
+  private int poolSize = 10;
 
   @Override
   protected @NonNull ConnectionPoolProperties convertValidated() {

@@ -96,10 +96,17 @@ class DataSourceValidatingPropertiesTest {
           new DataSourceValidatingProperties();
 
       // Then
-      assertAll(() -> assertThat(dataSourceValidatingProperties.getType()).isNull(),
-          () -> assertThat(dataSourceValidatingProperties.getTable()).isNull(),
-          () -> assertThat(dataSourceValidatingProperties.getDbmsServer()).isNull(),
-          () -> assertThat(dataSourceValidatingProperties.getConnectionPool()).isNull(),
+      assertAll(
+          () -> assertThat(dataSourceValidatingProperties.getType())
+              .isEqualTo(DataSourceType.SQLITE),
+          () -> assertThat(dataSourceValidatingProperties.getTable())
+              .isEqualTo("patch_place_break_tag"),
+          () -> assertThat(dataSourceValidatingProperties.getDbmsServer())
+              .isEqualTo(DbmsServerValidatingProperties.of(
+                  DbmsHostValidatingProperties.of("localhost", 3306, true),
+                  CredentialsValidatingProperties.of("username", "password"), "database")),
+          () -> assertThat(dataSourceValidatingProperties.getConnectionPool())
+              .isEqualTo(ConnectionPoolValidatingProperties.of(60000, 10)),
           () -> assertThat(dataSourceValidatingProperties.isValidated()).isFalse());
     }
 
@@ -186,6 +193,21 @@ class DataSourceValidatingPropertiesTest {
   @Nested
   @DisplayName("When validating")
   class WhenValidating {
+
+    @Test
+    @DisplayName("With default values")
+    void withDefaultValues_shouldNotGenerateConstraintViolations() {
+      // Given
+      DataSourceValidatingProperties dataSourceValidatingProperties =
+          new DataSourceValidatingProperties();
+
+      // When
+      Set<ConstraintViolation<DataSourceValidatingProperties>> constraintViolations =
+          ValidatorTestWrapper.validate(dataSourceValidatingProperties);
+
+      // Then
+      assertThat(constraintViolations).isEmpty();
+    }
 
     @Test
     @DisplayName("With only valid values")

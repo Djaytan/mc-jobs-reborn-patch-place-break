@@ -54,7 +54,7 @@ public final class ConfigValidatingProperties
   @NotNull
   @Valid
   @Required
-  private DataSourceValidatingProperties dataSource;
+  private DataSourceValidatingProperties dataSource = new DataSourceValidatingProperties();
 
   @Override
   protected @NonNull ConfigProperties convertValidated() {

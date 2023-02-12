@@ -54,11 +54,11 @@ public final class CredentialsValidatingProperties
   @NotBlank
   @Size(max = 32)
   @Required
-  private String username;
+  private String username = "username";
   @NotNull
   @Size(max = 128)
   @Required
-  private String password;
+  private String password = "password";
 
   @Override
   protected @NonNull CredentialsProperties convertValidated() {

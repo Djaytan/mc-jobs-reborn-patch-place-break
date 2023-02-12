@@ -63,7 +63,7 @@ public final class DbmsHostValidatingProperties
   @NotBlank
   @Size(max = 255)
   @Required
-  private String hostname;
+  private String hostname = "localhost";
 
   /**
    * A port cannot exceed 65535, which is the maximum value allowed by the Transport Control
@@ -74,10 +74,10 @@ public final class DbmsHostValidatingProperties
   @Max(65535)
   @Positive
   @Required
-  private int port;
+  private int port = 3306;
 
   @Required
-  private boolean isSslEnabled;
+  private boolean isSslEnabled = true;
 
   @Override
   protected @NonNull DbmsHostProperties convertValidated() {

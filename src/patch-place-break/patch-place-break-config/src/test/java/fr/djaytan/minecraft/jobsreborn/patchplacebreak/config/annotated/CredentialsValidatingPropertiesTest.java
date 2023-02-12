@@ -92,8 +92,9 @@ class CredentialsValidatingPropertiesTest {
           new CredentialsValidatingProperties();
 
       // Then
-      assertAll(() -> assertThat(credentialsValidatingProperties.getUsername()).isNull(),
-          () -> assertThat(credentialsValidatingProperties.getPassword()).isNull(),
+      assertAll(
+          () -> assertThat(credentialsValidatingProperties.getUsername()).isEqualTo("username"),
+          () -> assertThat(credentialsValidatingProperties.getPassword()).isEqualTo("password"),
           () -> assertThat(credentialsValidatingProperties.isValidated()).isFalse());
     }
 
@@ -156,6 +157,21 @@ class CredentialsValidatingPropertiesTest {
   @Nested
   @DisplayName("When validating")
   class WhenValidating {
+
+    @Test
+    @DisplayName("With default values")
+    void withDefaultValues_shouldNotGenerateConstraintViolations() {
+      // Given
+      CredentialsValidatingProperties credentialsValidatingProperties =
+          new CredentialsValidatingProperties();
+
+      // When
+      Set<ConstraintViolation<CredentialsValidatingProperties>> constraintViolations =
+          ValidatorTestWrapper.validate(credentialsValidatingProperties);
+
+      // Then
+      assertThat(constraintViolations).isEmpty();
+    }
 
     @Test
     @DisplayName("With only valid values")

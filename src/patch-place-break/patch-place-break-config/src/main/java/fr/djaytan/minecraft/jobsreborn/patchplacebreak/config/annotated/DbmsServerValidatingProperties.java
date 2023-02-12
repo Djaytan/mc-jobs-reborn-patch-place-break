@@ -57,15 +57,15 @@ public final class DbmsServerValidatingProperties
   @NotNull
   @Valid
   @Required
-  private DbmsHostValidatingProperties host;
+  private DbmsHostValidatingProperties host = new DbmsHostValidatingProperties();
   @NotNull
   @Valid
   @Required
-  private CredentialsValidatingProperties credentials;
+  private CredentialsValidatingProperties credentials = new CredentialsValidatingProperties();
   @NotBlank
   @Size(max = 128)
   @Required
-  private String database;
+  private String database = "database";
 
   @Override
   protected @NonNull DbmsServerProperties convertValidated() {

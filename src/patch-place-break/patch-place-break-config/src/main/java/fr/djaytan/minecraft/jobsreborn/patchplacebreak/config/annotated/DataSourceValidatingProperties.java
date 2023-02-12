@@ -57,19 +57,20 @@ public final class DataSourceValidatingProperties
 
   @NotNull
   @Required
-  private DataSourceType type;
+  private DataSourceType type = DataSourceType.SQLITE;
   @NotBlank
   @Size(max = 128)
   @Required
-  private String table;
+  private String table = "patch_place_break_tag";
   @NotNull
   @Valid
   @Required
-  private DbmsServerValidatingProperties dbmsServer;
+  private DbmsServerValidatingProperties dbmsServer = new DbmsServerValidatingProperties();
   @NotNull
   @Valid
   @Required
-  private ConnectionPoolValidatingProperties connectionPool;
+  private ConnectionPoolValidatingProperties connectionPool =
+      new ConnectionPoolValidatingProperties();
 
   @Override
   protected @NonNull DataSourceProperties convertValidated() {
