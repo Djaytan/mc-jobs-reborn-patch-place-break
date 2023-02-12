@@ -41,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PropertiesValidator {
 
+  private static final String LINE_SEPARATOR = System.getProperty("line.separator");
   private final Validator validator;
 
   @Inject
@@ -69,7 +70,7 @@ public class PropertiesValidator {
 
     if (!constraintViolations.isEmpty()) {
       String formatted = ConstraintViolationFormatter.format(constraintViolations);
-      log.atError().log("Detected constraint violations:\n{}", formatted);
+      log.atError().log("Detected constraint violations:{}{}", LINE_SEPARATOR, formatted);
       throw PropertiesValidationException.constraintViolations(constraintViolations);
     }
 

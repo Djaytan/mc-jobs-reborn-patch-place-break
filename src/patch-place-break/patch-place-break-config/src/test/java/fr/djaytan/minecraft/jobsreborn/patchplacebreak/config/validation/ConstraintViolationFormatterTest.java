@@ -117,7 +117,7 @@ class ConstraintViolationFormatterTest {
       String fileName = "whenFormatting_withSeveralConstraintViolations.txt";
       String expectedFormattedText =
           TestResourcesHelper.getClassResourceAsString(this.getClass(), fileName, true);
-      assertThat(actualFormattedText).isEqualTo(expectedFormattedText);
+      assertThat(actualFormattedText).isEqualToIgnoringNewLines(expectedFormattedText);
     }
   }
 }

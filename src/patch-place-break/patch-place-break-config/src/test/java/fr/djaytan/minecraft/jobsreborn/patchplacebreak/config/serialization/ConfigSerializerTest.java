@@ -85,7 +85,7 @@ class ConfigSerializerTest {
       String expectedYaml =
           TestResourcesHelper.getClassResourceAsString(this.getClass(), expectedYamlFile, false);
       String actualYaml = new String(Files.readAllBytes(targetFileLocation));
-      assertThat(actualYaml).isEqualTo(expectedYaml);
+      assertThat(actualYaml).isEqualToIgnoringNewLines(expectedYaml);
     }
   }
 
