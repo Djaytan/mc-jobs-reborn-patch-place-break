@@ -97,13 +97,13 @@ class ConfigSerializerTest {
     @DisplayName("With camelCase fields")
     void withCamelCaseFields_shouldSuccess() {
       // Given
-      String yamlFileName = "whenDeserializing_withCamelCaseFields.conf";
-      Path yamlFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
+      String confFileName = "whenDeserializing_withCamelCaseFields.conf";
+      Path confFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
       Optional<DbmsHostValidatingProperties> optionalHostValidatingProperties =
-          configSerializer.deserialize(yamlFile, DbmsHostValidatingProperties.class);
+          configSerializer.deserialize(confFile, DbmsHostValidatingProperties.class);
 
       // Then
       assertThat(optionalHostValidatingProperties).isPresent().get()
@@ -114,13 +114,13 @@ class ConfigSerializerTest {
     @DisplayName("With kebab-case fields")
     void withKebabCaseFields_shouldThrowException() {
       // Given
-      String yamlFileName = "whenDeserializing_withKebabCaseFields.conf";
-      Path yamlFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
+      String confFileName = "whenDeserializing_withKebabCaseFields.conf";
+      Path confFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
       ThrowingCallable throwingCallable =
-          () -> configSerializer.deserialize(yamlFile, DbmsHostValidatingProperties.class);
+          () -> configSerializer.deserialize(confFile, DbmsHostValidatingProperties.class);
 
       // Then
       assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigSerializationException.class)

@@ -393,15 +393,15 @@ class DbmsHostValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With valid content")
-    void withValidContent_shouldMatchExpectedValue(@NonNull String yamlFileName,
+    void withValidContent_shouldMatchExpectedValue(@NonNull String confFileName,
         @NonNull DbmsHostValidatingProperties expectedValue) {
       // Given
-      Path yamlFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
+      Path confFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
       Optional<DbmsHostValidatingProperties> optionalHostValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(yamlFile, DbmsHostValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(confFile, DbmsHostValidatingProperties.class);
 
       // Then
       assertThat(optionalHostValidatingProperties).isPresent().get().isEqualTo(expectedValue);
@@ -422,13 +422,13 @@ class DbmsHostValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With invalid content")
-    void withInvalidContent_shouldThrowException(@NonNull String yamlFileName) {
+    void withInvalidContent_shouldThrowException(@NonNull String confFileName) {
       // Given
-      Path yamlFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
+      Path confFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      ThrowingCallable throwingCallable = () -> ConfigSerializerTestWrapper.deserialize(yamlFile,
+      ThrowingCallable throwingCallable = () -> ConfigSerializerTestWrapper.deserialize(confFile,
           DbmsHostValidatingProperties.class);
 
       // Then
@@ -450,13 +450,13 @@ class DbmsHostValidatingPropertiesTest {
     @DisplayName("With empty content")
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
-      String yamlFileName = "whenDeserializing_withEmptyContent.conf";
-      Path yamlFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
+      String confFileName = "whenDeserializing_withEmptyContent.conf";
+      Path confFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
       Optional<DbmsHostValidatingProperties> dbmsHostValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(yamlFile, DbmsHostValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(confFile, DbmsHostValidatingProperties.class);
 
       // Then
       assertThat(dbmsHostValidatingProperties).isNotPresent();
