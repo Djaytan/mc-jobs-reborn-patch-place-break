@@ -37,11 +37,20 @@ import lombok.NonNull;
 public final class ConfigSerializerTestWrapper {
 
   /**
-   * @see ConfigSerializer#deserialize(Path, Class)
+   * @see ConfigSerializer#serialize(Path, Object)
    */
-  public static <T> @NonNull Optional<T> deserialize(@NonNull Path srcFile, @NonNull Class<T> type)
+  public static void serialize(@NonNull Path destConfigFile, @NonNull Object object)
       throws ConfigSerializationException {
     ConfigSerializer configSerializer = new ConfigSerializer();
-    return configSerializer.deserialize(srcFile, type);
+    configSerializer.serialize(destConfigFile, object);
+  }
+
+  /**
+   * @see ConfigSerializer#deserialize(Path, Class)
+   */
+  public static <T> @NonNull Optional<T> deserialize(@NonNull Path srcConfigFile,
+      @NonNull Class<T> type) throws ConfigSerializationException {
+    ConfigSerializer configSerializer = new ConfigSerializer();
+    return configSerializer.deserialize(srcConfigFile, type);
   }
 }
