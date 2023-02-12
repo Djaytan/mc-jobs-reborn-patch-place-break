@@ -48,7 +48,7 @@
     <main.basedir>${project.basedir}/../../</main.basedir>
 
     <!-- ==================== Dependencies versions ==================== -->
-    <bstat.version>3.0.0</bstat.version>
+    <bstat.version>3.0.1</bstat.version>
     <spigotApi.version>1.11.2-R0.1-SNAPSHOT</spigotApi.version>
     <jobsReborn.version>v4.17.2</jobsReborn.version>
   </properties>
