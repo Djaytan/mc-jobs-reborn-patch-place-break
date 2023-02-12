@@ -1,3 +1,7 @@
+#         JobsReborn-PatchPlaceBreak
+# A patch place-break extension for JobsReborn
+#                (by Djaytan)
+
 hostname: example.com
 port: 1234
 isSslEnabled: true

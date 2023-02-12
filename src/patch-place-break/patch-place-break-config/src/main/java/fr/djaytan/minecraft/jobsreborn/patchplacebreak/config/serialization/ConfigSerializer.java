@@ -24,17 +24,15 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 
 import javax.inject.Singleton;
 
-import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.objectmapping.ObjectMapper;
-import org.spongepowered.configurate.util.NamingSchemes;
-import org.spongepowered.configurate.yaml.NodeStyle;
-import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
+import org.spongepowered.configurate.loader.ConfigurationLoader;
 
 import lombok.NonNull;
 
@@ -50,21 +48,23 @@ public final class ConfigSerializer {
   /**
    * Serializes the given object into the specified destination file.
    *
-   * @param destFile The destination file into which serialize object.
+   * @param destConfigFile The destination config file into which serialize object.
    * @param object The object to serialize.
    * @throws ConfigSerializationException If something prevent the serialization.
    */
-  public void serialize(@NonNull Path destFile, Object object) {
-    YamlConfigurationLoader loader = createYamlLoader(destFile);
-
-    if (!loader.canSave()) {
-      throw ConfigSerializationException.failToSerialize();
-    }
+  public void serialize(@NonNull Path destConfigFile, Object object) {
 
     try {
+      ConfigurationLoader<CommentedConfigurationNode> loader =
+          ConfigLoaderFactory.createLoader(destConfigFile);
+
+      if (!loader.canSave()) {
+        throw ConfigSerializationException.failToSerialize();
+      }
+
       ConfigurationNode configurationNode = loader.createNode(node -> node.set(object));
       loader.save(configurationNode);
-    } catch (ConfigurateException e) {
+    } catch (IOException e) {
       throw ConfigSerializationException.failToSerialize(e);
     }
   }
@@ -72,35 +72,26 @@ public final class ConfigSerializer {
   /**
    * Deserializes the given source file to the specified targeted type.
    *
-   * @param srcFile The source file from which deserializing.
+   * @param srcConfigFile The source config file from which deserializing.
    * @param type The targeted type of YAML deserialization.
    * @return The deserialized value if present and of valid type.
    * @param <T> The expected type to be obtained from deserialization.
    * @throws ConfigSerializationException If something prevent the deserialization.
    */
-  public <T> @NonNull Optional<T> deserialize(@NonNull Path srcFile, @NonNull Class<T> type)
+  public <T> @NonNull Optional<T> deserialize(@NonNull Path srcConfigFile, @NonNull Class<T> type)
       throws ConfigSerializationException {
-    YamlConfigurationLoader loader = createYamlLoader(srcFile);
-
-    if (!loader.canLoad()) {
-      throw ConfigSerializationException.failToDeserialize();
-    }
-
     try {
+      ConfigurationLoader<CommentedConfigurationNode> loader =
+          ConfigLoaderFactory.createLoader(srcConfigFile);
+
+      if (!loader.canLoad()) {
+        throw ConfigSerializationException.failToDeserialize();
+      }
+
       ConfigurationNode rootNode = loader.load();
       return Optional.ofNullable(rootNode.get(type));
-    } catch (ConfigurateException e) {
+    } catch (IOException e) {
       throw ConfigSerializationException.failToDeserialize(e);
     }
-  }
-
-  private static @NonNull YamlConfigurationLoader createYamlLoader(@NonNull Path yamlFile) {
-    ObjectMapper.Factory customFactory =
-        ObjectMapper.factoryBuilder().defaultNamingScheme(NamingSchemes.CAMEL_CASE).build();
-
-    return YamlConfigurationLoader.builder().path(yamlFile).nodeStyle(NodeStyle.BLOCK)
-        .defaultOptions(
-            opts -> opts.serializers(builder -> builder.registerAnnotatedObjects(customFactory)))
-        .build();
   }
 }

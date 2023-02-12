@@ -37,6 +37,7 @@ import lombok.NonNull;
  */
 final class ConstraintViolationFormatter {
 
+  private static final String LINE_SEPARATOR = System.getProperty("line.separator");
   private static final String FORMAT_TEMPLATE = " * Property '%s' - %s (invalid value: '%s')";
 
   private ConstraintViolationFormatter() {
@@ -54,7 +55,7 @@ final class ConstraintViolationFormatter {
     // TODO: use Validate of commons-lang3 instead (remove deps to Guava!)
     Preconditions.checkArgument(!constraintViolations.isEmpty());
 
-    StringJoiner stringJoiner = new StringJoiner("\n");
+    StringJoiner stringJoiner = new StringJoiner(LINE_SEPARATOR);
 
     for (ConstraintViolation<T> constraintViolation : constraintViolations) {
       String formatted = format(constraintViolation);
