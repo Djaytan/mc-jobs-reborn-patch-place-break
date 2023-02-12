@@ -73,7 +73,7 @@ class ConfigSerializerTest {
     @SneakyThrows
     void withNominalValues_shouldCreateAndFillYamlFile() {
       // Given
-      Path targetFileLocation = imfs.getPath("test.yml");
+      Path targetFileLocation = imfs.getPath("test.conf");
       DbmsHostValidatingProperties dbmsHostValidatingProperties =
           DbmsHostValidatingProperties.of("example.com", 1234, true);
 
@@ -81,7 +81,7 @@ class ConfigSerializerTest {
       configSerializer.serialize(targetFileLocation, dbmsHostValidatingProperties);
 
       // Then
-      String expectedYamlFile = "whenSerializing_withNominalValues.yml";
+      String expectedYamlFile = "whenSerializing_withNominalValues.conf";
       String expectedYaml =
           TestResourcesHelper.getClassResourceAsString(this.getClass(), expectedYamlFile, false);
       String actualYaml = new String(Files.readAllBytes(targetFileLocation));
@@ -97,7 +97,7 @@ class ConfigSerializerTest {
     @DisplayName("With camelCase fields")
     void withCamelCaseFields_shouldSuccess() {
       // Given
-      String yamlFileName = "whenDeserializing_withCamelCaseFields.yml";
+      String yamlFileName = "whenDeserializing_withCamelCaseFields.conf";
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
@@ -114,7 +114,7 @@ class ConfigSerializerTest {
     @DisplayName("With kebab-case fields")
     void withKebabCaseFields_shouldThrowException() {
       // Given
-      String yamlFileName = "whenDeserializing_withKebabCaseFields.yml";
+      String yamlFileName = "whenDeserializing_withKebabCaseFields.conf";
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 

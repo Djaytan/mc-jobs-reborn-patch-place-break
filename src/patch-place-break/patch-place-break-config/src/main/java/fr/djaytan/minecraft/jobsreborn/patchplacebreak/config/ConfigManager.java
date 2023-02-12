@@ -56,7 +56,7 @@ import lombok.extern.slf4j.Slf4j;
 @Singleton
 public class ConfigManager {
 
-  public static final String CONFIG_FILE_NAME = "config.yml";
+  public static final String CONFIG_FILE_NAME = "config.conf";
 
   private final ClassLoader classLoader;
   private final Path configFile;

@@ -52,8 +52,8 @@ public final class ConfigSerializer {
    * @param object The object to serialize.
    * @throws ConfigSerializationException If something prevent the serialization.
    */
-  public void serialize(@NonNull Path destConfigFile, Object object) {
-
+  public void serialize(@NonNull Path destConfigFile, @NonNull Object object)
+      throws ConfigSerializationException {
     try {
       ConfigurationLoader<CommentedConfigurationNode> loader =
           ConfigLoaderFactory.createLoader(destConfigFile);
@@ -62,7 +62,7 @@ public final class ConfigSerializer {
         throw ConfigSerializationException.failToSerialize();
       }
 
-      ConfigurationNode configurationNode = loader.createNode(node -> node.set(object));
+      CommentedConfigurationNode configurationNode = loader.createNode(node -> node.set(object));
       loader.save(configurationNode);
     } catch (IOException e) {
       throw ConfigSerializationException.failToSerialize(e);

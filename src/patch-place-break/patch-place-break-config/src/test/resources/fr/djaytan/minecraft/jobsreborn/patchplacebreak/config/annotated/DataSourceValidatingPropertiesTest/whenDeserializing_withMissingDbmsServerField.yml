@@ -1,6 +1,0 @@
-type: "MYSQL"
-table: "patch_place_break"
-connectionPool:
-  connectionTimeout: 60000
-  poolSize: 10
-

@@ -57,6 +57,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSe
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.CredentialsProperties;
 import jakarta.validation.ConstraintViolation;
+import lombok.NonNull;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -194,7 +195,7 @@ class CredentialsValidatingPropertiesTest {
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With valid values")
-      void withValidValues_shouldNotGenerateConstraintViolations(String validUsername) {
+      void withValidValues_shouldNotGenerateConstraintViolations(@NonNull String validUsername) {
         // Given
         CredentialsValidatingProperties credentialsValidatingProperties =
             CredentialsValidatingProperties.of(validUsername, "bar");
@@ -207,7 +208,7 @@ class CredentialsValidatingPropertiesTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      private Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(Arguments.of(Named.of("Longest allowed value", Strings.repeat("s", 32))),
             Arguments.of(Named.of("Shortest allowed value", "s")));
       }
@@ -234,7 +235,7 @@ class CredentialsValidatingPropertiesTest {
                 .equals("username"));
       }
 
-      private Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(Arguments.of(Named.of("Null value", null)),
             Arguments.of(Named.of("Empty value", "")), Arguments.of(Named.of("Blank value", " ")),
             Arguments.of(Named.of("Too long value", Strings.repeat("s", 33))));
@@ -262,10 +263,7 @@ class CredentialsValidatingPropertiesTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      /*
-       * Note: No check are done for blank values.
-       */
-      private Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(Arguments.of(Named.of("Longest allowed value", Strings.repeat("s", 128))),
             Arguments.of(Named.of("Shortest allowed value", "")),
             Arguments.of(Named.of("Blank value", " ")));
@@ -293,7 +291,7 @@ class CredentialsValidatingPropertiesTest {
                 .equals("password"));
       }
 
-      private Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(Arguments.of(Named.of("Null value", null)),
             Arguments.of(Named.of("Too long value", Strings.repeat("s", 129))));
       }
@@ -308,8 +306,8 @@ class CredentialsValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With valid content")
-    void withValidContent_shouldMatchExpectedValue(String yamlFileName,
-        CredentialsValidatingProperties expectedValue) {
+    void withValidContent_shouldMatchExpectedValue(@NonNull String yamlFileName,
+        @NonNull CredentialsValidatingProperties expectedValue) {
       // Given
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
@@ -323,22 +321,22 @@ class CredentialsValidatingPropertiesTest {
           .isEqualTo(expectedValue);
     }
 
-    private Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
+    private @NonNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
-          Arguments.of(Named.of("With valid values", "whenDeserializing_withValidValues.yml"),
+          Arguments.of(Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
               CredentialsValidatingProperties.of("foo", "bar")),
           Arguments.of(
-              Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.yml"),
+              Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
               CredentialsValidatingProperties.of("foo", "bar")),
           Arguments.of(
-              Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.yml"),
+              Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
               CredentialsValidatingProperties.of("foo", "bar")));
     }
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With invalid content")
-    void withInvalidContent_shouldThrowException(String yamlFileName) {
+    void withInvalidContent_shouldThrowException(@NonNull String yamlFileName) {
       // Given
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
@@ -352,19 +350,19 @@ class CredentialsValidatingPropertiesTest {
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
-    private Stream<Arguments> withInvalidContent_shouldThrowException() {
+    private @NonNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
           Arguments.of(Named.of("With missing 'username' field",
-              "whenDeserializing_withMissingUsernameField.yml")),
+              "whenDeserializing_withMissingUsernameField.conf")),
           Arguments.of(Named.of("With missing 'password' field",
-              "whenDeserializing_withMissingPasswordField.yml")));
+              "whenDeserializing_withMissingPasswordField.conf")));
     }
 
     @Test
     @DisplayName("With empty content")
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
-      String yamlFileName = "whenDeserializing_withEmptyContent.yml";
+      String yamlFileName = "whenDeserializing_withEmptyContent.conf";
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 

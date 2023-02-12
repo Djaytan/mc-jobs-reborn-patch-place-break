@@ -30,12 +30,11 @@ import java.nio.file.Path;
 
 import org.apache.commons.io.IOUtils;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.configurate.loader.ConfigurationLoader;
 import org.spongepowered.configurate.loader.HeaderMode;
 import org.spongepowered.configurate.objectmapping.ObjectMapper;
 import org.spongepowered.configurate.util.NamingSchemes;
-import org.spongepowered.configurate.yaml.NodeStyle;
-import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import lombok.NonNull;
 
@@ -66,8 +65,8 @@ final class ConfigLoaderFactory {
 
     String configHeader = createConfigHeader();
 
-    return YamlConfigurationLoader.builder().path(configFile).nodeStyle(NodeStyle.BLOCK)
-        .headerMode(HeaderMode.PRESET)
+    return HoconConfigurationLoader.builder().path(configFile).prettyPrinting(true)
+        .emitComments(true).emitJsonCompatible(false).headerMode(HeaderMode.PRESET)
         .defaultOptions(
             opts -> opts.serializers(builder -> builder.registerAnnotatedObjects(customFactory))
                 .header(configHeader))

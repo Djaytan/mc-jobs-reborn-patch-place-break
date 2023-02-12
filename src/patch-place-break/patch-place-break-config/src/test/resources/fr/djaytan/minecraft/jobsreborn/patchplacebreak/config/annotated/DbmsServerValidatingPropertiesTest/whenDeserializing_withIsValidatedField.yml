@@ -1,9 +1,0 @@
-host:
-  hostname: "example.com"
-  port: 1234
-  isSslEnabled: true
-credentials:
-  username: "foo"
-  password: "bar"
-database: "patch_database"
-isValidated: true

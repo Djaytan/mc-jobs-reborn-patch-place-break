@@ -1,3 +1,0 @@
-connectionTimeout: 60000
-poolSize: 10
-isValidated: true

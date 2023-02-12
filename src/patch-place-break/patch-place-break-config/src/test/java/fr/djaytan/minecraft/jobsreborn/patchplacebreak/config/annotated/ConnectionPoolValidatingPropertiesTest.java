@@ -56,6 +56,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSe
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.ConnectionPoolProperties;
 import jakarta.validation.ConstraintViolation;
+import lombok.NonNull;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -209,7 +210,7 @@ class ConnectionPoolValidatingPropertiesTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      private Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(Arguments.of(Named.of("Highest allowed value", 600000)),
             Arguments.of(Named.of("Lowest allowed value", 1)));
       }
@@ -236,7 +237,7 @@ class ConnectionPoolValidatingPropertiesTest {
                 .equals("connectionTimeout"));
       }
 
-      private Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(Arguments.of(Named.of("Null value", 0)),
             Arguments.of(Named.of("Too high value", 600001)));
       }
@@ -263,7 +264,7 @@ class ConnectionPoolValidatingPropertiesTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      private Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(Arguments.of(Named.of("Highest allowed value", 100)),
             Arguments.of(Named.of("Lowest allowed value", 1)));
       }
@@ -290,7 +291,7 @@ class ConnectionPoolValidatingPropertiesTest {
                 .equals("poolSize"));
       }
 
-      private Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(Arguments.of(Named.of("Null value", 0)),
             Arguments.of(Named.of("Too high value", 101)));
       }
@@ -305,8 +306,8 @@ class ConnectionPoolValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With valid content")
-    void withValidContent_shouldMatchExpectedValue(String yamlFileName,
-        ConnectionPoolValidatingProperties expectedValue) {
+    void withValidContent_shouldMatchExpectedValue(@NonNull String yamlFileName,
+        @NonNull ConnectionPoolValidatingProperties expectedValue) {
       // Given
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
@@ -321,22 +322,22 @@ class ConnectionPoolValidatingPropertiesTest {
           .isEqualTo(expectedValue);
     }
 
-    private Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
+    private @NonNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
-          Arguments.of(Named.of("With valid values", "whenDeserializing_withValidValues.yml"),
+          Arguments.of(Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
               ConnectionPoolValidatingProperties.of(60000, 10)),
           Arguments.of(
-              Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.yml"),
+              Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
               ConnectionPoolValidatingProperties.of(60000, 10)),
           Arguments.of(
-              Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.yml"),
+              Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
               ConnectionPoolValidatingProperties.of(60000, 10)));
     }
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With invalid content")
-    void withInvalidContent_shouldThrowException(String yamlFileName) {
+    void withInvalidContent_shouldThrowException(@NonNull String yamlFileName) {
       // Given
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
@@ -350,19 +351,19 @@ class ConnectionPoolValidatingPropertiesTest {
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
-    private Stream<Arguments> withInvalidContent_shouldThrowException() {
+    private @NonNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
           Arguments.of(Named.of("With missing 'connectionTimeout' field",
-              "whenDeserializing_withMissingConnectionTimeoutField.yml")),
+              "whenDeserializing_withMissingConnectionTimeoutField.conf")),
           Arguments.of(Named.of("With missing 'poolSize' field",
-              "whenDeserializing_withMissingPoolSizeField.yml")));
+              "whenDeserializing_withMissingPoolSizeField.conf")));
     }
 
     @Test
     @DisplayName("With empty content")
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
-      String yamlFileName = "whenDeserializing_withEmptyContent.yml";
+      String yamlFileName = "whenDeserializing_withEmptyContent.conf";
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 
