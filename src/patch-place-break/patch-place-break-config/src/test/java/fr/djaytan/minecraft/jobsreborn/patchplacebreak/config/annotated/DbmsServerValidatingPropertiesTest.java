@@ -93,9 +93,12 @@ class DbmsServerValidatingPropertiesTest {
           new DbmsServerValidatingProperties();
 
       // Then
-      assertAll(() -> assertThat(dbmsServerValidatingProperties.getHost()).isNull(),
-          () -> assertThat(dbmsServerValidatingProperties.getCredentials()).isNull(),
-          () -> assertThat(dbmsServerValidatingProperties.getDatabase()).isNull(),
+      assertAll(
+          () -> assertThat(dbmsServerValidatingProperties.getHost())
+              .isEqualTo(DbmsHostValidatingProperties.of("localhost", 3306, true)),
+          () -> assertThat(dbmsServerValidatingProperties.getCredentials())
+              .isEqualTo(CredentialsValidatingProperties.of("username", "password")),
+          () -> assertThat(dbmsServerValidatingProperties.getDatabase()).isEqualTo("database"),
           () -> assertThat(dbmsServerValidatingProperties.isValidated()).isFalse());
     }
 
@@ -167,6 +170,21 @@ class DbmsServerValidatingPropertiesTest {
   @Nested
   @DisplayName("When validating")
   class WhenValidating {
+
+    @Test
+    @DisplayName("With default values")
+    void withDefaultValues_shouldNotGenerateConstraintViolations() {
+      // Given
+      DbmsServerValidatingProperties dbmsServerValidatingProperties =
+          new DbmsServerValidatingProperties();
+
+      // When
+      Set<ConstraintViolation<DbmsServerValidatingProperties>> constraintViolations =
+          ValidatorTestWrapper.validate(dbmsServerValidatingProperties);
+
+      // Then
+      assertThat(constraintViolations).isEmpty();
+    }
 
     @Test
     @DisplayName("With only valid values")

@@ -91,7 +91,13 @@ class ConfigValidatingPropertiesTest {
       ConfigValidatingProperties configValidatingProperties = new ConfigValidatingProperties();
 
       // Then
-      assertAll(() -> assertThat(configValidatingProperties.getDataSource()).isNull(),
+      assertAll(
+          () -> assertThat(configValidatingProperties.getDataSource()).isEqualTo(
+              DataSourceValidatingProperties.of(DataSourceType.SQLITE, "patch_place_break_tag",
+                  DbmsServerValidatingProperties.of(
+                      DbmsHostValidatingProperties.of("localhost", 3306, true),
+                      CredentialsValidatingProperties.of("username", "password"), "database"),
+                  ConnectionPoolValidatingProperties.of(60000, 10))),
           () -> assertThat(configValidatingProperties.isValidated()).isFalse());
     }
 
@@ -170,6 +176,20 @@ class ConfigValidatingPropertiesTest {
   @Nested
   @DisplayName("When validating")
   class WhenValidating {
+
+    @Test
+    @DisplayName("With default values")
+    void withDefaultValues_shouldNotGenerateConstraintViolations() {
+      // Given
+      ConfigValidatingProperties configValidatingProperties = new ConfigValidatingProperties();
+
+      // When
+      Set<ConstraintViolation<ConfigValidatingProperties>> constraintViolations =
+          ValidatorTestWrapper.validate(configValidatingProperties);
+
+      // Then
+      assertThat(constraintViolations).isEmpty();
+    }
 
     @Test
     @DisplayName("With only valid values")

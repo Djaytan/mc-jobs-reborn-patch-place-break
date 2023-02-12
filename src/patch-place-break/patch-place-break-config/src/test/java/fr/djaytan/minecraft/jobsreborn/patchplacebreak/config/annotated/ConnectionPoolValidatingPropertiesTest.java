@@ -91,8 +91,9 @@ class ConnectionPoolValidatingPropertiesTest {
 
       // Then
       assertAll(
-          () -> assertThat(connectionPoolValidatingProperties.getConnectionTimeout()).isZero(),
-          () -> assertThat(connectionPoolValidatingProperties.getPoolSize()).isZero(),
+          () -> assertThat(connectionPoolValidatingProperties.getConnectionTimeout())
+              .isEqualTo(60000),
+          () -> assertThat(connectionPoolValidatingProperties.getPoolSize()).isEqualTo(10),
           () -> assertThat(connectionPoolValidatingProperties.isValidated()).isFalse());
     }
 
@@ -158,6 +159,21 @@ class ConnectionPoolValidatingPropertiesTest {
   @Nested
   @DisplayName("When validating")
   class WhenValidating {
+
+    @Test
+    @DisplayName("With default values")
+    void withDefaultValues_shouldNotGenerateConstraintViolations() {
+      // Given
+      ConnectionPoolValidatingProperties connectionPoolValidatingProperties =
+          new ConnectionPoolValidatingProperties();
+
+      // When
+      Set<ConstraintViolation<ConnectionPoolValidatingProperties>> constraintViolations =
+          ValidatorTestWrapper.validate(connectionPoolValidatingProperties);
+
+      // Then
+      assertThat(constraintViolations).isEmpty();
+    }
 
     @Test
     @DisplayName("With only valid values")

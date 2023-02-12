@@ -91,9 +91,9 @@ class DbmsHostValidatingPropertiesTest {
           new DbmsHostValidatingProperties();
 
       // Then
-      assertAll(() -> assertThat(dbmsHostValidatingProperties.getHostname()).isNull(),
-          () -> assertThat(dbmsHostValidatingProperties.getPort()).isZero(),
-          () -> assertThat(dbmsHostValidatingProperties.isSslEnabled()).isFalse(),
+      assertAll(() -> assertThat(dbmsHostValidatingProperties.getHostname()).isEqualTo("localhost"),
+          () -> assertThat(dbmsHostValidatingProperties.getPort()).isEqualTo(3306),
+          () -> assertThat(dbmsHostValidatingProperties.isSslEnabled()).isTrue(),
           () -> assertThat(dbmsHostValidatingProperties.isValidated()).isFalse());
     }
 
@@ -160,6 +160,21 @@ class DbmsHostValidatingPropertiesTest {
   @Nested
   @DisplayName("When validating")
   class WhenValidating {
+
+    @Test
+    @DisplayName("With default values")
+    void withDefaultValues_shouldNotGenerateConstraintViolations() {
+      // Given
+      DbmsHostValidatingProperties dbmsHostValidatingProperties =
+          new DbmsHostValidatingProperties();
+
+      // When
+      Set<ConstraintViolation<DbmsHostValidatingProperties>> constraintViolations =
+          ValidatorTestWrapper.validate(dbmsHostValidatingProperties);
+
+      // Then
+      assertThat(constraintViolations).isEmpty();
+    }
 
     @Test
     @DisplayName("With only valid values")
