@@ -25,6 +25,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
 
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
@@ -57,14 +58,19 @@ public final class DbmsServerValidatingProperties
   @NotNull
   @Valid
   @Required
+  @Comment("Host properties of the DBMS server")
   private DbmsHostValidatingProperties host = new DbmsHostValidatingProperties();
+
   @NotNull
   @Valid
   @Required
+  @Comment("Credentials for authentication with the DBMS server")
   private CredentialsValidatingProperties credentials = new CredentialsValidatingProperties();
+
   @NotBlank
   @Size(max = 128)
   @Required
+  @Comment("The database to use on DBMS server\n" + "Value can't be empty or blank")
   private String database = "database";
 
   @Override

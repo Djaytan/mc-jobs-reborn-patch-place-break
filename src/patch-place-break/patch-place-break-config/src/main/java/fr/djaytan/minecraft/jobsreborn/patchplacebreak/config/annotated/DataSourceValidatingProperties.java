@@ -25,6 +25,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
 
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
@@ -57,18 +58,29 @@ public final class DataSourceValidatingProperties
 
   @NotNull
   @Required
+  @Comment("The type of datasource to use\n" + "Available types:\n"
+      + "- SQLITE: use a local file as database (easy & fast setup)\n"
+      + "- MYSQL: use a MySQL database server (better performances)")
   private DataSourceType type = DataSourceType.SQLITE;
+
   @NotBlank
   @Size(max = 128)
   @Required
+  @Comment("The table where data will be stored\n" + "Value can't be empty or blank")
   private String table = "patch_place_break_tag";
+
   @NotNull
   @Valid
   @Required
+  @Comment("The DBMS server properties for connection establishment\n"
+      + "Not applicable for SQLite")
   private DbmsServerValidatingProperties dbmsServer = new DbmsServerValidatingProperties();
+
   @NotNull
   @Valid
   @Required
+  @Comment("Connection pool properties\n" + "This is reserved for advanced usage only\n"
+      + "Change these settings only if you know what you are doing")
   private ConnectionPoolValidatingProperties connectionPool =
       new ConnectionPoolValidatingProperties();
 

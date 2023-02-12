@@ -25,6 +25,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
 
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
@@ -54,10 +55,14 @@ public final class CredentialsValidatingProperties
   @NotBlank
   @Size(max = 32)
   @Required
+  @Comment("Under behalf of which user to connect on the DBMS server\n"
+      + "Value can't be empty or blank")
   private String username = "username";
+
   @NotNull
   @Size(max = 128)
   @Required
+  @Comment("Password of the user (optional but highly recommended)")
   private String password = "password";
 
   @Override

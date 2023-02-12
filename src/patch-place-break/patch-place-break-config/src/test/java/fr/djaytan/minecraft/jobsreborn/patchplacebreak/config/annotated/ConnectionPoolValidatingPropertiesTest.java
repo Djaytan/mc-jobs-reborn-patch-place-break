@@ -29,6 +29,8 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,6 +38,8 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
@@ -47,6 +51,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.spongepowered.configurate.serialize.SerializationException;
 
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
 
@@ -57,10 +63,24 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.Validato
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.ConnectionPoolProperties;
 import jakarta.validation.ConstraintViolation;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 class ConnectionPoolValidatingPropertiesTest {
+
+  private FileSystem imfs;
+
+  @BeforeEach
+  void beforeEach() {
+    imfs = Jimfs.newFileSystem(Configuration.unix());
+  }
+
+  @AfterEach
+  @SneakyThrows
+  void afterEach() {
+    imfs.close();
+  }
 
   @Test
   @DisplayName("When calling equals() & hashCode()")
@@ -92,7 +112,7 @@ class ConnectionPoolValidatingPropertiesTest {
       // Then
       assertAll(
           () -> assertThat(connectionPoolValidatingProperties.getConnectionTimeout())
-              .isEqualTo(60000),
+              .isEqualTo(30000),
           () -> assertThat(connectionPoolValidatingProperties.getPoolSize()).isEqualTo(10),
           () -> assertThat(connectionPoolValidatingProperties.isValidated()).isFalse());
     }
@@ -311,6 +331,41 @@ class ConnectionPoolValidatingPropertiesTest {
         return Stream.of(Arguments.of(Named.of("Null value", 0)),
             Arguments.of(Named.of("Too high value", 101)));
       }
+    }
+  }
+
+  @Nested
+  @DisplayName("When serializing to YAML")
+  @TestInstance(Lifecycle.PER_CLASS)
+  class WhenSerializingToYaml {
+
+    @ParameterizedTest(name = "{index} - {0}")
+    @MethodSource
+    @DisplayName("With valid values")
+    @SneakyThrows
+    void withValidValues_shouldMatchExpectedYamlContent(
+        @NonNull ConnectionPoolValidatingProperties givenValue,
+        @NonNull String expectedYamlFileName) {
+      // Given
+      Path imDestFile = imfs.getPath("test.conf");
+
+      // When
+      ConfigSerializerTestWrapper.serialize(imDestFile, givenValue);
+
+      // Then
+      String actualYaml = new String(Files.readAllBytes(imDestFile));
+      String expectedYaml = TestResourcesHelper.getClassResourceAsString(this.getClass(),
+          expectedYamlFileName, false);
+      assertThat(actualYaml).isEqualToIgnoringNewLines(expectedYaml);
+    }
+
+    private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
+      return Stream.of(
+          Arguments.of(Named.of("With default values", new ConnectionPoolValidatingProperties()),
+              "whenSerializing_withDefaultValues.conf"),
+          Arguments.of(
+              Named.of("With custom values", ConnectionPoolValidatingProperties.of(30000, 5)),
+              "whenSerializing_withCustomValues.conf"));
     }
   }
 

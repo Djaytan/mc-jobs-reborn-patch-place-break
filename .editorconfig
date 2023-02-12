@@ -12,3 +12,6 @@ trim_trailing_whitespace = true
 
 [*.{md, properties}]
 trim_trailing_whitespace = false
+
+[*.conf]
+indent_size = 4

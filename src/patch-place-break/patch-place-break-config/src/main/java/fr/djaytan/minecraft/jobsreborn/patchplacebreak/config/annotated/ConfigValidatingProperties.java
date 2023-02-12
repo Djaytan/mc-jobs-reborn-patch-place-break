@@ -25,6 +25,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
 
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigProperties;
@@ -54,6 +55,7 @@ public final class ConfigValidatingProperties
   @NotNull
   @Valid
   @Required
+  @Comment("Define where to store and retrieve data")
   private DataSourceValidatingProperties dataSource = new DataSourceValidatingProperties();
 
   @Override
