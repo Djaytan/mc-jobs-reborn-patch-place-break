@@ -58,6 +58,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.prop
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DbmsHostProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DbmsServerProperties;
 import jakarta.validation.ConstraintViolation;
+import lombok.NonNull;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -230,8 +231,8 @@ class ConfigValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With valid content")
-    void withValidContent_shouldMatchExpectedValue(String yamlFileName,
-        ConfigValidatingProperties expectedValue) {
+    void withValidContent_shouldMatchExpectedValue(@NonNull String yamlFileName,
+        @NonNull ConfigValidatingProperties expectedValue) {
       // Given
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
@@ -244,9 +245,9 @@ class ConfigValidatingPropertiesTest {
       assertThat(optionalConfigValidatingProperties).isPresent().get().isEqualTo(expectedValue);
     }
 
-    private Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
+    private @NonNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
-          Arguments.of(Named.of("With valid values", "whenDeserializing_withValidValues.yml"),
+          Arguments.of(Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
               ConfigValidatingProperties
                   .of(DataSourceValidatingProperties.of(DataSourceType.MYSQL, "patch_place_break",
                       DbmsServerValidatingProperties.of(
@@ -254,7 +255,7 @@ class ConfigValidatingPropertiesTest {
                           CredentialsValidatingProperties.of("foo", "bar"), "patch_database"),
                       ConnectionPoolValidatingProperties.of(60000, 10)))),
           Arguments.of(
-              Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.yml"),
+              Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
               ConfigValidatingProperties
                   .of(DataSourceValidatingProperties.of(DataSourceType.MYSQL, "patch_place_break",
                       DbmsServerValidatingProperties.of(
@@ -262,7 +263,7 @@ class ConfigValidatingPropertiesTest {
                           CredentialsValidatingProperties.of("foo", "bar"), "patch_database"),
                       ConnectionPoolValidatingProperties.of(60000, 10)))),
           Arguments.of(
-              Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.yml"),
+              Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
               ConfigValidatingProperties
                   .of(DataSourceValidatingProperties.of(DataSourceType.MYSQL, "patch_place_break",
                       DbmsServerValidatingProperties.of(
@@ -275,7 +276,7 @@ class ConfigValidatingPropertiesTest {
     @DisplayName("With empty content")
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
-      String yamlFileName = "whenDeserializing_withEmptyContent.yml";
+      String yamlFileName = "whenDeserializing_withEmptyContent.conf";
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 

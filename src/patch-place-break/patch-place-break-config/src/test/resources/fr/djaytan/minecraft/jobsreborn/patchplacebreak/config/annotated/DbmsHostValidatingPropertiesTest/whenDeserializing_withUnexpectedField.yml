@@ -1,4 +1,0 @@
-hostname: "example.com"
-port: 1234
-isSslEnabled: true
-unexpectedField: test

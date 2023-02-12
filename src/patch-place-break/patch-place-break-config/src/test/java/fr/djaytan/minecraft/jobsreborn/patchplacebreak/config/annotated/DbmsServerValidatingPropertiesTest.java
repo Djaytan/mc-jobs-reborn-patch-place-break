@@ -59,6 +59,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.prop
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DbmsHostProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DbmsServerProperties;
 import jakarta.validation.ConstraintViolation;
+import lombok.NonNull;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -224,7 +225,7 @@ class DbmsServerValidatingPropertiesTest {
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With valid values")
-      void withValidValues_shouldNotGenerateConstraintViolations(String validDatabase) {
+      void withValidValues_shouldNotGenerateConstraintViolations(@NonNull String validDatabase) {
         // Given
         DbmsServerValidatingProperties dbmsServerValidatingProperties =
             DbmsServerValidatingProperties.of(
@@ -239,7 +240,7 @@ class DbmsServerValidatingPropertiesTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      private Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(Arguments.of(Named.of("Longest allowed value", Strings.repeat("s", 128))),
             Arguments.of(Named.of("Shortest allowed value", "s")));
       }
@@ -268,7 +269,7 @@ class DbmsServerValidatingPropertiesTest {
                 .equals("database"));
       }
 
-      private Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(Arguments.of(Named.of("Null value", null)),
             Arguments.of(Named.of("Too long value", Strings.repeat("s", 129))),
             Arguments.of(Named.of("Empty and too short value", "")),
@@ -285,8 +286,8 @@ class DbmsServerValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With valid content")
-    void withValidContent_shouldMatchExpectedValue(String yamlFileName,
-        DbmsServerValidatingProperties expectedValue) {
+    void withValidContent_shouldMatchExpectedValue(@NonNull String yamlFileName,
+        @NonNull DbmsServerValidatingProperties expectedValue) {
       // Given
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
@@ -299,19 +300,19 @@ class DbmsServerValidatingPropertiesTest {
       assertThat(optionalDbmsServerValidatingProperties).isPresent().get().isEqualTo(expectedValue);
     }
 
-    private Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
+    private @NonNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
-          Arguments.of(Named.of("With valid values", "whenDeserializing_withValidValues.yml"),
+          Arguments.of(Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
               DbmsServerValidatingProperties.of(
                   DbmsHostValidatingProperties.of("example.com", 1234, true),
                   CredentialsValidatingProperties.of("foo", "bar"), "patch_database")),
           Arguments.of(
-              Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.yml"),
+              Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
               DbmsServerValidatingProperties.of(
                   DbmsHostValidatingProperties.of("example.com", 1234, true),
                   CredentialsValidatingProperties.of("foo", "bar"), "patch_database")),
           Arguments.of(
-              Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.yml"),
+              Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
               DbmsServerValidatingProperties.of(
                   DbmsHostValidatingProperties.of("example.com", 1234, true),
                   CredentialsValidatingProperties.of("foo", "bar"), "patch_database")));
@@ -320,7 +321,7 @@ class DbmsServerValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With invalid content")
-    void withInvalidContent_shouldThrowException(String yamlFileName) {
+    void withInvalidContent_shouldThrowException(@NonNull String yamlFileName) {
       // Given
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
@@ -334,21 +335,21 @@ class DbmsServerValidatingPropertiesTest {
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
-    private Stream<Arguments> withInvalidContent_shouldThrowException() {
+    private @NonNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
           Arguments.of(
-              Named.of("With missing 'host' field", "whenDeserializing_withMissingHostField.yml")),
+              Named.of("With missing 'host' field", "whenDeserializing_withMissingHostField.conf")),
           Arguments.of(Named.of("With missing 'credentials' field",
-              "whenDeserializing_withMissingCredentialsField.yml")),
+              "whenDeserializing_withMissingCredentialsField.conf")),
           Arguments.of(Named.of("With missing 'database' field",
-              "whenDeserializing_withMissingDatabaseField.yml")));
+              "whenDeserializing_withMissingDatabaseField.conf")));
     }
 
     @Test
     @DisplayName("With empty content")
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
-      String yamlFileName = "whenDeserializing_withEmptyContent.yml";
+      String yamlFileName = "whenDeserializing_withEmptyContent.conf";
       Path yamlFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
 

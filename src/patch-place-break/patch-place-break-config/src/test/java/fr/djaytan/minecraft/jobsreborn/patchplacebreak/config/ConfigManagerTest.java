@@ -115,7 +115,7 @@ class ConfigManagerTest {
     @DisplayName("With IOException thrown")
     void withIOExceptionThrown_shouldThrowException() throws IOException {
       // Given
-      String defaultConfigFileName = "whenCreatingConfig_withIOExceptionThrown.yml";
+      String defaultConfigFileName = "whenCreatingConfig_withIOExceptionThrown.conf";
       Path defaultConfigFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(),
           defaultConfigFileName);
 
@@ -163,7 +163,7 @@ class ConfigManagerTest {
         void beingNotEmpty_thenShouldNotThrow() throws IOException {
           // Given
           String defaultConfigFileName =
-              "whenCreatingConfig_withoutExistingOne_andWithDefaultOne_beingNotEmpty.yml";
+              "whenCreatingConfig_withoutExistingOne_andWithDefaultOne_beingNotEmpty.conf";
           Path defaultConfigFile = TestResourcesHelper
               .getClassResourceAsAbsolutePath(this.getClass(), defaultConfigFileName);
 
@@ -182,7 +182,7 @@ class ConfigManagerTest {
         void beingEmpty_thenShouldThrowConfigException() throws IOException {
           // Given
           String defaultConfigFileName =
-              "whenCreatingConfig_withoutExistingOne_andWithDefaultOne_beingEmpty.yml";
+              "whenCreatingConfig_withoutExistingOne_andWithDefaultOne_beingEmpty.conf";
           Path defaultConfigFile = TestResourcesHelper
               .getClassResourceAsAbsolutePath(this.getClass(), defaultConfigFileName);
 
@@ -208,7 +208,7 @@ class ConfigManagerTest {
     @DisplayName("With nominal config file")
     void withNominalConfigFile_shouldSuccess() throws IOException {
       // Given
-      String nominalConfigFileName = "whenReadingAndValidatingConfig_withNominalConfigFile.yml";
+      String nominalConfigFileName = "whenReadingAndValidatingConfig_withNominalConfigFile.conf";
       Path nominalConfigFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(),
           nominalConfigFileName);
       Files.copy(nominalConfigFile, configFile);
@@ -229,7 +229,7 @@ class ConfigManagerTest {
     void withMissingRequiredFieldsInConfigFile_shouldThrowException() throws IOException {
       // Given
       String invalidConfigFileName =
-          "whenReadingAndValidatingConfig_withMissingRequiredFieldsInConfigFile.yml";
+          "whenReadingAndValidatingConfig_withMissingRequiredFieldsInConfigFile.conf";
       Path invalidConfigFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(),
           invalidConfigFileName);
       Files.copy(invalidConfigFile, configFile);
@@ -246,7 +246,7 @@ class ConfigManagerTest {
     @DisplayName("With invalid config file")
     void withInvalidConfigFile_shouldThrowException() throws IOException {
       // Given
-      String invalidConfigFileName = "whenReadingAndValidatingConfig_withInvalidConfigFile.yml";
+      String invalidConfigFileName = "whenReadingAndValidatingConfig_withInvalidConfigFile.conf";
       Path invalidConfigFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(),
           invalidConfigFileName);
       Files.copy(invalidConfigFile, configFile);
@@ -262,7 +262,7 @@ class ConfigManagerTest {
     @DisplayName("With empty config file")
     void withEmptyConfigFile_shouldThrowException() throws IOException {
       // Given
-      String emptyConfigFileName = "whenReadingAndValidatingConfig_withEmptyConfigFile.yml";
+      String emptyConfigFileName = "whenReadingAndValidatingConfig_withEmptyConfigFile.conf";
       Path emptyConfigFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), emptyConfigFileName);
       Files.copy(emptyConfigFile, configFile);
