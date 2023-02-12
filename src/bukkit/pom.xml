@@ -61,11 +61,6 @@
         <version>${bstat.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.spongepowered</groupId>
-        <artifactId>configurate-yaml</artifactId>
-        <version>${configurate.version}</version>
-      </dependency>
-      <dependency>
         <groupId>com.github.Zrips</groupId>
         <artifactId>Jobs</artifactId>
         <version>${jobsReborn.version}</version>
@@ -97,6 +92,10 @@
           </exclusion>
           <exclusion>
             <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>commons-lang</groupId>
             <artifactId>commons-lang3</artifactId>
           </exclusion>
           <exclusion>
@@ -110,6 +109,10 @@
           <exclusion>
             <groupId>org.avaje</groupId>
             <artifactId>ebean</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
           </exclusion>
         </exclusions>
       </dependency>

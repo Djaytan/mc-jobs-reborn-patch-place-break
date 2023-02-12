@@ -377,15 +377,15 @@ class ConnectionPoolValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With valid content")
-    void withValidContent_shouldMatchExpectedValue(@NonNull String yamlFileName,
+    void withValidContent_shouldMatchExpectedValue(@NonNull String confFileName,
         @NonNull ConnectionPoolValidatingProperties expectedValue) {
       // Given
-      Path yamlFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
+      Path confFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
       Optional<ConnectionPoolValidatingProperties> optionalConnectionPoolValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(yamlFile,
+          ConfigSerializerTestWrapper.deserialize(confFile,
               ConnectionPoolValidatingProperties.class);
 
       // Then
@@ -408,13 +408,13 @@ class ConnectionPoolValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With invalid content")
-    void withInvalidContent_shouldThrowException(@NonNull String yamlFileName) {
+    void withInvalidContent_shouldThrowException(@NonNull String confFileName) {
       // Given
-      Path yamlFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
+      Path confFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      ThrowingCallable throwingCallable = () -> ConfigSerializerTestWrapper.deserialize(yamlFile,
+      ThrowingCallable throwingCallable = () -> ConfigSerializerTestWrapper.deserialize(confFile,
           ConnectionPoolValidatingProperties.class);
 
       // Then
@@ -434,13 +434,13 @@ class ConnectionPoolValidatingPropertiesTest {
     @DisplayName("With empty content")
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
-      String yamlFileName = "whenDeserializing_withEmptyContent.conf";
-      Path yamlFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
+      String confFileName = "whenDeserializing_withEmptyContent.conf";
+      Path confFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
       Optional<ConnectionPoolValidatingProperties> connectionPoolValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(yamlFile,
+          ConfigSerializerTestWrapper.deserialize(confFile,
               ConnectionPoolValidatingProperties.class);
 
       // Then

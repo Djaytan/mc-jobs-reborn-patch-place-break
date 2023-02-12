@@ -311,15 +311,15 @@ class ConfigValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With valid content")
-    void withValidContent_shouldMatchExpectedValue(@NonNull String yamlFileName,
+    void withValidContent_shouldMatchExpectedValue(@NonNull String confFileName,
         @NonNull ConfigValidatingProperties expectedValue) {
       // Given
-      Path yamlFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
+      Path confFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
       Optional<ConfigValidatingProperties> optionalConfigValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(yamlFile, ConfigValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(confFile, ConfigValidatingProperties.class);
 
       // Then
       assertThat(optionalConfigValidatingProperties).isPresent().get().isEqualTo(expectedValue);
@@ -356,13 +356,13 @@ class ConfigValidatingPropertiesTest {
     @DisplayName("With empty content")
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
-      String yamlFileName = "whenDeserializing_withEmptyContent.conf";
-      Path yamlFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), yamlFileName);
+      String confFileName = "whenDeserializing_withEmptyContent.conf";
+      Path confFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
       Optional<ConfigValidatingProperties> configValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(yamlFile, ConfigValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(confFile, ConfigValidatingProperties.class);
 
       // Then
       assertThat(configValidatingProperties).isNotPresent();

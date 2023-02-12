@@ -219,7 +219,6 @@
                 <include>org.sqlite.**</include>
                 <include>org.slf4j.**</include>
                 <include>org.spongepowered.configurate.**</include>
-                <include>org.yaml.snakeyaml.**</include>
               </includes>
             </relocation>
           </relocations>
