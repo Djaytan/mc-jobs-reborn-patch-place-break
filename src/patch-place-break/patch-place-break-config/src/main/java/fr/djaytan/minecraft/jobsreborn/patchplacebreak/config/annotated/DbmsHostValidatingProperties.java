@@ -25,6 +25,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
 
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
@@ -63,6 +64,8 @@ public final class DbmsHostValidatingProperties
   @NotBlank
   @Size(max = 255)
   @Required
+  @Comment("Hostname (an IP address (IPv4/IPv6) or a domain name)\n"
+      + "Value can't be empty or blank")
   private String hostname = "localhost";
 
   /**
@@ -74,9 +77,12 @@ public final class DbmsHostValidatingProperties
   @Max(65535)
   @Positive
   @Required
+  @Comment("Port\n" + "Accepted range values: [1-65535]")
   private int port = 3306;
 
   @Required
+  @Comment("Whether an SSL/TLS communication must be established at connection time (more secure)\n"
+      + "Only boolean values accepted (true|false)")
   private boolean isSslEnabled = true;
 
   @Override
