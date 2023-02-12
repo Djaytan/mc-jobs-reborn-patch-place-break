@@ -25,6 +25,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
 
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
@@ -53,10 +54,18 @@ public final class ConnectionPoolValidatingProperties
   @Max(600000)
   @Positive
   @Required
-  private long connectionTimeout = 60000;
+  @Comment("The connection timeout in milliseconds\n"
+      + "Corresponds to the maximum time the connection pool will wait to acquire a new connection\n"
+      + "from the DBMS server\n" + "Not applicable for SQLite\n"
+      + "Accepted range values: [1-600000]")
+  private long connectionTimeout = 30000;
+
   @Max(100)
   @Positive
   @Required
+  @Comment("The number of DBMS connections in the pool\n"
+      + "Could be best determined by the executing environment\n"
+      + "Accepted range values: [1-100]")
   private int poolSize = 10;
 
   @Override

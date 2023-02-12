@@ -357,9 +357,9 @@ class DbmsHostValidatingPropertiesTest {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With nominal values")
+    @DisplayName("With valid values")
     @SneakyThrows
-    void withNominalValues_shouldMatchExpectedYamlContent(
+    void withValidValues_shouldMatchExpectedYamlContent(
         @NonNull DbmsHostValidatingProperties givenValue, @NonNull String expectedYamlFileName) {
       // Given
       Path imDestFile = imfs.getPath("test.conf");
@@ -374,7 +374,7 @@ class DbmsHostValidatingPropertiesTest {
       assertThat(actualYaml).isEqualToIgnoringNewLines(expectedYaml);
     }
 
-    private @NonNull Stream<Arguments> withNominalValues_shouldMatchExpectedYamlContent() {
+    private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
           Arguments.of(Named.of("With default values", new DbmsHostValidatingProperties()),
               "whenSerializing_withDefaultValues.conf"),

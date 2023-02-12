@@ -28,12 +28,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
@@ -44,6 +48,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
 
@@ -59,10 +65,24 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.prop
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DbmsServerProperties;
 import jakarta.validation.ConstraintViolation;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 class ConfigValidatingPropertiesTest {
+
+  private FileSystem imfs;
+
+  @BeforeEach
+  void beforeEach() {
+    imfs = Jimfs.newFileSystem(Configuration.unix());
+  }
+
+  @AfterEach
+  @SneakyThrows
+  void afterEach() {
+    imfs.close();
+  }
 
   @Test
   @DisplayName("When calling equals() & hashCode()")
@@ -97,7 +117,7 @@ class ConfigValidatingPropertiesTest {
                   DbmsServerValidatingProperties.of(
                       DbmsHostValidatingProperties.of("localhost", 3306, true),
                       CredentialsValidatingProperties.of("username", "password"), "database"),
-                  ConnectionPoolValidatingProperties.of(60000, 10))),
+                  ConnectionPoolValidatingProperties.of(30000, 10))),
           () -> assertThat(configValidatingProperties.isValidated()).isFalse());
     }
 
@@ -240,6 +260,46 @@ class ConfigValidatingPropertiesTest {
 
       // Then
       assertThat(constraintViolations).hasSize(9);
+    }
+  }
+
+  @Nested
+  @DisplayName("When serializing to YAML")
+  @TestInstance(Lifecycle.PER_CLASS)
+  class WhenSerializingToYaml {
+
+    @ParameterizedTest(name = "{index} - {0}")
+    @MethodSource
+    @DisplayName("With valid values")
+    @SneakyThrows
+    void withValidValues_shouldMatchExpectedYamlContent(
+        @NonNull ConfigValidatingProperties givenValue, @NonNull String expectedYamlFileName) {
+      // Given
+      Path imDestFile = imfs.getPath("test.conf");
+
+      // When
+      ConfigSerializerTestWrapper.serialize(imDestFile, givenValue);
+
+      // Then
+      String actualYaml = new String(Files.readAllBytes(imDestFile));
+      String expectedYaml = TestResourcesHelper.getClassResourceAsString(this.getClass(),
+          expectedYamlFileName, false);
+      assertThat(actualYaml).isEqualToIgnoringNewLines(expectedYaml);
+    }
+
+    private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
+      return Stream
+          .of(Arguments.of(Named.of("With default values", new ConfigValidatingProperties()),
+              "whenSerializing_withDefaultValues.conf"),
+              Arguments.of(
+                  Named.of("With custom values",
+                      ConfigValidatingProperties.of(DataSourceValidatingProperties.of(
+                          DataSourceType.MYSQL, "patch_place_break",
+                          DbmsServerValidatingProperties.of(
+                              DbmsHostValidatingProperties.of("example.com", 1234, true),
+                              CredentialsValidatingProperties.of("foo", "bar"), "patch_database"),
+                          ConnectionPoolValidatingProperties.of(60000, 10)))),
+                  "whenSerializing_withCustomValues.conf"));
     }
   }
 
