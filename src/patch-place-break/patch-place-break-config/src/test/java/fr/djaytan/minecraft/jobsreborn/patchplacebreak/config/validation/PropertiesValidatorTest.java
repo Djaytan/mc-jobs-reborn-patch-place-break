@@ -45,8 +45,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.ConfigValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.ConnectionPoolValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.CredentialsValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DataSourceValidatingProperties;
@@ -78,39 +76,41 @@ class PropertiesValidatorTest {
   @DisplayName("When validating with valid values")
   void whenValidating_withValidValues_shouldSuccess() {
     // Given
-    ConfigValidatingProperties configValidatingProperties = ConfigValidatingProperties
-        .of(DataSourceValidatingProperties.of(DataSourceType.MYSQL, "patch_place_break",
+    DataSourceValidatingProperties dataSourceValidatingProperties =
+        DataSourceValidatingProperties.of(DataSourceType.MYSQL, "patch_place_break",
             DbmsServerValidatingProperties.of(
                 DbmsHostValidatingProperties.of("example.com", 1234, true),
                 CredentialsValidatingProperties.of("foo", "bar"), "patch_database"),
-            ConnectionPoolValidatingProperties.of(60000, 10)));
+            ConnectionPoolValidatingProperties.of(60000, 10));
 
     given(validatorMocked.validate(any())).willReturn(Collections.emptySet());
 
     // When
-    ConfigProperties configProperties = propertiesValidator.validate(configValidatingProperties);
+    DataSourceProperties dataSourceProperties =
+        propertiesValidator.validate(dataSourceValidatingProperties);
 
     // Then
-    assertAll(() -> assertThat(configValidatingProperties.isValidated()).isTrue(),
-        () -> assertThat(configProperties).isEqualTo(
-            ConfigProperties.of(DataSourceProperties.of(DataSourceType.MYSQL, "patch_place_break",
+    assertAll(() -> assertThat(dataSourceValidatingProperties.isValidated()).isTrue(),
+        () -> assertThat(dataSourceProperties)
+            .isEqualTo(DataSourceProperties.of(DataSourceType.MYSQL, "patch_place_break",
                 DbmsServerProperties.of(DbmsHostProperties.of("example.com", 1234, true),
                     CredentialsProperties.of("foo", "bar"), "patch_database"),
-                ConnectionPoolProperties.of(60000, 10)))));
+                ConnectionPoolProperties.of(60000, 10))));
   }
 
   @Test
   @DisplayName("When validating with invalid values")
   void whenValidating_withInvalidValues_shouldThrowException(
-      @Mock ConfigValidatingProperties configValidatingPropertiesMocked,
-      @Mock ConstraintViolation<ConfigValidatingProperties> constraintViolationMocked) {
+      @Mock DataSourceValidatingProperties dataSourceValidatingPropertiesMocked,
+      @Mock ConstraintViolation<DataSourceValidatingProperties> constraintViolationMocked) {
     // Given
-    Set<ConstraintViolation<ConfigValidatingProperties>> constraintViolationSet =
+    Set<ConstraintViolation<DataSourceValidatingProperties>> constraintViolationSet =
         Collections.singleton(constraintViolationMocked);
 
-    given(validatorMocked.validate(same(configValidatingPropertiesMocked)))
+    given(validatorMocked.validate(same(dataSourceValidatingPropertiesMocked)))
         .willReturn(constraintViolationSet);
 
+    // TODO: try to remove static and useless mock (clean-up)
     try (MockedStatic<ConstraintViolationFormatter> mockedStatic =
         mockStatic(ConstraintViolationFormatter.class)) {
       mockedStatic.when(() -> ConstraintViolationFormatter.format(eq(constraintViolationSet)))
@@ -118,7 +118,7 @@ class PropertiesValidatorTest {
 
       // When
       ThrowingCallable throwingCallable =
-          () -> propertiesValidator.validate(configValidatingPropertiesMocked);
+          () -> propertiesValidator.validate(dataSourceValidatingPropertiesMocked);
 
       // Then
       assertThatThrownBy(throwingCallable).isExactlyInstanceOf(PropertiesValidationException.class);
