@@ -12,6 +12,7 @@
     "org.glassfish:jakarta.el",
     "org.hibernate.validator:hibernate-validator"
   ],
+  "labels": ["dependencies"],
   "packageRules": [
     {
       "matchUpdateTypes": [
