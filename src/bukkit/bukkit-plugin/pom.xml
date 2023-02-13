@@ -78,13 +78,6 @@
       <artifactId>patch-place-break-core</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
-      <exclusions>
-        <!-- CraftBukkit already provides its implementation -->
-        <exclusion>
-          <groupId>ch.qos.logback</groupId>
-          <artifactId>logback-classic</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>javax.inject</groupId>
@@ -163,7 +156,6 @@
                 <exclude>META-INF/*.DSA</exclude>
                 <exclude>META-INF/*.RSA</exclude>
                 <exclude>META-INF/MANIFEST*</exclude>
-                <exclude>logback.xml</exclude>
               </excludes>
             </filter>
           </filters>
