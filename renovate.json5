@@ -5,7 +5,6 @@
   ],
   // All dependencies which can't be bumped unless by upgrading Java version are ignored
   "ignoreDeps": [
-    "ch.qos.logback:logback-classic",
     "cimg/openjdk",
     "com.zaxxer:HikariCP",
     "jakarta.platform:jakarta.jakartaee-bom",
