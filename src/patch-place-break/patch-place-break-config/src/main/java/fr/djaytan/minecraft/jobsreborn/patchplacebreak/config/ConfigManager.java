@@ -24,8 +24,6 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -34,107 +32,96 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.ConfigValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidator;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Manages config creation and manipulations.
  *
- * <p>The method {@link #createIfNotExists()} permits to create the config if missing at
- * a predefined location. Then, {@link #readAndValidate()} can be used to read
- * and validate it.
+ * <p>The method {@link #createDefaultIfNotExists(String, ValidatingConvertibleProperties)}
+ * permits to create a config if missing under the data folder.
+ * Then, {@link #readAndValidate(String, Class)} can be used to read and validate it.
  *
- * <p>The predefined location definition responsibility is let to the patch enabler (e.g. the
- * Bukkit plugin enabling and calling the patch).
+ * <p>The data folder definition is let to the patch enabler (e.g. the Bukkit plugin enabling and
+ * calling the patch).
  */
 @Slf4j
 @Singleton
-public class ConfigManager {
+final class ConfigManager {
 
-  public static final String CONFIG_FILE_NAME = "config.conf";
-
-  private final ClassLoader classLoader;
-  private final Path configFile;
-  private final PropertiesValidator propertiesValidator;
+  private final Path dataFolder;
   private final ConfigSerializer configSerializer;
+  private final PropertiesValidator propertiesValidator;
 
   @Inject
-  ConfigManager(ClassLoader classLoader, @Named("configFile") Path configFile,
-      PropertiesValidator propertiesValidator, ConfigSerializer configSerializer) {
-    this.classLoader = classLoader;
-    this.configFile = configFile;
-    this.propertiesValidator = propertiesValidator;
+  ConfigManager(@Named("dataFolder") Path dataFolder, ConfigSerializer configSerializer,
+      PropertiesValidator propertiesValidator) {
+    this.dataFolder = dataFolder;
     this.configSerializer = configSerializer;
+    this.propertiesValidator = propertiesValidator;
   }
 
   /**
-   * Creates default config file if it doesn't exist yet to a predefined location.
+   * Creates config file with the given name if it doesn't exist yet.
    *
-   * @throws ConfigException If the default file to be copied can't be found
-   *    or something else prevent the default config file to be copied successfully.
+   * <p>The config file is created under the "dataFolder" path.
+   *
+   * @param configFileName The config file name to create if not exists yet.
+   * @param defaultProperties The default properties to serialize
+   *                          if the config file doesn't exist yet.
    */
-  public void createIfNotExists() throws ConfigException {
+  public void createDefaultIfNotExists(@NonNull String configFileName,
+      @NonNull ValidatingConvertibleProperties<?> defaultProperties) throws ConfigException {
+    Path configFile = dataFolder.resolve(configFileName);
+
     if (Files.exists(configFile)) {
       return;
     }
+
     log.atInfo().log("No config file detected: creating default one.");
-    create();
-  }
-
-  private void create() {
-    try (InputStream configFileIs = classLoader.getResourceAsStream(CONFIG_FILE_NAME)) {
-      if (configFileIs == null) {
-        throw ConfigException.resourceNotFound(CONFIG_FILE_NAME);
-      }
-      copyDefault(configFileIs);
-      log.atInfo().log("Default configuration file created.");
-    } catch (IOException e) {
-      throw ConfigException.failedCreatingDefault(CONFIG_FILE_NAME, e);
-    }
-  }
-
-  private void copyDefault(@NonNull InputStream configFileIs) throws IOException {
-    long configFileSize = Files.copy(configFileIs, configFile);
-
-    if (configFileSize <= 0) {
-      throw ConfigException.unexpectedEmptyDefaultConfig(CONFIG_FILE_NAME);
-    }
+    propertiesValidator.validate(defaultProperties);
+    configSerializer.serialize(configFile, defaultProperties);
+    log.atInfo().log("Default configuration file created.");
   }
 
   /**
    * Reads config file from a predefined location. It is recommended to call
-   * {@link #createIfNotExists()} first at least one time.
+   * {@link #createDefaultIfNotExists(String, ValidatingConvertibleProperties)} first at least one
+   * time.
    *
-   * @return The validated config properties.
-   * @throws ConfigException If the config file doesn't exist at the predefined location
-   *    or something else prevent config file reading or validation.
-   * @throws PropertiesValidationException If read config isn't valid.
+   * @param configFileName The config file name to read under the data folder.
+   * @param type The type to be instantiated and returned once config file read.
+   * @param <T> The final type to be instantiated and returned once config file validated.
+   * @return The specified final type instantiated and populated with values coming from
+   * the config file content.
    */
-  public @NonNull ConfigProperties readAndValidate() throws PropertiesValidationException {
-    ConfigValidatingProperties configValidatingProperties = readAndDeserializeConfigToValidate();
+  public <T> @NonNull T readAndValidate(@NonNull String configFileName,
+      Class<? extends ValidatingConvertibleProperties<T>> type) throws ConfigException {
+    ValidatingConvertibleProperties<T> configValidatingProperties =
+        readAndDeserializeConfigToValidate(configFileName, type);
     return propertiesValidator.validate(configValidatingProperties);
   }
 
-  private @NonNull ConfigValidatingProperties readAndDeserializeConfigToValidate() {
-    try {
-      log.atInfo().log("Reading '{}' file...", CONFIG_FILE_NAME);
-      Optional<ConfigValidatingProperties> configValidatingProperties =
-          configSerializer.deserialize(configFile, ConfigValidatingProperties.class);
+  private <T> @NonNull ValidatingConvertibleProperties<T> readAndDeserializeConfigToValidate(
+      @NonNull String configFileName,
+      @NonNull Class<? extends ValidatingConvertibleProperties<T>> type)
+      throws ConfigSerializationException {
+    Path configFile = dataFolder.resolve(configFileName);
 
-      if (!configValidatingProperties.isPresent()) {
-        throw ConfigException.failedReadingConfig(configFile);
-      }
+    log.atInfo().log("Reading '{}' file...", configFileName);
+    Optional<? extends ValidatingConvertibleProperties<T>> configValidatingProperties =
+        configSerializer.deserialize(configFile, type);
 
-      ConfigValidatingProperties readConfig = configValidatingProperties.get();
-      log.atInfo().log("File '{}' read successfully.", CONFIG_FILE_NAME);
-      return readConfig;
-    } catch (ConfigSerializationException e) {
-      throw ConfigException.failedReadingConfig(configFile, e);
+    if (!configValidatingProperties.isPresent()) {
+      throw ConfigException.failedReadingConfig(configFileName);
     }
+
+    ValidatingConvertibleProperties<T> readConfig = configValidatingProperties.get();
+    log.atInfo().log("File '{}' read successfully.", configFileName);
+    return readConfig;
   }
 }

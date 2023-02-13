@@ -32,7 +32,6 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.ConnectionPoolProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.DataSourceProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.SqlDataSourceInitializerProvider;
@@ -41,7 +40,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.TagS
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.PatchPlaceBreakDefault;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.TagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.DataSource;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.ConnectionPool;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.SqlDataSourceInitializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.TagSqlDataDefiner;
@@ -52,18 +50,14 @@ import lombok.NonNull;
  */
 public class PatchPlaceBreakModule extends AbstractModule {
 
-  private final ClassLoader classLoader;
   private final Path dataFolder;
 
-  public PatchPlaceBreakModule(@NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
-    this.classLoader = classLoader;
+  public PatchPlaceBreakModule(@NonNull Path dataFolder) {
     this.dataFolder = dataFolder;
   }
 
   @Override
   protected void configure() {
-    bind(ClassLoader.class).toInstance(classLoader);
-
     bind(PatchPlaceBreakApi.class).to(PatchPlaceBreakDefault.class);
 
     bind(ConnectionPool.class).toProvider(ConnectionPoolProvider.class);
@@ -78,11 +72,5 @@ public class PatchPlaceBreakModule extends AbstractModule {
   @Singleton
   public Path provideDataFolder() {
     return dataFolder;
-  }
-
-  @Provides
-  @Singleton
-  public DataSourceProperties provideDataSourceProperties(ConfigProperties configProperties) {
-    return configProperties.getDataSource();
   }
 }

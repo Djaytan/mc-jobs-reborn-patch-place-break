@@ -24,18 +24,12 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 
-import static fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigManager.CONFIG_FILE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.doThrow;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,156 +41,125 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.ConfigValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidator;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.ConnectionPoolProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.CredentialsProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DbmsHostProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DbmsServerProperties;
+import lombok.SneakyThrows;
 
 @ExtendWith(MockitoExtension.class)
 class ConfigManagerTest {
 
-  @Mock
-  private ClassLoader classLoaderMocked;
   private ConfigManager configManager;
-  private FileSystem fileSystem;
-  private Path configFile;
+  @Spy
+  private ConfigSerializer configSerializerSpied;
+  private Path dataFolder;
+  private FileSystem imfs;
 
   @BeforeEach
   void beforeEach() {
-    fileSystem = Jimfs.newFileSystem(Configuration.unix());
+    imfs = Jimfs.newFileSystem(Configuration.unix());
 
-    configFile = fileSystem.getPath(CONFIG_FILE_NAME);
+    dataFolder = imfs.getPath("");
     PropertiesValidator propertiesValidator =
         new PropertiesValidator(ValidatorTestWrapper.getValidator());
-    ConfigSerializer configSerializer = new ConfigSerializer();
-    configManager =
-        new ConfigManager(classLoaderMocked, configFile, propertiesValidator, configSerializer);
+    configManager = new ConfigManager(dataFolder, configSerializerSpied, propertiesValidator);
   }
 
   @AfterEach
-  void afterEach() throws IOException {
-    fileSystem.close();
+  @SneakyThrows
+  void afterEach() {
+    imfs.close();
   }
 
   @Nested
-  @DisplayName("When creating config")
-  class WhenCreatingConfig {
+  @DisplayName("When creating default config")
+  class WhenCreatingDefaultConfig {
 
     @Test
-    @DisplayName("With existing one")
-    void withExistingConfigFile_shouldDoNothing() throws IOException {
+    @DisplayName("With already existing one")
+    void withAlreadyExistingOne_shouldDoNothing() throws IOException {
       // Given
+      String configFileName = "alreadyExisting.conf";
+      ConfigValidatingProperties defaultProperties = new ConfigValidatingProperties();
+      Path configFile = dataFolder.resolve(configFileName);
       Files.createFile(configFile);
 
       // When
-      configManager.createIfNotExists();
+      configManager.createDefaultIfNotExists(configFileName, defaultProperties);
 
       // Then
-      Mockito.verifyNoInteractions(classLoaderMocked);
+      String configFileContent = new String(Files.readAllBytes(configFile));
+
+      assertThat(configFileContent).isEmpty();
     }
 
     @Test
-    @DisplayName("With IOException thrown")
-    void withIOExceptionThrown_shouldThrowException() throws IOException {
+    @DisplayName("With generic default properties")
+    @SneakyThrows
+    void withGenericDefaultProperties_shouldSerializeConfig() {
       // Given
-      String defaultConfigFileName = "whenCreatingConfig_withIOExceptionThrown.conf";
-      Path defaultConfigFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(),
-          defaultConfigFileName);
+      String configFileName = "nominalCase.conf";
+      ValidatingConvertibleProperties<?> defaultProperties = new ConfigValidatingProperties();
 
-      given(classLoaderMocked.getResourceAsStream(anyString()))
-          .willReturn(Files.newInputStream(defaultConfigFile));
+      // When
+      configManager.createDefaultIfNotExists(configFileName, defaultProperties);
 
-      try (MockedStatic<Files> mockedStatic = mockStatic(Files.class)) {
-        mockedStatic.when(() -> Files.copy(any(InputStream.class), eq(configFile)))
-            .thenThrow(new IOException());
+      // Then
+      String expectedConfigContent = TestResourcesHelper.getClassResourceAsString(this.getClass(),
+          "whenCreatingConfig_withGenericDefaultProperties.conf", false);
+      Path configFile = dataFolder.resolve(configFileName);
+      String actualConfigContent = new String(Files.readAllBytes(configFile));
 
-        // When
-        ThrowingCallable throwingCallable = () -> configManager.createIfNotExists();
-
-        // Then
-        assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigException.class)
-            .hasMessageContaining(CONFIG_FILE_NAME)
-            .hasRootCauseExactlyInstanceOf(IOException.class);
-      }
+      assertThat(actualConfigContent).isEqualToIgnoringNewLines(expectedConfigContent);
     }
 
-    @Nested
-    @DisplayName("Without existing one")
-    class WithoutExistingOne {
+    @Test
+    @DisplayName("With exception thrown at serialization time")
+    void withExceptionThrownAtSerializationTime_shouldThrowWrapperException() {
+      // Given
+      String configFileName = "exception.conf";
+      ConfigValidatingProperties defaultProperties = new ConfigValidatingProperties();
+      doThrow(ConfigSerializationException.class).when(configSerializerSpied).serialize(any(),
+          any());
 
-      @Test
-      @DisplayName("And without default one")
-      void andWithoutDefaultConfigFile_shouldThrowException() {
-        // Given
-        given(classLoaderMocked.getResourceAsStream(anyString())).willReturn(null);
+      // When
+      ThrowingCallable throwingCallable =
+          () -> configManager.createDefaultIfNotExists(configFileName, defaultProperties);
 
-        // When
-        ThrowingCallable throwingCallable = () -> configManager.createIfNotExists();
+      // Then
+      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigSerializationException.class);
+    }
 
-        // Then
-        assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigException.class)
-            .hasMessageContaining(CONFIG_FILE_NAME).hasNoCause();
-      }
+    @Test
+    @DisplayName("With invalid default properties")
+    void withInvalidDefaultProperties_shouldThrowException() {
+      // Given
+      String configFileName = "exception.conf";
+      ConfigValidatingProperties defaultProperties = ConfigValidatingProperties.of(null);
 
-      @Nested
-      @DisplayName("And with default one")
-      class AndWithDefaultOne {
+      // When
+      ThrowingCallable throwingCallable =
+          () -> configManager.createDefaultIfNotExists(configFileName, defaultProperties);
 
-        @Test
-        @DisplayName("Being not empty")
-        void beingNotEmpty_thenShouldNotThrow() throws IOException {
-          // Given
-          String defaultConfigFileName =
-              "whenCreatingConfig_withoutExistingOne_andWithDefaultOne_beingNotEmpty.conf";
-          Path defaultConfigFile = TestResourcesHelper
-              .getClassResourceAsAbsolutePath(this.getClass(), defaultConfigFileName);
-
-          given(classLoaderMocked.getResourceAsStream(anyString()))
-              .willReturn(Files.newInputStream(defaultConfigFile));
-
-          // When
-          ThrowingCallable throwingCallable = () -> configManager.createIfNotExists();
-
-          // Then
-          assertThatCode(throwingCallable).doesNotThrowAnyException();
-        }
-
-        @Test
-        @DisplayName("Being empty")
-        void beingEmpty_thenShouldThrowConfigException() throws IOException {
-          // Given
-          String defaultConfigFileName =
-              "whenCreatingConfig_withoutExistingOne_andWithDefaultOne_beingEmpty.conf";
-          Path defaultConfigFile = TestResourcesHelper
-              .getClassResourceAsAbsolutePath(this.getClass(), defaultConfigFileName);
-
-          given(classLoaderMocked.getResourceAsStream(anyString()))
-              .willReturn(Files.newInputStream(defaultConfigFile));
-
-          // When
-          ThrowingCallable throwingCallable = () -> configManager.createIfNotExists();
-
-          // Then
-          assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigException.class)
-              .hasMessageContaining(CONFIG_FILE_NAME).hasNoCause();
-        }
-      }
+      // Then
+      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(PropertiesValidationException.class);
     }
   }
 
@@ -211,10 +174,14 @@ class ConfigManagerTest {
       String nominalConfigFileName = "whenReadingAndValidatingConfig_withNominalConfigFile.conf";
       Path nominalConfigFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(),
           nominalConfigFileName);
+
+      String configFileName = "test.conf";
+      Path configFile = dataFolder.resolve(configFileName);
       Files.copy(nominalConfigFile, configFile);
 
       // When
-      ConfigProperties configProperties = configManager.readAndValidate();
+      ConfigProperties configProperties =
+          configManager.readAndValidate(configFileName, ConfigValidatingProperties.class);
 
       // Then
       assertThat(configProperties.getDataSource())
@@ -232,14 +199,17 @@ class ConfigManagerTest {
           "whenReadingAndValidatingConfig_withMissingRequiredFieldsInConfigFile.conf";
       Path invalidConfigFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(),
           invalidConfigFileName);
+
+      String configFileName = "test.conf";
+      Path configFile = dataFolder.resolve(configFileName);
       Files.copy(invalidConfigFile, configFile);
 
       // When
-      ThrowingCallable throwingCallable = () -> configManager.readAndValidate();
+      ThrowingCallable throwingCallable =
+          () -> configManager.readAndValidate(configFileName, ConfigValidatingProperties.class);
 
       // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigException.class)
-          .hasCauseExactlyInstanceOf(ConfigSerializationException.class);
+      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigSerializationException.class);
     }
 
     @Test
@@ -249,10 +219,14 @@ class ConfigManagerTest {
       String invalidConfigFileName = "whenReadingAndValidatingConfig_withInvalidConfigFile.conf";
       Path invalidConfigFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(),
           invalidConfigFileName);
+
+      String configFileName = "test.conf";
+      Path configFile = dataFolder.resolve(configFileName);
       Files.copy(invalidConfigFile, configFile);
 
       // When
-      ThrowingCallable throwingCallable = () -> configManager.readAndValidate();
+      ThrowingCallable throwingCallable =
+          () -> configManager.readAndValidate(configFileName, ConfigValidatingProperties.class);
 
       // Then
       assertThatThrownBy(throwingCallable).isExactlyInstanceOf(PropertiesValidationException.class);
@@ -265,25 +239,31 @@ class ConfigManagerTest {
       String emptyConfigFileName = "whenReadingAndValidatingConfig_withEmptyConfigFile.conf";
       Path emptyConfigFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), emptyConfigFileName);
+
+      String configFileName = "test.conf";
+      Path configFile = dataFolder.resolve(configFileName);
       Files.copy(emptyConfigFile, configFile);
 
       // When
-      ThrowingCallable throwingCallable = () -> configManager.readAndValidate();
+      ThrowingCallable throwingCallable =
+          () -> configManager.readAndValidate(configFileName, ConfigValidatingProperties.class);
 
       // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigException.class).hasNoCause();
+      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigException.class);
     }
 
     @Test
     @DisplayName("Without existing config file")
     void withoutExistingConfigFile_shouldThrowException() {
       // Given
+      String configFileName = "test.conf";
 
       // When
-      ThrowingCallable throwingCallable = () -> configManager.readAndValidate();
+      ThrowingCallable throwingCallable =
+          () -> configManager.readAndValidate(configFileName, ConfigValidatingProperties.class);
 
       // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigException.class).hasNoCause();
+      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigException.class);
     }
   }
 }

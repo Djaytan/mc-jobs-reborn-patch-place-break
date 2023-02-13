@@ -22,25 +22,39 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 
-import java.nio.file.Path;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreak;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.ConfigValidatingProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
 import lombok.NonNull;
 
-public class GuiceJobsRebornPatchPlaceBreakModule extends AbstractModule {
+/**
+ * API permitting to retrieve config properties.
+ */
+@Singleton
+public final class ConfigApi {
 
-  @Provides
-  @Singleton
-  public @NonNull PatchPlaceBreakApi providePatchPlaceBreakApi(PatchPlaceBreak patchPlaceBreak,
-      @Named("dataFolder") Path dataFolder) {
-    return patchPlaceBreak.enable(dataFolder);
+  private static final String CONFIG_FILE_NAME = "config.conf";
+
+  private final ConfigManager configManager;
+
+  @Inject
+  public ConfigApi(ConfigManager configManager) {
+    this.configManager = configManager;
+  }
+
+  /**
+   * Retrieves data source related properties.
+   *
+   * @return The data source related properties.
+   */
+  public @NonNull DataSourceProperties getDataSourceProperties() throws ConfigException {
+    configManager.createDefaultIfNotExists(CONFIG_FILE_NAME, new ConfigValidatingProperties());
+    ConfigProperties configProperties =
+        configManager.readAndValidate(CONFIG_FILE_NAME, ConfigValidatingProperties.class);
+    return configProperties.getDataSource();
   }
 }
