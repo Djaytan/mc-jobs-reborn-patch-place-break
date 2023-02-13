@@ -27,7 +27,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.ConfigValidatingProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DataSourceValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
 import lombok.NonNull;
 
@@ -37,7 +37,7 @@ import lombok.NonNull;
 @Singleton
 public final class ConfigApi {
 
-  private static final String CONFIG_FILE_NAME = "config.conf";
+  private static final String DATA_SOURCE_CONFIG_FILE_NAME = "dataSource.conf";
 
   private final ConfigManager configManager;
 
@@ -51,10 +51,10 @@ public final class ConfigApi {
    *
    * @return The data source related properties.
    */
-  public @NonNull DataSourceProperties getDataSourceProperties() throws ConfigException {
-    configManager.createDefaultIfNotExists(CONFIG_FILE_NAME, new ConfigValidatingProperties());
-    ConfigProperties configProperties =
-        configManager.readAndValidate(CONFIG_FILE_NAME, ConfigValidatingProperties.class);
-    return configProperties.getDataSource();
+  public @NonNull DataSourceProperties getDataSourceProperties() {
+    configManager.createDefaultIfNotExists(DATA_SOURCE_CONFIG_FILE_NAME,
+        new DataSourceValidatingProperties());
+    return configManager.readAndValidate(DATA_SOURCE_CONFIG_FILE_NAME,
+        DataSourceValidatingProperties.class);
   }
 }

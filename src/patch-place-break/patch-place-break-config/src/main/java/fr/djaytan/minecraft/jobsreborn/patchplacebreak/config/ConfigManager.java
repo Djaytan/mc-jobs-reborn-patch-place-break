@@ -32,7 +32,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidator;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
@@ -75,7 +74,7 @@ final class ConfigManager {
    *                          if the config file doesn't exist yet.
    */
   public void createDefaultIfNotExists(@NonNull String configFileName,
-      @NonNull ValidatingConvertibleProperties<?> defaultProperties) throws ConfigException {
+      @NonNull ValidatingConvertibleProperties<?> defaultProperties) {
     Path configFile = dataFolder.resolve(configFileName);
 
     if (Files.exists(configFile)) {
@@ -100,7 +99,7 @@ final class ConfigManager {
    * the config file content.
    */
   public <T> @NonNull T readAndValidate(@NonNull String configFileName,
-      Class<? extends ValidatingConvertibleProperties<T>> type) throws ConfigException {
+      Class<? extends ValidatingConvertibleProperties<T>> type) {
     ValidatingConvertibleProperties<T> configValidatingProperties =
         readAndDeserializeConfigToValidate(configFileName, type);
     return propertiesValidator.validate(configValidatingProperties);
@@ -108,8 +107,7 @@ final class ConfigManager {
 
   private <T> @NonNull ValidatingConvertibleProperties<T> readAndDeserializeConfigToValidate(
       @NonNull String configFileName,
-      @NonNull Class<? extends ValidatingConvertibleProperties<T>> type)
-      throws ConfigSerializationException {
+      @NonNull Class<? extends ValidatingConvertibleProperties<T>> type) {
     Path configFile = dataFolder.resolve(configFileName);
 
     log.atInfo().log("Reading '{}' file...", configFileName);
