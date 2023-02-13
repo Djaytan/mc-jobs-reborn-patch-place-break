@@ -96,7 +96,7 @@
     <sonarMavenPlugin.version>3.9.1.2184</sonarMavenPlugin.version>
 
     <!-- ==================== Dependencies versions ==================== -->
-    <byteBuddy.version>1.12.22</byteBuddy.version>
+    <byteBuddy.version>1.13.0</byteBuddy.version>
     <checkerframework.version>3.30.0</checkerframework.version>
     <commons.io.version>2.11.0</commons.io.version>
     <commons.lang3.version>3.12.0</commons.lang3.version>
