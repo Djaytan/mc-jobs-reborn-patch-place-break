@@ -97,7 +97,7 @@ class ConfigManagerTest {
     void withAlreadyExistingOne_shouldDoNothing() throws IOException {
       // Given
       String configFileName = "alreadyExisting.conf";
-      DataSourceValidatingProperties defaultProperties = new DataSourceValidatingProperties();
+      DataSourceValidatingProperties defaultProperties = DataSourceValidatingProperties.ofDefault();
       Path configFile = dataFolder.resolve(configFileName);
       Files.createFile(configFile);
 
@@ -116,7 +116,8 @@ class ConfigManagerTest {
     void withGenericDefaultProperties_shouldSerializeConfig() {
       // Given
       String configFileName = "nominalCase.conf";
-      ValidatingConvertibleProperties<?> defaultProperties = new DataSourceValidatingProperties();
+      ValidatingConvertibleProperties<?> defaultProperties =
+          DataSourceValidatingProperties.ofDefault();
 
       // When
       configManager.createDefaultIfNotExists(configFileName, defaultProperties);
@@ -135,7 +136,7 @@ class ConfigManagerTest {
     void withExceptionThrownAtSerializationTime_shouldThrowWrapperException() {
       // Given
       String configFileName = "exception.conf";
-      DataSourceValidatingProperties defaultProperties = new DataSourceValidatingProperties();
+      DataSourceValidatingProperties defaultProperties = DataSourceValidatingProperties.ofDefault();
       doThrow(ConfigSerializationException.class).when(configSerializerSpied).serialize(any(),
           any());
 

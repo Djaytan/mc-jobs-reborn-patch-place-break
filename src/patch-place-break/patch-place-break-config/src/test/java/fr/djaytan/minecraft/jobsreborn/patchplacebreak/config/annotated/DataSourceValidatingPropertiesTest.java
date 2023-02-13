@@ -113,7 +113,7 @@ class DataSourceValidatingPropertiesTest {
 
       // When
       DataSourceValidatingProperties dataSourceValidatingProperties =
-          new DataSourceValidatingProperties();
+          DataSourceValidatingProperties.ofDefault();
 
       // Then
       assertAll(
@@ -219,7 +219,7 @@ class DataSourceValidatingPropertiesTest {
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
       DataSourceValidatingProperties dataSourceValidatingProperties =
-          new DataSourceValidatingProperties();
+          DataSourceValidatingProperties.ofDefault();
 
       // When
       Set<ConstraintViolation<DataSourceValidatingProperties>> constraintViolations =
@@ -372,7 +372,7 @@ class DataSourceValidatingPropertiesTest {
 
     private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
-          Arguments.of(Named.of("With default values", new DataSourceValidatingProperties()),
+          Arguments.of(Named.of("With default values", DataSourceValidatingProperties.ofDefault()),
               "whenSerializing_withDefaultValues.conf"),
           Arguments.of(
               Named.of("With custom values",

@@ -110,7 +110,7 @@ class DbmsServerValidatingPropertiesTest {
 
       // When
       DbmsServerValidatingProperties dbmsServerValidatingProperties =
-          new DbmsServerValidatingProperties();
+          DbmsServerValidatingProperties.ofDefault();
 
       // Then
       assertAll(
@@ -196,7 +196,7 @@ class DbmsServerValidatingPropertiesTest {
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
       DbmsServerValidatingProperties dbmsServerValidatingProperties =
-          new DbmsServerValidatingProperties();
+          DbmsServerValidatingProperties.ofDefault();
 
       // When
       Set<ConstraintViolation<DbmsServerValidatingProperties>> constraintViolations =
@@ -342,7 +342,7 @@ class DbmsServerValidatingPropertiesTest {
 
     private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
-          Arguments.of(Named.of("With default values", new DbmsServerValidatingProperties()),
+          Arguments.of(Named.of("With default values", DbmsServerValidatingProperties.ofDefault()),
               "whenSerializing_withDefaultValues.conf"),
           Arguments.of(
               Named.of("With custom values",

@@ -53,7 +53,7 @@ public final class ConfigApi {
    */
   public @NonNull DataSourceProperties getDataSourceProperties() {
     configManager.createDefaultIfNotExists(DATA_SOURCE_CONFIG_FILE_NAME,
-        new DataSourceValidatingProperties());
+        DataSourceValidatingProperties.ofDefault());
     return configManager.readAndValidate(DATA_SOURCE_CONFIG_FILE_NAME,
         DataSourceValidatingProperties.class);
   }

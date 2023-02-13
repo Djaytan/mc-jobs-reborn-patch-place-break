@@ -50,7 +50,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@NoArgsConstructor
+@NoArgsConstructor(staticName = "ofDefault")
 @AllArgsConstructor(staticName = "of")
 public final class DbmsServerValidatingProperties
     extends ValidatingConvertibleProperties<DbmsServerProperties> {
@@ -59,13 +59,13 @@ public final class DbmsServerValidatingProperties
   @Valid
   @Required
   @Comment("Host properties of the DBMS server")
-  private DbmsHostValidatingProperties host = new DbmsHostValidatingProperties();
+  private DbmsHostValidatingProperties host = DbmsHostValidatingProperties.ofDefault();
 
   @NotNull
   @Valid
   @Required
   @Comment("Credentials for authentication with the DBMS server")
-  private CredentialsValidatingProperties credentials = new CredentialsValidatingProperties();
+  private CredentialsValidatingProperties credentials = CredentialsValidatingProperties.ofDefault();
 
   @NotBlank
   @Size(max = 128)

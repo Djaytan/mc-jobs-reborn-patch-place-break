@@ -47,7 +47,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true, exclude = "password")
-@NoArgsConstructor
+@NoArgsConstructor(staticName = "ofDefault")
 @AllArgsConstructor(staticName = "of")
 public final class CredentialsValidatingProperties
     extends ValidatingConvertibleProperties<CredentialsProperties> {

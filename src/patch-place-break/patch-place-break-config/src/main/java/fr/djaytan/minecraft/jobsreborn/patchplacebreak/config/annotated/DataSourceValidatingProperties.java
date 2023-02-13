@@ -51,7 +51,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@NoArgsConstructor
+@NoArgsConstructor(staticName = "ofDefault")
 @AllArgsConstructor(staticName = "of")
 public final class DataSourceValidatingProperties
     extends ValidatingConvertibleProperties<DataSourceProperties> {
@@ -74,7 +74,7 @@ public final class DataSourceValidatingProperties
   @Required
   @Comment("The DBMS server properties for connection establishment\n"
       + "Not applicable for SQLite")
-  private DbmsServerValidatingProperties dbmsServer = new DbmsServerValidatingProperties();
+  private DbmsServerValidatingProperties dbmsServer = DbmsServerValidatingProperties.ofDefault();
 
   @NotNull
   @Valid
@@ -82,7 +82,7 @@ public final class DataSourceValidatingProperties
   @Comment("Connection pool properties\n" + "This is reserved for advanced usage only\n"
       + "Change these settings only if you know what you are doing")
   private ConnectionPoolValidatingProperties connectionPool =
-      new ConnectionPoolValidatingProperties();
+      ConnectionPoolValidatingProperties.ofDefault();
 
   @Override
   protected @NonNull DataSourceProperties convertValidated() {
