@@ -38,9 +38,9 @@ public final class PatchPlaceBreakInjector {
 
   private Injector injector;
 
-  public void inject(@NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
+  public void inject(@NonNull Path dataFolder) {
     injector = Guice.createInjector(new ConfigModule(), new ValidationModule(),
-        new PatchPlaceBreakModule(classLoader, dataFolder));
+        new PatchPlaceBreakModule(dataFolder));
   }
 
   public @NonNull PatchPlaceBreakApi getPatchApi() {

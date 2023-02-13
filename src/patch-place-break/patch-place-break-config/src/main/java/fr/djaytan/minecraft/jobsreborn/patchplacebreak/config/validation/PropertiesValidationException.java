@@ -26,15 +26,13 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 
 import java.util.Set;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigException;
 import jakarta.validation.ConstraintViolation;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.experimental.StandardException;
 
 @StandardException(access = AccessLevel.PROTECTED)
-@SuppressWarnings("java:S110") // Not an issue for exception classes
-public class PropertiesValidationException extends ConfigException {
+public class PropertiesValidationException extends RuntimeException {
 
   private static final String CONFIG_CONSTRAINT_VIOLATIONS =
       "Detected config constraint violations: %s";

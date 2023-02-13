@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Singleton
 @Slf4j
-public class PropertiesValidator {
+public final class PropertiesValidator {
 
   private static final String LINE_SEPARATOR = System.getProperty("line.separator");
   private final Validator validator;
