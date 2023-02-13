@@ -107,7 +107,7 @@ class ConnectionPoolValidatingPropertiesTest {
 
       // When
       ConnectionPoolValidatingProperties connectionPoolValidatingProperties =
-          new ConnectionPoolValidatingProperties();
+          ConnectionPoolValidatingProperties.ofDefault();
 
       // Then
       assertAll(
@@ -185,7 +185,7 @@ class ConnectionPoolValidatingPropertiesTest {
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
       ConnectionPoolValidatingProperties connectionPoolValidatingProperties =
-          new ConnectionPoolValidatingProperties();
+          ConnectionPoolValidatingProperties.ofDefault();
 
       // When
       Set<ConstraintViolation<ConnectionPoolValidatingProperties>> constraintViolations =
@@ -361,7 +361,8 @@ class ConnectionPoolValidatingPropertiesTest {
 
     private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
-          Arguments.of(Named.of("With default values", new ConnectionPoolValidatingProperties()),
+          Arguments.of(
+              Named.of("With default values", ConnectionPoolValidatingProperties.ofDefault()),
               "whenSerializing_withDefaultValues.conf"),
           Arguments.of(
               Named.of("With custom values", ConnectionPoolValidatingProperties.of(30000, 5)),

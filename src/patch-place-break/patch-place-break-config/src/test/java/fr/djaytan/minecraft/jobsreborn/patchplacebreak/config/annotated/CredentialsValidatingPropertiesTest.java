@@ -109,7 +109,7 @@ class CredentialsValidatingPropertiesTest {
 
       // When
       CredentialsValidatingProperties credentialsValidatingProperties =
-          new CredentialsValidatingProperties();
+          CredentialsValidatingProperties.ofDefault();
 
       // Then
       assertAll(
@@ -183,7 +183,7 @@ class CredentialsValidatingPropertiesTest {
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
       CredentialsValidatingProperties credentialsValidatingProperties =
-          new CredentialsValidatingProperties();
+          CredentialsValidatingProperties.ofDefault();
 
       // When
       Set<ConstraintViolation<CredentialsValidatingProperties>> constraintViolations =
@@ -360,7 +360,7 @@ class CredentialsValidatingPropertiesTest {
 
     private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
-          Arguments.of(Named.of("With default values", new CredentialsValidatingProperties()),
+          Arguments.of(Named.of("With default values", CredentialsValidatingProperties.ofDefault()),
               "whenSerializing_withDefaultValues.conf"),
           Arguments.of(
               Named.of("With custom values", CredentialsValidatingProperties.of("foo", "bar")),

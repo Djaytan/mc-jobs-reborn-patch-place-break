@@ -108,7 +108,7 @@ class DbmsHostValidatingPropertiesTest {
 
       // When
       DbmsHostValidatingProperties dbmsHostValidatingProperties =
-          new DbmsHostValidatingProperties();
+          DbmsHostValidatingProperties.ofDefault();
 
       // Then
       assertAll(() -> assertThat(dbmsHostValidatingProperties.getHostname()).isEqualTo("localhost"),
@@ -186,7 +186,7 @@ class DbmsHostValidatingPropertiesTest {
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
       DbmsHostValidatingProperties dbmsHostValidatingProperties =
-          new DbmsHostValidatingProperties();
+          DbmsHostValidatingProperties.ofDefault();
 
       // When
       Set<ConstraintViolation<DbmsHostValidatingProperties>> constraintViolations =
@@ -376,7 +376,7 @@ class DbmsHostValidatingPropertiesTest {
 
     private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
-          Arguments.of(Named.of("With default values", new DbmsHostValidatingProperties()),
+          Arguments.of(Named.of("With default values", DbmsHostValidatingProperties.ofDefault()),
               "whenSerializing_withDefaultValues.conf"),
           Arguments.of(
               Named.of("With custom values",

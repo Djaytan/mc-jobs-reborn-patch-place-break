@@ -48,7 +48,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@NoArgsConstructor
+@NoArgsConstructor(staticName = "ofDefault")
 @AllArgsConstructor(staticName = "of")
 public final class DbmsHostValidatingProperties
     extends ValidatingConvertibleProperties<DbmsHostProperties> {
