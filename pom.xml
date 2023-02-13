@@ -76,7 +76,7 @@
 
     <!-- ==================== Plugins versions ==================== -->
     <builderHelperMavenPlugin.version>3.3.0</builderHelperMavenPlugin.version>
-    <formatterMavenPlugin.version>2.21.0</formatterMavenPlugin.version>
+    <formatterMavenPlugin.version>2.22.0</formatterMavenPlugin.version>
     <impsortMavenPlugin.version>1.8.0</impsortMavenPlugin.version>
     <jacocoMavenPlugin.version>0.8.8</jacocoMavenPlugin.version>
     <mavenCleanPlugin.version>3.2.0</mavenCleanPlugin.version>
