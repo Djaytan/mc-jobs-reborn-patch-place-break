@@ -172,6 +172,7 @@
                 <include>com.google.j2objc.**</include>
                 <include>com.google.thirdparty.**</include>
                 <include>com.sun.el.**</include>
+                <include>com.typesafe.config.**</include>
                 <include>com.zaxxer.hikari.**</include>
               </includes>
             </relocation>
@@ -203,6 +204,7 @@
               <shadedPattern>${package.lib}.org</shadedPattern>
               <includes>
                 <include>org.aopalliance.**</include>
+                <include>org.apache.commons.io.**</include>
                 <include>org.apache.commons.lang3.**</include>
                 <include>org.bstats.**</include>
                 <include>org.checkerframework.**</include>
