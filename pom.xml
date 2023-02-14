@@ -481,7 +481,10 @@
             </requirePluginVersions>
             <requireReleaseDeps>
               <searchTransitive>true</searchTransitive>
-              <onlyWhenRelease>true</onlyWhenRelease>
+              <onlyWhenRelease>false</onlyWhenRelease>
+              <excludes>
+                <exclude>org.spigotmc:spigot-api</exclude>
+              </excludes>
             </requireReleaseDeps>
             <requireUpperBoundDeps />
           </rules>
