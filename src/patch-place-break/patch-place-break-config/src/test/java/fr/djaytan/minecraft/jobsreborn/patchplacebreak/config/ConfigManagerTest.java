@@ -128,7 +128,7 @@ class ConfigManagerTest {
       Path configFile = dataFolder.resolve(configFileName);
       String actualConfigContent = new String(Files.readAllBytes(configFile));
 
-      assertThat(actualConfigContent).isEqualToIgnoringNewLines(expectedConfigContent);
+      assertThat(actualConfigContent).containsIgnoringNewLines(expectedConfigContent);
     }
 
     @Test

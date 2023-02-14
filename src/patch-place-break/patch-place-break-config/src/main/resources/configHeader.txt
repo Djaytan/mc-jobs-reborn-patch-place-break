@@ -1,3 +1,6 @@
          JobsReborn-PatchPlaceBreak
  A patch place-break extension for JobsReborn
                 (by Djaytan)
+
+ /!\ Properties ordering is nondeterministic at config generation time because of limitations
+ of underlying library.

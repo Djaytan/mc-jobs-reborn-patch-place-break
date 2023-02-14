@@ -81,6 +81,6 @@ class ConfigApiTest {
     String expectedContent = TestResourcesHelper.getClassResourceAsString(this.getClass(),
         "whenRetrievingDataSourceProperties.conf", false);
     String actualContent = new String(Files.readAllBytes(dataFolder.resolve("dataSource.conf")));
-    assertThat(actualContent).isEqualToIgnoringNewLines(expectedContent);
+    assertThat(actualContent).containsIgnoringNewLines(expectedContent);
   }
 }

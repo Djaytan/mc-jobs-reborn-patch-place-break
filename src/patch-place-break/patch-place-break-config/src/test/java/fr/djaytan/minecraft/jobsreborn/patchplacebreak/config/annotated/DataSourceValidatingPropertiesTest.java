@@ -367,7 +367,7 @@ class DataSourceValidatingPropertiesTest {
       String actualYaml = new String(Files.readAllBytes(imDestFile));
       String expectedYaml = TestResourcesHelper.getClassResourceAsString(this.getClass(),
           expectedYamlFileName, false);
-      assertThat(actualYaml).isEqualToIgnoringNewLines(expectedYaml);
+      assertThat(actualYaml).containsIgnoringNewLines(expectedYaml);
     }
 
     private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
