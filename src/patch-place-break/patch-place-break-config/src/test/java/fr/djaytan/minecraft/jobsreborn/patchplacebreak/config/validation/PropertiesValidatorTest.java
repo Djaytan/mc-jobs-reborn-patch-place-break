@@ -27,49 +27,32 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.same;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mockStatic;
-
-import java.util.Collections;
-import java.util.Set;
 
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.ConnectionPoolValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.CredentialsValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DataSourceValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DbmsHostValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DbmsServerValidatingProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.ConnectionPoolProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.CredentialsProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DbmsHostProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DbmsServerProperties;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator;
 
-@ExtendWith(MockitoExtension.class)
 class PropertiesValidatorTest {
-
-  @Mock
-  private Validator validatorMocked;
 
   private PropertiesValidator propertiesValidator;
 
   @BeforeEach
   void beforeEach() {
-    propertiesValidator = new PropertiesValidator(validatorMocked);
+    propertiesValidator = new PropertiesValidator(ValidatorTestWrapper.getValidator());
   }
 
   @Test
@@ -82,8 +65,6 @@ class PropertiesValidatorTest {
                 DbmsHostValidatingProperties.of("example.com", 1234, true),
                 CredentialsValidatingProperties.of("foo", "bar"), "patch_database"),
             ConnectionPoolValidatingProperties.of(60000, 10));
-
-    given(validatorMocked.validate(any())).willReturn(Collections.emptySet());
 
     // When
     DataSourceProperties dataSourceProperties =
@@ -100,28 +81,20 @@ class PropertiesValidatorTest {
 
   @Test
   @DisplayName("When validating with invalid values")
-  void whenValidating_withInvalidValues_shouldThrowException(
-      @Mock DataSourceValidatingProperties dataSourceValidatingPropertiesMocked,
-      @Mock ConstraintViolation<DataSourceValidatingProperties> constraintViolationMocked) {
+  void whenValidating_withInvalidValues_shouldThrowException() {
     // Given
-    Set<ConstraintViolation<DataSourceValidatingProperties>> constraintViolationSet =
-        Collections.singleton(constraintViolationMocked);
+    DataSourceValidatingProperties dataSourceValidatingProperties =
+        DataSourceValidatingProperties.of(DataSourceType.MYSQL, "patch_place_break",
+            DbmsServerValidatingProperties.of(
+                DbmsHostValidatingProperties.of("example.com", -1, true),
+                CredentialsValidatingProperties.of("foo", "bar"), "patch_database"),
+            ConnectionPoolValidatingProperties.of(60000, 10));
 
-    given(validatorMocked.validate(same(dataSourceValidatingPropertiesMocked)))
-        .willReturn(constraintViolationSet);
+    // When
+    ThrowingCallable throwingCallable =
+        () -> propertiesValidator.validate(dataSourceValidatingProperties);
 
-    // TODO: try to remove static and useless mock (clean-up)
-    try (MockedStatic<ConstraintViolationFormatter> mockedStatic =
-        mockStatic(ConstraintViolationFormatter.class)) {
-      mockedStatic.when(() -> ConstraintViolationFormatter.format(eq(constraintViolationSet)))
-          .thenReturn("dummy");
-
-      // When
-      ThrowingCallable throwingCallable =
-          () -> propertiesValidator.validate(dataSourceValidatingPropertiesMocked);
-
-      // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(PropertiesValidationException.class);
-    }
+    // Then
+    assertThatThrownBy(throwingCallable).isExactlyInstanceOf(PropertiesValidationException.class);
   }
 }
