@@ -30,7 +30,6 @@ import java.util.Optional;
 
 import javax.inject.Singleton;
 
-import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.loader.ConfigurationLoader;
 
@@ -55,14 +54,14 @@ public final class ConfigSerializer {
   public void serialize(@NonNull Path destConfigFile, @NonNull Object object)
       throws ConfigSerializationException {
     try {
-      ConfigurationLoader<CommentedConfigurationNode> loader =
+      ConfigurationLoader<? extends ConfigurationNode> loader =
           ConfigLoaderFactory.createLoader(destConfigFile);
 
       if (!loader.canSave()) {
         throw ConfigSerializationException.failToSerialize();
       }
 
-      CommentedConfigurationNode configurationNode = loader.createNode(node -> node.set(object));
+      ConfigurationNode configurationNode = loader.createNode(node -> node.set(object));
       loader.save(configurationNode);
     } catch (IOException e) {
       throw ConfigSerializationException.failToSerialize(e);
@@ -81,8 +80,7 @@ public final class ConfigSerializer {
   public <T> @NonNull Optional<T> deserialize(@NonNull Path srcConfigFile, @NonNull Class<T> type)
       throws ConfigSerializationException {
     try {
-      ConfigurationLoader<CommentedConfigurationNode> loader =
-          ConfigLoaderFactory.createLoader(srcConfigFile);
+      ConfigurationLoader<?> loader = ConfigLoaderFactory.createLoader(srcConfigFile);
 
       if (!loader.canLoad()) {
         throw ConfigSerializationException.failToDeserialize();

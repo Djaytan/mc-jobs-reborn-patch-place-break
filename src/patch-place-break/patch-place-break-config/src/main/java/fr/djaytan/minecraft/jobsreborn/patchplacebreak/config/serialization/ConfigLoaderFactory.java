@@ -65,8 +65,15 @@ final class ConfigLoaderFactory {
 
     String configHeader = createConfigHeader();
 
-    return HoconConfigurationLoader.builder().path(configFile).prettyPrinting(true)
-        .emitComments(true).emitJsonCompatible(false).headerMode(HeaderMode.PRESET)
+    /*
+     * Fields ordering limitation coming from HOCON library used by Configurate
+     * The ordering is undetermined since the implementation is using an HashMap...
+     * https://github.com/lightbend/config/issues/733
+     * On the other side, no other Configurate's loader match all requirements
+     * => Using HOCON loader even with the limitation seems to be the best choice
+     */
+    return HoconConfigurationLoader.builder().path(configFile).headerMode(HeaderMode.PRESET)
+        .emitJsonCompatible(false).emitComments(true).prettyPrinting(true)
         .defaultOptions(
             opts -> opts.serializers(builder -> builder.registerAnnotatedObjects(customFactory))
                 .header(configHeader))
