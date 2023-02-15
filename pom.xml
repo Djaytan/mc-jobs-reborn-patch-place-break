@@ -86,7 +86,7 @@
     <mavenFailsafePlugin.version>3.0.0-M9</mavenFailsafePlugin.version>
     <mavenInstallPlugin.version>3.1.0</mavenInstallPlugin.version>
     <mavenJarPlugin.version>3.3.0</mavenJarPlugin.version>
-    <mavenJavadocPlugin.version>3.4.1</mavenJavadocPlugin.version>
+    <mavenJavadocPlugin.version>3.5.0</mavenJavadocPlugin.version>
     <mavenReleasePlugin.version>3.0.0-M7</mavenReleasePlugin.version>
     <mavenResourcesPlugin.version>3.3.0</mavenResourcesPlugin.version>
     <mavenShadePlugin.version>3.4.1</mavenShadePlugin.version>
