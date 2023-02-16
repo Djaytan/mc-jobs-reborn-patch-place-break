@@ -127,7 +127,7 @@
 
     <!-- ==================== Test Dependencies versions ==================== -->
     <assertj.version>3.24.2</assertj.version>
-    <equalsverifier.version>3.13.1</equalsverifier.version>
+    <equalsverifier.version>3.13.2</equalsverifier.version>
     <junitJupiter.version>5.9.2</junitJupiter.version>
     <mockito.version>4.11.0</mockito.version>
     <toStringVerifier.version>1.4.8</toStringVerifier.version>
