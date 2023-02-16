@@ -87,7 +87,7 @@ public class JobsPrePaymentListener implements Listener {
 
     Location blockLocation = block.getLocation();
 
-    if (patchPlaceBreakBukkitAdapter.isPlaceAndBreakAction(actionType, blockLocation).join()) {
+    if (patchPlaceBreakBukkitAdapter.isPlaceAndBreakExploit(actionType, blockLocation).join()) {
       event.setCancelled(true);
     }
   }

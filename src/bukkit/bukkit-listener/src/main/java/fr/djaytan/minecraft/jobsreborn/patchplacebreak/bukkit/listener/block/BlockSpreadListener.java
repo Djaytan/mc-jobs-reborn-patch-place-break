@@ -64,6 +64,6 @@ public class BlockSpreadListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockSpread(BlockSpreadEvent event) {
     Location location = event.getBlock().getLocation();
-    patchPlaceBreakBukkitAdapter.removeTag(location);
+    patchPlaceBreakBukkitAdapter.removeTags(location);
   }
 }

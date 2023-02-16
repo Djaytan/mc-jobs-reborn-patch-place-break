@@ -37,12 +37,15 @@ import javax.inject.Singleton;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.PatchActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
 import lombok.NonNull;
 
+/**
+ * Default implementation of {@link PatchPlaceBreakApi}.
+ */
 @Singleton
 public class PatchPlaceBreakDefault implements PatchPlaceBreakApi {
 
@@ -65,8 +68,8 @@ public class PatchPlaceBreakDefault implements PatchPlaceBreakApi {
   }
 
   @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> putBackTagOnMovedBlocks(
-      @NonNull Collection<TagLocation> tagLocations, @NonNull TagVector direction) {
+  public @NonNull CompletableFuture<Void> moveTags(@NonNull Collection<TagLocation> tagLocations,
+      @NonNull TagVector direction) {
     return CompletableFuture.runAsync(() -> {
       for (TagLocation tagLocation : tagLocations) {
         Optional<Tag> tag = tagRepository.findByLocation(tagLocation);
@@ -75,19 +78,20 @@ public class PatchPlaceBreakDefault implements PatchPlaceBreakApi {
           continue;
         }
 
-        TagLocation newTagLocation = tagLocation.adjust(direction);
+        TagLocation newTagLocation = tagLocation.move(direction);
         putTag(newTagLocation, false).join();
+        // TODO: no removing of old tags? Implementation and usages to review
       }
     });
   }
 
   @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> removeTag(@NonNull TagLocation tagLocation) {
+  public @NonNull CompletableFuture<Void> removeTags(@NonNull TagLocation tagLocation) {
     return CompletableFuture.runAsync(() -> tagRepository.delete(tagLocation));
   }
 
-  public @NonNull CompletableFuture<Boolean> isPlaceAndBreakAction(
-      @NonNull PatchActionType patchActionType, @NonNull TagLocation tagLocation) {
+  public @NonNull CompletableFuture<Boolean> isPlaceAndBreakExploit(
+      @NonNull BlockActionType blockActionType, @NonNull TagLocation tagLocation) {
     return CompletableFuture.supplyAsync(() -> {
       Optional<Tag> tag = tagRepository.findByLocation(tagLocation);
 

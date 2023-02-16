@@ -88,7 +88,7 @@ public class PatchPlaceBreakVerifier {
       @NonNull BukkitPatchEnvironmentState environmentState) {
     ActionType jobActionType = environmentState.getJobActionType();
     Location targetedLocation = environmentState.getTargetedBlock().getLocation();
-    return patchPlaceBreakBukkitAdapter.isPlaceAndBreakAction(jobActionType, targetedLocation);
+    return patchPlaceBreakBukkitAdapter.isPlaceAndBreakExploit(jobActionType, targetedLocation);
   }
 
   private boolean isPatchApplied(@NonNull BukkitPatchEnvironmentState environmentState) {

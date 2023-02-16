@@ -32,21 +32,21 @@ import javax.inject.Singleton;
 
 import com.gamingmesh.jobs.container.ActionType;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.PatchActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.BukkitAdapterException;
 import lombok.NonNull;
 
 @Singleton
-public class ActionTypeConverter implements UnidirectionalConverter<ActionType, PatchActionType> {
+public class ActionTypeConverter implements UnidirectionalConverter<ActionType, BlockActionType> {
 
   ActionTypeConverter() {}
 
   @Override
-  public @NonNull PatchActionType convert(@NonNull ActionType jobActionType) {
+  public @NonNull BlockActionType convert(@NonNull ActionType jobActionType) {
     if (!isValidJobActionType(jobActionType)) {
       throw BukkitAdapterException.invalidJobType(jobActionType);
     }
-    return PatchActionType.valueOf(jobActionType.name());
+    return BlockActionType.valueOf(jobActionType.name());
   }
 
   private boolean isValidJobActionType(@NonNull ActionType jobActionType) {
@@ -55,7 +55,7 @@ public class ActionTypeConverter implements UnidirectionalConverter<ActionType, 
   }
 
   private @NonNull Collection<ActionType> getValidJobActionTypes() {
-    return Arrays.stream(PatchActionType.values()).map(PatchActionType::name)
+    return Arrays.stream(BlockActionType.values()).map(BlockActionType::name)
         .map(ActionType::valueOf).collect(Collectors.toList());
   }
 }

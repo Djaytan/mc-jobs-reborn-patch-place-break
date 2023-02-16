@@ -35,11 +35,10 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-import com.gamingmesh.jobs.container.ActionType;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.PatchActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.ActionTypeConverter;
@@ -47,6 +46,11 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.LocationConverter;
 import lombok.NonNull;
 
+/**
+ * Adapter of {@link PatchPlaceBreakApi} for Bukkit.
+ *
+ * @see PatchPlaceBreakApi
+ */
 @Singleton
 public class PatchPlaceBreakBukkitAdapter {
 
@@ -65,31 +69,67 @@ public class PatchPlaceBreakBukkitAdapter {
     this.blockFaceConverter = blockFaceConverter;
   }
 
+  /**
+   * Puts a tag on the specified location.
+   *
+   * @param location The location where to put tag.
+   * @param isEphemeral Whether the tag to put must be an ephemeral one or not.
+   * @return void
+   * @see PatchPlaceBreakApi#putTag(TagLocation, boolean)
+   */
   @CanIgnoreReturnValue
   public @NonNull CompletableFuture<Void> putTag(@NonNull Location location, boolean isEphemeral) {
     TagLocation tagLocation = locationConverter.convert(location);
     return patchPlaceBreakApi.putTag(tagLocation, isEphemeral);
   }
 
+  /**
+   * Moves tags associated with given blocks (if they exist) to the direction of the specified
+   * block face.
+   *
+   * <p><i>The performed move is of only one block in the specified direction.
+   *
+   * @param blocks The list of blocks with potential tags to be moved.
+   * @param blockFace The block face from which to infer the move direction.
+   * @return void
+   * @see PatchPlaceBreakApi#moveTags(Collection, TagVector)
+   */
   @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> putBackTagOnMovedBlocks(@NonNull Collection<Block> blocks,
+  public @NonNull CompletableFuture<Void> moveTags(@NonNull Collection<Block> blocks,
       @NonNull BlockFace blockFace) {
     Collection<TagLocation> tagLocations = blocks.stream().map(Block::getLocation)
         .map(locationConverter::convert).collect(Collectors.toList());
     TagVector tagVector = blockFaceConverter.convert(blockFace);
-    return patchPlaceBreakApi.putBackTagOnMovedBlocks(tagLocations, tagVector);
+    return patchPlaceBreakApi.moveTags(tagLocations, tagVector);
   }
 
+  /**
+   * Removes existing tags from the specified location.
+   *
+   * @param location The location from which to remove the tags if they exist.
+   * @return void
+   * @see PatchPlaceBreakApi#removeTags(TagLocation)
+   */
   @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> removeTag(@NonNull Location location) {
+  public @NonNull CompletableFuture<Void> removeTags(@NonNull Location location) {
     TagLocation tagLocation = locationConverter.convert(location);
-    return patchPlaceBreakApi.removeTag(tagLocation);
+    return patchPlaceBreakApi.removeTags(tagLocation);
   }
 
-  public @NonNull CompletableFuture<Boolean> isPlaceAndBreakAction(@NonNull ActionType actionType,
-      @NonNull Location location) {
-    PatchActionType patchActionType = actionTypeConverter.convert(actionType);
+  /**
+   * Checks if the specified job action type at the given location is a patch-and-break exploit
+   * or not.
+   *
+   * @param actionType The job action type recorded.
+   * @param location The location where the job action type has been recorded.
+   * @return <code>true</code> if the specified job action type at the given location
+   * is a patch-and-break exploit or not.
+   * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, TagLocation)
+   */
+  public @NonNull CompletableFuture<Boolean> isPlaceAndBreakExploit(
+      @NonNull com.gamingmesh.jobs.container.ActionType actionType, @NonNull Location location) {
+    BlockActionType patchActionType = actionTypeConverter.convert(actionType);
     TagLocation tagLocation = locationConverter.convert(location);
-    return patchPlaceBreakApi.isPlaceAndBreakAction(patchActionType, tagLocation);
+    return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, tagLocation);
   }
 }

@@ -29,7 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.gamingmesh.jobs.container.ActionType;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.PatchActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.experimental.StandardException;
@@ -42,7 +42,7 @@ public class BukkitAdapterException extends PatchPlaceBreakException {
 
   public static @NonNull BukkitAdapterException invalidJobType(
       @NonNull ActionType invalidJobActionType) {
-    String validPatchActionTypes = StringUtils.join(PatchActionType.values(), ", ");
+    String validPatchActionTypes = StringUtils.join(BlockActionType.values(), ", ");
     String message = String.format(INVALID_JOB_TYPE, invalidJobActionType, validPatchActionTypes);
     return new BukkitAdapterException(message);
   }

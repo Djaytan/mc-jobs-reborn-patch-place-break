@@ -27,14 +27,21 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
+import lombok.NonNull;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 class TagLocationTest {
@@ -71,93 +78,32 @@ class TagLocationTest {
     ToStringVerifier.forClass(TagLocation.class).withClassName(NameStyle.SIMPLE_NAME).verify();
   }
 
-  @Test
-  @DisplayName("Nominal adjustment case")
-  void shouldAdjustSuccessfullyOnNominalCase() {
+  @ParameterizedTest(name = "{index} - {0}")
+  @MethodSource
+  void whenMoving_shouldCreateNewInstanceMatchingExpectedValue(@NonNull TagVector givenDirection,
+      @NonNull TagLocation expectedValue) {
     // Given
-    double modX = 5.4D;
-    double modY = 0.0D;
-    double modZ = -452.568D;
-    TagVector tagVector = TagVector.of(modX, modY, modZ);
-
     String worldName = "world";
-    double initX = 485356.0D;
-    double initY = -42.485784187415D;
-    double initZ = 1.214D;
+    double initX = 1000;
+    double initY = -45;
+    double initZ = 1.5;
     TagLocation tagLocation = TagLocation.of(worldName, initX, initY, initZ);
 
     // When
-    TagLocation adjustedTagLocation = tagLocation.adjust(tagVector);
+    TagLocation movedTagLocation = tagLocation.move(givenDirection);
 
     // Then
-    String expectedWorld = "world";
-    double expectedX = 485361.4D;
-    double expectedY = -42.485784187415D;
-    double expectedZ = -451.354D;
-    TagLocation expectedTagLocation =
-        TagLocation.of(expectedWorld, expectedX, expectedY, expectedZ);
-
-    assertAll(() -> assertThat(adjustedTagLocation).isEqualTo(expectedTagLocation),
-        () -> assertThat(adjustedTagLocation).isNotSameAs(tagLocation));
+    assertAll(() -> assertThat(movedTagLocation).isNotSameAs(tagLocation),
+        () -> assertThat(movedTagLocation).isEqualTo(expectedValue));
   }
 
-  @Test
-  @DisplayName("Number overflow adjustment case")
-  void shouldAdjustSuccessfullyOnNumberOverflow() {
-    // Given
-    double modX = Double.MAX_VALUE;
-    double modY = 15.256D;
-    double modZ = 0.0D;
-    TagVector tagVector = TagVector.of(modX, modY, modZ);
-
-    String worldName = "world";
-    double initX = 10000000.0D;
-    double initY = -45.5263D;
-    double initZ = 3.14D;
-    TagLocation tagLocation = TagLocation.of(worldName, initX, initY, initZ);
-
-    // When
-    TagLocation adjustedTagLocation = tagLocation.adjust(tagVector);
-
-    // Then
-    String expectedWorld = "world";
-    double expectedX = Double.MAX_VALUE;
-    double expectedY = -30.2703D;
-    double expectedZ = 3.14D;
-    TagLocation expectedTagLocation =
-        TagLocation.of(expectedWorld, expectedX, expectedY, expectedZ);
-
-    assertAll(() -> assertThat(adjustedTagLocation).isEqualTo(expectedTagLocation),
-        () -> assertThat(adjustedTagLocation).isNotSameAs(tagLocation));
-  }
-
-  @Test
-  @DisplayName("Number underflow adjustment case")
-  void shouldAdjustSuccessfullyOnNumberUnderflow() {
-    // Given
-    double modX = 452.2D;
-    double modY = Double.MIN_VALUE;
-    double modZ = 0.0D;
-    TagVector tagVector = TagVector.of(modX, modY, modZ);
-
-    String worldName = "world";
-    double initX = 10.0D;
-    double initY = -45.5263D;
-    double initZ = 3.14D;
-    TagLocation tagLocation = TagLocation.of(worldName, initX, initY, initZ);
-
-    // When
-    TagLocation adjustedTagLocation = tagLocation.adjust(tagVector);
-
-    // Then
-    String expectedWorld = "world";
-    double expectedX = 462.2D;
-    double expectedY = -45.5263D;
-    double expectedZ = 3.14D;
-    TagLocation expectedTagLocation =
-        TagLocation.of(expectedWorld, expectedX, expectedY, expectedZ);
-
-    assertAll(() -> assertThat(adjustedTagLocation).isEqualTo(expectedTagLocation),
-        () -> assertThat(adjustedTagLocation).isNotSameAs(tagLocation));
+  private static @NonNull Stream<Arguments> whenMoving_shouldCreateNewInstanceMatchingExpectedValue() {
+    return Stream.of(
+        Arguments.of(Named.of("With nominal values", TagVector.of(5.4, 0, -452.56)),
+            TagLocation.of("world", 1005.4, -45, -451.06)),
+        Arguments.of(Named.of("On overflow", TagVector.of(Double.MAX_VALUE, 1, -1)),
+            TagLocation.of("world", Double.MAX_VALUE, -44, 0.5)),
+        Arguments.of(Named.of("On underflow", TagVector.of(10, -50, Double.MIN_VALUE)),
+            TagLocation.of("world", 1010, -95, 1.5)));
   }
 }

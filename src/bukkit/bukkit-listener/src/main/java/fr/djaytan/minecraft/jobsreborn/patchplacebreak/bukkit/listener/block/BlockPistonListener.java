@@ -71,7 +71,7 @@ public class BlockPistonListener implements Listener {
   public void onBlockPistonExtend(BlockPistonExtendEvent event) {
     BlockFace blockFace = event.getDirection();
     Collection<Block> blocks = event.getBlocks();
-    patchPlaceBreakBukkitAdapter.putBackTagOnMovedBlocks(blocks, blockFace);
+    patchPlaceBreakBukkitAdapter.moveTags(blocks, blockFace);
   }
 
   /**
@@ -87,6 +87,6 @@ public class BlockPistonListener implements Listener {
   public void onBlockPistonRetract(BlockPistonRetractEvent event) {
     BlockFace blockFace = event.getDirection();
     Collection<Block> blocks = event.getBlocks();
-    patchPlaceBreakBukkitAdapter.putBackTagOnMovedBlocks(blocks, blockFace);
+    patchPlaceBreakBukkitAdapter.moveTags(blocks, blockFace);
   }
 }
