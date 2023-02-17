@@ -40,15 +40,16 @@ public class TagLocation {
   double z;
 
   /**
-   * Moves this tag according to the specified direction by adjusting coordinates values.
+   * Creates a tag location from a specified one and a given direction.
    *
    * @param direction The direction where to move the tag location.
    * @return The new tag location with the movement to the given direction applied.
    */
-  public @NonNull TagLocation move(@NonNull TagVector direction) {
-    double newX = x + direction.getModX();
-    double newY = y + direction.getModY();
-    double newZ = z + direction.getModZ();
-    return TagLocation.of(worldName, newX, newY, newZ);
+  public static @NonNull TagLocation fromMove(@NonNull TagLocation tagLocation,
+      @NonNull TagVector direction) {
+    double newX = tagLocation.getX() + direction.getModX();
+    double newY = tagLocation.getY() + direction.getModY();
+    double newZ = tagLocation.getZ() + direction.getModZ();
+    return TagLocation.of(tagLocation.getWorldName(), newX, newY, newZ);
   }
 }

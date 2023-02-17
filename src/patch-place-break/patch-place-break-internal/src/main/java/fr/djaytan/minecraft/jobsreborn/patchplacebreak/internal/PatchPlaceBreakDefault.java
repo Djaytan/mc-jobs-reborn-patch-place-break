@@ -42,11 +42,13 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Default implementation of {@link PatchPlaceBreakApi}.
  */
 @Singleton
+@Slf4j
 public class PatchPlaceBreakDefault implements PatchPlaceBreakApi {
 
   private final TagRepository tagRepository;
@@ -71,18 +73,24 @@ public class PatchPlaceBreakDefault implements PatchPlaceBreakApi {
   public @NonNull CompletableFuture<Void> moveTags(@NonNull Collection<TagLocation> tagLocations,
       @NonNull TagVector direction) {
     return CompletableFuture.runAsync(() -> {
-      for (TagLocation tagLocation : tagLocations) {
-        Optional<Tag> tag = tagRepository.findByLocation(tagLocation);
+      for (TagLocation oldTagLocation : tagLocations) {
+        Optional<Tag> tag = tagRepository.findByLocation(oldTagLocation);
 
         if (!tag.isPresent()) {
           continue;
         }
 
-        TagLocation newTagLocation = tagLocation.move(direction);
-        putTag(newTagLocation, false).join();
-        // TODO: no removing of old tags? Implementation and usages to review
+        TagLocation newTagLocation = TagLocation.fromMove(oldTagLocation, direction);
+
+        moveTag(oldTagLocation, newTagLocation, tag.get().isEphemeral());
       }
     });
+  }
+
+  private void moveTag(@NonNull TagLocation oldTagLocation, @NonNull TagLocation newTagLocation,
+      boolean isEphemeral) {
+    putTag(newTagLocation, isEphemeral).join();
+    // TODO: old tag must be removed, but it must be done with a transaction
   }
 
   @CanIgnoreReturnValue

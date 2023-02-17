@@ -90,7 +90,7 @@ class TagLocationTest {
     TagLocation tagLocation = TagLocation.of(worldName, initX, initY, initZ);
 
     // When
-    TagLocation movedTagLocation = tagLocation.move(givenDirection);
+    TagLocation movedTagLocation = TagLocation.fromMove(tagLocation, givenDirection);
 
     // Then
     assertAll(() -> assertThat(movedTagLocation).isNotSameAs(tagLocation),
