@@ -37,6 +37,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +52,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.spongepowered.configurate.serialize.SerializationException;
 
-import com.google.common.base.Strings;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.jparams.verifier.tostring.NameStyle;
@@ -307,7 +307,8 @@ class DataSourceValidatingPropertiesTest {
       }
 
       private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
-        return Stream.of(Arguments.of(Named.of("Longest allowed value", Strings.repeat("s", 128))),
+        return Stream.of(
+            Arguments.of(Named.of("Longest allowed value", StringUtils.repeat("s", 128))),
             Arguments.of(Named.of("Shortest allowed value", "s")));
       }
 
@@ -339,7 +340,7 @@ class DataSourceValidatingPropertiesTest {
 
       private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(Arguments.of(Named.of("Null value", null)),
-            Arguments.of(Named.of("Too long value", Strings.repeat("s", 129))),
+            Arguments.of(Named.of("Too long value", StringUtils.repeat("s", 129))),
             Arguments.of(Named.of("Empty and too short value", "")),
             Arguments.of(Named.of("Blank value", " ")));
       }

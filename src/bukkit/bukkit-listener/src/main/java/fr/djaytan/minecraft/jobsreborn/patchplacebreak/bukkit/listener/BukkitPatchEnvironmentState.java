@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
@@ -36,7 +37,6 @@ import org.bukkit.plugin.RegisteredListener;
 
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
-import com.google.common.base.MoreObjects;
 
 import lombok.Builder;
 import lombok.NonNull;
@@ -67,12 +67,13 @@ public class BukkitPatchEnvironmentState {
   public @NonNull String toString() {
     String eventHandlersToString = eventHandlersToString();
 
-    return MoreObjects.toStringHelper(this).add("jobActionType", jobActionType.name())
-        .add("targetedBlock", targetedBlock.getType().name())
-        .add("targetedLocation", targetedBlock.getLocation())
-        .add("involvedPlayer", involvedPlayer.getName()).add("triggeredJob", triggeredJob.getName())
-        .add("eventHandled", eventHandled).add("isEventCancelled", isEventCancelled)
-        .add("eventHandlers", eventHandlersToString).toString();
+    return new ToStringBuilder(this).append("jobActionType", jobActionType.name())
+        .append("targetedBlock", targetedBlock.getType().name())
+        .append("targetedLocation", targetedBlock.getLocation())
+        .append("involvedPlayer", involvedPlayer.getName())
+        .append("triggeredJob", triggeredJob.getName()).append("eventHandled", eventHandled)
+        .append("isEventCancelled", isEventCancelled).append("eventHandlers", eventHandlersToString)
+        .toString();
   }
 
   private @NonNull String eventHandlersToString() {
@@ -81,8 +82,8 @@ public class BukkitPatchEnvironmentState {
             .map(BukkitPatchEnvironmentState::registeredListenerToString).distinct()
             .collect(Collectors.toList());
 
-    return MoreObjects.toStringHelper(HandlerList.class)
-        .add("registeredListeners", registeredListenersToString).toString();
+    return new ToStringBuilder(eventHandlers)
+        .append("registeredListeners", registeredListenersToString).toString();
   }
 
   private static @NonNull String registeredListenerToString(
@@ -90,7 +91,8 @@ public class BukkitPatchEnvironmentState {
     String listenerClass = registeredListener.getListener().getClass().getName();
     String pluginName = registeredListener.getPlugin().getName();
     String eventPriority = registeredListener.getPriority().name();
-    return MoreObjects.toStringHelper(RegisteredListener.class).add("listenerClass", listenerClass)
-        .add("pluginName", pluginName).add("eventPriority", eventPriority).toString();
+
+    return new ToStringBuilder(registeredListener).append("listenerClass", listenerClass)
+        .append("pluginName", pluginName).append("eventPriority", eventPriority).toString();
   }
 }

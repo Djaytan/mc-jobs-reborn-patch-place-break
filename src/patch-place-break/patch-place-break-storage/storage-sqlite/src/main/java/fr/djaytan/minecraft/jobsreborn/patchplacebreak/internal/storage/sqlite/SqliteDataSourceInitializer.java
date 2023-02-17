@@ -24,10 +24,10 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sqlite;
 
-import static com.google.common.base.Preconditions.checkState;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import org.apache.commons.lang3.Validate;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.StorageException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
@@ -52,7 +52,7 @@ public class SqliteDataSourceInitializer extends SqlDataSourceInitializer {
 
   @Override
   public void initialize() throws StorageException {
-    checkState(dataSourceProperties.getType() == DataSourceType.SQLITE,
+    Validate.validState(dataSourceProperties.getType() == DataSourceType.SQLITE,
         "The data source type is expected to be 'SQLITE'.");
     sqliteHelper.createDatabaseIfNotExists();
   }

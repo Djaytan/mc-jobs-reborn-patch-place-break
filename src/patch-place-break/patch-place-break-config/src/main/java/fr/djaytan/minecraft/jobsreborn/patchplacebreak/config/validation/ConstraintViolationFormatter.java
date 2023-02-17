@@ -27,7 +27,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 import java.util.Collection;
 import java.util.StringJoiner;
 
-import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.Validate;
 
 import jakarta.validation.ConstraintViolation;
 import lombok.NonNull;
@@ -52,8 +52,7 @@ final class ConstraintViolationFormatter {
    */
   static <T> @NonNull String format(
       @NonNull Collection<ConstraintViolation<T>> constraintViolations) {
-    // TODO: use Validate of commons-lang3 instead (remove deps to Guava!)
-    Preconditions.checkArgument(!constraintViolations.isEmpty());
+    Validate.notEmpty(constraintViolations);
 
     StringJoiner stringJoiner = new StringJoiner(LINE_SEPARATOR);
 

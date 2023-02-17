@@ -24,10 +24,10 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.mysql;
 
-import static com.google.common.base.Preconditions.checkState;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import org.apache.commons.lang3.Validate;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.StorageException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
@@ -50,7 +50,7 @@ public class MysqlDataSourceInitializer extends SqlDataSourceInitializer {
 
   @Override
   public void initialize() throws StorageException {
-    checkState(dataSourceProperties.getType() == DataSourceType.MYSQL,
+    Validate.validState(dataSourceProperties.getType() == DataSourceType.MYSQL,
         "The data source type is expected to be 'MYSQL'.");
   }
 }

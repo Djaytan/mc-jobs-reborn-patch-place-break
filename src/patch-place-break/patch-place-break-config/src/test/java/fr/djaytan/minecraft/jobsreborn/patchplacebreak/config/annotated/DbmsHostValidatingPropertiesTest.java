@@ -37,6 +37,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +52,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.spongepowered.configurate.serialize.SerializationException;
 
-import com.google.common.base.Strings;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.jparams.verifier.tostring.NameStyle;
@@ -259,7 +259,7 @@ class DbmsHostValidatingPropertiesTest {
             Arguments
                 .of(Named.of("Nominal IPv6 address", "2001:db8:3333:4444:5555:6666:7777:8888")),
             Arguments.of(Named.of("Domain name address", "my.example.com")),
-            Arguments.of(Named.of("Longest valid value", Strings.repeat("s", 255))),
+            Arguments.of(Named.of("Longest valid value", StringUtils.repeat("s", 255))),
             Arguments.of(Named.of("Shortest valid value", "s")),
             Arguments.of(Named.of("Invalid IPv4 address", "-1.-1.-1.-1")), Arguments
                 .of(Named.of("Invalid IPv6 address", "ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ")));
@@ -290,7 +290,7 @@ class DbmsHostValidatingPropertiesTest {
       private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(Arguments.of(Named.of("Null value", null)),
             Arguments.of(Named.of("Empty value", "")), Arguments.of(Named.of("Blank value", " ")),
-            Arguments.of(Named.of("Too long value", Strings.repeat("s", 256))));
+            Arguments.of(Named.of("Too long value", StringUtils.repeat("s", 256))));
       }
     }
 
