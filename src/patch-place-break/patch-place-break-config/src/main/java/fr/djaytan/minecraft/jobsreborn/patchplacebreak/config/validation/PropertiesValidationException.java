@@ -38,7 +38,7 @@ public class PropertiesValidationException extends RuntimeException {
       "Detected config constraint violations: %s";
 
   public static <T> @NonNull PropertiesValidationException constraintViolations(
-      Set<ConstraintViolation<T>> constraintViolations) {
+      @NonNull Set<ConstraintViolation<T>> constraintViolations) {
     String message = String.format(CONFIG_CONSTRAINT_VIOLATIONS, constraintViolations);
     return new PropertiesValidationException(message);
   }

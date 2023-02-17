@@ -29,6 +29,7 @@ import javax.inject.Singleton;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.DataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.StorageException;
+import lombok.NonNull;
 
 @Singleton
 public class SqlDataSource implements DataSource {
@@ -37,7 +38,8 @@ public class SqlDataSource implements DataSource {
   private final SqlDataSourceInitializer sqlDataSourceInitializer;
 
   @Inject
-  public SqlDataSource(ConnectionPool connectionPool, SqlDataSourceInitializer sqlDataSourceInitializer) {
+  public SqlDataSource(@NonNull ConnectionPool connectionPool,
+      @NonNull SqlDataSourceInitializer sqlDataSourceInitializer) {
     this.connectionPool = connectionPool;
     this.sqlDataSourceInitializer = sqlDataSourceInitializer;
   }

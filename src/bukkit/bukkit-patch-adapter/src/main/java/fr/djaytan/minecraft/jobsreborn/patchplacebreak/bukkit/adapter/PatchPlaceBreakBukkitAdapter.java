@@ -35,6 +35,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
+import com.gamingmesh.jobs.container.ActionType;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
@@ -60,9 +61,9 @@ public class PatchPlaceBreakBukkitAdapter {
   private final BlockFaceConverter blockFaceConverter;
 
   @Inject
-  public PatchPlaceBreakBukkitAdapter(ActionTypeConverter actionTypeConverter,
-      LocationConverter locationConverter, PatchPlaceBreakApi patchPlaceBreakApi,
-      BlockFaceConverter blockFaceConverter) {
+  public PatchPlaceBreakBukkitAdapter(@NonNull ActionTypeConverter actionTypeConverter,
+      @NonNull LocationConverter locationConverter, @NonNull PatchPlaceBreakApi patchPlaceBreakApi,
+      @NonNull BlockFaceConverter blockFaceConverter) {
     this.actionTypeConverter = actionTypeConverter;
     this.locationConverter = locationConverter;
     this.patchPlaceBreakApi = patchPlaceBreakApi;
@@ -126,8 +127,8 @@ public class PatchPlaceBreakBukkitAdapter {
    * is a patch-and-break exploit or not.
    * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, TagLocation)
    */
-  public @NonNull CompletableFuture<Boolean> isPlaceAndBreakExploit(
-      @NonNull com.gamingmesh.jobs.container.ActionType actionType, @NonNull Location location) {
+  public @NonNull CompletableFuture<Boolean> isPlaceAndBreakExploit(@NonNull ActionType actionType,
+      @NonNull Location location) {
     BlockActionType patchActionType = actionTypeConverter.convert(actionType);
     TagLocation tagLocation = locationConverter.convert(location);
     return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, tagLocation);

@@ -40,6 +40,7 @@ import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.BukkitPatchEnvironmentState;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlaceBreakVerifier;
+import lombok.NonNull;
 
 /**
  * This class represents a {@link JobsExpGainEvent} listener.
@@ -54,8 +55,8 @@ public class JobsExpGainListener implements Listener {
   private final PatchPlaceBreakVerifier patchPlaceBreakVerifier;
 
   @Inject
-  public JobsExpGainListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter,
-      PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
+  public JobsExpGainListener(@NonNull PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter,
+      @NonNull PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
     this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;
   }
@@ -70,7 +71,7 @@ public class JobsExpGainListener implements Listener {
    * @param event The jobs exp-gain event.
    */
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void patchOnJobsExpGain(JobsExpGainEvent event) {
+  public void patchOnJobsExpGain(@NonNull JobsExpGainEvent event) {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 
@@ -101,7 +102,7 @@ public class JobsExpGainListener implements Listener {
    * @param event The jobs exp-gain event.
    */
   @EventHandler(priority = EventPriority.MONITOR)
-  public void verifyPatchOnJobsExpGain(JobsExpGainEvent event) {
+  public void verifyPatchOnJobsExpGain(@NonNull JobsExpGainEvent event) {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 

@@ -57,8 +57,9 @@ final class ConfigManager {
   private final PropertiesValidator propertiesValidator;
 
   @Inject
-  public ConfigManager(@Named("dataFolder") Path dataFolder, ConfigSerializer configSerializer,
-      PropertiesValidator propertiesValidator) {
+  public ConfigManager(@Named("dataFolder") @NonNull Path dataFolder,
+      @NonNull ConfigSerializer configSerializer,
+      @NonNull PropertiesValidator propertiesValidator) {
     this.dataFolder = dataFolder;
     this.configSerializer = configSerializer;
     this.propertiesValidator = propertiesValidator;
@@ -99,7 +100,7 @@ final class ConfigManager {
    * the config file content.
    */
   public <T> @NonNull T readAndValidate(@NonNull String configFileName,
-      Class<? extends ValidatingConvertibleProperties<T>> type) {
+      @NonNull Class<? extends ValidatingConvertibleProperties<T>> type) {
     ValidatingConvertibleProperties<T> configValidatingProperties =
         readAndDeserializeConfigToValidate(configFileName, type);
     return propertiesValidator.validate(configValidatingProperties);

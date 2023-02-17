@@ -35,15 +35,14 @@ import lombok.NonNull;
 @Singleton
 public class MysqlConnectionPool extends ConnectionPool {
 
+  private static final String MYSQL_JDBC_URL_TEMPLATE =
+      "jdbc:mysql://%s:%d/%s?useSSL=%s&serverTimezone=%s";
   private static final String SERVER_TIME_ZONE = "UTC";
 
   @Inject
-  public MysqlConnectionPool(DataSourceProperties dataSourceProperties) {
+  public MysqlConnectionPool(@NonNull DataSourceProperties dataSourceProperties) {
     super(dataSourceProperties);
   }
-
-  private static final String MYSQL_JDBC_URL_TEMPLATE =
-      "jdbc:mysql://%s:%d/%s?useSSL=%s&serverTimezone=%s";
 
   @Override
   protected @NonNull String getJdbcUrl() {

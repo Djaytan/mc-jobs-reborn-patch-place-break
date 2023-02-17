@@ -45,7 +45,7 @@ public final class PropertiesValidator {
   private final Validator validator;
 
   @Inject
-  public PropertiesValidator(Validator validator) {
+  public PropertiesValidator(@NonNull Validator validator) {
     this.validator = validator;
   }
 

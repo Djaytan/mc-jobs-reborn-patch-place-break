@@ -40,7 +40,7 @@ public abstract class ConnectionPool {
   protected final DataSourceProperties dataSourceProperties;
   private HikariDataSource hikariDataSource;
 
-  protected ConnectionPool(DataSourceProperties dataSourceProperties) {
+  protected ConnectionPool(@NonNull DataSourceProperties dataSourceProperties) {
     this.dataSourceProperties = dataSourceProperties;
   }
 

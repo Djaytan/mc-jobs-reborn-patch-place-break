@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -42,8 +43,9 @@ public class SqlHelper {
   private final TagSqlDataDefiner tagSqlDataDefiner;
 
   @Inject
-  public SqlHelper(ConnectionPool connectionPool, DataSourceProperties dataSourceProperties,
-      TagSqlDataDefiner tagSqlDataDefiner) {
+  public SqlHelper(@NonNull ConnectionPool connectionPool,
+      @NonNull DataSourceProperties dataSourceProperties,
+      @NonNull TagSqlDataDefiner tagSqlDataDefiner) {
     this.connectionPool = connectionPool;
     this.dataSourceProperties = dataSourceProperties;
     this.tagSqlDataDefiner = tagSqlDataDefiner;

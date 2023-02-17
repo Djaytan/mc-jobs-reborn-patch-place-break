@@ -41,7 +41,7 @@ import lombok.NonNull;
 public class TagMysqlDataDefiner extends TagSqlDataDefiner {
 
   @Inject
-  public TagMysqlDataDefiner(DataSourceProperties dataSourceProperties) {
+  public TagMysqlDataDefiner(@NonNull DataSourceProperties dataSourceProperties) {
     super(dataSourceProperties);
   }
 

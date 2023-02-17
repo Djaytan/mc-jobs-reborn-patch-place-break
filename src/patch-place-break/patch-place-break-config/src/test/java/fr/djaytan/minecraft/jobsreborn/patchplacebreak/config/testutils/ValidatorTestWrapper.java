@@ -51,7 +51,7 @@ public class ValidatorTestWrapper {
   /**
    * @see jakarta.validation.Validator#validate(Object, Class[])
    */
-  public static @NonNull <T> Set<ConstraintViolation<T>> validate(T object) {
+  public static @NonNull <T> Set<ConstraintViolation<T>> validate(@NonNull T object) {
     return INSTANCE.validatorFactory.getValidator().validate(object);
   }
 

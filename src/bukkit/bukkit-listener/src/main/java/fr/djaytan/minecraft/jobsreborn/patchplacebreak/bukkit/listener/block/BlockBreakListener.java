@@ -34,6 +34,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
+import lombok.NonNull;
 
 /**
  * This class represents a {@link BlockBreakEvent} listener.
@@ -48,7 +49,7 @@ public class BlockBreakListener implements Listener {
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
 
   @Inject
-  public BlockBreakListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
+  public BlockBreakListener(@NonNull PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
   }
 
@@ -65,7 +66,7 @@ public class BlockBreakListener implements Listener {
    * @param event The block break event.
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockBreak(BlockBreakEvent event) {
+  public void onBlockBreak(@NonNull BlockBreakEvent event) {
     Location location = event.getBlock().getLocation();
     patchPlaceBreakBukkitAdapter.putTag(location, true);
   }

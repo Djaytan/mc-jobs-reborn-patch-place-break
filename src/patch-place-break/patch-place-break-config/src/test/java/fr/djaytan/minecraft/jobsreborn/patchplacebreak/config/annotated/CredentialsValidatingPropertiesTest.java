@@ -286,7 +286,7 @@ class CredentialsValidatingPropertiesTest {
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With valid values")
-      void withValidValues_shouldNotGenerateConstraintViolations(String validPassword) {
+      void withValidValues_shouldNotGenerateConstraintViolations(@NonNull String validPassword) {
         // Given
         CredentialsValidatingProperties credentialsValidatingProperties =
             CredentialsValidatingProperties.of("for", validPassword);

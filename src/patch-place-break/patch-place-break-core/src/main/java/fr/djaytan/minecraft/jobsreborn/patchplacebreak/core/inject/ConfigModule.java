@@ -30,6 +30,7 @@ import com.google.inject.Singleton;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
+import lombok.NonNull;
 
 /**
  * Represents config related configs (config of a config... You get it).
@@ -38,7 +39,7 @@ public class ConfigModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public DataSourceProperties provideDataSourceProperties(ConfigApi configApi) {
+  public @NonNull DataSourceProperties provideDataSourceProperties(@NonNull ConfigApi configApi) {
     return configApi.getDataSourceProperties();
   }
 }

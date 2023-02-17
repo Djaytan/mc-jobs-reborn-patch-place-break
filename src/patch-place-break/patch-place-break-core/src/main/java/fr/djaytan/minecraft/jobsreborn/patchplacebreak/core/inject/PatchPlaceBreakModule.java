@@ -70,7 +70,7 @@ public class PatchPlaceBreakModule extends AbstractModule {
   @Provides
   @Named("dataFolder")
   @Singleton
-  public Path provideDataFolder() {
+  public @NonNull Path provideDataFolder() {
     return dataFolder;
   }
 }

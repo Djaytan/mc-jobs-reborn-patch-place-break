@@ -34,6 +34,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.prop
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.SqlDataSourceInitializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.SqlHelper;
+import lombok.NonNull;
 
 @Singleton
 public class MysqlDataSourceInitializer extends SqlDataSourceInitializer {
@@ -41,7 +42,8 @@ public class MysqlDataSourceInitializer extends SqlDataSourceInitializer {
   private final DataSourceProperties dataSourceProperties;
 
   @Inject
-  public MysqlDataSourceInitializer(DataSourceProperties dataSourceProperties, SqlHelper sqlHelper) {
+  public MysqlDataSourceInitializer(@NonNull DataSourceProperties dataSourceProperties,
+      @NonNull SqlHelper sqlHelper) {
     super(sqlHelper);
     this.dataSourceProperties = dataSourceProperties;
   }

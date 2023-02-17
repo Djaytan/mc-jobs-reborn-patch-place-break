@@ -39,8 +39,8 @@ public class GuiceJobsRebornPatchPlaceBreakModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public @NonNull PatchPlaceBreakApi providePatchPlaceBreakApi(PatchPlaceBreak patchPlaceBreak,
-      @Named("dataFolder") Path dataFolder) {
+  public @NonNull PatchPlaceBreakApi providePatchPlaceBreakApi(
+      @NonNull PatchPlaceBreak patchPlaceBreak, @Named("dataFolder") @NonNull Path dataFolder) {
     return patchPlaceBreak.enable(dataFolder);
   }
 }

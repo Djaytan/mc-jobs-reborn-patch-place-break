@@ -64,7 +64,7 @@ public abstract class ValidatingConvertibleProperties<T> {
    * @return The "ready to use" data structure version.
    * @throws IllegalStateException if properties have not been validated before the conversion.
    */
-  public T convert() {
+  public @NonNull T convert() {
     if (!isValidated) {
       throw new IllegalStateException("Properties must be validated before being converted");
     }
@@ -78,6 +78,5 @@ public abstract class ValidatingConvertibleProperties<T> {
    *
    * @return The converted final data structure.
    */
-  @NonNull
-  protected abstract T convertValidated();
+  protected abstract @NonNull T convertValidated();
 }

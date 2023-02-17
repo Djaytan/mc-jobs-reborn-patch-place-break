@@ -59,8 +59,8 @@ public class PatchPlaceBreakVerifier {
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
 
   @Inject
-  public PatchPlaceBreakVerifier(Provider<ListenerRegister> listenerRegister,
-      PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
+  public PatchPlaceBreakVerifier(@NonNull Provider<ListenerRegister> listenerRegister,
+      @NonNull PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
     this.listenerRegister = listenerRegister;
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
   }

@@ -24,11 +24,13 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql;
 
+import lombok.NonNull;
+
 public abstract class SqlDataSourceInitializer {
 
   private final SqlHelper sqlHelper;
 
-  protected SqlDataSourceInitializer(SqlHelper sqlHelper) {
+  protected SqlDataSourceInitializer(@NonNull SqlHelper sqlHelper) {
     this.sqlHelper = sqlHelper;
   }
 

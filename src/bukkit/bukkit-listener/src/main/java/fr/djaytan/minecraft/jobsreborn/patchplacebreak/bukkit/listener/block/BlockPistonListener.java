@@ -38,6 +38,7 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
+import lombok.NonNull;
 
 /**
  * This class represents a {@link org.bukkit.event.block.BlockPistonEvent} listener. More
@@ -54,7 +55,7 @@ public class BlockPistonListener implements Listener {
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
 
   @Inject
-  public BlockPistonListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
+  public BlockPistonListener(@NonNull PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
   }
 
@@ -68,7 +69,7 @@ public class BlockPistonListener implements Listener {
    * @param event The block piston extend event.
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockPistonExtend(BlockPistonExtendEvent event) {
+  public void onBlockPistonExtend(@NonNull BlockPistonExtendEvent event) {
     BlockFace blockFace = event.getDirection();
     Collection<Block> blocks = event.getBlocks();
     patchPlaceBreakBukkitAdapter.moveTags(blocks, blockFace);
@@ -84,7 +85,7 @@ public class BlockPistonListener implements Listener {
    * @param event The block piston retract event.
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockPistonRetract(BlockPistonRetractEvent event) {
+  public void onBlockPistonRetract(@NonNull BlockPistonRetractEvent event) {
     BlockFace blockFace = event.getDirection();
     Collection<Block> blocks = event.getBlocks();
     patchPlaceBreakBukkitAdapter.moveTags(blocks, blockFace);

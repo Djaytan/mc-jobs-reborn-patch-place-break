@@ -51,7 +51,7 @@ public class ConnectionPoolProvider implements Provider<ConnectionPool> {
   }
 
   @Override
-  public ConnectionPool get() {
+  public @NonNull ConnectionPool get() {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {

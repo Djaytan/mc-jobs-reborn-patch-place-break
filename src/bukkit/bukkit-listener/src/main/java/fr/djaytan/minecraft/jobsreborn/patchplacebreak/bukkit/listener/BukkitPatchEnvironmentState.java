@@ -64,7 +64,7 @@ public class BukkitPatchEnvironmentState {
   HandlerList eventHandlers;
 
   @Override
-  public String toString() {
+  public @NonNull String toString() {
     String eventHandlersToString = eventHandlersToString();
 
     return MoreObjects.toStringHelper(this).add("jobActionType", jobActionType.name())

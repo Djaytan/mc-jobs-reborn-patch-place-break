@@ -34,7 +34,7 @@ public abstract class TagSqlDataDefiner {
 
   protected final DataSourceProperties dataSourceProperties;
 
-  protected TagSqlDataDefiner(DataSourceProperties dataSourceProperties) {
+  protected TagSqlDataDefiner(@NonNull DataSourceProperties dataSourceProperties) {
     this.dataSourceProperties = dataSourceProperties;
   }
 

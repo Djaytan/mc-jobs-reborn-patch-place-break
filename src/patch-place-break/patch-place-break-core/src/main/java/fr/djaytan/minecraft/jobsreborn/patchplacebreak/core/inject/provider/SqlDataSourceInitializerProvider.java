@@ -33,6 +33,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.prop
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.mysql.MysqlDataSourceInitializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.SqlDataSourceInitializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sqlite.SqliteDataSourceInitializer;
+import lombok.NonNull;
 
 public class SqlDataSourceInitializerProvider implements Provider<SqlDataSourceInitializer> {
 
@@ -41,16 +42,16 @@ public class SqlDataSourceInitializerProvider implements Provider<SqlDataSourceI
   private final SqliteDataSourceInitializer sqliteDataSourceInitializer;
 
   @Inject
-  public SqlDataSourceInitializerProvider(DataSourceProperties dataSourceProperties,
-      MysqlDataSourceInitializer mysqlDataSourceInitializer,
-      SqliteDataSourceInitializer sqliteDataSourceInitializer) {
+  public SqlDataSourceInitializerProvider(@NonNull DataSourceProperties dataSourceProperties,
+      @NonNull MysqlDataSourceInitializer mysqlDataSourceInitializer,
+      @NonNull SqliteDataSourceInitializer sqliteDataSourceInitializer) {
     this.dataSourceProperties = dataSourceProperties;
     this.mysqlDataSourceInitializer = mysqlDataSourceInitializer;
     this.sqliteDataSourceInitializer = sqliteDataSourceInitializer;
   }
 
   @Override
-  public SqlDataSourceInitializer get() {
+  public @NonNull SqlDataSourceInitializer get() {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {

@@ -40,6 +40,7 @@ import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.BukkitPatchEnvironmentState;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlaceBreakVerifier;
+import lombok.NonNull;
 
 /**
  * This class represents a {@link JobsPrePaymentEvent} listener.
@@ -54,8 +55,8 @@ public class JobsPrePaymentListener implements Listener {
   private final PatchPlaceBreakVerifier patchPlaceBreakVerifier;
 
   @Inject
-  public JobsPrePaymentListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter,
-      PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
+  public JobsPrePaymentListener(@NonNull PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter,
+      @NonNull PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
     this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;
   }
@@ -71,7 +72,7 @@ public class JobsPrePaymentListener implements Listener {
    * @param event The jobs pre-payment event.
    */
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void patchOnJobsPrePayment(JobsPrePaymentEvent event) {
+  public void patchOnJobsPrePayment(@NonNull JobsPrePaymentEvent event) {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 
@@ -102,7 +103,7 @@ public class JobsPrePaymentListener implements Listener {
    * @param event The jobs pre-payment event.
    */
   @EventHandler(priority = EventPriority.MONITOR)
-  public void verifyPatchOnJobsPrePayment(JobsPrePaymentEvent event) {
+  public void verifyPatchOnJobsPrePayment(@NonNull JobsPrePaymentEvent event) {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 

@@ -35,7 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class GuiceBukkitInjector {
 
-  private GuiceBukkitInjector() {}
+  private GuiceBukkitInjector() {
+    // Static class
+  }
 
   public static void inject(@NonNull JavaPlugin javaPlugin) {
     GuiceBukkitModule bukkitModule = new GuiceBukkitModule(javaPlugin);

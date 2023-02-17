@@ -38,6 +38,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block.Blo
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block.BlockSpreadListener;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.JobsExpGainListener;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.JobsPrePaymentListener;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /** This class represents a register of listeners. */
@@ -57,11 +58,13 @@ public class ListenerRegister {
   private final JobsPrePaymentListener jobsPrePaymentListener;
 
   @Inject
-  public ListenerRegister(JavaPlugin javaPlugin, PluginManager pluginManager,
-      BlockBreakListener blockBreakListener, BlockGrowListener blockGrowListener,
-      BlockPistonListener blockPistonListener, BlockPlaceListener blockPlaceListener,
-      BlockSpreadListener blockSpreadListener, JobsExpGainListener jobsExpGainListener,
-      JobsPrePaymentListener jobsPrePaymentListener) {
+  public ListenerRegister(@NonNull JavaPlugin javaPlugin, @NonNull PluginManager pluginManager,
+      @NonNull BlockBreakListener blockBreakListener, @NonNull BlockGrowListener blockGrowListener,
+      @NonNull BlockPistonListener blockPistonListener,
+      @NonNull BlockPlaceListener blockPlaceListener,
+      @NonNull BlockSpreadListener blockSpreadListener,
+      @NonNull JobsExpGainListener jobsExpGainListener,
+      @NonNull JobsPrePaymentListener jobsPrePaymentListener) {
     this.javaPlugin = javaPlugin;
     this.pluginManager = pluginManager;
 

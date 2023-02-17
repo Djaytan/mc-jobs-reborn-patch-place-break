@@ -33,6 +33,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.prop
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.mysql.TagMysqlDataDefiner;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.TagSqlDataDefiner;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sqlite.TagSqliteDataDefiner;
+import lombok.NonNull;
 
 public class TagSqlDataDefinerProvider implements Provider<TagSqlDataDefiner> {
 
@@ -41,15 +42,16 @@ public class TagSqlDataDefinerProvider implements Provider<TagSqlDataDefiner> {
   private final TagSqliteDataDefiner tagSqliteDataDefiner;
 
   @Inject
-  public TagSqlDataDefinerProvider(DataSourceProperties dataSourceProperties,
-      TagMysqlDataDefiner tagMysqlDataDefiner, TagSqliteDataDefiner tagSqliteDataDefiner) {
+  public TagSqlDataDefinerProvider(@NonNull DataSourceProperties dataSourceProperties,
+      @NonNull TagMysqlDataDefiner tagMysqlDataDefiner,
+      @NonNull TagSqliteDataDefiner tagSqliteDataDefiner) {
     this.dataSourceProperties = dataSourceProperties;
     this.tagMysqlDataDefiner = tagMysqlDataDefiner;
     this.tagSqliteDataDefiner = tagSqliteDataDefiner;
   }
 
   @Override
-  public TagSqlDataDefiner get() {
+  public @NonNull TagSqlDataDefiner get() {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {

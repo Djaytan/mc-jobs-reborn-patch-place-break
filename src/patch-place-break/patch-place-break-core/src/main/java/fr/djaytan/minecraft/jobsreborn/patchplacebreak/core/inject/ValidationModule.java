@@ -31,6 +31,7 @@ import com.google.inject.Singleton;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import lombok.NonNull;
 
 /**
  * Represents validation related configs.
@@ -39,13 +40,13 @@ public class ValidationModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public ValidatorFactory provideValidatorFactory() {
+  public @NonNull ValidatorFactory provideValidatorFactory() {
     return Validation.buildDefaultValidatorFactory();
   }
 
   @Provides
   @Singleton
-  public Validator provideValidator(ValidatorFactory validatorFactory) {
+  public @NonNull Validator provideValidator(@NonNull ValidatorFactory validatorFactory) {
     return validatorFactory.getValidator();
   }
 }
