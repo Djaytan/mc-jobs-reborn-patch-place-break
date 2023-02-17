@@ -41,7 +41,7 @@ import lombok.NonNull;
 public class TagSqliteDataDefiner extends TagSqlDataDefiner {
 
   @Inject
-  TagSqliteDataDefiner(DataSourceProperties dataSourceProperties) {
+  public TagSqliteDataDefiner(DataSourceProperties dataSourceProperties) {
     super(dataSourceProperties);
   }
 

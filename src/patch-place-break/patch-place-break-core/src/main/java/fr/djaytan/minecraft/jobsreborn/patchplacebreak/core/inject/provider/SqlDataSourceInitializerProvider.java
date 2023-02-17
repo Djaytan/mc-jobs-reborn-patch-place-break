@@ -41,7 +41,7 @@ public class SqlDataSourceInitializerProvider implements Provider<SqlDataSourceI
   private final SqliteDataSourceInitializer sqliteDataSourceInitializer;
 
   @Inject
-  SqlDataSourceInitializerProvider(DataSourceProperties dataSourceProperties,
+  public SqlDataSourceInitializerProvider(DataSourceProperties dataSourceProperties,
       MysqlDataSourceInitializer mysqlDataSourceInitializer,
       SqliteDataSourceInitializer sqliteDataSourceInitializer) {
     this.dataSourceProperties = dataSourceProperties;

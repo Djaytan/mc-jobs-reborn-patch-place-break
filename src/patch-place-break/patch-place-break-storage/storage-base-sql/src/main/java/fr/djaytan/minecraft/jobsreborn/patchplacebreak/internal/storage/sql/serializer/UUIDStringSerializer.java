@@ -33,8 +33,6 @@ import lombok.NonNull;
 @Singleton
 public class UUIDStringSerializer implements StringSerializer<UUID> {
 
-  UUIDStringSerializer() {}
-
   @Override
   public @NonNull String serialize(@NonNull UUID uuid) {
     return uuid.toString();

@@ -57,7 +57,7 @@ public class ListenerRegister {
   private final JobsPrePaymentListener jobsPrePaymentListener;
 
   @Inject
-  ListenerRegister(JavaPlugin javaPlugin, PluginManager pluginManager,
+  public ListenerRegister(JavaPlugin javaPlugin, PluginManager pluginManager,
       BlockBreakListener blockBreakListener, BlockGrowListener blockGrowListener,
       BlockPistonListener blockPistonListener, BlockPlaceListener blockPlaceListener,
       BlockSpreadListener blockSpreadListener, JobsExpGainListener jobsExpGainListener,

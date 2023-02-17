@@ -41,7 +41,7 @@ public class DataSourceProvider implements Provider<DataSource> {
   private final SqlDataSource sqlDataSource;
 
   @Inject
-  DataSourceProvider(DataSourceProperties dataSourceProperties,
+  public DataSourceProvider(DataSourceProperties dataSourceProperties,
       InMemoryDataSource inMemoryDataSource, SqlDataSource sqlDataSource) {
     this.dataSourceProperties = dataSourceProperties;
     this.inMemoryDataSource = inMemoryDataSource;

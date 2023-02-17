@@ -54,7 +54,7 @@ public class TagSqlDao {
   private final UUIDStringSerializer uuidStringSerializer;
 
   @Inject
-  TagSqlDao(BooleanIntegerSerializer booleanIntegerSerializer,
+  public TagSqlDao(BooleanIntegerSerializer booleanIntegerSerializer,
       DataSourceProperties dataSourceProperties,
       LocalDateTimeStringSerializer localDateTimeStringSerializer,
       UUIDStringSerializer uuidStringSerializer) {

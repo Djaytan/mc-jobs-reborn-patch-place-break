@@ -54,7 +54,7 @@ public class JobsExpGainListener implements Listener {
   private final PatchPlaceBreakVerifier patchPlaceBreakVerifier;
 
   @Inject
-  JobsExpGainListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter,
+  public JobsExpGainListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter,
       PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
     this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;

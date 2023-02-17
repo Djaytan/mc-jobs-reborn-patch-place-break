@@ -42,7 +42,7 @@ public class SqlHelper {
   private final TagSqlDataDefiner tagSqlDataDefiner;
 
   @Inject
-  SqlHelper(ConnectionPool connectionPool, DataSourceProperties dataSourceProperties,
+  public SqlHelper(ConnectionPool connectionPool, DataSourceProperties dataSourceProperties,
       TagSqlDataDefiner tagSqlDataDefiner) {
     this.connectionPool = connectionPool;
     this.dataSourceProperties = dataSourceProperties;

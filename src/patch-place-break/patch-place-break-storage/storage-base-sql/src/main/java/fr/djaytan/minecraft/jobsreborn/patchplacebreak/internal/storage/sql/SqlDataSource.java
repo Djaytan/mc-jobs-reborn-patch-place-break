@@ -37,7 +37,7 @@ public class SqlDataSource implements DataSource {
   private final SqlDataSourceInitializer sqlDataSourceInitializer;
 
   @Inject
-  SqlDataSource(ConnectionPool connectionPool, SqlDataSourceInitializer sqlDataSourceInitializer) {
+  public SqlDataSource(ConnectionPool connectionPool, SqlDataSourceInitializer sqlDataSourceInitializer) {
     this.connectionPool = connectionPool;
     this.sqlDataSourceInitializer = sqlDataSourceInitializer;
   }

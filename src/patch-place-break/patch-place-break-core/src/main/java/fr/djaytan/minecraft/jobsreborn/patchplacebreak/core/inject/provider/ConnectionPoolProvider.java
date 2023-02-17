@@ -42,7 +42,7 @@ public class ConnectionPoolProvider implements Provider<ConnectionPool> {
   private final SqliteConnectionPool sqliteConnectionPool;
 
   @Inject
-  ConnectionPoolProvider(@NonNull DataSourceProperties dataSourceProperties,
+  public ConnectionPoolProvider(@NonNull DataSourceProperties dataSourceProperties,
       @NonNull MysqlConnectionPool mysqlConnectionPool,
       @NonNull SqliteConnectionPool sqliteConnectionPool) {
     this.dataSourceProperties = dataSourceProperties;

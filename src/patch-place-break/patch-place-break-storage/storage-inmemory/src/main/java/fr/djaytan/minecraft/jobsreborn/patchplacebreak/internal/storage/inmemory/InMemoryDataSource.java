@@ -34,8 +34,6 @@ import lombok.extern.slf4j.Slf4j;
 @Singleton
 public class InMemoryDataSource implements DataSource {
 
-  InMemoryDataSource() {}
-
   @Override
   public void connect() throws StorageException {
     log.atInfo().log("Nothing to do when connecting to the InMemory datasource.");

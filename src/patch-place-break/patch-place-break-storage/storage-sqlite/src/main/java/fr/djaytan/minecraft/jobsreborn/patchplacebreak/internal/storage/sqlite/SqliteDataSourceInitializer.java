@@ -42,7 +42,7 @@ public class SqliteDataSourceInitializer extends SqlDataSourceInitializer {
   private final SqliteHelper sqliteHelper;
 
   @Inject
-  SqliteDataSourceInitializer(DataSourceProperties dataSourceProperties, SqlHelper sqlHelper,
+  public SqliteDataSourceInitializer(DataSourceProperties dataSourceProperties, SqlHelper sqlHelper,
       SqliteHelper sqliteHelper) {
     super(sqlHelper);
     this.dataSourceProperties = dataSourceProperties;

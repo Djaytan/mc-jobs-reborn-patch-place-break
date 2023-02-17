@@ -39,8 +39,6 @@ import lombok.NonNull;
 @Singleton
 public class ActionTypeConverter implements UnidirectionalConverter<ActionType, BlockActionType> {
 
-  ActionTypeConverter() {}
-
   @Override
   public @NonNull BlockActionType convert(@NonNull ActionType jobActionType) {
     if (!isValidJobActionType(jobActionType)) {

@@ -39,7 +39,7 @@ public class SqliteConnectionPool extends ConnectionPool {
   private final SqliteHelper sqliteHelper;
 
   @Inject
-  SqliteConnectionPool(DataSourceProperties dataSourceProperties, SqliteHelper sqliteHelper) {
+  public SqliteConnectionPool(DataSourceProperties dataSourceProperties, SqliteHelper sqliteHelper) {
     super(dataSourceProperties);
     this.sqliteHelper = sqliteHelper;
   }

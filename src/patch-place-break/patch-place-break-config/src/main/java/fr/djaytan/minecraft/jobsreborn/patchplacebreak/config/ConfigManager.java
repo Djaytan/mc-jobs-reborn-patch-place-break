@@ -57,7 +57,7 @@ final class ConfigManager {
   private final PropertiesValidator propertiesValidator;
 
   @Inject
-  ConfigManager(@Named("dataFolder") Path dataFolder, ConfigSerializer configSerializer,
+  public ConfigManager(@Named("dataFolder") Path dataFolder, ConfigSerializer configSerializer,
       PropertiesValidator propertiesValidator) {
     this.dataFolder = dataFolder;
     this.configSerializer = configSerializer;

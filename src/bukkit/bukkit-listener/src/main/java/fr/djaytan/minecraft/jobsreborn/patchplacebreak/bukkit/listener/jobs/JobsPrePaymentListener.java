@@ -54,7 +54,7 @@ public class JobsPrePaymentListener implements Listener {
   private final PatchPlaceBreakVerifier patchPlaceBreakVerifier;
 
   @Inject
-  JobsPrePaymentListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter,
+  public JobsPrePaymentListener(PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter,
       PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
     this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;

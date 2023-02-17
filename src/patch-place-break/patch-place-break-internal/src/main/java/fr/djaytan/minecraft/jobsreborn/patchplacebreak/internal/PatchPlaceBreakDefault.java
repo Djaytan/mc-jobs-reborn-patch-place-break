@@ -54,7 +54,7 @@ public class PatchPlaceBreakDefault implements PatchPlaceBreakApi {
   private final TagRepository tagRepository;
 
   @Inject
-  PatchPlaceBreakDefault(TagRepository tagRepository) {
+  public PatchPlaceBreakDefault(TagRepository tagRepository) {
     this.tagRepository = tagRepository;
   }
 

@@ -38,7 +38,7 @@ public class MysqlConnectionPool extends ConnectionPool {
   private static final String SERVER_TIME_ZONE = "UTC";
 
   @Inject
-  MysqlConnectionPool(DataSourceProperties dataSourceProperties) {
+  public MysqlConnectionPool(DataSourceProperties dataSourceProperties) {
     super(dataSourceProperties);
   }
 

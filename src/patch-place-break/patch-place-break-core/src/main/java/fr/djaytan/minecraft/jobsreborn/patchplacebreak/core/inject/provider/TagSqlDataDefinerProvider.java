@@ -41,7 +41,7 @@ public class TagSqlDataDefinerProvider implements Provider<TagSqlDataDefiner> {
   private final TagSqliteDataDefiner tagSqliteDataDefiner;
 
   @Inject
-  TagSqlDataDefinerProvider(DataSourceProperties dataSourceProperties,
+  public TagSqlDataDefinerProvider(DataSourceProperties dataSourceProperties,
       TagMysqlDataDefiner tagMysqlDataDefiner, TagSqliteDataDefiner tagSqliteDataDefiner) {
     this.dataSourceProperties = dataSourceProperties;
     this.tagMysqlDataDefiner = tagMysqlDataDefiner;

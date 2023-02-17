@@ -35,8 +35,6 @@ import lombok.NonNull;
 @Singleton
 public class LocationConverter implements UnidirectionalConverter<Location, TagLocation> {
 
-  LocationConverter() {}
-
   /**
    * Converts a Bukkit location to a tag location.
    *

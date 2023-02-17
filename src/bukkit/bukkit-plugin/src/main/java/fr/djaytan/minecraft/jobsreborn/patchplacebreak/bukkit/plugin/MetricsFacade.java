@@ -41,7 +41,7 @@ public class MetricsFacade {
   private final JavaPlugin javaPlugin;
 
   @Inject
-  MetricsFacade(JavaPlugin javaPlugin) {
+  public MetricsFacade(JavaPlugin javaPlugin) {
     this.javaPlugin = javaPlugin;
   }
 

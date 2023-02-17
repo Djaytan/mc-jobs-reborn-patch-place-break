@@ -41,7 +41,7 @@ public class TagRepositoryProvider implements Provider<TagRepository> {
   private final TagSqlRepository tagSqlRepository;
 
   @Inject
-  TagRepositoryProvider(DataSourceProperties dataSourceProperties,
+  public TagRepositoryProvider(DataSourceProperties dataSourceProperties,
       TagInMemoryRepository tagInMemoryRepository, TagSqlRepository tagSqlRepository) {
     this.dataSourceProperties = dataSourceProperties;
     this.tagInMemoryRepository = tagInMemoryRepository;

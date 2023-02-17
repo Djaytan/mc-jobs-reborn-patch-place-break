@@ -41,7 +41,7 @@ public class MysqlDataSourceInitializer extends SqlDataSourceInitializer {
   private final DataSourceProperties dataSourceProperties;
 
   @Inject
-  MysqlDataSourceInitializer(DataSourceProperties dataSourceProperties, SqlHelper sqlHelper) {
+  public MysqlDataSourceInitializer(DataSourceProperties dataSourceProperties, SqlHelper sqlHelper) {
     super(sqlHelper);
     this.dataSourceProperties = dataSourceProperties;
   }

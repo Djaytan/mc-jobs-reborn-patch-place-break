@@ -45,7 +45,7 @@ public class SqliteHelper {
   private final Path dataFolder;
 
   @Inject
-  SqliteHelper(@Named("dataFolder") Path dataFolder) {
+  public SqliteHelper(@Named("dataFolder") Path dataFolder) {
     this.dataFolder = dataFolder;
   }
 

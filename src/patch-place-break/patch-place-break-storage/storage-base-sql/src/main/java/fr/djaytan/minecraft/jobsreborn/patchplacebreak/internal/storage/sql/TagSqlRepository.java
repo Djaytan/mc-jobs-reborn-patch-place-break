@@ -44,7 +44,7 @@ public class TagSqlRepository implements TagRepository {
   private final TagSqlDao tagSqlDao;
 
   @Inject
-  TagSqlRepository(ConnectionPool connectionPool, TagSqlDao tagSqlDao) {
+  public TagSqlRepository(ConnectionPool connectionPool, TagSqlDao tagSqlDao) {
     this.connectionPool = connectionPool;
     this.tagSqlDao = tagSqlDao;
   }
