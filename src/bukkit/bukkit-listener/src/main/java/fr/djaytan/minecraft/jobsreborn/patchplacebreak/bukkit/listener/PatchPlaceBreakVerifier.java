@@ -33,7 +33,6 @@ import javax.inject.Singleton;
 import org.bukkit.Location;
 
 import com.gamingmesh.jobs.container.ActionType;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import lombok.NonNull;
@@ -65,10 +64,9 @@ public class PatchPlaceBreakVerifier {
     this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
   }
 
-  @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> checkAndAttemptFixListenersIfRequired(
+  public void checkAndAttemptFixListenersIfRequired(
       @NonNull BukkitPatchEnvironmentState environmentState) {
-    return CompletableFuture.runAsync(() -> {
+    CompletableFuture.runAsync(() -> {
       if (!isPatchExpected(environmentState).join()) {
         return;
       }

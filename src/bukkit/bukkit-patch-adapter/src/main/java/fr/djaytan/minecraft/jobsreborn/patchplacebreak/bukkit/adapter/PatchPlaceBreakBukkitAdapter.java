@@ -36,7 +36,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com.gamingmesh.jobs.container.ActionType;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
@@ -75,13 +74,11 @@ public class PatchPlaceBreakBukkitAdapter {
    *
    * @param location The location where to put tag.
    * @param isEphemeral Whether the tag to put must be an ephemeral one or not.
-   * @return void
    * @see PatchPlaceBreakApi#putTag(TagLocation, boolean)
    */
-  @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> putTag(@NonNull Location location, boolean isEphemeral) {
+  public void putTag(@NonNull Location location, boolean isEphemeral) {
     TagLocation tagLocation = locationConverter.convert(location);
-    return patchPlaceBreakApi.putTag(tagLocation, isEphemeral);
+    patchPlaceBreakApi.putTag(tagLocation, isEphemeral);
   }
 
   /**
@@ -92,29 +89,24 @@ public class PatchPlaceBreakBukkitAdapter {
    *
    * @param blocks The list of blocks with potential tags to be moved.
    * @param blockFace The block face from which to infer the move direction.
-   * @return void
    * @see PatchPlaceBreakApi#moveTags(Collection, TagVector)
    */
-  @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> moveTags(@NonNull Collection<Block> blocks,
-      @NonNull BlockFace blockFace) {
+  public void moveTags(@NonNull Collection<Block> blocks, @NonNull BlockFace blockFace) {
     Collection<TagLocation> tagLocations = blocks.stream().map(Block::getLocation)
         .map(locationConverter::convert).collect(Collectors.toList());
     TagVector tagVector = blockFaceConverter.convert(blockFace);
-    return patchPlaceBreakApi.moveTags(tagLocations, tagVector);
+    patchPlaceBreakApi.moveTags(tagLocations, tagVector);
   }
 
   /**
    * Removes existing tags from the specified location.
    *
    * @param location The location from which to remove the tags if they exist.
-   * @return void
    * @see PatchPlaceBreakApi#removeTags(TagLocation)
    */
-  @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> removeTags(@NonNull Location location) {
+  public void removeTags(@NonNull Location location) {
     TagLocation tagLocation = locationConverter.convert(location);
-    return patchPlaceBreakApi.removeTags(tagLocation);
+    patchPlaceBreakApi.removeTags(tagLocation);
   }
 
   /**

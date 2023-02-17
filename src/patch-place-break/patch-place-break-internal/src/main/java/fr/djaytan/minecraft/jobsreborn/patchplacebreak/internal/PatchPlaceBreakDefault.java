@@ -34,8 +34,6 @@ import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
@@ -58,10 +56,8 @@ public class PatchPlaceBreakDefault implements PatchPlaceBreakApi {
     this.tagRepository = tagRepository;
   }
 
-  @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> putTag(@NonNull TagLocation tagLocation,
-      boolean isEphemeral) {
-    return CompletableFuture.runAsync(() -> {
+  public void putTag(@NonNull TagLocation tagLocation, boolean isEphemeral) {
+    CompletableFuture.runAsync(() -> {
       UUID tagUuid = UUID.randomUUID();
       LocalDateTime localDateTime = LocalDateTime.now();
       Tag tag = Tag.of(tagUuid, localDateTime, isEphemeral, tagLocation);
@@ -69,10 +65,9 @@ public class PatchPlaceBreakDefault implements PatchPlaceBreakApi {
     });
   }
 
-  @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> moveTags(@NonNull Collection<TagLocation> tagLocations,
+  public void moveTags(@NonNull Collection<TagLocation> tagLocations,
       @NonNull TagVector direction) {
-    return CompletableFuture.runAsync(() -> {
+    CompletableFuture.runAsync(() -> {
       for (TagLocation oldTagLocation : tagLocations) {
         Optional<Tag> tag = tagRepository.findByLocation(oldTagLocation);
 
@@ -89,13 +84,12 @@ public class PatchPlaceBreakDefault implements PatchPlaceBreakApi {
 
   private void moveTag(@NonNull TagLocation oldTagLocation, @NonNull TagLocation newTagLocation,
       boolean isEphemeral) {
-    putTag(newTagLocation, isEphemeral).join();
+    putTag(newTagLocation, isEphemeral);
     // TODO: old tag must be removed, but it must be done with a transaction
   }
 
-  @CanIgnoreReturnValue
-  public @NonNull CompletableFuture<Void> removeTags(@NonNull TagLocation tagLocation) {
-    return CompletableFuture.runAsync(() -> tagRepository.delete(tagLocation));
+  public void removeTags(@NonNull TagLocation tagLocation) {
+    CompletableFuture.runAsync(() -> tagRepository.delete(tagLocation));
   }
 
   public @NonNull CompletableFuture<Boolean> isPlaceAndBreakExploit(

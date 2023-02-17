@@ -281,8 +281,6 @@
         <groupId>com.google.errorprone</groupId>
         <artifactId>error_prone_annotations</artifactId>
         <version>${errorProneAnnotations.version}</version>
-        <scope>provided</scope>
-        <!-- Useful only at compile time for non-runtime annotations -->
       </dependency>
       <dependency>
         <groupId>org.projectlombok</groupId>
