@@ -30,12 +30,8 @@ import lombok.Value;
 @Value(staticConstructor = "of")
 public class DataSourceProperties {
 
-  @NonNull
-  DataSourceType type;
-  @NonNull
-  String table;
-  @NonNull
-  DbmsServerProperties dbmsServer;
-  @NonNull
-  ConnectionPoolProperties connectionPool;
+  @NonNull DataSourceType type;
+  @NonNull String table;
+  @NonNull DbmsServerProperties dbmsServer;
+  @NonNull ConnectionPoolProperties connectionPool;
 }

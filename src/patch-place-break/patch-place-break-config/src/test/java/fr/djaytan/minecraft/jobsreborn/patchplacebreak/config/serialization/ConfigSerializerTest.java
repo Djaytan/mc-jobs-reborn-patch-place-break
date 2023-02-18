@@ -27,11 +27,15 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DbmsHostValidatingProperties;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-
+import lombok.SneakyThrows;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,13 +43,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.spongepowered.configurate.serialize.SerializationException;
-
-import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.Jimfs;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DbmsHostValidatingProperties;
-import lombok.SneakyThrows;
 
 class ConfigSerializerTest {
 
@@ -106,7 +103,9 @@ class ConfigSerializerTest {
           configSerializer.deserialize(confFile, DbmsHostValidatingProperties.class);
 
       // Then
-      assertThat(optionalHostValidatingProperties).isPresent().get()
+      assertThat(optionalHostValidatingProperties)
+          .isPresent()
+          .get()
           .isEqualTo(DbmsHostValidatingProperties.of("example.com", 1234, true));
     }
 
@@ -123,7 +122,8 @@ class ConfigSerializerTest {
           () -> configSerializer.deserialize(confFile, DbmsHostValidatingProperties.class);
 
       // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigSerializationException.class)
+      assertThatThrownBy(throwingCallable)
+          .isExactlyInstanceOf(ConfigSerializationException.class)
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
   }

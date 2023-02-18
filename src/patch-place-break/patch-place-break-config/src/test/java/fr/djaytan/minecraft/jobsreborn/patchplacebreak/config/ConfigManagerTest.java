@@ -29,24 +29,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 
-import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DataSourceValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
@@ -61,14 +45,26 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properti
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsHostProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsServerProperties;
+import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import lombok.SneakyThrows;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ConfigManagerTest {
 
   private ConfigManager configManager;
-  @Spy
-  private ConfigSerializer configSerializerSpied;
+  @Spy private ConfigSerializer configSerializerSpied;
   private Path dataFolder;
   private FileSystem imfs;
 
@@ -123,8 +119,9 @@ class ConfigManagerTest {
       configManager.createDefaultIfNotExists(configFileName, defaultProperties);
 
       // Then
-      String expectedConfigContent = TestResourcesHelper.getClassResourceAsString(this.getClass(),
-          "whenCreatingConfig_withGenericDefaultProperties.conf", false);
+      String expectedConfigContent =
+          TestResourcesHelper.getClassResourceAsString(
+              this.getClass(), "whenCreatingConfig_withGenericDefaultProperties.conf", false);
       Path configFile = dataFolder.resolve(configFileName);
       String actualConfigContent = new String(Files.readAllBytes(configFile));
 
@@ -137,8 +134,9 @@ class ConfigManagerTest {
       // Given
       String configFileName = "exception.conf";
       DataSourceValidatingProperties defaultProperties = DataSourceValidatingProperties.ofDefault();
-      doThrow(ConfigSerializationException.class).when(configSerializerSpied).serialize(any(),
-          any());
+      doThrow(ConfigSerializationException.class)
+          .when(configSerializerSpied)
+          .serialize(any(), any());
 
       // When
       ThrowingCallable throwingCallable =
@@ -174,8 +172,9 @@ class ConfigManagerTest {
     void withNominalConfigFile_shouldSuccess() throws IOException {
       // Given
       String nominalConfigFileName = "whenReadingAndValidatingConfig_withNominalConfigFile.conf";
-      Path nominalConfigFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(),
-          nominalConfigFileName);
+      Path nominalConfigFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(
+              this.getClass(), nominalConfigFileName);
 
       String configFileName = "test.conf";
       Path configFile = dataFolder.resolve(configFileName);
@@ -187,10 +186,15 @@ class ConfigManagerTest {
 
       // Then
       assertThat(dataSourceProperties)
-          .isEqualTo(DataSourceProperties.of(DataSourceType.SQLITE, "patch_place_break_tag",
-              DbmsServerProperties.of(DbmsHostProperties.of("localhost", 3306, true),
-                  CredentialsProperties.of("username", "password"), "database"),
-              ConnectionPoolProperties.of(30000, 10)));
+          .isEqualTo(
+              DataSourceProperties.of(
+                  DataSourceType.SQLITE,
+                  "patch_place_break_tag",
+                  DbmsServerProperties.of(
+                      DbmsHostProperties.of("localhost", 3306, true),
+                      CredentialsProperties.of("username", "password"),
+                      "database"),
+                  ConnectionPoolProperties.of(30000, 10)));
     }
 
     @Test
@@ -199,8 +203,9 @@ class ConfigManagerTest {
       // Given
       String invalidConfigFileName =
           "whenReadingAndValidatingConfig_withMissingRequiredFieldsInConfigFile.conf";
-      Path invalidConfigFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(),
-          invalidConfigFileName);
+      Path invalidConfigFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(
+              this.getClass(), invalidConfigFileName);
 
       String configFileName = "test.conf";
       Path configFile = dataFolder.resolve(configFileName);
@@ -219,8 +224,9 @@ class ConfigManagerTest {
     void withInvalidConfigFile_shouldThrowException() throws IOException {
       // Given
       String invalidConfigFileName = "whenReadingAndValidatingConfig_withInvalidConfigFile.conf";
-      Path invalidConfigFile = TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(),
-          invalidConfigFileName);
+      Path invalidConfigFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(
+              this.getClass(), invalidConfigFileName);
 
       String configFileName = "test.conf";
       Path configFile = dataFolder.resolve(configFileName);

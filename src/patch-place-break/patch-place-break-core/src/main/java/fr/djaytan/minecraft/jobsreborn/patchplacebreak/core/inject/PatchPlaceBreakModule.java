@@ -24,13 +24,10 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 
-import java.nio.file.Path;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.ConnectionPoolProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.DataSourceProvider;
@@ -43,11 +40,10 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.DataSour
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.ConnectionPool;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.SqlDataSourceInitializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.TagSqlDataDefiner;
+import java.nio.file.Path;
 import lombok.NonNull;
 
-/**
- * Represents general patch configs.
- */
+/** Represents general patch configs. */
 public class PatchPlaceBreakModule extends AbstractModule {
 
   private final Path dataFolder;

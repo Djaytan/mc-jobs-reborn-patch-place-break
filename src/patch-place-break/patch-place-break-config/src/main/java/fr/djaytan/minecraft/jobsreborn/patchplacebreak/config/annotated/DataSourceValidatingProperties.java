@@ -24,10 +24,6 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
 
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-import org.spongepowered.configurate.objectmapping.meta.Comment;
-import org.spongepowered.configurate.objectmapping.meta.Required;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.ConnectionPoolProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
@@ -43,10 +39,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
-/**
- * Represents an annotated Java Beans version of a {@link DataSourceProperties}.
- */
+/** Represents an annotated Java Beans version of a {@link DataSourceProperties}. */
 @ConfigSerializable
 @Getter
 @EqualsAndHashCode(callSuper = true)
@@ -58,9 +55,11 @@ public final class DataSourceValidatingProperties
 
   @NotNull
   @Required
-  @Comment("The type of datasource to use\n" + "Available types:\n"
-      + "- SQLITE: use a local file as database (easy & fast setup)\n"
-      + "- MYSQL: use a MySQL database server (better performances)")
+  @Comment(
+      "The type of datasource to use\n"
+          + "Available types:\n"
+          + "- SQLITE: use a local file as database (easy & fast setup)\n"
+          + "- MYSQL: use a MySQL database server (better performances)")
   private DataSourceType type = DataSourceType.SQLITE;
 
   @NotBlank
@@ -72,15 +71,17 @@ public final class DataSourceValidatingProperties
   @NotNull
   @Valid
   @Required
-  @Comment("The DBMS server properties for connection establishment\n"
-      + "Not applicable for SQLite")
+  @Comment(
+      "The DBMS server properties for connection establishment\n" + "Not applicable for SQLite")
   private DbmsServerValidatingProperties dbmsServer = DbmsServerValidatingProperties.ofDefault();
 
   @NotNull
   @Valid
   @Required
-  @Comment("Connection pool properties\n" + "This is reserved for advanced usage only\n"
-      + "Change these settings only if you know what you are doing")
+  @Comment(
+      "Connection pool properties\n"
+          + "This is reserved for advanced usage only\n"
+          + "Change these settings only if you know what you are doing")
   private ConnectionPoolValidatingProperties connectionPool =
       ConnectionPoolValidatingProperties.ofDefault();
 

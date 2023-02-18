@@ -24,10 +24,6 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
 
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-import org.spongepowered.configurate.objectmapping.meta.Comment;
-import org.spongepowered.configurate.objectmapping.meta.Required;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsHostProperties;
 import jakarta.validation.constraints.Max;
@@ -40,10 +36,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
-/**
- * Represents an annotated Java Beans version of an {@link DbmsHostProperties}.
- */
+/** Represents an annotated Java Beans version of an {@link DbmsHostProperties}. */
 @ConfigSerializable
 @Getter
 @EqualsAndHashCode(callSuper = true)
@@ -56,23 +53,22 @@ public final class DbmsHostValidatingProperties
   /**
    * An hostname cannot exceed 255 characters as per the DNS standard specification.
    *
-   * <p/><i/>Note: we explicitly allow most invalid hostnames since otherwise it will require
-   * too many work for too limited earnings. In fact, specifying an invalid hostname will
-   * be detected by underlying systems (e.g. JDBC). So, we only focus on easy detectable invalid
-   * addresses.
+   * <p><i/>Note: we explicitly allow most invalid hostnames since otherwise it will require too
+   * many work for too limited earnings. In fact, specifying an invalid hostname will be detected by
+   * underlying systems (e.g. JDBC). So, we only focus on easy detectable invalid addresses.
    */
   @NotBlank
   @Size(max = 255)
   @Required
-  @Comment("Hostname (an IP address (IPv4/IPv6) or a domain name)\n"
-      + "Value can't be empty or blank")
+  @Comment(
+      "Hostname (an IP address (IPv4/IPv6) or a domain name)\n" + "Value can't be empty or blank")
   private String hostname = "localhost";
 
   /**
    * A port cannot exceed 65535, which is the maximum value allowed by the Transport Control
-   * Protocol (TCP) and User Datagram Protocol (UDP) standards.
-   * The value "0" is excluded since it's a reserved one and must not be used. This is as well
-   * an indicator that the port as not been explicitly specified.
+   * Protocol (TCP) and User Datagram Protocol (UDP) standards. The value "0" is excluded since it's
+   * a reserved one and must not be used. This is as well an indicator that the port as not been
+   * explicitly specified.
    */
   @Max(65535)
   @Positive
@@ -81,8 +77,9 @@ public final class DbmsHostValidatingProperties
   private int port = 3306;
 
   @Required
-  @Comment("Whether an SSL/TLS communication must be established at connection time (more secure)\n"
-      + "Only boolean values accepted (true|false)")
+  @Comment(
+      "Whether an SSL/TLS communication must be established at connection time (more secure)\n"
+          + "Only boolean values accepted (true|false)")
   private boolean isSslEnabled = true;
 
   @Override

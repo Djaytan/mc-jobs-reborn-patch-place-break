@@ -24,12 +24,11 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.mysql;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsServerProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.ConnectionPool;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.NonNull;
 
 @Singleton
@@ -51,7 +50,7 @@ public class MysqlConnectionPool extends ConnectionPool {
     int port = dbmsServerProperties.getHost().getPort();
     String database = dbmsServerProperties.getDatabase();
     boolean isSslEnabled = dbmsServerProperties.getHost().isSslEnabled();
-    return String.format(MYSQL_JDBC_URL_TEMPLATE, hostname, port, database, isSslEnabled,
-        SERVER_TIME_ZONE);
+    return String.format(
+        MYSQL_JDBC_URL_TEMPLATE, hostname, port, database, isSslEnabled, SERVER_TIME_ZONE);
   }
 }

@@ -24,15 +24,14 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCoreException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.mysql.TagMysqlDataDefiner;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.TagSqlDataDefiner;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sqlite.TagSqliteDataDefiner;
+import javax.inject.Inject;
+import javax.inject.Provider;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -48,15 +47,18 @@ public class TagSqlDataDefinerProvider implements Provider<TagSqlDataDefiner> {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {
-      case MYSQL: {
-        return tagMysqlDataDefiner;
-      }
-      case SQLITE: {
-        return tagSqliteDataDefiner;
-      }
-      default: {
-        throw PatchPlaceBreakCoreException.unrecognisedDataSourceType(dataSourceType);
-      }
+      case MYSQL:
+        {
+          return tagMysqlDataDefiner;
+        }
+      case SQLITE:
+        {
+          return tagSqliteDataDefiner;
+        }
+      default:
+        {
+          throw PatchPlaceBreakCoreException.unrecognisedDataSourceType(dataSourceType);
+        }
     }
   }
 }

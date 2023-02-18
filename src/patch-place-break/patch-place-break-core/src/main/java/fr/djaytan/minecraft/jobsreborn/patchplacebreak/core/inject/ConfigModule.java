@@ -27,14 +27,11 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
 import lombok.NonNull;
 
-/**
- * Represents config related configs (config of a config... You get it).
- */
+/** Represents config related configs (config of a config... You get it). */
 public class ConfigModule extends AbstractModule {
 
   @Provides

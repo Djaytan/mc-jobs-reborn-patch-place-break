@@ -27,15 +27,12 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import lombok.NonNull;
 
-/**
- * Represents validation related configs.
- */
+/** Represents validation related configs. */
 public class ValidationModule extends AbstractModule {
 
   @Provides

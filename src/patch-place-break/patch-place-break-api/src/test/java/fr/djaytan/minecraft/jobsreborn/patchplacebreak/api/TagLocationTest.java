@@ -27,22 +27,19 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.jparams.verifier.tostring.NameStyle;
+import com.jparams.verifier.tostring.ToStringVerifier;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
 import java.util.stream.Stream;
-
+import lombok.NonNull;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import com.jparams.verifier.tostring.NameStyle;
-import com.jparams.verifier.tostring.ToStringVerifier;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
-import lombok.NonNull;
-import nl.jqno.equalsverifier.EqualsVerifier;
 
 class TagLocationTest {
 
@@ -59,7 +56,8 @@ class TagLocationTest {
     TagLocation tagLocation = TagLocation.of(worldName, x, y, z);
 
     // Then
-    assertAll("Verification of returned values from getters",
+    assertAll(
+        "Verification of returned values from getters",
         () -> assertThat(tagLocation.getWorldName()).isEqualTo(worldName),
         () -> assertThat(tagLocation.getX()).isEqualTo(x),
         () -> assertThat(tagLocation.getY()).isEqualTo(y),
@@ -80,8 +78,8 @@ class TagLocationTest {
 
   @ParameterizedTest(name = "{index} - {0}")
   @MethodSource
-  void whenMoving_shouldCreateNewInstanceMatchingExpectedValue(@NonNull TagVector givenDirection,
-      @NonNull TagLocation expectedValue) {
+  void whenMoving_shouldCreateNewInstanceMatchingExpectedValue(
+      @NonNull TagVector givenDirection, @NonNull TagLocation expectedValue) {
     // Given
     String worldName = "world";
     double initX = 1000;
@@ -93,17 +91,22 @@ class TagLocationTest {
     TagLocation movedTagLocation = TagLocation.fromMove(tagLocation, givenDirection);
 
     // Then
-    assertAll(() -> assertThat(movedTagLocation).isNotSameAs(tagLocation),
+    assertAll(
+        () -> assertThat(movedTagLocation).isNotSameAs(tagLocation),
         () -> assertThat(movedTagLocation).isEqualTo(expectedValue));
   }
 
-  private static @NonNull Stream<Arguments> whenMoving_shouldCreateNewInstanceMatchingExpectedValue() {
+  private static @NonNull Stream<Arguments>
+      whenMoving_shouldCreateNewInstanceMatchingExpectedValue() {
     return Stream.of(
-        Arguments.of(Named.of("With nominal values", TagVector.of(5.4, 0, -452.56)),
+        Arguments.of(
+            Named.of("With nominal values", TagVector.of(5.4, 0, -452.56)),
             TagLocation.of("world", 1005.4, -45, -451.06)),
-        Arguments.of(Named.of("On overflow", TagVector.of(Double.MAX_VALUE, 1, -1)),
+        Arguments.of(
+            Named.of("On overflow", TagVector.of(Double.MAX_VALUE, 1, -1)),
             TagLocation.of("world", Double.MAX_VALUE, -44, 0.5)),
-        Arguments.of(Named.of("On underflow", TagVector.of(10, -50, Double.MIN_VALUE)),
+        Arguments.of(
+            Named.of("On underflow", TagVector.of(10, -50, Double.MIN_VALUE)),
             TagLocation.of("world", 1010, -95, 1.5)));
   }
 }

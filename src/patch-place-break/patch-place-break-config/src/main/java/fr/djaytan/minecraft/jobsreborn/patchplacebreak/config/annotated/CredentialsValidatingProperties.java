@@ -24,10 +24,6 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
 
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-import org.spongepowered.configurate.objectmapping.meta.Comment;
-import org.spongepowered.configurate.objectmapping.meta.Required;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.CredentialsProperties;
 import jakarta.validation.constraints.NotBlank;
@@ -39,10 +35,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
-/**
- * Represents an annotated Java Beans version of a {@link CredentialsProperties}.
- */
+/** Represents an annotated Java Beans version of a {@link CredentialsProperties}. */
 @ConfigSerializable
 @Getter
 @EqualsAndHashCode(callSuper = true)
@@ -55,8 +52,9 @@ public final class CredentialsValidatingProperties
   @NotBlank
   @Size(max = 32)
   @Required
-  @Comment("Under behalf of which user to connect on the DBMS server\n"
-      + "Value can't be empty or blank")
+  @Comment(
+      "Under behalf of which user to connect on the DBMS server\n"
+          + "Value can't be empty or blank")
   private String username = "username";
 
   @NotNull

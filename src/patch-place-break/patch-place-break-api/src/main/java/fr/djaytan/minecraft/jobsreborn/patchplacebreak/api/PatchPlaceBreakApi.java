@@ -24,82 +24,76 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
-import java.time.Duration;
-import java.util.Collection;
-import java.util.concurrent.CompletableFuture;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
+import java.time.Duration;
+import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 import lombok.NonNull;
 
 /**
  * This interface represents the API to apply place-and-break patch.
  *
- * <p>The patch of JobsReborn plugin works as follows: when an eligible event occurs
- * (e.g. a block place), a tag is attached to the block in order to cancel future jobs rewards
- * (payments, experience and points) when breaking this non-naturally placed block (e.g. preventing
- * diamond ores place-and-break exploit). This will be applied for {@link BlockActionType#BREAK} and
- * {@link BlockActionType#TNTBREAK} jobs actions.
+ * <p>The patch of JobsReborn plugin works as follows: when an eligible event occurs (e.g. a block
+ * place), a tag is attached to the block in order to cancel future jobs rewards (payments,
+ * experience and points) when breaking this non-naturally placed block (e.g. preventing diamond
+ * ores place-and-break exploit). This will be applied for {@link BlockActionType#BREAK} and {@link
+ * BlockActionType#TNTBREAK} jobs actions.
  *
  * <p>It can work in the reverse order: when breaking a block, an "ephemeral" tag is placed to the
  * newly "placed" AIR block. It permits to cancel jobs rewards when placing another block in a
- * short-time delay (e.g. prevent sapling place-and-break exploit). This will be applied for
- * {@link BlockActionType#PLACE} jobs actions.
+ * short-time delay (e.g. prevent sapling place-and-break exploit). This will be applied for {@link
+ * BlockActionType#PLACE} jobs actions.
  *
  * <p>Nevertheless, an attached tag can be removed given specific conditions like when a block grow
  * event happens. This will permit farmers to achieve their job without seeing their action being
  * cancelled by this patch plugin. This is the purpose of the {@link #removeTags(TagLocation)}
  * method.
  *
- * <p>A tag can be placed with {@link #putTag(TagLocation, boolean)} method. The
- * {@link #moveTags(Collection, TagVector)} has a special purpose: to permit to put back tags
- * when blocks are moved (e.g. by block piston extend and retract events).
+ * <p>A tag can be placed with {@link #putTag(TagLocation, boolean)} method. The {@link
+ * #moveTags(Collection, TagVector)} has a special purpose: to permit to put back tags when blocks
+ * are moved (e.g. by block piston extend and retract events).
  *
- * <p>Finally, this API give the possibility to check if the jobs action type involving a
- * given block is a place-and-break exploit or no with the method
- * {@link #isPlaceAndBreakExploit(BlockActionType, TagLocation)}.
+ * <p>Finally, this API give the possibility to check if the jobs action type involving a given
+ * block is a place-and-break exploit or no with the method {@link
+ * #isPlaceAndBreakExploit(BlockActionType, TagLocation)}.
  */
 public interface PatchPlaceBreakApi {
 
-  /**
-   * The duration of any ephemeral tag created.
-   */
+  /** The duration of any ephemeral tag created. */
   Duration EPHEMERAL_TAG_DURATION = Duration.ofSeconds(3);
 
   /**
    * Puts a {@link Tag} to the given location.
    *
-   * <p>If the tag must be considered as an ephemeral one, then a validity duration
-   * of {@link #EPHEMERAL_TAG_DURATION} will be applied. After this delay the tag
-   * will not be considered as active anymore and will be ignored
-   * by {@link #isPlaceAndBreakExploit(BlockActionType, TagLocation)} method.
+   * <p>If the tag must be considered as an ephemeral one, then a validity duration of {@link
+   * #EPHEMERAL_TAG_DURATION} will be applied. After this delay the tag will not be considered as
+   * active anymore and will be ignored by {@link #isPlaceAndBreakExploit(BlockActionType,
+   * TagLocation)} method.
    *
    * @param tagLocation The location where the tag must be put.
    * @param isEphemeral <code>true</code> if the tag must be ephemeral, <code>false</code>
-   *                    otherwise.
+   *     otherwise.
    */
   void putTag(@NonNull TagLocation tagLocation, boolean isEphemeral);
-
 
   /**
    * Moves given tags according to the specified direction.
    *
-   * <p>For each tag location a check will be done to ensure an active tag exist or not.
-   * If it doesn't exist, then nothing else will be done for the concerned location. In other words:
-   * this method will <b>never</b> create tag, at most just update existing ones
-   * when they are actives.
+   * <p>For each tag location a check will be done to ensure an active tag exist or not. If it
+   * doesn't exist, then nothing else will be done for the concerned location. In other words: this
+   * method will <b>never</b> create tag, at most just update existing ones when they are actives.
    *
    * @param tagLocations The locations from where to move existing tags.
    * @param direction The direction where to move existing tags.
    */
   void moveTags(@NonNull Collection<TagLocation> tagLocations, @NonNull TagVector direction);
 
-
   /**
-   * Removes existing tags from a specified location. This can be useful when the state
-   * of the block change (e.g. crops grow like with wheat).
+   * Removes existing tags from a specified location. This can be useful when the state of the block
+   * change (e.g. crops grow like with wheat).
    *
    * <p><i>Note: Even if we expect to have only one existing and activated tag at the same time, it
    * is preferable to remove all the ones associated to the given location in order to prevent any
@@ -110,14 +104,15 @@ public interface PatchPlaceBreakApi {
   void removeTags(@NonNull TagLocation tagLocation);
 
   /**
-   * Checks if the specified block action type at the given location is a place-and-break exploit
-   * or not.
+   * Checks if the specified block action type at the given location is a place-and-break exploit or
+   * not.
    *
    * <p>This method will return <code>true</code> if one of the following tags exist:
+   *
    * <ul>
-   *   <li>A non-ephemeral tag</li>
-   *   <li>An ephemeral one which hasn't yet expired (i.e. for which lifetime has not exceed
-   *   {@link #EPHEMERAL_TAG_DURATION})</li>
+   *   <li>A non-ephemeral tag
+   *   <li>An ephemeral one which hasn't yet expired (i.e. for which lifetime has not exceed {@link
+   *       #EPHEMERAL_TAG_DURATION})
    * </ul>
    *
    * @param blockActionType The performed action type involving a block.
@@ -125,6 +120,6 @@ public interface PatchPlaceBreakApi {
    * @return <code>true</code> if it's a place-and-break exploit, <code>false</code> otherwise.
    */
   @NonNull
-  CompletableFuture<Boolean> isPlaceAndBreakExploit(@NonNull BlockActionType blockActionType,
-      @NonNull TagLocation tagLocation);
+  CompletableFuture<Boolean> isPlaceAndBreakExploit(
+      @NonNull BlockActionType blockActionType, @NonNull TagLocation tagLocation);
 }

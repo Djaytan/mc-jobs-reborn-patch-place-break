@@ -29,6 +29,16 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
+import com.jparams.verifier.tostring.NameStyle;
+import com.jparams.verifier.tostring.ToStringVerifier;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.CredentialsProperties;
+import jakarta.validation.ConstraintViolation;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,7 +46,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-
+import lombok.NonNull;
+import lombok.SneakyThrows;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
@@ -51,22 +64,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.spongepowered.configurate.serialize.SerializationException;
-
-import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.Jimfs;
-import com.jparams.verifier.tostring.NameStyle;
-import com.jparams.verifier.tostring.ToStringVerifier;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.CredentialsProperties;
-import jakarta.validation.ConstraintViolation;
-import lombok.NonNull;
-import lombok.SneakyThrows;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 class CredentialsValidatingPropertiesTest {
 
@@ -86,16 +83,20 @@ class CredentialsValidatingPropertiesTest {
   @Test
   @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashcode_shouldMetContracts() {
-    EqualsVerifier.forClass(CredentialsValidatingProperties.class).withRedefinedSuperclass()
-        .suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(CredentialsValidatingProperties.class)
+        .withRedefinedSuperclass()
+        .suppress(Warning.NONFINAL_FIELDS)
+        .verify();
   }
 
   @Test
   @DisplayName("When calling toString()")
   void whenCallingToString_shouldMetContracts() {
     ToStringVerifier.forClass(CredentialsValidatingProperties.class)
-        .withClassName(NameStyle.SIMPLE_NAME).withIgnoredFields("password")
-        .withFailOnExcludedFields(true).verify();
+        .withClassName(NameStyle.SIMPLE_NAME)
+        .withIgnoredFields("password")
+        .withFailOnExcludedFields(true)
+        .verify();
   }
 
   @Nested
@@ -130,7 +131,8 @@ class CredentialsValidatingPropertiesTest {
           CredentialsValidatingProperties.of(username, password);
 
       // Then
-      assertAll(() -> assertThat(credentialsValidatingProperties.getUsername()).isEqualTo("foo"),
+      assertAll(
+          () -> assertThat(credentialsValidatingProperties.getUsername()).isEqualTo("foo"),
           () -> assertThat(credentialsValidatingProperties.getPassword()).isEqualTo("bar"),
           () -> assertThat(credentialsValidatingProperties.isValidated()).isFalse());
     }
@@ -152,7 +154,8 @@ class CredentialsValidatingPropertiesTest {
       CredentialsProperties credentialsProperties = credentialsValidatingProperties.convert();
 
       // Then
-      assertAll(() -> assertThat(credentialsValidatingProperties.isValidated()).isTrue(),
+      assertAll(
+          () -> assertThat(credentialsValidatingProperties.isValidated()).isTrue(),
           () -> assertThat(credentialsProperties.getUsername()).isEqualTo("foo"),
           () -> assertThat(credentialsProperties.getPassword()).isEqualTo("bar"));
     }
@@ -168,9 +171,12 @@ class CredentialsValidatingPropertiesTest {
       ThrowingCallable throwingCallable = credentialsValidatingProperties::convert;
 
       // Then
-      assertAll(() -> assertThat(credentialsValidatingProperties.isValidated()).isFalse(),
-          () -> assertThatIllegalStateException().isThrownBy(throwingCallable)
-              .withMessage("Properties must be validated before being converted"));
+      assertAll(
+          () -> assertThat(credentialsValidatingProperties.isValidated()).isFalse(),
+          () ->
+              assertThatIllegalStateException()
+                  .isThrownBy(throwingCallable)
+                  .withMessage("Properties must be validated before being converted"));
     }
   }
 
@@ -263,18 +269,25 @@ class CredentialsValidatingPropertiesTest {
             ValidatorTestWrapper.validate(credentialsValidatingProperties);
 
         // Then
-        assertThat(constraintViolations).hasSize(1).element(0)
-            .matches(constraintViolation -> constraintViolation
-                .getRootBeanClass() == CredentialsValidatingProperties.class)
-            .matches(constraintViolation -> Objects.equals(constraintViolation.getInvalidValue(),
-                invalidUsername))
-            .matches(constraintViolation -> constraintViolation.getPropertyPath().toString()
-                .equals("username"));
+        assertThat(constraintViolations)
+            .hasSize(1)
+            .element(0)
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getRootBeanClass() == CredentialsValidatingProperties.class)
+            .matches(
+                constraintViolation ->
+                    Objects.equals(constraintViolation.getInvalidValue(), invalidUsername))
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getPropertyPath().toString().equals("username"));
       }
 
       private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
-        return Stream.of(Arguments.of(Named.of("Null value", null)),
-            Arguments.of(Named.of("Empty value", "")), Arguments.of(Named.of("Blank value", " ")),
+        return Stream.of(
+            Arguments.of(Named.of("Null value", null)),
+            Arguments.of(Named.of("Empty value", "")),
+            Arguments.of(Named.of("Blank value", " ")),
             Arguments.of(Named.of("Too long value", StringUtils.repeat("s", 33))));
       }
     }
@@ -320,17 +333,23 @@ class CredentialsValidatingPropertiesTest {
             ValidatorTestWrapper.validate(credentialsValidatingProperties);
 
         // Then
-        assertThat(constraintViolations).hasSize(1).element(0)
-            .matches(constraintViolation -> constraintViolation
-                .getRootBeanClass() == CredentialsValidatingProperties.class)
-            .matches(constraintViolation -> Objects.equals(constraintViolation.getInvalidValue(),
-                invalidPassword))
-            .matches(constraintViolation -> constraintViolation.getPropertyPath().toString()
-                .equals("password"));
+        assertThat(constraintViolations)
+            .hasSize(1)
+            .element(0)
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getRootBeanClass() == CredentialsValidatingProperties.class)
+            .matches(
+                constraintViolation ->
+                    Objects.equals(constraintViolation.getInvalidValue(), invalidPassword))
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getPropertyPath().toString().equals("password"));
       }
 
       private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
-        return Stream.of(Arguments.of(Named.of("Null value", null)),
+        return Stream.of(
+            Arguments.of(Named.of("Null value", null)),
             Arguments.of(Named.of("Too long value", StringUtils.repeat("s", 129))));
       }
     }
@@ -355,14 +374,16 @@ class CredentialsValidatingPropertiesTest {
 
       // Then
       String actualYaml = new String(Files.readAllBytes(imDestFile));
-      String expectedYaml = TestResourcesHelper.getClassResourceAsString(this.getClass(),
-          expectedYamlFileName, false);
+      String expectedYaml =
+          TestResourcesHelper.getClassResourceAsString(
+              this.getClass(), expectedYamlFileName, false);
       assertThat(actualYaml).containsIgnoringNewLines(expectedYaml);
     }
 
     private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
-          Arguments.of(Named.of("With default values", CredentialsValidatingProperties.ofDefault()),
+          Arguments.of(
+              Named.of("With default values", CredentialsValidatingProperties.ofDefault()),
               "whenSerializing_withDefaultValues.conf"),
           Arguments.of(
               Named.of("With custom values", CredentialsValidatingProperties.of("foo", "bar")),
@@ -378,8 +399,8 @@ class CredentialsValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With valid content")
-    void withValidContent_shouldMatchExpectedValue(@NonNull String confFileName,
-        @NonNull CredentialsValidatingProperties expectedValue) {
+    void withValidContent_shouldMatchExpectedValue(
+        @NonNull String confFileName, @NonNull CredentialsValidatingProperties expectedValue) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
@@ -389,13 +410,16 @@ class CredentialsValidatingPropertiesTest {
           ConfigSerializerTestWrapper.deserialize(confFile, CredentialsValidatingProperties.class);
 
       // Then
-      assertThat(optionalCredentialsValidatingProperties).isPresent().get()
+      assertThat(optionalCredentialsValidatingProperties)
+          .isPresent()
+          .get()
           .isEqualTo(expectedValue);
     }
 
     private @NonNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
-          Arguments.of(Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
+          Arguments.of(
+              Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
               CredentialsValidatingProperties.of("foo", "bar")),
           Arguments.of(
               Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
@@ -414,20 +438,27 @@ class CredentialsValidatingPropertiesTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      ThrowingCallable throwingCallable = () -> ConfigSerializerTestWrapper.deserialize(confFile,
-          CredentialsValidatingProperties.class);
+      ThrowingCallable throwingCallable =
+          () ->
+              ConfigSerializerTestWrapper.deserialize(
+                  confFile, CredentialsValidatingProperties.class);
 
       // Then
-      assertThatThrownBy(throwingCallable).isInstanceOf(ConfigSerializationException.class)
+      assertThatThrownBy(throwingCallable)
+          .isInstanceOf(ConfigSerializationException.class)
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
     private @NonNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
-          Arguments.of(Named.of("With missing 'username' field",
-              "whenDeserializing_withMissingUsernameField.conf")),
-          Arguments.of(Named.of("With missing 'password' field",
-              "whenDeserializing_withMissingPasswordField.conf")));
+          Arguments.of(
+              Named.of(
+                  "With missing 'username' field",
+                  "whenDeserializing_withMissingUsernameField.conf")),
+          Arguments.of(
+              Named.of(
+                  "With missing 'password' field",
+                  "whenDeserializing_withMissingPasswordField.conf")));
     }
 
     @Test

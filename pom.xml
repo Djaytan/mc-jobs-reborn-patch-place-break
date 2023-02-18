@@ -76,8 +76,7 @@
 
     <!-- ==================== Plugins versions ==================== -->
     <builderHelperMavenPlugin.version>3.3.0</builderHelperMavenPlugin.version>
-    <formatterMavenPlugin.version>2.22.0</formatterMavenPlugin.version>
-    <impsortMavenPlugin.version>1.8.0</impsortMavenPlugin.version>
+    <fmtMavenPlugin.version>2.19</fmtMavenPlugin.version>
     <jacocoMavenPlugin.version>0.8.8</jacocoMavenPlugin.version>
     <mavenCleanPlugin.version>3.2.0</mavenCleanPlugin.version>
     <mavenCompilerPlugin.version>3.10.1</mavenCompilerPlugin.version>
@@ -341,49 +340,22 @@
         </configuration>
         <executions>
           <execution>
-            <id>${sortpom.executionId}</id>
             <goals>
               <goal>${sortpom.goal}</goal>
             </goals>
-            <phase>validate</phase>
           </execution>
         </executions>
       </plugin>
       <plugin>
-        <groupId>net.revelc.code</groupId>
-        <artifactId>impsort-maven-plugin</artifactId>
-        <version>${impsortMavenPlugin.version}</version>
-        <configuration>
-          <groups>java.,javax.,org.,com.</groups>
-          <staticGroups>java,*</staticGroups>
-          <removeUnused>true</removeUnused>
-        </configuration>
+        <groupId>com.spotify.fmt</groupId>
+        <artifactId>fmt-maven-plugin</artifactId>
+        <version>${fmtMavenPlugin.version}</version>
         <executions>
           <execution>
-            <id>${impsort.executionId}</id>
             <goals>
-              <goal>${impsort.goal}</goal>
+              <goal>${fmt.goal}</goal>
             </goals>
-            <phase>validate</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>net.revelc.code.formatter</groupId>
-        <artifactId>formatter-maven-plugin</artifactId>
-        <version>${formatterMavenPlugin.version}</version>
-        <configuration>
-          <configFile>${main.basedir}/eclipse-java-google-style.xml</configFile>
-          <encoding>${project.encoding}</encoding>
-          <lineEnding>LF</lineEnding>
-        </configuration>
-        <executions>
-          <execution>
-            <id>${formatter.executionId}</id>
-            <goals>
-              <goal>${formatter.goal}</goal>
-            </goals>
-            <phase>validate</phase>
+            <phase>${fmt.phase}</phase>
           </execution>
         </executions>
       </plugin>
@@ -718,22 +690,17 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <formatter.executionId>auto-format</formatter.executionId>
-        <formatter.goal>format</formatter.goal>
-        <impsort.executionId>auto-sort</impsort.executionId>
-        <impsort.goal>sort</impsort.goal>
-        <sortpom.executionId>auto-sort</sortpom.executionId>
+        <fmt.goal>format</fmt.goal>
+        <fmt.phase>process-sources</fmt.phase>
         <sortpom.goal>sort</sortpom.goal>
       </properties>
     </profile>
     <profile>
       <id>continuous-integration</id>
       <properties>
-        <formatter.executionId>format-check</formatter.executionId>
-        <formatter.goal>validate</formatter.goal>
-        <impsort.executionId>imports-order-check</impsort.executionId>
-        <impsort.goal>check</impsort.goal>
-        <sortpom.executionId>pom-check</sortpom.executionId>
+        <fmt.goal>check</fmt.goal>
+        <!-- We want to fail ASAP if format is invalid -->
+        <fmt.phase>validate</fmt.phase>
         <sortpom.goal>verify</sortpom.goal>
       </properties>
     </profile>

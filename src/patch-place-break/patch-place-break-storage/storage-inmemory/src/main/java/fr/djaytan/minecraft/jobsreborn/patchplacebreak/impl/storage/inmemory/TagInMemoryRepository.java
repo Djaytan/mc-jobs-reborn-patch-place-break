@@ -24,16 +24,14 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.inmemory;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-
 import javax.inject.Singleton;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
 import lombok.NonNull;
 
 @Singleton
@@ -48,7 +46,8 @@ public class TagInMemoryRepository implements TagRepository {
 
   @Override
   public @NonNull Optional<Tag> findByLocation(@NonNull TagLocation tagLocation) {
-    return tagMap.values().stream().filter(tag -> tag.getTagLocation().equals(tagLocation))
+    return tagMap.values().stream()
+        .filter(tag -> tag.getTagLocation().equals(tagLocation))
         .findFirst();
   }
 

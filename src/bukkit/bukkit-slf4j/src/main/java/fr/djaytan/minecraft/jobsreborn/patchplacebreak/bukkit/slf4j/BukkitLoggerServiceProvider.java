@@ -33,22 +33,22 @@ import org.slf4j.spi.SLF4JServiceProvider;
 
 /**
  * /!\ WARNING /!\
- * <p>
- *  This class is a copy from the slf4j-jdk14 module:
- *  <a href="https://github.com/qos-ch/slf4j/edit/master/slf4j-jdk14/src/main/java/org/slf4j/jul/JULServiceProvider.java">source</a>
- * </p>
- * <p>
- *  The purpose is to permit the creation of a SLF4J instance of the Bukkit logger to ease the decoupling.
- * </p>
+ *
+ * <p>This class is a copy from the slf4j-jdk14 module: <a
+ * href="https://github.com/qos-ch/slf4j/edit/master/slf4j-jdk14/src/main/java/org/slf4j/jul/JULServiceProvider.java">source</a>
+ *
+ * <p>The purpose is to permit the creation of a SLF4J instance of the Bukkit logger to ease the
+ * decoupling.
  */
 public class BukkitLoggerServiceProvider implements SLF4JServiceProvider {
 
   /**
-   * Declare the version of the SLF4J API this implementation is compiled
-   * against. The value of this field is modified with each major release.
+   * Declare the version of the SLF4J API this implementation is compiled against. The value of this
+   * field is modified with each major release.
    */
   // to avoid constant folding by the compiler, this field must *not* be final
-  public static String REQUESTED_API_VERSION = "2.0.99"; // !final
+  public static String
+    REQUESTED_API_VERSION = "2.0.99"; // !final
 
   private ILoggerFactory loggerFactory;
   private IMarkerFactory markerFactory;

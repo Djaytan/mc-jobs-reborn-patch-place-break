@@ -27,7 +27,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-
+import lombok.NonNull;
 import org.apache.commons.io.IOUtils;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
@@ -35,8 +35,6 @@ import org.spongepowered.configurate.loader.ConfigurationLoader;
 import org.spongepowered.configurate.loader.HeaderMode;
 import org.spongepowered.configurate.objectmapping.ObjectMapper;
 import org.spongepowered.configurate.util.NamingSchemes;
-
-import lombok.NonNull;
 
 /**
  * Factory of config loader.
@@ -72,16 +70,21 @@ final class ConfigLoaderFactory {
      * On the other side, no other Configurate's loader match all requirements
      * => Using HOCON loader even with the limitation seems to be the best choice
      */
-    return HoconConfigurationLoader.builder().path(configFile).headerMode(HeaderMode.PRESET)
-        .emitJsonCompatible(false).emitComments(true).prettyPrinting(true)
+    return HoconConfigurationLoader.builder()
+        .path(configFile)
+        .headerMode(HeaderMode.PRESET)
+        .emitJsonCompatible(false)
+        .emitComments(true)
+        .prettyPrinting(true)
         .defaultOptions(
-            opts -> opts.serializers(builder -> builder.registerAnnotatedObjects(customFactory))
-                .header(configHeader))
+            opts ->
+                opts.serializers(builder -> builder.registerAnnotatedObjects(customFactory))
+                    .header(configHeader))
         .build();
   }
 
   private static @NonNull String createConfigHeader() throws IOException {
-    return IOUtils.resourceToString(CONFIG_HEADER_RESOURCE, StandardCharsets.UTF_8,
-        ConfigLoaderFactory.class.getClassLoader());
+    return IOUtils.resourceToString(
+        CONFIG_HEADER_RESOURCE, StandardCharsets.UTF_8, ConfigLoaderFactory.class.getClassLoader());
   }
 }

@@ -24,13 +24,11 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

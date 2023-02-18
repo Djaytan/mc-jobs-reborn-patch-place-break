@@ -26,12 +26,13 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
-
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
@@ -39,9 +40,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.Jimfs;
 
 class ClassToFsPathConverterTest {
 
@@ -73,8 +71,9 @@ class ClassToFsPathConverterTest {
       Path path = classToFsPathConverter.convertClassToFsPath(clazz);
 
       // Then
-      assertThat(path).hasToString(
-          "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/ClassToFsPathConverterTest");
+      assertThat(path)
+          .hasToString(
+              "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/ClassToFsPathConverterTest");
     }
 
     @Test
@@ -87,8 +86,9 @@ class ClassToFsPathConverterTest {
       Path path = classToFsPathConverter.convertClassToFsPath(clazz);
 
       // Then
-      assertThat(path).hasToString(
-          "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/ClassToFsPathConverterTest");
+      assertThat(path)
+          .hasToString(
+              "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/ClassToFsPathConverterTest");
     }
 
     @Test
@@ -101,8 +101,9 @@ class ClassToFsPathConverterTest {
       Path path = classToFsPathConverter.convertClassToFsPath(clazz);
 
       // Then
-      assertThat(path).hasToString(
-          "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/ClassToFsPathConverterTest");
+      assertThat(path)
+          .hasToString(
+              "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/ClassToFsPathConverterTest");
     }
 
     @Test

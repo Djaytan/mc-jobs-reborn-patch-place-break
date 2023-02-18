@@ -29,6 +29,18 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
+import com.jparams.verifier.tostring.NameStyle;
+import com.jparams.verifier.tostring.ToStringVerifier;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.CredentialsProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsHostProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsServerProperties;
+import jakarta.validation.ConstraintViolation;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,7 +48,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-
+import lombok.NonNull;
+import lombok.SneakyThrows;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
@@ -51,24 +66,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.spongepowered.configurate.serialize.SerializationException;
-
-import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.Jimfs;
-import com.jparams.verifier.tostring.NameStyle;
-import com.jparams.verifier.tostring.ToStringVerifier;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.CredentialsProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsHostProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsServerProperties;
-import jakarta.validation.ConstraintViolation;
-import lombok.NonNull;
-import lombok.SneakyThrows;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 class DbmsServerValidatingPropertiesTest {
 
@@ -88,15 +85,18 @@ class DbmsServerValidatingPropertiesTest {
   @Test
   @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashcode_shouldMetContracts() {
-    EqualsVerifier.forClass(DbmsServerValidatingProperties.class).withRedefinedSuperclass()
-        .suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(DbmsServerValidatingProperties.class)
+        .withRedefinedSuperclass()
+        .suppress(Warning.NONFINAL_FIELDS)
+        .verify();
   }
 
   @Test
   @DisplayName("When calling toString()")
   void whenCallingToString_shouldMetContracts() {
     ToStringVerifier.forClass(DbmsServerValidatingProperties.class)
-        .withClassName(NameStyle.SIMPLE_NAME).verify();
+        .withClassName(NameStyle.SIMPLE_NAME)
+        .verify();
   }
 
   @Nested
@@ -114,10 +114,12 @@ class DbmsServerValidatingPropertiesTest {
 
       // Then
       assertAll(
-          () -> assertThat(dbmsServerValidatingProperties.getHost())
-              .isEqualTo(DbmsHostValidatingProperties.of("localhost", 3306, true)),
-          () -> assertThat(dbmsServerValidatingProperties.getCredentials())
-              .isEqualTo(CredentialsValidatingProperties.of("username", "password")),
+          () ->
+              assertThat(dbmsServerValidatingProperties.getHost())
+                  .isEqualTo(DbmsHostValidatingProperties.of("localhost", 3306, true)),
+          () ->
+              assertThat(dbmsServerValidatingProperties.getCredentials())
+                  .isEqualTo(CredentialsValidatingProperties.of("username", "password")),
           () -> assertThat(dbmsServerValidatingProperties.getDatabase()).isEqualTo("database"),
           () -> assertThat(dbmsServerValidatingProperties.isValidated()).isFalse());
     }
@@ -137,7 +139,8 @@ class DbmsServerValidatingPropertiesTest {
           DbmsServerValidatingProperties.of(host, credentials, database);
 
       // Then
-      assertAll(() -> assertThat(dbmsServerValidatingProperties.getHost()).isEqualTo(host),
+      assertAll(
+          () -> assertThat(dbmsServerValidatingProperties.getHost()).isEqualTo(host),
           () -> assertThat(dbmsServerValidatingProperties.getCredentials()).isEqualTo(credentials),
           () -> assertThat(dbmsServerValidatingProperties.getDatabase()).isEqualTo(database),
           () -> assertThat(dbmsServerValidatingProperties.isValidated()).isFalse());
@@ -152,20 +155,25 @@ class DbmsServerValidatingPropertiesTest {
     @DisplayName("With properties marked as validated")
     void withPropertiesMarkedAsValidated_shouldConvertSuccessfully() {
       // Given
-      DbmsServerValidatingProperties dbmsServerValidatingProperties = DbmsServerValidatingProperties
-          .of(DbmsHostValidatingProperties.of("example.com", 1234, true),
-              CredentialsValidatingProperties.of("foo", "bar"), "patch_database");
+      DbmsServerValidatingProperties dbmsServerValidatingProperties =
+          DbmsServerValidatingProperties.of(
+              DbmsHostValidatingProperties.of("example.com", 1234, true),
+              CredentialsValidatingProperties.of("foo", "bar"),
+              "patch_database");
       dbmsServerValidatingProperties.markAsValidated();
 
       // When
       DbmsServerProperties dbmsServerProperties = dbmsServerValidatingProperties.convert();
 
       // Then
-      assertAll(() -> assertThat(dbmsServerValidatingProperties.isValidated()).isTrue(),
-          () -> assertThat(dbmsServerProperties.getHost())
-              .isEqualTo(DbmsHostProperties.of("example.com", 1234, true)),
-          () -> assertThat(dbmsServerProperties.getCredentials())
-              .isEqualTo(CredentialsProperties.of("foo", "bar")),
+      assertAll(
+          () -> assertThat(dbmsServerValidatingProperties.isValidated()).isTrue(),
+          () ->
+              assertThat(dbmsServerProperties.getHost())
+                  .isEqualTo(DbmsHostProperties.of("example.com", 1234, true)),
+          () ->
+              assertThat(dbmsServerProperties.getCredentials())
+                  .isEqualTo(CredentialsProperties.of("foo", "bar")),
           () -> assertThat(dbmsServerProperties.getDatabase()).isEqualTo("patch_database"));
     }
 
@@ -173,17 +181,22 @@ class DbmsServerValidatingPropertiesTest {
     @DisplayName("With properties not marked as validated")
     void withPropertiesNotMarkedAsValidated_shouldThrowException() {
       // Given
-      DbmsServerValidatingProperties dbmsServerValidatingProperties = DbmsServerValidatingProperties
-          .of(DbmsHostValidatingProperties.of("example.com", 1234, true),
-              CredentialsValidatingProperties.of("foo", "bar"), "patch_database");
+      DbmsServerValidatingProperties dbmsServerValidatingProperties =
+          DbmsServerValidatingProperties.of(
+              DbmsHostValidatingProperties.of("example.com", 1234, true),
+              CredentialsValidatingProperties.of("foo", "bar"),
+              "patch_database");
 
       // When
       ThrowingCallable throwingCallable = dbmsServerValidatingProperties::convert;
 
       // Then
-      assertAll(() -> assertThat(dbmsServerValidatingProperties.isValidated()).isFalse(),
-          () -> assertThatIllegalStateException().isThrownBy(throwingCallable)
-              .withMessage("Properties must be validated before being converted"));
+      assertAll(
+          () -> assertThat(dbmsServerValidatingProperties.isValidated()).isFalse(),
+          () ->
+              assertThatIllegalStateException()
+                  .isThrownBy(throwingCallable)
+                  .withMessage("Properties must be validated before being converted"));
     }
   }
 
@@ -210,9 +223,11 @@ class DbmsServerValidatingPropertiesTest {
     @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
-      DbmsServerValidatingProperties dbmsServerValidatingProperties = DbmsServerValidatingProperties
-          .of(DbmsHostValidatingProperties.of("example.com", 1234, true),
-              CredentialsValidatingProperties.of("foo", "bar"), "patch_database");
+      DbmsServerValidatingProperties dbmsServerValidatingProperties =
+          DbmsServerValidatingProperties.of(
+              DbmsHostValidatingProperties.of("example.com", 1234, true),
+              CredentialsValidatingProperties.of("foo", "bar"),
+              "patch_database");
 
       // When
       Set<ConstraintViolation<DbmsServerValidatingProperties>> constraintViolations =
@@ -268,7 +283,8 @@ class DbmsServerValidatingPropertiesTest {
         DbmsServerValidatingProperties dbmsServerValidatingProperties =
             DbmsServerValidatingProperties.of(
                 DbmsHostValidatingProperties.of("example.com", 1234, true),
-                CredentialsValidatingProperties.of("foo", "bar"), validDatabase);
+                CredentialsValidatingProperties.of("foo", "bar"),
+                validDatabase);
 
         // When
         Set<ConstraintViolation<DbmsServerValidatingProperties>> constraintViolations =
@@ -292,24 +308,31 @@ class DbmsServerValidatingPropertiesTest {
         DbmsServerValidatingProperties dbmsServerValidatingProperties =
             DbmsServerValidatingProperties.of(
                 DbmsHostValidatingProperties.of("example.com", 1234, true),
-                CredentialsValidatingProperties.of("foo", "bar"), invalidDatabase);
+                CredentialsValidatingProperties.of("foo", "bar"),
+                invalidDatabase);
 
         // When
         Set<ConstraintViolation<DbmsServerValidatingProperties>> constraintViolations =
             ValidatorTestWrapper.validate(dbmsServerValidatingProperties);
 
         // Then
-        assertThat(constraintViolations).hasSize(1).element(0)
-            .matches(constraintViolation -> constraintViolation
-                .getRootBeanClass() == DbmsServerValidatingProperties.class)
-            .matches(constraintViolation -> Objects.equals(constraintViolation.getInvalidValue(),
-                invalidDatabase))
-            .matches(constraintViolation -> constraintViolation.getPropertyPath().toString()
-                .equals("database"));
+        assertThat(constraintViolations)
+            .hasSize(1)
+            .element(0)
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getRootBeanClass() == DbmsServerValidatingProperties.class)
+            .matches(
+                constraintViolation ->
+                    Objects.equals(constraintViolation.getInvalidValue(), invalidDatabase))
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getPropertyPath().toString().equals("database"));
       }
 
       private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
-        return Stream.of(Arguments.of(Named.of("Null value", null)),
+        return Stream.of(
+            Arguments.of(Named.of("Null value", null)),
             Arguments.of(Named.of("Too long value", StringUtils.repeat("s", 129))),
             Arguments.of(Named.of("Empty and too short value", "")),
             Arguments.of(Named.of("Blank value", " ")));
@@ -336,20 +359,24 @@ class DbmsServerValidatingPropertiesTest {
 
       // Then
       String actualYaml = new String(Files.readAllBytes(imDestFile));
-      String expectedYaml = TestResourcesHelper.getClassResourceAsString(this.getClass(),
-          expectedYamlFileName, false);
+      String expectedYaml =
+          TestResourcesHelper.getClassResourceAsString(
+              this.getClass(), expectedYamlFileName, false);
       assertThat(actualYaml).containsIgnoringNewLines(expectedYaml);
     }
 
     private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
-          Arguments.of(Named.of("With default values", DbmsServerValidatingProperties.ofDefault()),
+          Arguments.of(
+              Named.of("With default values", DbmsServerValidatingProperties.ofDefault()),
               "whenSerializing_withDefaultValues.conf"),
           Arguments.of(
-              Named.of("With custom values",
+              Named.of(
+                  "With custom values",
                   DbmsServerValidatingProperties.of(
                       DbmsHostValidatingProperties.of("example.com", 1234, true),
-                      CredentialsValidatingProperties.of("foo", "bar"), "patch_database")),
+                      CredentialsValidatingProperties.of("foo", "bar"),
+                      "patch_database")),
               "whenSerializing_withCustomValues.conf"));
     }
   }
@@ -362,8 +389,8 @@ class DbmsServerValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With valid content")
-    void withValidContent_shouldMatchExpectedValue(@NonNull String confFileName,
-        @NonNull DbmsServerValidatingProperties expectedValue) {
+    void withValidContent_shouldMatchExpectedValue(
+        @NonNull String confFileName, @NonNull DbmsServerValidatingProperties expectedValue) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
@@ -378,20 +405,24 @@ class DbmsServerValidatingPropertiesTest {
 
     private @NonNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
-          Arguments.of(Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
+          Arguments.of(
+              Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
               DbmsServerValidatingProperties.of(
                   DbmsHostValidatingProperties.of("example.com", 1234, true),
-                  CredentialsValidatingProperties.of("foo", "bar"), "patch_database")),
+                  CredentialsValidatingProperties.of("foo", "bar"),
+                  "patch_database")),
           Arguments.of(
               Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
               DbmsServerValidatingProperties.of(
                   DbmsHostValidatingProperties.of("example.com", 1234, true),
-                  CredentialsValidatingProperties.of("foo", "bar"), "patch_database")),
+                  CredentialsValidatingProperties.of("foo", "bar"),
+                  "patch_database")),
           Arguments.of(
               Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
               DbmsServerValidatingProperties.of(
                   DbmsHostValidatingProperties.of("example.com", 1234, true),
-                  CredentialsValidatingProperties.of("foo", "bar"), "patch_database")));
+                  CredentialsValidatingProperties.of("foo", "bar"),
+                  "patch_database")));
     }
 
     @ParameterizedTest(name = "{index} - {0}")
@@ -403,11 +434,14 @@ class DbmsServerValidatingPropertiesTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      ThrowingCallable throwingCallable = () -> ConfigSerializerTestWrapper.deserialize(confFile,
-          DbmsServerValidatingProperties.class);
+      ThrowingCallable throwingCallable =
+          () ->
+              ConfigSerializerTestWrapper.deserialize(
+                  confFile, DbmsServerValidatingProperties.class);
 
       // Then
-      assertThatThrownBy(throwingCallable).isInstanceOf(ConfigSerializationException.class)
+      assertThatThrownBy(throwingCallable)
+          .isInstanceOf(ConfigSerializationException.class)
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
@@ -415,10 +449,14 @@ class DbmsServerValidatingPropertiesTest {
       return Stream.of(
           Arguments.of(
               Named.of("With missing 'host' field", "whenDeserializing_withMissingHostField.conf")),
-          Arguments.of(Named.of("With missing 'credentials' field",
-              "whenDeserializing_withMissingCredentialsField.conf")),
-          Arguments.of(Named.of("With missing 'database' field",
-              "whenDeserializing_withMissingDatabaseField.conf")));
+          Arguments.of(
+              Named.of(
+                  "With missing 'credentials' field",
+                  "whenDeserializing_withMissingCredentialsField.conf")),
+          Arguments.of(
+              Named.of(
+                  "With missing 'database' field",
+                  "whenDeserializing_withMissingDatabaseField.conf")));
     }
 
     @Test

@@ -24,17 +24,14 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DataSourceValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-/**
- * API permitting to retrieve config properties.
- */
+/** API permitting to retrieve config properties. */
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public final class ConfigApi {
@@ -49,9 +46,9 @@ public final class ConfigApi {
    * @return The data source related properties.
    */
   public @NonNull DataSourceProperties getDataSourceProperties() {
-    configManager.createDefaultIfNotExists(DATA_SOURCE_CONFIG_FILE_NAME,
-        DataSourceValidatingProperties.ofDefault());
-    return configManager.readAndValidate(DATA_SOURCE_CONFIG_FILE_NAME,
-        DataSourceValidatingProperties.class);
+    configManager.createDefaultIfNotExists(
+        DATA_SOURCE_CONFIG_FILE_NAME, DataSourceValidatingProperties.ofDefault());
+    return configManager.readAndValidate(
+        DATA_SOURCE_CONFIG_FILE_NAME, DataSourceValidatingProperties.class);
   }
 }

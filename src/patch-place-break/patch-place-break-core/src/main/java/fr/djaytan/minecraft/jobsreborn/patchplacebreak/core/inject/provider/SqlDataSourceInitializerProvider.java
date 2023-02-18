@@ -24,15 +24,14 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCoreException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.mysql.MysqlDataSourceInitializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.SqlDataSourceInitializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sqlite.SqliteDataSourceInitializer;
+import javax.inject.Inject;
+import javax.inject.Provider;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -48,15 +47,18 @@ public class SqlDataSourceInitializerProvider implements Provider<SqlDataSourceI
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {
-      case MYSQL: {
-        return mysqlDataSourceInitializer;
-      }
-      case SQLITE: {
-        return sqliteDataSourceInitializer;
-      }
-      default: {
-        throw PatchPlaceBreakCoreException.unsupportedDataSourceType(dataSourceType);
-      }
+      case MYSQL:
+        {
+          return mysqlDataSourceInitializer;
+        }
+      case SQLITE:
+        {
+          return sqliteDataSourceInitializer;
+        }
+      default:
+        {
+          throw PatchPlaceBreakCoreException.unsupportedDataSourceType(dataSourceType);
+        }
     }
   }
 }

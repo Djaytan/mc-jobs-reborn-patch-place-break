@@ -27,19 +27,16 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
-
 import javax.inject.Singleton;
-
+import lombok.NonNull;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.loader.ConfigurationLoader;
-
-import lombok.NonNull;
 
 /**
  * Config serializer.
  *
- * <p>Two methods are exposed for serialization: {@link #serialize(Path, Object)} and
- * {@link #deserialize(Path, Class)}.
+ * <p>Two methods are exposed for serialization: {@link #serialize(Path, Object)} and {@link
+ * #deserialize(Path, Class)}.
  */
 @Singleton
 public final class ConfigSerializer {

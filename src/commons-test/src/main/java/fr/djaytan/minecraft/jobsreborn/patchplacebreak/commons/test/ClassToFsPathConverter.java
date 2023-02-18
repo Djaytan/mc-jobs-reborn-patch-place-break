@@ -27,13 +27,10 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.regex.Pattern;
-
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Converts a class name to a filesystem path with {@link #convertClassToFsPath(Class)}.
- */
+/** Converts a class name to a filesystem path with {@link #convertClassToFsPath(Class)}. */
 @RequiredArgsConstructor
 final class ClassToFsPathConverter {
 
@@ -45,15 +42,17 @@ final class ClassToFsPathConverter {
   /**
    * Converts a class name to a filesystem path.
    *
-   * <p><i>Example: <br/>
+   * <p><i>Example: <br>
    * - Class name:
-   * fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.annotated.HostValidatingPropertiesTest<br/>
+   * fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.config.annotated.HostValidatingPropertiesTest
+   * <br>
    * - Equivalent filesystem path:
    * fr/djaytan/minecraft/jobsreborn/patchplacebreak/core/config/annotated/HostValidatingPropertiesTest
    *
    * @param clazz The class with name to be converted to filesystem path.
    * @return The converted class name to a filesystem path.
-   * @throws UnsupportedClassException If a primary, array, collection or any generic class is specified.
+   * @throws UnsupportedClassException If a primary, array, collection or any generic class is
+   *     specified.
    */
   @NonNull
   Path convertClassToFsPath(@NonNull Class<?> clazz) {

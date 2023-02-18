@@ -24,17 +24,15 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.mysql;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import org.apache.commons.lang3.Validate;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.StorageException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.SqlDataSourceInitializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.SqlHelper;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.NonNull;
+import org.apache.commons.lang3.Validate;
 
 @Singleton
 public class MysqlDataSourceInitializer extends SqlDataSourceInitializer {
@@ -42,15 +40,16 @@ public class MysqlDataSourceInitializer extends SqlDataSourceInitializer {
   private final DataSourceProperties dataSourceProperties;
 
   @Inject
-  public MysqlDataSourceInitializer(@NonNull DataSourceProperties dataSourceProperties,
-      @NonNull SqlHelper sqlHelper) {
+  public MysqlDataSourceInitializer(
+      @NonNull DataSourceProperties dataSourceProperties, @NonNull SqlHelper sqlHelper) {
     super(sqlHelper);
     this.dataSourceProperties = dataSourceProperties;
   }
 
   @Override
   public void initialize() throws StorageException {
-    Validate.validState(dataSourceProperties.getType() == DataSourceType.MYSQL,
+    Validate.validState(
+        dataSourceProperties.getType() == DataSourceType.MYSQL,
         "The data source type is expected to be 'MYSQL'.");
   }
 }

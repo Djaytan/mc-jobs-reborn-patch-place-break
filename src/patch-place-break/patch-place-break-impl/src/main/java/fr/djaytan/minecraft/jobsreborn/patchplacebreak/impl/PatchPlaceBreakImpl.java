@@ -24,28 +24,24 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * Default implementation of {@link PatchPlaceBreakApi}.
- */
+/** Default implementation of {@link PatchPlaceBreakApi}. */
 @Singleton
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
@@ -54,32 +50,36 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   private final TagRepository tagRepository;
 
   public void putTag(@NonNull TagLocation tagLocation, boolean isEphemeral) {
-    CompletableFuture.runAsync(() -> {
-      UUID tagUuid = UUID.randomUUID();
-      LocalDateTime localDateTime = LocalDateTime.now();
-      Tag tag = Tag.of(tagUuid, localDateTime, isEphemeral, tagLocation);
-      tagRepository.put(tag);
-    });
+    CompletableFuture.runAsync(
+        () -> {
+          UUID tagUuid = UUID.randomUUID();
+          LocalDateTime localDateTime = LocalDateTime.now();
+          Tag tag = Tag.of(tagUuid, localDateTime, isEphemeral, tagLocation);
+          tagRepository.put(tag);
+        });
   }
 
-  public void moveTags(@NonNull Collection<TagLocation> tagLocations,
-      @NonNull TagVector direction) {
-    CompletableFuture.runAsync(() -> {
-      for (TagLocation oldTagLocation : tagLocations) {
-        Optional<Tag> tag = tagRepository.findByLocation(oldTagLocation);
+  public void moveTags(
+      @NonNull Collection<TagLocation> tagLocations, @NonNull TagVector direction) {
+    CompletableFuture.runAsync(
+        () -> {
+          for (TagLocation oldTagLocation : tagLocations) {
+            Optional<Tag> tag = tagRepository.findByLocation(oldTagLocation);
 
-        if (!tag.isPresent()) {
-          continue;
-        }
+            if (!tag.isPresent()) {
+              continue;
+            }
 
-        TagLocation newTagLocation = TagLocation.fromMove(oldTagLocation, direction);
+            TagLocation newTagLocation = TagLocation.fromMove(oldTagLocation, direction);
 
-        moveTag(oldTagLocation, newTagLocation, tag.get().isEphemeral());
-      }
-    });
+            moveTag(oldTagLocation, newTagLocation, tag.get().isEphemeral());
+          }
+        });
   }
 
-  private void moveTag(@NonNull TagLocation oldTagLocation, @NonNull TagLocation newTagLocation,
+  private void moveTag(
+      @NonNull TagLocation oldTagLocation,
+      @NonNull TagLocation newTagLocation,
       boolean isEphemeral) {
     putTag(newTagLocation, isEphemeral);
     // TODO: old tag must be removed, but it must be done with a transaction
@@ -91,21 +91,22 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
 
   public @NonNull CompletableFuture<Boolean> isPlaceAndBreakExploit(
       @NonNull BlockActionType blockActionType, @NonNull TagLocation tagLocation) {
-    return CompletableFuture.supplyAsync(() -> {
-      Optional<Tag> tag = tagRepository.findByLocation(tagLocation);
+    return CompletableFuture.supplyAsync(
+        () -> {
+          Optional<Tag> tag = tagRepository.findByLocation(tagLocation);
 
-      if (!tag.isPresent()) {
-        return false;
-      }
+          if (!tag.isPresent()) {
+            return false;
+          }
 
-      if (!tag.get().isEphemeral()) {
-        return true;
-      }
+          if (!tag.get().isEphemeral()) {
+            return true;
+          }
 
-      LocalDateTime localDateTime = LocalDateTime.now();
-      Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
+          LocalDateTime localDateTime = LocalDateTime.now();
+          Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
 
-      return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
-    });
+          return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
+        });
   }
 }

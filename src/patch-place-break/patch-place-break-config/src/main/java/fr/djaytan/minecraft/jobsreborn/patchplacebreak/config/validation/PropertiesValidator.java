@@ -24,20 +24,16 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 
-import java.util.Set;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+import java.util.Set;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * Validator of any {@link ValidatingConvertibleProperties}.
- */
+/** Validator of any {@link ValidatingConvertibleProperties}. */
 @Singleton
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
@@ -47,11 +43,11 @@ public final class PropertiesValidator {
   private final Validator validator;
 
   /**
-   * Validates the specified {@link ValidatingConvertibleProperties} and convert it
-   * to the corresponding final data structure.
+   * Validates the specified {@link ValidatingConvertibleProperties} and convert it to the
+   * corresponding final data structure.
    *
-   * @param validatingConvertibleProperties The properties to validate and then convert
-   *                                        to the final data structure.
+   * @param validatingConvertibleProperties The properties to validate and then convert to the final
+   *     data structure.
    * @param <T> The targeted type for the conversion.
    * @return The validated config converted to the final data structure.
    * @throws PropertiesValidationException If {@link ConstraintViolation}s are detected.

@@ -30,10 +30,7 @@ import lombok.Value;
 @Value(staticConstructor = "of")
 public class DbmsServerProperties {
 
-  @NonNull
-  DbmsHostProperties host;
-  @NonNull
-  CredentialsProperties credentials;
-  @NonNull
-  String database;
+  @NonNull DbmsHostProperties host;
+  @NonNull CredentialsProperties credentials;
+  @NonNull String database;
 }

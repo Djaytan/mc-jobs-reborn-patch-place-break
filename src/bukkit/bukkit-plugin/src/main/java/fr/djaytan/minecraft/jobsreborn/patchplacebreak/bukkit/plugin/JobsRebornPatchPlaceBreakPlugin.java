@@ -24,28 +24,22 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import javax.inject.Inject;
-
-import org.bukkit.plugin.java.JavaPlugin;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.ListenerRegister;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject.GuiceBukkitInjector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.slf4j.BukkitLoggerFactory;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreak;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import javax.inject.Inject;
 import lombok.SneakyThrows;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /** This class represents a JobsReborn patch place-break plugin. */
 public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
-  @Inject
-  private ListenerRegister listenerRegister;
-  @Inject
-  private MetricsFacade metricsFacade;
-  @Inject
-  private PatchPlaceBreak patchPlaceBreak;
+  @Inject private ListenerRegister listenerRegister;
+  @Inject private MetricsFacade metricsFacade;
+  @Inject private PatchPlaceBreak patchPlaceBreak;
 
   @Override
   public void onEnable() {

@@ -28,11 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.ConnectionPoolValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.CredentialsValidatingProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DataSourceValidatingProperties;
@@ -45,6 +40,10 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properti
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsHostProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsServerProperties;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class PropertiesValidatorTest {
 
@@ -60,10 +59,13 @@ class PropertiesValidatorTest {
   void whenValidating_withValidValues_shouldSuccess() {
     // Given
     DataSourceValidatingProperties dataSourceValidatingProperties =
-        DataSourceValidatingProperties.of(DataSourceType.MYSQL, "patch_place_break",
+        DataSourceValidatingProperties.of(
+            DataSourceType.MYSQL,
+            "patch_place_break",
             DbmsServerValidatingProperties.of(
                 DbmsHostValidatingProperties.of("example.com", 1234, true),
-                CredentialsValidatingProperties.of("foo", "bar"), "patch_database"),
+                CredentialsValidatingProperties.of("foo", "bar"),
+                "patch_database"),
             ConnectionPoolValidatingProperties.of(60000, 10));
 
     // When
@@ -71,12 +73,19 @@ class PropertiesValidatorTest {
         propertiesValidator.validate(dataSourceValidatingProperties);
 
     // Then
-    assertAll(() -> assertThat(dataSourceValidatingProperties.isValidated()).isTrue(),
-        () -> assertThat(dataSourceProperties)
-            .isEqualTo(DataSourceProperties.of(DataSourceType.MYSQL, "patch_place_break",
-                DbmsServerProperties.of(DbmsHostProperties.of("example.com", 1234, true),
-                    CredentialsProperties.of("foo", "bar"), "patch_database"),
-                ConnectionPoolProperties.of(60000, 10))));
+    assertAll(
+        () -> assertThat(dataSourceValidatingProperties.isValidated()).isTrue(),
+        () ->
+            assertThat(dataSourceProperties)
+                .isEqualTo(
+                    DataSourceProperties.of(
+                        DataSourceType.MYSQL,
+                        "patch_place_break",
+                        DbmsServerProperties.of(
+                            DbmsHostProperties.of("example.com", 1234, true),
+                            CredentialsProperties.of("foo", "bar"),
+                            "patch_database"),
+                        ConnectionPoolProperties.of(60000, 10))));
   }
 
   @Test
@@ -84,10 +93,13 @@ class PropertiesValidatorTest {
   void whenValidating_withInvalidValues_shouldThrowException() {
     // Given
     DataSourceValidatingProperties dataSourceValidatingProperties =
-        DataSourceValidatingProperties.of(DataSourceType.MYSQL, "patch_place_break",
+        DataSourceValidatingProperties.of(
+            DataSourceType.MYSQL,
+            "patch_place_break",
             DbmsServerValidatingProperties.of(
                 DbmsHostValidatingProperties.of("example.com", -1, true),
-                CredentialsValidatingProperties.of("foo", "bar"), "patch_database"),
+                CredentialsValidatingProperties.of("foo", "bar"),
+                "patch_database"),
             ConnectionPoolValidatingProperties.of(60000, 10));
 
     // When

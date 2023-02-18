@@ -27,7 +27,6 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.slf4j;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
 import org.slf4j.Marker;
 import org.slf4j.event.EventConstants;
 import org.slf4j.event.LoggingEvent;
@@ -42,17 +41,16 @@ import org.slf4j.spi.LocationAwareLogger;
 
 /**
  * /!\ WARNING /!\
- * <p>
-   * This class is a copy from the slf4j-jdk14 module:
-   * <a href="https://github.com/qos-ch/slf4j/edit/master/slf4j-jdk14/src/main/java/org/slf4j/jul/JDK14LoggerAdapter.java">source</a>
- * </p>
- * <p>
- *  The purpose is to permit the creation of a SLF4J instance of the Bukkit logger to ease the decoupling.
- * </p>
+ *
+ * <p>This class is a copy from the slf4j-jdk14 module: <a
+ * href="https://github.com/qos-ch/slf4j/edit/master/slf4j-jdk14/src/main/java/org/slf4j/jul/JDK14LoggerAdapter.java">source</a>
+ *
+ * <p>The purpose is to permit the creation of a SLF4J instance of the Bukkit logger to ease the
+ * decoupling.
  */
 final class BukkitLoggerAdapter extends LegacyAbstractLogger implements LocationAwareLogger {
 
-  transient final Logger logger;
+  final transient Logger logger;
 
   BukkitLoggerAdapter(Logger logger) {
     this.logger = logger;
@@ -89,8 +87,7 @@ final class BukkitLoggerAdapter extends LegacyAbstractLogger implements Location
   /**
    * Is this logger instance enabled for the WARNING level?
    *
-   * @return True if this Logger is enabled for the WARNING level, false
-   *         otherwise.
+   * @return True if this Logger is enabled for the WARNING level, false otherwise.
    */
   public boolean isWarnEnabled() {
     return logger.isLoggable(Level.WARNING);
@@ -128,19 +125,23 @@ final class BukkitLoggerAdapter extends LegacyAbstractLogger implements Location
   // }
 
   /**
-   * Log the message at the specified level with the specified throwable if any.
-   * This method creates a LogRecord and fills in caller date before calling this
-   * instance's JDK14 logger.
+   * Log the message at the specified level with the specified throwable if any. This method creates
+   * a LogRecord and fills in caller date before calling this instance's JDK14 logger.
    */
   @Override
-  protected void handleNormalizedLoggingCall(org.slf4j.event.Level level, Marker marker, String msg,
-      Object[] args, Throwable throwable) {
-    innerNormalizedLoggingCallHandler(getFullyQualifiedCallerName(), level, marker, msg, args,
-        throwable);
+  protected void handleNormalizedLoggingCall(
+      org.slf4j.event.Level level, Marker marker, String msg, Object[] args, Throwable throwable) {
+    innerNormalizedLoggingCallHandler(
+        getFullyQualifiedCallerName(), level, marker, msg, args, throwable);
   }
 
-  private void innerNormalizedLoggingCallHandler(String fqcn, org.slf4j.event.Level level,
-      Marker marker, String msg, Object[] args, Throwable throwable) {
+  private void innerNormalizedLoggingCallHandler(
+      String fqcn,
+      org.slf4j.event.Level level,
+      Marker marker,
+      String msg,
+      Object[] args,
+      Throwable throwable) {
     // millis and thread are filled by the constructor
     Level julLevel = slf4jLevelToJULLevel(level);
     String formattedMessage = MessageFormatter.basicArrayFormat(msg, args);
@@ -162,16 +163,21 @@ final class BukkitLoggerAdapter extends LegacyAbstractLogger implements Location
   }
 
   @Override
-  public void log(Marker marker, String callerFQCN, int slf4jLevelInt, String message,
-      Object[] arguments, Throwable throwable) {
+  public void log(
+      Marker marker,
+      String callerFQCN,
+      int slf4jLevelInt,
+      String message,
+      Object[] arguments,
+      Throwable throwable) {
 
     org.slf4j.event.Level slf4jLevel = org.slf4j.event.Level.intToLevel(slf4jLevelInt);
     Level julLevel = slf4jLevelIntToJULLevel(slf4jLevelInt);
 
     if (logger.isLoggable(julLevel)) {
       NormalizedParameters np = NormalizedParameters.normalize(message, arguments, throwable);
-      innerNormalizedLoggingCallHandler(callerFQCN, slf4jLevel, marker, np.getMessage(),
-          np.getArguments(), np.getThrowable());
+      innerNormalizedLoggingCallHandler(
+          callerFQCN, slf4jLevel, marker, np.getMessage(), np.getArguments(), np.getThrowable());
     }
   }
 
@@ -221,8 +227,7 @@ final class BukkitLoggerAdapter extends LegacyAbstractLogger implements Location
   static String[] BARRIER_CLASSES = new String[] {SUPER_OF_SUPER, SUPER, SELF, SUBSTITUE, FLUENT};
 
   private boolean barrierMatch(String callerFQCN, String candidateClassName) {
-    if (candidateClassName.equals(callerFQCN))
-      return true;
+    if (candidateClassName.equals(callerFQCN)) return true;
     for (String barrierClassName : BARRIER_CLASSES) {
       if (barrierClassName.equals(candidateClassName)) {
         return true;
@@ -262,7 +267,6 @@ final class BukkitLoggerAdapter extends LegacyAbstractLogger implements Location
 
   /**
    * @since 1.7.15
-   *
    * @param event The logging event
    */
   public void log(LoggingEvent event) {

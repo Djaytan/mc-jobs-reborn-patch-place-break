@@ -24,19 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
-import java.util.Collection;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-
 import com.gamingmesh.jobs.container.ActionType;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
@@ -44,8 +32,16 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.ActionTypeConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.BlockFaceConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.LocationConverter;
+import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 
 /**
  * Adapter of {@link PatchPlaceBreakApi} for Bukkit.
@@ -74,8 +70,8 @@ public class PatchPlaceBreakBukkitAdapter {
   }
 
   /**
-   * Moves tags associated with given blocks (if they exist) to the direction of the specified
-   * block face.
+   * Moves tags associated with given blocks (if they exist) to the direction of the specified block
+   * face.
    *
    * <p><i>The performed move is of only one block in the specified direction.
    *
@@ -84,8 +80,11 @@ public class PatchPlaceBreakBukkitAdapter {
    * @see PatchPlaceBreakApi#moveTags(Collection, TagVector)
    */
   public void moveTags(@NonNull Collection<Block> blocks, @NonNull BlockFace blockFace) {
-    Collection<TagLocation> tagLocations = blocks.stream().map(Block::getLocation)
-        .map(locationConverter::convert).collect(Collectors.toList());
+    Collection<TagLocation> tagLocations =
+        blocks.stream()
+            .map(Block::getLocation)
+            .map(locationConverter::convert)
+            .collect(Collectors.toList());
     TagVector tagVector = blockFaceConverter.convert(blockFace);
     patchPlaceBreakApi.moveTags(tagLocations, tagVector);
   }
@@ -102,17 +101,17 @@ public class PatchPlaceBreakBukkitAdapter {
   }
 
   /**
-   * Checks if the specified job action type at the given location is a patch-and-break exploit
-   * or not.
+   * Checks if the specified job action type at the given location is a patch-and-break exploit or
+   * not.
    *
    * @param actionType The job action type recorded.
    * @param location The location where the job action type has been recorded.
-   * @return <code>true</code> if the specified job action type at the given location
-   * is a patch-and-break exploit or not.
+   * @return <code>true</code> if the specified job action type at the given location is a
+   *     patch-and-break exploit or not.
    * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, TagLocation)
    */
-  public @NonNull CompletableFuture<Boolean> isPlaceAndBreakExploit(@NonNull ActionType actionType,
-      @NonNull Location location) {
+  public @NonNull CompletableFuture<Boolean> isPlaceAndBreakExploit(
+      @NonNull ActionType actionType, @NonNull Location location) {
     BlockActionType patchActionType = actionTypeConverter.convert(actionType);
     TagLocation tagLocation = locationConverter.convert(location);
     return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, tagLocation);

@@ -46,7 +46,8 @@ class SqlStorageExceptionTest {
       SqlStorageException exception = new SqlStorageException();
 
       // Then
-      assertAll(() -> assertThat(exception.getMessage()).isNull(),
+      assertAll(
+          () -> assertThat(exception.getMessage()).isNull(),
           () -> assertThat(exception.getCause()).isNull());
     }
 
@@ -60,7 +61,8 @@ class SqlStorageExceptionTest {
       SqlStorageException exception = new SqlStorageException(message);
 
       // Then
-      assertAll(() -> assertThat(exception.getMessage()).isEqualTo(message),
+      assertAll(
+          () -> assertThat(exception.getMessage()).isEqualTo(message),
           () -> assertThat(exception.getCause()).isNull());
     }
 
@@ -78,7 +80,8 @@ class SqlStorageExceptionTest {
         SqlStorageException exception = new SqlStorageException(cause);
 
         // Then
-        assertAll(() -> assertThat(exception.getMessage()).isEqualTo("Cause message"),
+        assertAll(
+            () -> assertThat(exception.getMessage()).isEqualTo("Cause message"),
             () -> assertThat(exception.getCause()).isEqualTo(cause));
       }
 
@@ -92,7 +95,8 @@ class SqlStorageExceptionTest {
         SqlStorageException exception = new SqlStorageException(cause);
 
         // Then
-        assertAll(() -> assertThat(exception.getMessage()).isNull(),
+        assertAll(
+            () -> assertThat(exception.getMessage()).isNull(),
             () -> assertThat(exception.getCause()).isEqualTo(cause));
       }
 
@@ -105,7 +109,8 @@ class SqlStorageExceptionTest {
         SqlStorageException exception = new SqlStorageException((Throwable) null);
 
         // Then
-        assertAll(() -> assertThat(exception.getMessage()).isNull(),
+        assertAll(
+            () -> assertThat(exception.getMessage()).isNull(),
             () -> assertThat(exception.getCause()).isNull());
       }
     }
@@ -125,7 +130,8 @@ class SqlStorageExceptionTest {
         SqlStorageException exception = new SqlStorageException(message, cause);
 
         // Then
-        assertAll(() -> assertThat(exception.getMessage()).isEqualTo(message),
+        assertAll(
+            () -> assertThat(exception.getMessage()).isEqualTo(message),
             () -> assertThat(exception.getCause()).isEqualTo(cause));
       }
 
@@ -139,7 +145,8 @@ class SqlStorageExceptionTest {
         SqlStorageException exception = new SqlStorageException(message, null);
 
         // Then
-        assertAll(() -> assertThat(exception.getMessage()).isEqualTo(message),
+        assertAll(
+            () -> assertThat(exception.getMessage()).isEqualTo(message),
             () -> assertThat(exception.getCause()).isNull());
       }
     }

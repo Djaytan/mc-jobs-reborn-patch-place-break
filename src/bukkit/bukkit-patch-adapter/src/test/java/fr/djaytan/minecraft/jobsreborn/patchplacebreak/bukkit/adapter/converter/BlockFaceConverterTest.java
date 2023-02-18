@@ -26,12 +26,11 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
 import org.bukkit.block.BlockFace;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
 
 class BlockFaceConverterTest {
 

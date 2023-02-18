@@ -24,17 +24,13 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 
+import jakarta.validation.ConstraintViolation;
 import java.util.Collection;
 import java.util.StringJoiner;
-
+import lombok.NonNull;
 import org.apache.commons.lang3.Validate;
 
-import jakarta.validation.ConstraintViolation;
-import lombok.NonNull;
-
-/**
- * Formatter of a {@link ConstraintViolation} to improve readability.
- */
+/** Formatter of a {@link ConstraintViolation} to improve readability. */
 final class ConstraintViolationFormatter {
 
   private static final String LINE_SEPARATOR = System.getProperty("line.separator");
@@ -64,7 +60,10 @@ final class ConstraintViolationFormatter {
   }
 
   private static <T> @NonNull String format(@NonNull ConstraintViolation<T> constraintViolation) {
-    return String.format(FORMAT_TEMPLATE, constraintViolation.getPropertyPath(),
-        constraintViolation.getMessage(), constraintViolation.getInvalidValue());
+    return String.format(
+        FORMAT_TEMPLATE,
+        constraintViolation.getPropertyPath(),
+        constraintViolation.getMessage(),
+        constraintViolation.getInvalidValue());
   }
 }

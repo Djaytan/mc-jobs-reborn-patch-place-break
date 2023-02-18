@@ -24,13 +24,11 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sqlite;
 
-import java.nio.file.Path;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.ConnectionPool;
+import java.nio.file.Path;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.NonNull;
 
 @Singleton
@@ -39,8 +37,8 @@ public class SqliteConnectionPool extends ConnectionPool {
   private final SqliteHelper sqliteHelper;
 
   @Inject
-  public SqliteConnectionPool(@NonNull DataSourceProperties dataSourceProperties,
-      @NonNull SqliteHelper sqliteHelper) {
+  public SqliteConnectionPool(
+      @NonNull DataSourceProperties dataSourceProperties, @NonNull SqliteHelper sqliteHelper) {
     super(dataSourceProperties);
     this.sqliteHelper = sqliteHelper;
   }

@@ -24,10 +24,9 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
 import lombok.NonNull;
 
 public abstract class TagSqlDataDefiner {

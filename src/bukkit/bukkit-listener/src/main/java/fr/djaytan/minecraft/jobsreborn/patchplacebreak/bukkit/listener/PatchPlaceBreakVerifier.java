@@ -24,20 +24,16 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener;
 
+import com.gamingmesh.jobs.container.ActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import java.util.concurrent.CompletableFuture;
-
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
-
-import org.bukkit.Location;
-
-import com.gamingmesh.jobs.container.ActionType;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bukkit.Location;
 
 /**
  * Represents the patch-place-break verifier for the Bukkit plugin.
@@ -61,20 +57,23 @@ public class PatchPlaceBreakVerifier {
 
   public void checkAndAttemptFixListenersIfRequired(
       @NonNull BukkitPatchEnvironmentState environmentState) {
-    CompletableFuture.runAsync(() -> {
-      if (!isPatchExpected(environmentState).join()) {
-        return;
-      }
+    CompletableFuture.runAsync(
+        () -> {
+          if (!isPatchExpected(environmentState).join()) {
+            return;
+          }
 
-      if (!isPatchApplied(environmentState)) {
-        log.atWarn()
-            .log("Violation of a place-and-break patch detected! It's possible that's"
-                + " because of a conflict with another plugin. Tentative to automatically fix the"
-                + " issue on-going... If this warning persists, please, report this full log"
-                + " message to the developer: {}", environmentState);
-        listenerRegister.get().reloadListeners();
-      }
-    });
+          if (!isPatchApplied(environmentState)) {
+            log.atWarn()
+                .log(
+                    "Violation of a place-and-break patch detected! It's possible that's"
+                        + " because of a conflict with another plugin. Tentative to automatically fix the"
+                        + " issue on-going... If this warning persists, please, report this full log"
+                        + " message to the developer: {}",
+                    environmentState);
+            listenerRegister.get().reloadListeners();
+          }
+        });
   }
 
   private @NonNull CompletableFuture<Boolean> isPatchExpected(

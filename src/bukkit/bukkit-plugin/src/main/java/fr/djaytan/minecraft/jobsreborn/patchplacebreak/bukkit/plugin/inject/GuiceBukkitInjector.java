@@ -24,13 +24,11 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.bukkit.plugin.java.JavaPlugin;
 
 @Slf4j
 public final class GuiceBukkitInjector {

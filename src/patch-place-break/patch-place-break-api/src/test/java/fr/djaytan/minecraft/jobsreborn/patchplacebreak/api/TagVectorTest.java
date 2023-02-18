@@ -27,14 +27,12 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class TagVectorTest {
 
@@ -50,7 +48,8 @@ class TagVectorTest {
     TagVector tagVector = TagVector.of(modX, modY, modZ);
 
     // Then
-    assertAll("Verification of returned values from getters",
+    assertAll(
+        "Verification of returned values from getters",
         () -> assertThat(tagVector.getModX()).isEqualTo(modX),
         () -> assertThat(tagVector.getModY()).isEqualTo(modY),
         () -> assertThat(tagVector.getModZ()).isEqualTo(modZ));

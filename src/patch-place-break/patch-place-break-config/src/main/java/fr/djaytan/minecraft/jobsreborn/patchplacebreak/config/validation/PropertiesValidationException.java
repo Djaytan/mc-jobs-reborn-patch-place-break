@@ -24,9 +24,8 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 
-import java.util.Set;
-
 import jakarta.validation.ConstraintViolation;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.experimental.StandardException;

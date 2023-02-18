@@ -24,16 +24,13 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
 
+import com.gamingmesh.jobs.container.ActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.BukkitAdapterException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
-
 import javax.inject.Singleton;
-
-import com.gamingmesh.jobs.container.ActionType;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.BukkitAdapterException;
 import lombok.NonNull;
 
 @Singleton
@@ -53,7 +50,9 @@ public class ActionTypeConverter implements UnidirectionalConverter<ActionType, 
   }
 
   private @NonNull Collection<ActionType> getValidJobActionTypes() {
-    return Arrays.stream(BlockActionType.values()).map(BlockActionType::name)
-        .map(ActionType::valueOf).collect(Collectors.toList());
+    return Arrays.stream(BlockActionType.values())
+        .map(BlockActionType::name)
+        .map(ActionType::valueOf)
+        .collect(Collectors.toList());
   }
 }

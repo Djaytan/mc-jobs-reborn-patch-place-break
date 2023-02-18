@@ -55,14 +55,14 @@ public class SqlStorageException extends StorageException {
     return new SqlStorageException(DATABASE_CONNECTION_RELEASING, cause);
   }
 
-  public static @NonNull SqlStorageException databaseCreation(@NonNull String databaseName,
-      @NonNull Throwable cause) {
+  public static @NonNull SqlStorageException databaseCreation(
+      @NonNull String databaseName, @NonNull Throwable cause) {
     String message = String.format(DATABASE_CREATION, databaseName);
     return new SqlStorageException(message, cause);
   }
 
-  public static @NonNull SqlStorageException tableCreation(@NonNull String tableName,
-      @NonNull Throwable cause) {
+  public static @NonNull SqlStorageException tableCreation(
+      @NonNull String tableName, @NonNull Throwable cause) {
     String message = String.format(TABLE_CREATION, tableName);
     return new SqlStorageException(message, cause);
   }

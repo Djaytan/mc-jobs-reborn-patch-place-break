@@ -24,32 +24,31 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl;
 
-import java.util.Optional;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
+import java.util.Optional;
 import lombok.NonNull;
 
 /**
  * Represents a {@link Tag} repository.
  *
- * <p>A repository represents an abstraction of data storage. This is the appliance of the
- * Data Access Object pattern (DAO).
+ * <p>A repository represents an abstraction of data storage. This is the appliance of the Data
+ * Access Object pattern (DAO).
  *
  * @apiNote It is agnostic about whether the final storage is persistent (e.g. non-temporary files)
- * or not (like in-memory). However, it is expected that the underlying implementation share ways
- * to select the type of storage wished. At least one type must be a persistent one. Non-persistent
- * ones are typically reserved for test purposes. If there isn't way to configure
- * the type of storage, or no particular type wished as been provided, then the default type must
- * be a persistent one.
+ *     or not (like in-memory). However, it is expected that the underlying implementation share
+ *     ways to select the type of storage wished. At least one type must be a persistent one.
+ *     Non-persistent ones are typically reserved for test purposes. If there isn't way to configure
+ *     the type of storage, or no particular type wished as been provided, then the default type
+ *     must be a persistent one.
  */
 public interface TagRepository {
 
   /**
    * Puts a tag at the targeted {@link TagLocation}.
    *
-   * <p>If no tag exist at the targeted location, a new resource is created. Otherwise,
-   * the existing tag is overridden.
+   * <p>If no tag exist at the targeted location, a new resource is created. Otherwise, the existing
+   * tag is overridden.
    *
    * @param tag The tag to be put at the targeted location.
    * @throws TagRepositoryException If something prevents the tag to be put into the storage.
@@ -73,7 +72,7 @@ public interface TagRepository {
    *
    * @param tagLocation The location of the tag to be deleted.
    * @throws TagRepositoryException If something prevents the tag to be deleted (except the case
-   * where it doesn't exist).
+   *     where it doesn't exist).
    */
   void delete(@NonNull TagLocation tagLocation) throws TagRepositoryException;
 }

@@ -27,13 +27,11 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.propert
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
-
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class ConnectionPoolPropertiesTest {
 
@@ -49,9 +47,11 @@ class ConnectionPoolPropertiesTest {
         ConnectionPoolProperties.of(connectionTimeout, poolSize);
 
     // Then
-    assertAll("Verification of returned values from getters",
-        () -> assertThat(connectionPoolProperties.getConnectionTimeout())
-            .isEqualTo(connectionTimeout),
+    assertAll(
+        "Verification of returned values from getters",
+        () ->
+            assertThat(connectionPoolProperties.getConnectionTimeout())
+                .isEqualTo(connectionTimeout),
         () -> assertThat(connectionPoolProperties.getPoolSize()).isEqualTo(poolSize));
   }
 
@@ -64,7 +64,8 @@ class ConnectionPoolPropertiesTest {
   @Test
   @DisplayName("toString() - Verifications")
   void toStringContractVerification() {
-    ToStringVerifier.forClass(ConnectionPoolProperties.class).withClassName(NameStyle.SIMPLE_NAME)
+    ToStringVerifier.forClass(ConnectionPoolProperties.class)
+        .withClassName(NameStyle.SIMPLE_NAME)
         .verify();
   }
 }

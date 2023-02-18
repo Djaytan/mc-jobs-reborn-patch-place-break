@@ -24,10 +24,6 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
 
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-import org.spongepowered.configurate.objectmapping.meta.Comment;
-import org.spongepowered.configurate.objectmapping.meta.Required;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.CredentialsProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsHostProperties;
@@ -42,10 +38,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
-/**
- * Represents an annotated Java Beans version of a {@link DbmsServerProperties}.
- */
+/** Represents an annotated Java Beans version of a {@link DbmsServerProperties}. */
 @ConfigSerializable
 @Getter
 @EqualsAndHashCode(callSuper = true)

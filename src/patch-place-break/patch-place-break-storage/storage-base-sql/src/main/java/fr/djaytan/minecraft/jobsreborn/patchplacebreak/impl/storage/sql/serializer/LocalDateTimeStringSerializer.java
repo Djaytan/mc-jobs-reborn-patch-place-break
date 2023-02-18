@@ -26,9 +26,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.seriali
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import javax.inject.Singleton;
-
 import lombok.NonNull;
 
 @Singleton

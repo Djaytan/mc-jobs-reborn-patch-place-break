@@ -24,17 +24,15 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sqlite;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import org.apache.commons.lang3.Validate;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.StorageException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.SqlDataSourceInitializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.SqlHelper;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.NonNull;
+import org.apache.commons.lang3.Validate;
 
 @Singleton
 public class SqliteDataSourceInitializer extends SqlDataSourceInitializer {
@@ -43,8 +41,10 @@ public class SqliteDataSourceInitializer extends SqlDataSourceInitializer {
   private final SqliteHelper sqliteHelper;
 
   @Inject
-  public SqliteDataSourceInitializer(@NonNull DataSourceProperties dataSourceProperties,
-      @NonNull SqlHelper sqlHelper, @NonNull SqliteHelper sqliteHelper) {
+  public SqliteDataSourceInitializer(
+      @NonNull DataSourceProperties dataSourceProperties,
+      @NonNull SqlHelper sqlHelper,
+      @NonNull SqliteHelper sqliteHelper) {
     super(sqlHelper);
     this.dataSourceProperties = dataSourceProperties;
     this.sqliteHelper = sqliteHelper;
@@ -52,7 +52,8 @@ public class SqliteDataSourceInitializer extends SqlDataSourceInitializer {
 
   @Override
   public void initialize() throws StorageException {
-    Validate.validState(dataSourceProperties.getType() == DataSourceType.SQLITE,
+    Validate.validState(
+        dataSourceProperties.getType() == DataSourceType.SQLITE,
         "The data source type is expected to be 'SQLITE'.");
     sqliteHelper.createDatabaseIfNotExists();
   }

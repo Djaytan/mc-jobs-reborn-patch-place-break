@@ -24,12 +24,10 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
 
-import javax.inject.Singleton;
-
-import org.bukkit.block.BlockFace;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
+import javax.inject.Singleton;
 import lombok.NonNull;
+import org.bukkit.block.BlockFace;
 
 @Singleton
 public class BlockFaceConverter implements UnidirectionalConverter<BlockFace, TagVector> {

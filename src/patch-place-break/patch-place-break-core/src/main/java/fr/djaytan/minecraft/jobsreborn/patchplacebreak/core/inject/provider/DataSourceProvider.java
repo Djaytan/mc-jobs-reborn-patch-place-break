@@ -24,15 +24,14 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCoreException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.DataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.inmemory.InMemoryDataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.SqlDataSource;
+import javax.inject.Inject;
+import javax.inject.Provider;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -48,16 +47,19 @@ public class DataSourceProvider implements Provider<DataSource> {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {
-      case IN_MEMORY: {
-        return inMemoryDataSource;
-      }
+      case IN_MEMORY:
+        {
+          return inMemoryDataSource;
+        }
       case MYSQL:
-      case SQLITE: {
-        return sqlDataSource;
-      }
-      default: {
-        throw PatchPlaceBreakCoreException.unrecognisedDataSourceType(dataSourceType);
-      }
+      case SQLITE:
+        {
+          return sqlDataSource;
+        }
+      default:
+        {
+          throw PatchPlaceBreakCoreException.unrecognisedDataSourceType(dataSourceType);
+        }
     }
   }
 }

@@ -24,12 +24,10 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
 
-import javax.inject.Singleton;
-
-import org.bukkit.Location;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
+import javax.inject.Singleton;
 import lombok.NonNull;
+import org.bukkit.Location;
 
 /** Represents a converter between Bukkit {@link Location} and {@link TagLocation}. */
 @Singleton

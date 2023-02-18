@@ -24,17 +24,15 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Optional;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepositoryException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Optional;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 

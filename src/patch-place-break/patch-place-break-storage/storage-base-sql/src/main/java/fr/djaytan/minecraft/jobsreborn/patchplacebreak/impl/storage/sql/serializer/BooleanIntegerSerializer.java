@@ -25,7 +25,6 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.serializer;
 
 import javax.inject.Singleton;
-
 import lombok.NonNull;
 
 @Singleton

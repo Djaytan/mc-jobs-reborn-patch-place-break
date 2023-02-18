@@ -26,12 +26,10 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import org.bstats.bukkit.Metrics;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bstats.bukkit.Metrics;
+import org.bukkit.plugin.java.JavaPlugin;
 
 @Slf4j
 @Singleton

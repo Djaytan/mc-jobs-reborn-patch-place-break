@@ -32,8 +32,6 @@ import lombok.Value;
 @ToString(exclude = {"password"})
 public class CredentialsProperties {
 
-  @NonNull
-  String username;
-  @NonNull
-  String password;
+  @NonNull String username;
+  @NonNull String password;
 }

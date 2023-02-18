@@ -27,13 +27,11 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.propert
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
-
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class DataSourcePropertiesTest {
 
@@ -42,24 +40,28 @@ class DataSourcePropertiesTest {
   void shouldSuccessWhenCreatingWithNominalValues() {
     // Given
     DbmsServerProperties dbmsServerProperties =
-        DbmsServerProperties.of(DbmsHostProperties.of("host", 80, true),
-            CredentialsProperties.of("username", "passwoord"), "testdb");
+        DbmsServerProperties.of(
+            DbmsHostProperties.of("host", 80, true),
+            CredentialsProperties.of("username", "passwoord"),
+            "testdb");
     ConnectionPoolProperties connectionPoolProperties = ConnectionPoolProperties.of(120, 2);
     DataSourceType dataSourceType = DataSourceType.MYSQL;
     String table = "test";
 
-
     // When
-    DataSourceProperties dataSourceProperties = DataSourceProperties.of(dataSourceType, table,
-        dbmsServerProperties, connectionPoolProperties);
+    DataSourceProperties dataSourceProperties =
+        DataSourceProperties.of(
+            dataSourceType, table, dbmsServerProperties, connectionPoolProperties);
 
     // Then
-    assertAll("Verification of returned values from getters",
+    assertAll(
+        "Verification of returned values from getters",
         () -> assertThat(dataSourceProperties.getType()).isEqualTo(dataSourceType),
         () -> assertThat(dataSourceProperties.getTable()).isEqualTo(table),
         () -> assertThat(dataSourceProperties.getDbmsServer()).isEqualTo(dbmsServerProperties),
-        () -> assertThat(dataSourceProperties.getConnectionPool())
-            .isEqualTo(connectionPoolProperties));
+        () ->
+            assertThat(dataSourceProperties.getConnectionPool())
+                .isEqualTo(connectionPoolProperties));
   }
 
   @Test
@@ -71,7 +73,8 @@ class DataSourcePropertiesTest {
   @Test
   @DisplayName("toString() - Verifications")
   void toStringContractVerification() {
-    ToStringVerifier.forClass(DataSourceProperties.class).withClassName(NameStyle.SIMPLE_NAME)
+    ToStringVerifier.forClass(DataSourceProperties.class)
+        .withClassName(NameStyle.SIMPLE_NAME)
         .verify();
   }
 }

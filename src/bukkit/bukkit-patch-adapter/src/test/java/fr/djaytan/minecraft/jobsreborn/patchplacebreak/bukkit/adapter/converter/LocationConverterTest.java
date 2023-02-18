@@ -28,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.BDDMockito.given;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,8 +38,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 
 @ExtendWith(MockitoExtension.class)
 class LocationConverterTest {

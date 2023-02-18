@@ -45,15 +45,11 @@ import lombok.ToString;
 @ToString
 public abstract class ValidatingConvertibleProperties<T> {
 
-  /**
-   * Marker indicating if the implementer's properties has been validated or not.
-   */
+  /** Marker indicating if the implementer's properties has been validated or not. */
   @SuppressWarnings("java:S2065") // 'transient' keyword required for serialization exclusion
   private transient boolean isValidated;
 
-  /**
-   * Marks the properties as validated.
-   */
+  /** Marks the properties as validated. */
   public void markAsValidated() {
     this.isValidated = true;
   }

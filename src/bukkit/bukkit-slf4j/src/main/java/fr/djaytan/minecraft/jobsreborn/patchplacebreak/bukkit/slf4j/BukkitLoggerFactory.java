@@ -29,13 +29,12 @@ import org.slf4j.Logger;
 
 /**
  * /!\ WARNING /!\
- * <p>
- *  This class is a copy from the slf4j-jdk14 module:
- *  <a href="https://github.com/qos-ch/slf4j/edit/master/slf4j-jdk14/src/main/java/org/slf4j/jul/JDK14LoggerFactory.java">source</a>
- * </p>
- * <p>
- *  The purpose is to permit the creation of a SLF4J instance of the Bukkit logger to ease the decoupling.
- * </p>
+ *
+ * <p>This class is a copy from the slf4j-jdk14 module: <a
+ * href="https://github.com/qos-ch/slf4j/edit/master/slf4j-jdk14/src/main/java/org/slf4j/jul/JDK14LoggerFactory.java">source</a>
+ *
+ * <p>The purpose is to permit the creation of a SLF4J instance of the Bukkit logger to ease the
+ * decoupling.
  */
 public final class BukkitLoggerFactory implements ILoggerFactory {
 

@@ -24,10 +24,9 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.inmemory;
 
-import javax.inject.Singleton;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.DataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.StorageException;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

@@ -30,8 +30,7 @@ import lombok.Value;
 @Value(staticConstructor = "of")
 public class DbmsHostProperties {
 
-  @NonNull
-  String hostname;
+  @NonNull String hostname;
   int port;
   boolean isSslEnabled;
 }

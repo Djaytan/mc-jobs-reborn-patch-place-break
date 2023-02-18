@@ -43,14 +43,14 @@ public class TagRepositoryException extends PatchPlaceBreakException {
     return new TagRepositoryException(message, cause);
   }
 
-  public static @NonNull TagRepositoryException fetch(@NonNull TagLocation tagLocation,
-      @NonNull Throwable cause) {
+  public static @NonNull TagRepositoryException fetch(
+      @NonNull TagLocation tagLocation, @NonNull Throwable cause) {
     String message = String.format(FETCH, tagLocation);
     return new TagRepositoryException(message, cause);
   }
 
-  public static @NonNull TagRepositoryException delete(@NonNull TagLocation tagLocation,
-      @NonNull Throwable cause) {
+  public static @NonNull TagRepositoryException delete(
+      @NonNull TagLocation tagLocation, @NonNull Throwable cause) {
     String message = String.format(DELETE, tagLocation);
     return new TagRepositoryException(message, cause);
   }

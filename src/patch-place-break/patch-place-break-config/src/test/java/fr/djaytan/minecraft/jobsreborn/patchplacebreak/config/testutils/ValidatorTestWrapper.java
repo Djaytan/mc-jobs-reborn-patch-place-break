@@ -24,12 +24,11 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils;
 
-import java.util.Set;
-
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import java.util.Set;
 import lombok.NonNull;
 
 /**

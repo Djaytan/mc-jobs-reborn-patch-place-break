@@ -24,17 +24,15 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sqlite;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.TagSqlDataDefiner;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.TagSqlDataDefiner;
 import lombok.NonNull;
 
 @Singleton
@@ -59,10 +57,16 @@ public class TagSqliteDataDefiner extends TagSqlDataDefiner {
   }
 
   public void createTable(@NonNull Connection connection) throws SQLException {
-    String sql = "CREATE TABLE %s (\n" + "  tag_uuid TEXT PRIMARY KEY NOT NULL,\n"
-        + "  init_timestamp TEXT NOT NULL,\n" + "  is_ephemeral INTEGER NOT NULL,\n"
-        + "  world_name TEXT NOT NULL,\n" + "  location_x REAL NOT NULL,\n"
-        + "  location_y REAL NOT NULL,\n" + "  location_z REAL NOT NULL\n" + ");";
+    String sql =
+        "CREATE TABLE %s (\n"
+            + "  tag_uuid TEXT PRIMARY KEY NOT NULL,\n"
+            + "  init_timestamp TEXT NOT NULL,\n"
+            + "  is_ephemeral INTEGER NOT NULL,\n"
+            + "  world_name TEXT NOT NULL,\n"
+            + "  location_x REAL NOT NULL,\n"
+            + "  location_y REAL NOT NULL,\n"
+            + "  location_z REAL NOT NULL\n"
+            + ");";
 
     try (Statement statement = connection.createStatement()) {
       statement.execute(String.format(sql, dataSourceProperties.getTable()));

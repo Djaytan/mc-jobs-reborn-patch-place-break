@@ -24,15 +24,13 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sqlite;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.SqlStorageException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.SqlStorageException;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -63,8 +61,8 @@ public class SqliteHelper {
 
     try {
       Files.createFile(sqliteDatabasePath);
-      log.atInfo().log("The SQLite database '{}' has been created successfully.",
-          sqliteDatabaseFileName);
+      log.atInfo().log(
+          "The SQLite database '{}' has been created successfully.", sqliteDatabaseFileName);
     } catch (IOException e) {
       throw SqlStorageException.databaseCreation(sqliteDatabaseFileName, e);
     }

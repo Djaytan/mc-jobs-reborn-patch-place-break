@@ -24,11 +24,12 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import java.util.Collection;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
@@ -36,10 +37,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 /**
  * This class represents a {@link org.bukkit.event.block.BlockPistonEvent} listener. More

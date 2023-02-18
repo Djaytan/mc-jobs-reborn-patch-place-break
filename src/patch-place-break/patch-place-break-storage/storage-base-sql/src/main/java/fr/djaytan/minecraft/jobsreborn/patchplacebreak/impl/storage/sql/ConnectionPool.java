@@ -24,13 +24,11 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
+import java.sql.Connection;
+import java.sql.SQLException;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,8 +49,8 @@ public abstract class ConnectionPool {
 
     HikariConfig hikariConfig = new HikariConfig();
     hikariConfig.setJdbcUrl(jdbcUrl);
-    hikariConfig
-        .setConnectionTimeout(dataSourceProperties.getConnectionPool().getConnectionTimeout());
+    hikariConfig.setConnectionTimeout(
+        dataSourceProperties.getConnectionPool().getConnectionTimeout());
     hikariConfig.setMaximumPoolSize(dataSourceProperties.getConnectionPool().getPoolSize());
     hikariConfig.setUsername(dataSourceProperties.getDbmsServer().getCredentials().getUsername());
     hikariConfig.setPassword(dataSourceProperties.getDbmsServer().getCredentials().getPassword());

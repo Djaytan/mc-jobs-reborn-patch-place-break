@@ -46,7 +46,8 @@ class PropertiesValidationExceptionTest {
       PropertiesValidationException exception = new PropertiesValidationException();
 
       // Then
-      assertAll(() -> assertThat(exception.getMessage()).isNull(),
+      assertAll(
+          () -> assertThat(exception.getMessage()).isNull(),
           () -> assertThat(exception.getCause()).isNull());
     }
 
@@ -60,7 +61,8 @@ class PropertiesValidationExceptionTest {
       PropertiesValidationException exception = new PropertiesValidationException(message);
 
       // Then
-      assertAll(() -> assertThat(exception.getMessage()).isEqualTo(message),
+      assertAll(
+          () -> assertThat(exception.getMessage()).isEqualTo(message),
           () -> assertThat(exception.getCause()).isNull());
     }
 
@@ -78,7 +80,8 @@ class PropertiesValidationExceptionTest {
         PropertiesValidationException exception = new PropertiesValidationException(cause);
 
         // Then
-        assertAll(() -> assertThat(exception.getMessage()).isEqualTo("Cause message"),
+        assertAll(
+            () -> assertThat(exception.getMessage()).isEqualTo("Cause message"),
             () -> assertThat(exception.getCause()).isEqualTo(cause));
       }
 
@@ -92,7 +95,8 @@ class PropertiesValidationExceptionTest {
         PropertiesValidationException exception = new PropertiesValidationException(cause);
 
         // Then
-        assertAll(() -> assertThat(exception.getMessage()).isNull(),
+        assertAll(
+            () -> assertThat(exception.getMessage()).isNull(),
             () -> assertThat(exception.getCause()).isEqualTo(cause));
       }
 
@@ -106,7 +110,8 @@ class PropertiesValidationExceptionTest {
             new PropertiesValidationException((Throwable) null);
 
         // Then
-        assertAll(() -> assertThat(exception.getMessage()).isNull(),
+        assertAll(
+            () -> assertThat(exception.getMessage()).isNull(),
             () -> assertThat(exception.getCause()).isNull());
       }
     }
@@ -126,7 +131,8 @@ class PropertiesValidationExceptionTest {
         PropertiesValidationException exception = new PropertiesValidationException(message, cause);
 
         // Then
-        assertAll(() -> assertThat(exception.getMessage()).isEqualTo(message),
+        assertAll(
+            () -> assertThat(exception.getMessage()).isEqualTo(message),
             () -> assertThat(exception.getCause()).isEqualTo(cause));
       }
 
@@ -140,7 +146,8 @@ class PropertiesValidationExceptionTest {
         PropertiesValidationException exception = new PropertiesValidationException(message, null);
 
         // Then
-        assertAll(() -> assertThat(exception.getMessage()).isEqualTo(message),
+        assertAll(
+            () -> assertThat(exception.getMessage()).isEqualTo(message),
             () -> assertThat(exception.getCause()).isNull());
       }
     }

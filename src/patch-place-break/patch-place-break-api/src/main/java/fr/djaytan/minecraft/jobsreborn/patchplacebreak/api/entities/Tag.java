@@ -24,10 +24,9 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import lombok.NonNull;
 import lombok.Value;
 
@@ -36,9 +35,9 @@ import lombok.Value;
  * attached to the metadata of a block.
  *
  * <p>When an instance of this class is found in the metadata of a given block, this means that the
- * patch must be applied for eligible {@link BlockActionType}.
- * See {@link PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, TagLocation)} for
- * more details about it.
+ * patch must be applied for eligible {@link BlockActionType}. See {@link
+ * PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, TagLocation)} for more details about
+ * it.
  *
  * <p>This tag contains the following information:
  *
@@ -54,11 +53,8 @@ import lombok.Value;
 @Value(staticConstructor = "of")
 public class Tag {
 
-  @NonNull
-  UUID uuid;
-  @NonNull
-  LocalDateTime initLocalDateTime;
+  @NonNull UUID uuid;
+  @NonNull LocalDateTime initLocalDateTime;
   boolean isEphemeral;
-  @NonNull
-  TagLocation tagLocation;
+  @NonNull TagLocation tagLocation;
 }

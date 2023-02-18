@@ -24,24 +24,21 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs;
 
+import com.gamingmesh.jobs.api.JobsExpGainEvent;
+import com.gamingmesh.jobs.container.ActionInfo;
+import com.gamingmesh.jobs.container.ActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.BukkitPatchEnvironmentState;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlaceBreakVerifier;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-
-import com.gamingmesh.jobs.api.JobsExpGainEvent;
-import com.gamingmesh.jobs.container.ActionInfo;
-import com.gamingmesh.jobs.container.ActionType;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.BukkitPatchEnvironmentState;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlaceBreakVerifier;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 /**
  * This class represents a {@link JobsExpGainEvent} listener.
@@ -112,9 +109,15 @@ public class JobsExpGainListener implements Listener {
     }
 
     BukkitPatchEnvironmentState environmentState =
-        BukkitPatchEnvironmentState.builder().jobActionType(actionType).targetedBlock(block)
-            .involvedPlayer(event.getPlayer()).triggeredJob(event.getJob()).eventHandled(event)
-            .isEventCancelled(event.isCancelled()).eventHandlers(event.getHandlers()).build();
+        BukkitPatchEnvironmentState.builder()
+            .jobActionType(actionType)
+            .targetedBlock(block)
+            .involvedPlayer(event.getPlayer())
+            .triggeredJob(event.getJob())
+            .eventHandled(event)
+            .isEventCancelled(event.isCancelled())
+            .eventHandlers(event.getHandlers())
+            .build();
 
     patchPlaceBreakVerifier.checkAndAttemptFixListenersIfRequired(environmentState);
   }

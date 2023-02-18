@@ -24,15 +24,13 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.gamingmesh.jobs.container.ActionType;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.experimental.StandardException;
+import org.apache.commons.lang3.StringUtils;
 
 @StandardException(access = AccessLevel.PROTECTED)
 public class BukkitAdapterException extends PatchPlaceBreakException {

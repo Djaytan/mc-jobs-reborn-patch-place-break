@@ -24,26 +24,24 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Optional;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidator;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Manages config creation and manipulations.
  *
- * <p>The method {@link #createDefaultIfNotExists(String, ValidatingConvertibleProperties)}
- * permits to create a config if missing under the data folder.
- * Then, {@link #readAndValidate(String, Class)} can be used to read and validate it.
+ * <p>The method {@link #createDefaultIfNotExists(String, ValidatingConvertibleProperties)} permits
+ * to create a config if missing under the data folder. Then, {@link #readAndValidate(String,
+ * Class)} can be used to read and validate it.
  *
  * <p>The data folder definition is let to the patch enabler (e.g. the Bukkit plugin enabling and
  * calling the patch).
@@ -57,7 +55,8 @@ final class ConfigManager {
   private final PropertiesValidator propertiesValidator;
 
   @Inject
-  public ConfigManager(@Named("dataFolder") @NonNull Path dataFolder,
+  public ConfigManager(
+      @Named("dataFolder") @NonNull Path dataFolder,
       @NonNull ConfigSerializer configSerializer,
       @NonNull PropertiesValidator propertiesValidator) {
     this.dataFolder = dataFolder;
@@ -71,10 +70,11 @@ final class ConfigManager {
    * <p>The config file is created under the "dataFolder" path.
    *
    * @param configFileName The config file name to create if not exists yet.
-   * @param defaultProperties The default properties to serialize
-   *                          if the config file doesn't exist yet.
+   * @param defaultProperties The default properties to serialize if the config file doesn't exist
+   *     yet.
    */
-  public void createDefaultIfNotExists(@NonNull String configFileName,
+  public void createDefaultIfNotExists(
+      @NonNull String configFileName,
       @NonNull ValidatingConvertibleProperties<?> defaultProperties) {
     Path configFile = dataFolder.resolve(configFileName);
 
@@ -89,17 +89,17 @@ final class ConfigManager {
   }
 
   /**
-   * Reads config file from a predefined location. It is recommended to call
-   * {@link #createDefaultIfNotExists(String, ValidatingConvertibleProperties)} first at least one
-   * time.
+   * Reads config file from a predefined location. It is recommended to call {@link
+   * #createDefaultIfNotExists(String, ValidatingConvertibleProperties)} first at least one time.
    *
    * @param configFileName The config file name to read under the data folder.
    * @param type The type to be instantiated and returned once config file read.
    * @param <T> The final type to be instantiated and returned once config file validated.
-   * @return The specified final type instantiated and populated with values coming from
-   * the config file content.
+   * @return The specified final type instantiated and populated with values coming from the config
+   *     file content.
    */
-  public <T> @NonNull T readAndValidate(@NonNull String configFileName,
+  public <T> @NonNull T readAndValidate(
+      @NonNull String configFileName,
       @NonNull Class<? extends ValidatingConvertibleProperties<T>> type) {
     ValidatingConvertibleProperties<T> configValidatingProperties =
         readAndDeserializeConfigToValidate(configFileName, type);

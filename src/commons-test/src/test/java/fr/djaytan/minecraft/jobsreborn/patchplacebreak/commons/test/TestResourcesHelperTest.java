@@ -30,7 +30,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -57,8 +56,10 @@ class TestResourcesHelperTest {
         Path path = TestResourcesHelper.getClassResourceAsAbsolutePath(clazz, coffeeResource);
 
         // Then
-        assertThat(path.endsWith(Paths.get(
-            "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/TestResourcesHelperTest/coffee.txt")))
+        assertThat(
+                path.endsWith(
+                    Paths.get(
+                        "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/TestResourcesHelperTest/coffee.txt")))
             .isTrue();
       }
 
@@ -74,10 +75,12 @@ class TestResourcesHelperTest {
             () -> TestResourcesHelper.getClassResourceAsAbsolutePath(clazz, resourceName);
 
         // Then
-        assertThatThrownBy(throwingCallable).isExactlyInstanceOf(IOException.class)
-            .hasMessageContaining(Paths.get(
-                "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/TestResourcesHelperTest/notExistingResource")
-                .toString());
+        assertThatThrownBy(throwingCallable)
+            .isExactlyInstanceOf(IOException.class)
+            .hasMessageContaining(
+                Paths.get(
+                        "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/TestResourcesHelperTest/notExistingResource")
+                    .toString());
       }
     }
 
@@ -132,10 +135,12 @@ class TestResourcesHelperTest {
             () -> TestResourcesHelper.getClassResourceAsString(clazz, resourceName, true);
 
         // Then
-        assertThatThrownBy(throwingCallable).isExactlyInstanceOf(IOException.class)
-            .hasMessageContaining(Paths.get(
-                "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/TestResourcesHelperTest/notExistingResource")
-                .toString());
+        assertThatThrownBy(throwingCallable)
+            .isExactlyInstanceOf(IOException.class)
+            .hasMessageContaining(
+                Paths.get(
+                        "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/TestResourcesHelperTest/notExistingResource")
+                    .toString());
       }
     }
   }

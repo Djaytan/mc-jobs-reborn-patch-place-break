@@ -29,6 +29,16 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
+import com.jparams.verifier.tostring.NameStyle;
+import com.jparams.verifier.tostring.ToStringVerifier;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.ConnectionPoolProperties;
+import jakarta.validation.ConstraintViolation;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,7 +46,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-
+import lombok.NonNull;
+import lombok.SneakyThrows;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,22 +63,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.spongepowered.configurate.serialize.SerializationException;
-
-import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.Jimfs;
-import com.jparams.verifier.tostring.NameStyle;
-import com.jparams.verifier.tostring.ToStringVerifier;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.ConnectionPoolProperties;
-import jakarta.validation.ConstraintViolation;
-import lombok.NonNull;
-import lombok.SneakyThrows;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 class ConnectionPoolValidatingPropertiesTest {
 
@@ -85,15 +82,18 @@ class ConnectionPoolValidatingPropertiesTest {
   @Test
   @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashcode_shouldMetContracts() {
-    EqualsVerifier.forClass(ConnectionPoolValidatingProperties.class).withRedefinedSuperclass()
-        .suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(ConnectionPoolValidatingProperties.class)
+        .withRedefinedSuperclass()
+        .suppress(Warning.NONFINAL_FIELDS)
+        .verify();
   }
 
   @Test
   @DisplayName("When calling toString()")
   void whenCallingToString_shouldMetContracts() {
     ToStringVerifier.forClass(ConnectionPoolValidatingProperties.class)
-        .withClassName(NameStyle.SIMPLE_NAME).verify();
+        .withClassName(NameStyle.SIMPLE_NAME)
+        .verify();
   }
 
   @Nested
@@ -111,8 +111,9 @@ class ConnectionPoolValidatingPropertiesTest {
 
       // Then
       assertAll(
-          () -> assertThat(connectionPoolValidatingProperties.getConnectionTimeout())
-              .isEqualTo(30000),
+          () ->
+              assertThat(connectionPoolValidatingProperties.getConnectionTimeout())
+                  .isEqualTo(30000),
           () -> assertThat(connectionPoolValidatingProperties.getPoolSize()).isEqualTo(10),
           () -> assertThat(connectionPoolValidatingProperties.isValidated()).isFalse());
     }
@@ -130,8 +131,9 @@ class ConnectionPoolValidatingPropertiesTest {
 
       // Then
       assertAll(
-          () -> assertThat(connectionPoolValidatingProperties.getConnectionTimeout())
-              .isEqualTo(connectionTimeout),
+          () ->
+              assertThat(connectionPoolValidatingProperties.getConnectionTimeout())
+                  .isEqualTo(connectionTimeout),
           () -> assertThat(connectionPoolValidatingProperties.getPoolSize()).isEqualTo(poolSize),
           () -> assertThat(connectionPoolValidatingProperties.isValidated()).isFalse());
     }
@@ -154,7 +156,8 @@ class ConnectionPoolValidatingPropertiesTest {
           connectionPoolValidatingProperties.convert();
 
       // Then
-      assertAll(() -> assertThat(connectionPoolValidatingProperties.isValidated()).isTrue(),
+      assertAll(
+          () -> assertThat(connectionPoolValidatingProperties.isValidated()).isTrue(),
           () -> assertThat(connectionPoolProperties.getConnectionTimeout()).isEqualTo(60000),
           () -> assertThat(connectionPoolProperties.getPoolSize()).isEqualTo(10));
     }
@@ -170,9 +173,12 @@ class ConnectionPoolValidatingPropertiesTest {
       ThrowingCallable throwingCallable = connectionPoolValidatingProperties::convert;
 
       // Then
-      assertAll(() -> assertThat(connectionPoolValidatingProperties.isValidated()).isFalse(),
-          () -> assertThatIllegalStateException().isThrownBy(throwingCallable)
-              .withMessage("Properties must be validated before being converted"));
+      assertAll(
+          () -> assertThat(connectionPoolValidatingProperties.isValidated()).isFalse(),
+          () ->
+              assertThatIllegalStateException()
+                  .isThrownBy(throwingCallable)
+                  .withMessage("Properties must be validated before being converted"));
     }
   }
 
@@ -247,7 +253,8 @@ class ConnectionPoolValidatingPropertiesTest {
       }
 
       private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
-        return Stream.of(Arguments.of(Named.of("Highest allowed value", 600000)),
+        return Stream.of(
+            Arguments.of(Named.of("Highest allowed value", 600000)),
             Arguments.of(Named.of("Lowest allowed value", 1)));
       }
 
@@ -264,17 +271,24 @@ class ConnectionPoolValidatingPropertiesTest {
             ValidatorTestWrapper.validate(connectionPoolValidatingProperties);
 
         // Then
-        assertThat(constraintViolations).hasSize(1).element(0)
-            .matches(constraintViolation -> constraintViolation
-                .getRootBeanClass() == ConnectionPoolValidatingProperties.class)
-            .matches(constraintViolation -> Objects.equals(constraintViolation.getInvalidValue(),
-                invalidConnectionTimeout))
-            .matches(constraintViolation -> constraintViolation.getPropertyPath().toString()
-                .equals("connectionTimeout"));
+        assertThat(constraintViolations)
+            .hasSize(1)
+            .element(0)
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getRootBeanClass()
+                        == ConnectionPoolValidatingProperties.class)
+            .matches(
+                constraintViolation ->
+                    Objects.equals(constraintViolation.getInvalidValue(), invalidConnectionTimeout))
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getPropertyPath().toString().equals("connectionTimeout"));
       }
 
       private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
-        return Stream.of(Arguments.of(Named.of("Null value", 0)),
+        return Stream.of(
+            Arguments.of(Named.of("Null value", 0)),
             Arguments.of(Named.of("Too high value", 600001)));
       }
     }
@@ -301,7 +315,8 @@ class ConnectionPoolValidatingPropertiesTest {
       }
 
       private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
-        return Stream.of(Arguments.of(Named.of("Highest allowed value", 100)),
+        return Stream.of(
+            Arguments.of(Named.of("Highest allowed value", 100)),
             Arguments.of(Named.of("Lowest allowed value", 1)));
       }
 
@@ -318,18 +333,24 @@ class ConnectionPoolValidatingPropertiesTest {
             ValidatorTestWrapper.validate(connectionPoolValidatingProperties);
 
         // Then
-        assertThat(constraintViolations).hasSize(1).element(0)
-            .matches(constraintViolation -> constraintViolation
-                .getRootBeanClass() == ConnectionPoolValidatingProperties.class)
-            .matches(constraintViolation -> Objects.equals(constraintViolation.getInvalidValue(),
-                invalidPoolSize))
-            .matches(constraintViolation -> constraintViolation.getPropertyPath().toString()
-                .equals("poolSize"));
+        assertThat(constraintViolations)
+            .hasSize(1)
+            .element(0)
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getRootBeanClass()
+                        == ConnectionPoolValidatingProperties.class)
+            .matches(
+                constraintViolation ->
+                    Objects.equals(constraintViolation.getInvalidValue(), invalidPoolSize))
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getPropertyPath().toString().equals("poolSize"));
       }
 
       private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
-        return Stream.of(Arguments.of(Named.of("Null value", 0)),
-            Arguments.of(Named.of("Too high value", 101)));
+        return Stream.of(
+            Arguments.of(Named.of("Null value", 0)), Arguments.of(Named.of("Too high value", 101)));
       }
     }
   }
@@ -354,8 +375,9 @@ class ConnectionPoolValidatingPropertiesTest {
 
       // Then
       String actualYaml = new String(Files.readAllBytes(imDestFile));
-      String expectedYaml = TestResourcesHelper.getClassResourceAsString(this.getClass(),
-          expectedYamlFileName, false);
+      String expectedYaml =
+          TestResourcesHelper.getClassResourceAsString(
+              this.getClass(), expectedYamlFileName, false);
       assertThat(actualYaml).containsIgnoringNewLines(expectedYaml);
     }
 
@@ -378,25 +400,28 @@ class ConnectionPoolValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With valid content")
-    void withValidContent_shouldMatchExpectedValue(@NonNull String confFileName,
-        @NonNull ConnectionPoolValidatingProperties expectedValue) {
+    void withValidContent_shouldMatchExpectedValue(
+        @NonNull String confFileName, @NonNull ConnectionPoolValidatingProperties expectedValue) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
       Optional<ConnectionPoolValidatingProperties> optionalConnectionPoolValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(confFile,
-              ConnectionPoolValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(
+              confFile, ConnectionPoolValidatingProperties.class);
 
       // Then
-      assertThat(optionalConnectionPoolValidatingProperties).isPresent().get()
+      assertThat(optionalConnectionPoolValidatingProperties)
+          .isPresent()
+          .get()
           .isEqualTo(expectedValue);
     }
 
     private @NonNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
-          Arguments.of(Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
+          Arguments.of(
+              Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
               ConnectionPoolValidatingProperties.of(60000, 10)),
           Arguments.of(
               Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
@@ -415,20 +440,27 @@ class ConnectionPoolValidatingPropertiesTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      ThrowingCallable throwingCallable = () -> ConfigSerializerTestWrapper.deserialize(confFile,
-          ConnectionPoolValidatingProperties.class);
+      ThrowingCallable throwingCallable =
+          () ->
+              ConfigSerializerTestWrapper.deserialize(
+                  confFile, ConnectionPoolValidatingProperties.class);
 
       // Then
-      assertThatThrownBy(throwingCallable).isInstanceOf(ConfigSerializationException.class)
+      assertThatThrownBy(throwingCallable)
+          .isInstanceOf(ConfigSerializationException.class)
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
     private @NonNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
-          Arguments.of(Named.of("With missing 'connectionTimeout' field",
-              "whenDeserializing_withMissingConnectionTimeoutField.conf")),
-          Arguments.of(Named.of("With missing 'poolSize' field",
-              "whenDeserializing_withMissingPoolSizeField.conf")));
+          Arguments.of(
+              Named.of(
+                  "With missing 'connectionTimeout' field",
+                  "whenDeserializing_withMissingConnectionTimeoutField.conf")),
+          Arguments.of(
+              Named.of(
+                  "With missing 'poolSize' field",
+                  "whenDeserializing_withMissingPoolSizeField.conf")));
     }
 
     @Test
@@ -441,8 +473,8 @@ class ConnectionPoolValidatingPropertiesTest {
 
       // When
       Optional<ConnectionPoolValidatingProperties> connectionPoolValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(confFile,
-              ConnectionPoolValidatingProperties.class);
+          ConfigSerializerTestWrapper.deserialize(
+              confFile, ConnectionPoolValidatingProperties.class);
 
       // Then
       assertThat(connectionPoolValidatingProperties).isNotPresent();

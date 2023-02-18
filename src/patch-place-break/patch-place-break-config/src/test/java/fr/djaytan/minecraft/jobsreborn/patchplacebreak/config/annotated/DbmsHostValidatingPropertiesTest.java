@@ -29,6 +29,16 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
+import com.jparams.verifier.tostring.NameStyle;
+import com.jparams.verifier.tostring.ToStringVerifier;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsHostProperties;
+import jakarta.validation.ConstraintViolation;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,7 +46,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-
+import lombok.NonNull;
+import lombok.SneakyThrows;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
@@ -51,22 +64,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.spongepowered.configurate.serialize.SerializationException;
-
-import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.Jimfs;
-import com.jparams.verifier.tostring.NameStyle;
-import com.jparams.verifier.tostring.ToStringVerifier;
-
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsHostProperties;
-import jakarta.validation.ConstraintViolation;
-import lombok.NonNull;
-import lombok.SneakyThrows;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 class DbmsHostValidatingPropertiesTest {
 
@@ -86,15 +83,18 @@ class DbmsHostValidatingPropertiesTest {
   @Test
   @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashcode_shouldMetContracts() {
-    EqualsVerifier.forClass(DbmsHostValidatingProperties.class).withRedefinedSuperclass()
-        .suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(DbmsHostValidatingProperties.class)
+        .withRedefinedSuperclass()
+        .suppress(Warning.NONFINAL_FIELDS)
+        .verify();
   }
 
   @Test
   @DisplayName("When calling toString()")
   void whenCallingToString_shouldMetContracts() {
     ToStringVerifier.forClass(DbmsHostValidatingProperties.class)
-        .withClassName(NameStyle.SIMPLE_NAME).verify();
+        .withClassName(NameStyle.SIMPLE_NAME)
+        .verify();
   }
 
   @Nested
@@ -111,7 +111,8 @@ class DbmsHostValidatingPropertiesTest {
           DbmsHostValidatingProperties.ofDefault();
 
       // Then
-      assertAll(() -> assertThat(dbmsHostValidatingProperties.getHostname()).isEqualTo("localhost"),
+      assertAll(
+          () -> assertThat(dbmsHostValidatingProperties.getHostname()).isEqualTo("localhost"),
           () -> assertThat(dbmsHostValidatingProperties.getPort()).isEqualTo(3306),
           () -> assertThat(dbmsHostValidatingProperties.isSslEnabled()).isTrue(),
           () -> assertThat(dbmsHostValidatingProperties.isValidated()).isFalse());
@@ -154,7 +155,8 @@ class DbmsHostValidatingPropertiesTest {
       DbmsHostProperties dbmsHostProperties = dbmsHostValidatingProperties.convert();
 
       // Then
-      assertAll(() -> assertThat(dbmsHostValidatingProperties.isValidated()).isTrue(),
+      assertAll(
+          () -> assertThat(dbmsHostValidatingProperties.isValidated()).isTrue(),
           () -> assertThat(dbmsHostProperties.getHostname()).isEqualTo("example.com"),
           () -> assertThat(dbmsHostProperties.getPort()).isEqualTo(1234),
           () -> assertThat(dbmsHostProperties.isSslEnabled()).isTrue());
@@ -171,9 +173,12 @@ class DbmsHostValidatingPropertiesTest {
       ThrowingCallable throwingCallable = dbmsHostValidatingProperties::convert;
 
       // Then
-      assertAll(() -> assertThat(dbmsHostValidatingProperties.isValidated()).isFalse(),
-          () -> assertThatIllegalStateException().isThrownBy(throwingCallable)
-              .withMessage("Properties must be validated before being converted"));
+      assertAll(
+          () -> assertThat(dbmsHostValidatingProperties.isValidated()).isFalse(),
+          () ->
+              assertThatIllegalStateException()
+                  .isThrownBy(throwingCallable)
+                  .withMessage("Properties must be validated before being converted"));
     }
   }
 
@@ -255,14 +260,16 @@ class DbmsHostValidatingPropertiesTest {
        * in the DbmsHostValidatingProperties class.
        */
       private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
-        return Stream.of(Arguments.of(Named.of("Nominal IPv4 address", "92.0.2.146")),
-            Arguments
-                .of(Named.of("Nominal IPv6 address", "2001:db8:3333:4444:5555:6666:7777:8888")),
+        return Stream.of(
+            Arguments.of(Named.of("Nominal IPv4 address", "92.0.2.146")),
+            Arguments.of(
+                Named.of("Nominal IPv6 address", "2001:db8:3333:4444:5555:6666:7777:8888")),
             Arguments.of(Named.of("Domain name address", "my.example.com")),
             Arguments.of(Named.of("Longest valid value", StringUtils.repeat("s", 255))),
             Arguments.of(Named.of("Shortest valid value", "s")),
-            Arguments.of(Named.of("Invalid IPv4 address", "-1.-1.-1.-1")), Arguments
-                .of(Named.of("Invalid IPv6 address", "ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ")));
+            Arguments.of(Named.of("Invalid IPv4 address", "-1.-1.-1.-1")),
+            Arguments.of(
+                Named.of("Invalid IPv6 address", "ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ")));
       }
 
       @ParameterizedTest(name = "{index} - {0}")
@@ -278,18 +285,25 @@ class DbmsHostValidatingPropertiesTest {
             ValidatorTestWrapper.validate(dbmsHostValidatingProperties);
 
         // Then
-        assertThat(constraintViolations).hasSize(1).element(0)
-            .matches(constraintViolation -> constraintViolation
-                .getRootBeanClass() == DbmsHostValidatingProperties.class)
-            .matches(constraintViolation -> Objects.equals(constraintViolation.getInvalidValue(),
-                invalidHostname))
-            .matches(constraintViolation -> constraintViolation.getPropertyPath().toString()
-                .equals("hostname"));
+        assertThat(constraintViolations)
+            .hasSize(1)
+            .element(0)
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getRootBeanClass() == DbmsHostValidatingProperties.class)
+            .matches(
+                constraintViolation ->
+                    Objects.equals(constraintViolation.getInvalidValue(), invalidHostname))
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getPropertyPath().toString().equals("hostname"));
       }
 
       private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
-        return Stream.of(Arguments.of(Named.of("Null value", null)),
-            Arguments.of(Named.of("Empty value", "")), Arguments.of(Named.of("Blank value", " ")),
+        return Stream.of(
+            Arguments.of(Named.of("Null value", null)),
+            Arguments.of(Named.of("Empty value", "")),
+            Arguments.of(Named.of("Blank value", " ")),
             Arguments.of(Named.of("Too long value", StringUtils.repeat("s", 256))));
       }
     }
@@ -316,7 +330,8 @@ class DbmsHostValidatingPropertiesTest {
       }
 
       private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
-        return Stream.of(Arguments.of(Named.of("Highest possible value", 65535)),
+        return Stream.of(
+            Arguments.of(Named.of("Highest possible value", 65535)),
             Arguments.of(Named.of("Lowest possible value", 1)));
       }
 
@@ -333,17 +348,23 @@ class DbmsHostValidatingPropertiesTest {
             ValidatorTestWrapper.validate(dbmsHostValidatingProperties);
 
         // Then
-        assertThat(constraintViolations).hasSize(1).element(0)
-            .matches(constraintViolation -> constraintViolation
-                .getRootBeanClass() == DbmsHostValidatingProperties.class)
-            .matches(constraintViolation -> Objects.equals(constraintViolation.getInvalidValue(),
-                invalidPort))
-            .matches(constraintViolation -> constraintViolation.getPropertyPath().toString()
-                .equals("port"));
+        assertThat(constraintViolations)
+            .hasSize(1)
+            .element(0)
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getRootBeanClass() == DbmsHostValidatingProperties.class)
+            .matches(
+                constraintViolation ->
+                    Objects.equals(constraintViolation.getInvalidValue(), invalidPort))
+            .matches(
+                constraintViolation ->
+                    constraintViolation.getPropertyPath().toString().equals("port"));
       }
 
       private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
-        return Stream.of(Arguments.of(Named.of("Port n°0", 0)),
+        return Stream.of(
+            Arguments.of(Named.of("Port n°0", 0)),
             Arguments.of(Named.of("Too high port", 65536)),
             Arguments.of(Named.of("Too low port", -1)));
       }
@@ -369,18 +390,20 @@ class DbmsHostValidatingPropertiesTest {
 
       // Then
       String actualYaml = new String(Files.readAllBytes(imDestFile));
-      String expectedYaml = TestResourcesHelper.getClassResourceAsString(this.getClass(),
-          expectedYamlFileName, false);
+      String expectedYaml =
+          TestResourcesHelper.getClassResourceAsString(
+              this.getClass(), expectedYamlFileName, false);
       assertThat(actualYaml).containsIgnoringNewLines(expectedYaml);
     }
 
     private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
-          Arguments.of(Named.of("With default values", DbmsHostValidatingProperties.ofDefault()),
+          Arguments.of(
+              Named.of("With default values", DbmsHostValidatingProperties.ofDefault()),
               "whenSerializing_withDefaultValues.conf"),
           Arguments.of(
-              Named.of("With custom values",
-                  DbmsHostValidatingProperties.of("example.com", 1234, true)),
+              Named.of(
+                  "With custom values", DbmsHostValidatingProperties.of("example.com", 1234, true)),
               "whenSerializing_withCustomValues.conf"));
     }
   }
@@ -393,8 +416,8 @@ class DbmsHostValidatingPropertiesTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With valid content")
-    void withValidContent_shouldMatchExpectedValue(@NonNull String confFileName,
-        @NonNull DbmsHostValidatingProperties expectedValue) {
+    void withValidContent_shouldMatchExpectedValue(
+        @NonNull String confFileName, @NonNull DbmsHostValidatingProperties expectedValue) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
@@ -409,7 +432,8 @@ class DbmsHostValidatingPropertiesTest {
 
     private @NonNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
-          Arguments.of(Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
+          Arguments.of(
+              Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
               DbmsHostValidatingProperties.of("example.com", 1234, true)),
           Arguments.of(
               Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
@@ -428,22 +452,28 @@ class DbmsHostValidatingPropertiesTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      ThrowingCallable throwingCallable = () -> ConfigSerializerTestWrapper.deserialize(confFile,
-          DbmsHostValidatingProperties.class);
+      ThrowingCallable throwingCallable =
+          () ->
+              ConfigSerializerTestWrapper.deserialize(confFile, DbmsHostValidatingProperties.class);
 
       // Then
-      assertThatThrownBy(throwingCallable).isInstanceOf(ConfigSerializationException.class)
+      assertThatThrownBy(throwingCallable)
+          .isInstanceOf(ConfigSerializationException.class)
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
     private @NonNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
-          Arguments.of(Named.of("With missing 'hostname' field",
-              "whenDeserializing_withMissingHostnameField.conf")),
+          Arguments.of(
+              Named.of(
+                  "With missing 'hostname' field",
+                  "whenDeserializing_withMissingHostnameField.conf")),
           Arguments.of(
               Named.of("With missing 'port' field", "whenDeserializing_withMissingPortField.conf")),
-          Arguments.of(Named.of("With missing 'isSslEnabled' field",
-              "whenDeserializing_withMissingIsSslEnabledField.conf")));
+          Arguments.of(
+              Named.of(
+                  "With missing 'isSslEnabled' field",
+                  "whenDeserializing_withMissingIsSslEnabledField.conf")));
     }
 
     @Test

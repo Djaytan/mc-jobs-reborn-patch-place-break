@@ -27,13 +27,11 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.propert
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
-
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class DbmsServerPropertiesTest {
 
@@ -50,7 +48,8 @@ class DbmsServerPropertiesTest {
         DbmsServerProperties.of(hostProperties, credentialsProperties, database);
 
     // Then
-    assertAll("Verification of returned values from getters",
+    assertAll(
+        "Verification of returned values from getters",
         () -> assertThat(dbmsServerProperties.getHost()).isEqualTo(hostProperties),
         () -> assertThat(dbmsServerProperties.getCredentials()).isEqualTo(credentialsProperties),
         () -> assertThat(dbmsServerProperties.getDatabase()).isEqualTo(database));
@@ -65,7 +64,8 @@ class DbmsServerPropertiesTest {
   @Test
   @DisplayName("toString() - Verifications")
   void toStringContractVerification() {
-    ToStringVerifier.forClass(DbmsServerProperties.class).withClassName(NameStyle.SIMPLE_NAME)
+    ToStringVerifier.forClass(DbmsServerProperties.class)
+        .withClassName(NameStyle.SIMPLE_NAME)
         .verify();
   }
 }
