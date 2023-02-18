@@ -40,7 +40,7 @@ class CredentialsPropertiesTest {
   void shouldSuccessWhenCreatingWithNominalValues() {
     // Given
     String username = "username1";
-    String password = "passworrd2";
+    String password = "password2";
 
     // When
     CredentialsProperties credentialsProperties = CredentialsProperties.of(username, password);

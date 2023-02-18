@@ -42,8 +42,8 @@ class DataSourcePropertiesTest {
     DbmsServerProperties dbmsServerProperties =
         DbmsServerProperties.of(
             DbmsHostProperties.of("host", 80, true),
-            CredentialsProperties.of("username", "passwoord"),
-            "testdb");
+            CredentialsProperties.of("username", "password"),
+            "test_db");
     ConnectionPoolProperties connectionPoolProperties = ConnectionPoolProperties.of(120, 2);
     DataSourceType dataSourceType = DataSourceType.MYSQL;
     String table = "test";

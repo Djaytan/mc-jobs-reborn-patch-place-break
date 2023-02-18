@@ -41,7 +41,7 @@ class DbmsServerPropertiesTest {
     // Given
     DbmsHostProperties hostProperties = DbmsHostProperties.of("host", 80, true);
     CredentialsProperties credentialsProperties = CredentialsProperties.of("username", "password");
-    String database = "testdb";
+    String database = "test_db";
 
     // When
     DbmsServerProperties dbmsServerProperties =
