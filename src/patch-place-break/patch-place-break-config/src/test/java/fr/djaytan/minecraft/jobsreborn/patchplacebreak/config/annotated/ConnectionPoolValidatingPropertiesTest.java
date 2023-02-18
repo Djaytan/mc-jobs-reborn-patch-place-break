@@ -60,7 +60,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResource
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.ConnectionPoolProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.ConnectionPoolProperties;
 import jakarta.validation.ConstraintViolation;
 import lombok.NonNull;
 import lombok.SneakyThrows;

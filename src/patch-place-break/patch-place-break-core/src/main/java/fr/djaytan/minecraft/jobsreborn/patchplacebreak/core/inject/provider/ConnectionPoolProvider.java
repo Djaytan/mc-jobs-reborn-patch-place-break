@@ -28,11 +28,11 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCoreException;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.mysql.MysqlConnectionPool;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.ConnectionPool;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sqlite.SqliteConnectionPool;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.mysql.MysqlConnectionPool;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.ConnectionPool;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sqlite.SqliteConnectionPool;
 import lombok.NonNull;
 
 public class ConnectionPoolProvider implements Provider<ConnectionPool> {

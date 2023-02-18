@@ -57,7 +57,7 @@
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>patch-place-break-internal</artifactId>
+      <artifactId>patch-place-break-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

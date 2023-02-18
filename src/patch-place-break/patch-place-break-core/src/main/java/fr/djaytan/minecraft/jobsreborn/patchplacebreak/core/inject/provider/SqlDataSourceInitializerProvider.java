@@ -28,11 +28,11 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCoreException;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.mysql.MysqlDataSourceInitializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.SqlDataSourceInitializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sqlite.SqliteDataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.mysql.MysqlDataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.SqlDataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sqlite.SqliteDataSourceInitializer;
 import lombok.NonNull;
 
 public class SqlDataSourceInitializerProvider implements Provider<SqlDataSourceInitializer> {

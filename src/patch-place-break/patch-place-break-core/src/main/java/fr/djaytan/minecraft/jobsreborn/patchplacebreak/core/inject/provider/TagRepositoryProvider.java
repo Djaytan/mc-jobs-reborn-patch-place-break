@@ -28,11 +28,11 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCoreException;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.TagRepository;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.inmemory.TagInMemoryRepository;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.TagSqlRepository;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.inmemory.TagInMemoryRepository;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.TagSqlRepository;
 import lombok.NonNull;
 
 public class TagRepositoryProvider implements Provider<TagRepository> {

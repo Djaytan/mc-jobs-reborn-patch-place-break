@@ -37,12 +37,12 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.Data
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.SqlDataSourceInitializerProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.TagRepositoryProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.TagSqlDataDefinerProvider;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.PatchPlaceBreakDefault;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.TagRepository;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.DataSource;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.ConnectionPool;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.SqlDataSourceInitializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.sql.TagSqlDataDefiner;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.PatchPlaceBreakImpl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.DataSource;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.ConnectionPool;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.SqlDataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.TagSqlDataDefiner;
 import lombok.NonNull;
 
 /**
@@ -58,7 +58,7 @@ public class PatchPlaceBreakModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(PatchPlaceBreakApi.class).to(PatchPlaceBreakDefault.class);
+    bind(PatchPlaceBreakApi.class).to(PatchPlaceBreakImpl.class);
 
     bind(ConnectionPool.class).toProvider(ConnectionPoolProvider.class);
     bind(DataSource.class).toProvider(DataSourceProvider.class);

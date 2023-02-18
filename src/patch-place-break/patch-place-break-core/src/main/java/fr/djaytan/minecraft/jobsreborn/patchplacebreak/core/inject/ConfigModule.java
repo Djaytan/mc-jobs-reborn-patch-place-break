@@ -29,7 +29,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.properties.DataSourceProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DataSourceProperties;
 import lombok.NonNull;
 
 /**

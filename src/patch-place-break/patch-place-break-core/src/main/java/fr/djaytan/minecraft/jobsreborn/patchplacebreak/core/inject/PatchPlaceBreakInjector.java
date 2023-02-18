@@ -31,7 +31,7 @@ import com.google.inject.Injector;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCoreException;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.internal.storage.api.DataSource;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.DataSource;
 import lombok.NonNull;
 
 public final class PatchPlaceBreakInjector {
