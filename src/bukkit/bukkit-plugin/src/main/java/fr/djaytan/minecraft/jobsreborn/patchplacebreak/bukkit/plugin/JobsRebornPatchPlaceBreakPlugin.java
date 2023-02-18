@@ -28,9 +28,12 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreak;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.ListenerRegister;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject.GuiceBukkitInjector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.slf4j.BukkitLoggerFactory;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.logging.Logger;
 import javax.inject.Inject;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -42,15 +45,13 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
   @Inject private PatchPlaceBreak patchPlaceBreak;
 
   @Override
+  @SneakyThrows
   public void onEnable() {
-    BukkitLoggerFactory.provideBukkitLogger(getLogger());
-    prepareDataFolder();
-
+    createFolderIfNotExist(getDataFolder().toPath());
+    enableSlf4j(getLogger());
     GuiceBukkitInjector.inject(this);
-
     listenerRegister.registerListeners();
     metricsFacade.activateMetricsCollection();
-
     getLogger().info("JobsReborn-PatchPlaceBreak successfully enabled.");
   }
 
@@ -60,15 +61,11 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
     getLogger().info("JobsReborn-PatchPlaceBreak successfully disabled.");
   }
 
-  @SneakyThrows
-  private void prepareDataFolder() {
-    Path dataFolder = getDataFolder().toPath();
+  private static void createFolderIfNotExist(@NonNull Path dataFolder) throws IOException {
+    Files.createDirectories(dataFolder);
+  }
 
-    if (Files.exists(dataFolder)) {
-      return;
-    }
-
-    Files.createDirectory(dataFolder);
-    getLogger().info("Plugin data folder created.");
+  private static void enableSlf4j(@NonNull Logger bukkitLogger) {
+    BukkitLoggerFactory.provideBukkitLogger(bukkitLogger);
   }
 }
