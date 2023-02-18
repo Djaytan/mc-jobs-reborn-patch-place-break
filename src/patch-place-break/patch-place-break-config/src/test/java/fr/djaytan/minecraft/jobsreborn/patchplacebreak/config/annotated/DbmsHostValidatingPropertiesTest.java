@@ -37,7 +37,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResource
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.properties.DbmsHostProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsHostProperties;
 import jakarta.validation.ConstraintViolation;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
