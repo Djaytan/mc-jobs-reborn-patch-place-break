@@ -34,21 +34,14 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.mysql.MysqlC
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.ConnectionPool;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sqlite.SqliteConnectionPool;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ConnectionPoolProvider implements Provider<ConnectionPool> {
 
   private final DataSourceProperties dataSourceProperties;
   private final MysqlConnectionPool mysqlConnectionPool;
   private final SqliteConnectionPool sqliteConnectionPool;
-
-  @Inject
-  public ConnectionPoolProvider(@NonNull DataSourceProperties dataSourceProperties,
-      @NonNull MysqlConnectionPool mysqlConnectionPool,
-      @NonNull SqliteConnectionPool sqliteConnectionPool) {
-    this.dataSourceProperties = dataSourceProperties;
-    this.mysqlConnectionPool = mysqlConnectionPool;
-    this.sqliteConnectionPool = sqliteConnectionPool;
-  }
 
   @Override
   public @NonNull ConnectionPool get() {

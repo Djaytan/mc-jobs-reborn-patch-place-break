@@ -39,6 +39,7 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * This class represents a {@link org.bukkit.event.block.BlockPistonEvent} listener. More
@@ -50,14 +51,10 @@ import lombok.NonNull;
  * the same direction as the moved blocks.
  */
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BlockPistonListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
-
-  @Inject
-  public BlockPistonListener(@NonNull PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
-    this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
-  }
 
   /**
    * This method is called when a {@link BlockPistonExtendEvent} is dispatched to move

@@ -29,20 +29,14 @@ import javax.inject.Singleton;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.DataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.api.StorageException;
-import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class SqlDataSource implements DataSource {
 
   private final ConnectionPool connectionPool;
   private final SqlDataSourceInitializer sqlDataSourceInitializer;
-
-  @Inject
-  public SqlDataSource(@NonNull ConnectionPool connectionPool,
-      @NonNull SqlDataSourceInitializer sqlDataSourceInitializer) {
-    this.connectionPool = connectionPool;
-    this.sqlDataSourceInitializer = sqlDataSourceInitializer;
-  }
 
   @Override
   public void connect() throws StorageException {

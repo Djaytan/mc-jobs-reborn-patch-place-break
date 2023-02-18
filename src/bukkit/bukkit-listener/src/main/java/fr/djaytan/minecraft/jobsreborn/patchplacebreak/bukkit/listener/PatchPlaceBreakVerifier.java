@@ -36,6 +36,7 @@ import com.gamingmesh.jobs.container.ActionType;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -48,6 +49,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PatchPlaceBreakVerifier {
 
   /*
@@ -56,13 +58,6 @@ public class PatchPlaceBreakVerifier {
    */
   private final Provider<ListenerRegister> listenerRegister;
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
-
-  @Inject
-  public PatchPlaceBreakVerifier(@NonNull Provider<ListenerRegister> listenerRegister,
-      @NonNull PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
-    this.listenerRegister = listenerRegister;
-    this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
-  }
 
   public void checkAndAttemptFixListenersIfRequired(
       @NonNull BukkitPatchEnvironmentState environmentState) {

@@ -40,6 +40,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -47,14 +48,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Singleton
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
 
   private final TagRepository tagRepository;
-
-  @Inject
-  public PatchPlaceBreakImpl(@NonNull TagRepository tagRepository) {
-    this.tagRepository = tagRepository;
-  }
 
   public void putTag(@NonNull TagLocation tagLocation, boolean isEphemeral) {
     CompletableFuture.runAsync(() -> {

@@ -38,12 +38,13 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block.Blo
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block.BlockSpreadListener;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.JobsExpGainListener;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.JobsPrePaymentListener;
-import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /** This class represents a register of listeners. */
 @Slf4j
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ListenerRegister {
 
   private final JavaPlugin javaPlugin;
@@ -56,26 +57,6 @@ public class ListenerRegister {
   private final BlockSpreadListener blockSpreadListener;
   private final JobsExpGainListener jobsExpGainListener;
   private final JobsPrePaymentListener jobsPrePaymentListener;
-
-  @Inject
-  public ListenerRegister(@NonNull JavaPlugin javaPlugin, @NonNull PluginManager pluginManager,
-      @NonNull BlockBreakListener blockBreakListener, @NonNull BlockGrowListener blockGrowListener,
-      @NonNull BlockPistonListener blockPistonListener,
-      @NonNull BlockPlaceListener blockPlaceListener,
-      @NonNull BlockSpreadListener blockSpreadListener,
-      @NonNull JobsExpGainListener jobsExpGainListener,
-      @NonNull JobsPrePaymentListener jobsPrePaymentListener) {
-    this.javaPlugin = javaPlugin;
-    this.pluginManager = pluginManager;
-
-    this.blockBreakListener = blockBreakListener;
-    this.blockGrowListener = blockGrowListener;
-    this.blockPistonListener = blockPistonListener;
-    this.blockPlaceListener = blockPlaceListener;
-    this.blockSpreadListener = blockSpreadListener;
-    this.jobsExpGainListener = jobsExpGainListener;
-    this.jobsPrePaymentListener = jobsPrePaymentListener;
-  }
 
   /**
    * The purposes of this method is simple: registering listeners through the {@link PluginManager}.

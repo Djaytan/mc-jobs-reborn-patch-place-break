@@ -35,6 +35,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * This class represents a {@link BlockBreakEvent} listener.
@@ -44,14 +45,10 @@ import lombok.NonNull;
  * like with saplings or sugarcane.
  */
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BlockBreakListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
-
-  @Inject
-  public BlockBreakListener(@NonNull PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
-    this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
-  }
 
   /**
    * This method is called when a {@link BlockBreakEvent} is dispatched to put the place-and-break

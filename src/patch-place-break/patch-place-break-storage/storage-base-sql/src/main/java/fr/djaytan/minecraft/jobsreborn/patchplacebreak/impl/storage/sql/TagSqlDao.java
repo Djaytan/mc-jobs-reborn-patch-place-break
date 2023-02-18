@@ -42,27 +42,18 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.serializ
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.serializer.LocalDateTimeStringSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.storage.sql.serializer.UUIDStringSerializer;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class TagSqlDao {
 
   private final BooleanIntegerSerializer booleanIntegerSerializer;
   private final DataSourceProperties dataSourceProperties;
   private final LocalDateTimeStringSerializer localDateTimeStringSerializer;
   private final UUIDStringSerializer uuidStringSerializer;
-
-  @Inject
-  public TagSqlDao(@NonNull BooleanIntegerSerializer booleanIntegerSerializer,
-      @NonNull DataSourceProperties dataSourceProperties,
-      @NonNull LocalDateTimeStringSerializer localDateTimeStringSerializer,
-      @NonNull UUIDStringSerializer uuidStringSerializer) {
-    this.booleanIntegerSerializer = booleanIntegerSerializer;
-    this.dataSourceProperties = dataSourceProperties;
-    this.localDateTimeStringSerializer = localDateTimeStringSerializer;
-    this.uuidStringSerializer = uuidStringSerializer;
-  }
 
   public void insert(@NonNull Connection connection, @NonNull Tag tag) throws SQLException {
     String sql = String.format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?, ?)",

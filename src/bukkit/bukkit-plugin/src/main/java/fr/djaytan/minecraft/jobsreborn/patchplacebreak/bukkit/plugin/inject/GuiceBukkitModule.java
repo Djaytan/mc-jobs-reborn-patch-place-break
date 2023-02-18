@@ -41,14 +41,12 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class GuiceBukkitModule extends AbstractModule {
 
   private final JavaPlugin javaPlugin;
-
-  public GuiceBukkitModule(@NonNull JavaPlugin javaPlugin) {
-    this.javaPlugin = javaPlugin;
-  }
 
   @Override
   protected void configure() {

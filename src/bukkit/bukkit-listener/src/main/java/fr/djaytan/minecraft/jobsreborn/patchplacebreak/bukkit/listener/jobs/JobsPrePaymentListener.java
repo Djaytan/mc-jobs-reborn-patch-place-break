@@ -41,6 +41,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.BukkitPatchEnvironmentState;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlaceBreakVerifier;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * This class represents a {@link JobsPrePaymentEvent} listener.
@@ -49,17 +50,11 @@ import lombok.NonNull;
  * as a place-and-break one to be patched. This cover both points and incomes.
  */
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class JobsPrePaymentListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
   private final PatchPlaceBreakVerifier patchPlaceBreakVerifier;
-
-  @Inject
-  public JobsPrePaymentListener(@NonNull PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter,
-      @NonNull PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
-    this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
-    this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;
-  }
 
   /**
    * This method is called when a {@link JobsPrePaymentEvent} is dispatched to cancel it if the

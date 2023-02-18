@@ -35,6 +35,7 @@ import org.bukkit.event.block.BlockGrowEvent;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * This class represents a {@link BlockGrowEvent} listener.
@@ -44,14 +45,10 @@ import lombok.NonNull;
  * idea here is simply to remove the corresponding metadata from the grown blocks.
  */
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BlockGrowListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
-
-  @Inject
-  public BlockGrowListener(@NonNull PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
-    this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
-  }
 
   /**
    * This method is called when a {@link BlockGrowEvent} is dispatched to remove the potentially

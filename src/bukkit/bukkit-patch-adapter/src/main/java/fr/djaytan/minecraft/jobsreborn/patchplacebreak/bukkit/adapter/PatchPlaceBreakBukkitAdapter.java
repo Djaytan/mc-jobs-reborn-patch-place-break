@@ -45,6 +45,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.BlockFaceConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.LocationConverter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Adapter of {@link PatchPlaceBreakApi} for Bukkit.
@@ -52,22 +53,13 @@ import lombok.NonNull;
  * @see PatchPlaceBreakApi
  */
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PatchPlaceBreakBukkitAdapter {
 
   private final ActionTypeConverter actionTypeConverter;
   private final LocationConverter locationConverter;
   private final PatchPlaceBreakApi patchPlaceBreakApi;
   private final BlockFaceConverter blockFaceConverter;
-
-  @Inject
-  public PatchPlaceBreakBukkitAdapter(@NonNull ActionTypeConverter actionTypeConverter,
-      @NonNull LocationConverter locationConverter, @NonNull PatchPlaceBreakApi patchPlaceBreakApi,
-      @NonNull BlockFaceConverter blockFaceConverter) {
-    this.actionTypeConverter = actionTypeConverter;
-    this.locationConverter = locationConverter;
-    this.patchPlaceBreakApi = patchPlaceBreakApi;
-    this.blockFaceConverter = blockFaceConverter;
-  }
 
   /**
    * Puts a tag on the specified location.

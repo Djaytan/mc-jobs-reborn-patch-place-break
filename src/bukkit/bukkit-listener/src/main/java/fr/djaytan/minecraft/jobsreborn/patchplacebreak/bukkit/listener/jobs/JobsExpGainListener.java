@@ -41,6 +41,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.BukkitPatchEnvironmentState;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlaceBreakVerifier;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * This class represents a {@link JobsExpGainEvent} listener.
@@ -49,17 +50,11 @@ import lombok.NonNull;
  * as a place-and-break one to be patched.
  */
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class JobsExpGainListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
   private final PatchPlaceBreakVerifier patchPlaceBreakVerifier;
-
-  @Inject
-  public JobsExpGainListener(@NonNull PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter,
-      @NonNull PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
-    this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
-    this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;
-  }
 
   /**
    * This method is called when a {@link JobsExpGainEvent} is dispatched to cancel it if the

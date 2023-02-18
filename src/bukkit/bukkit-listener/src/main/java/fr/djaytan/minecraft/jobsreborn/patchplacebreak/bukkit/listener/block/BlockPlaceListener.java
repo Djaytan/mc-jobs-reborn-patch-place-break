@@ -35,6 +35,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * This class represents a {@link BlockPlaceEvent} listener.
@@ -43,14 +44,10 @@ import lombok.NonNull;
  * player. This permits to prevent place-and-break exploit with diamond ores for example.
  */
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BlockPlaceListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
-
-  @Inject
-  public BlockPlaceListener(@NonNull PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
-    this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
-  }
 
   /**
    * This method is called when a {@link BlockPlaceEvent} is dispatched to put the place-and-break

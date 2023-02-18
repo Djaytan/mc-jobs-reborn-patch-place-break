@@ -35,6 +35,7 @@ import org.bukkit.event.block.BlockSpreadEvent;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * This class represents a {@link BlockSpreadEvent} listener.
@@ -44,14 +45,10 @@ import lombok.NonNull;
  * shall result to a successful job action when breaking it).
  */
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BlockSpreadListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
-
-  @Inject
-  public BlockSpreadListener(@NonNull PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter) {
-    this.patchPlaceBreakBukkitAdapter = patchPlaceBreakBukkitAdapter;
-  }
 
   /**
    * This method is called when a {@link BlockSpreadEvent} is dispatched to remove the potentially

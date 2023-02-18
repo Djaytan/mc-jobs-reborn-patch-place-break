@@ -36,18 +36,14 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepositoryException;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class TagSqlRepository implements TagRepository {
 
   private final ConnectionPool connectionPool;
   private final TagSqlDao tagSqlDao;
-
-  @Inject
-  public TagSqlRepository(@NonNull ConnectionPool connectionPool, @NonNull TagSqlDao tagSqlDao) {
-    this.connectionPool = connectionPool;
-    this.tagSqlDao = tagSqlDao;
-  }
 
   @Override
   public void put(@NonNull Tag tag) {

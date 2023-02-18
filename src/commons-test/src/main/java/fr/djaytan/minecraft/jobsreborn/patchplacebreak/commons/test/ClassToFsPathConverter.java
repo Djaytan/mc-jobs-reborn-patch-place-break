@@ -29,20 +29,18 @@ import java.nio.file.Path;
 import java.util.regex.Pattern;
 
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Converts a class name to a filesystem path with {@link #convertClassToFsPath(Class)}.
  */
+@RequiredArgsConstructor
 final class ClassToFsPathConverter {
 
   private static final Pattern DOTS_REGEX_PATTERN = Pattern.compile("\\.");
   private static final Pattern INNER_CLASS_REGEX_PATTERN = Pattern.compile("\\$.*");
 
   private final FileSystem fileSystem;
-
-  public ClassToFsPathConverter(@NonNull FileSystem fileSystem) {
-    this.fileSystem = fileSystem;
-  }
 
   /**
    * Converts a class name to a filesystem path.

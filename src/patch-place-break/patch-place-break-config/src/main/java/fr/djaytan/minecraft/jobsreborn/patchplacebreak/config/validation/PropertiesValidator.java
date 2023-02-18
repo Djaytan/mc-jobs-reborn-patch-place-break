@@ -32,6 +32,7 @@ import javax.inject.Singleton;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -39,15 +40,11 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Singleton
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public final class PropertiesValidator {
 
   private static final String LINE_SEPARATOR = System.getProperty("line.separator");
   private final Validator validator;
-
-  @Inject
-  public PropertiesValidator(@NonNull Validator validator) {
-    this.validator = validator;
-  }
 
   /**
    * Validates the specified {@link ValidatingConvertibleProperties} and convert it
