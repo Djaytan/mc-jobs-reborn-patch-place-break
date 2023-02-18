@@ -394,7 +394,7 @@
             <dependencyConvergence />
             <reactorModuleConvergence />
             <requireJavaVersion>
-              <version>[11,12)</version>
+              <version>[11,17]</version>
             </requireJavaVersion>
             <requireMavenVersion>
               <version>[3.6,)</version>
