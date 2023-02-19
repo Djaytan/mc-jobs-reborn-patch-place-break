@@ -27,6 +27,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
 import lombok.NonNull;
 
+@SuppressWarnings("java:S2187")
 class ConfigSerializationExceptionTest extends ExceptionBaseTest {
 
   @Override

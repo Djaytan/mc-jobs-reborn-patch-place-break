@@ -26,6 +26,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 
 import lombok.NonNull;
 
+@SuppressWarnings("java:S2187")
 class UnsupportedClassExceptionTest extends ExceptionBaseTest {
 
   @Override

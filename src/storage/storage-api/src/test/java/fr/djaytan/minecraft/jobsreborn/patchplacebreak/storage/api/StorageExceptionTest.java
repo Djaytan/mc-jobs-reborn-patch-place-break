@@ -27,6 +27,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
 import lombok.NonNull;
 
+@SuppressWarnings("java:S2187")
 class StorageExceptionTest extends ExceptionBaseTest {
 
   @Override
