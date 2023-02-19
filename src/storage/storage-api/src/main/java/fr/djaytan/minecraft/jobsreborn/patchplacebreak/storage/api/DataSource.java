@@ -26,7 +26,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
 public interface DataSource {
 
-  void connect() throws StorageException;
+  void connect();
 
-  void disconnect() throws StorageException;
+  void disconnect();
 }
