@@ -107,7 +107,7 @@ a live system.
 
 Working on this project requires the following dependencies installed on your local environment:
 
-* JDK 11+ ([Download Link](https://adoptium.net/en-GB/temurin/releases/?version=11))
+* JDK 11 ([Download Link](https://adoptium.net/en-GB/temurin/releases/?version=11))
 * Maven
   3.6+ ([Download Link](https://maven.apache.org/download.cgi) | [Install Guide](https://maven.apache.org/install.html))
 
