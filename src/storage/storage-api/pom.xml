@@ -52,12 +52,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>commons-test</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>nl.jqno.equalsverifier</groupId>
       <artifactId>equalsverifier</artifactId>
       <scope>test</scope>
