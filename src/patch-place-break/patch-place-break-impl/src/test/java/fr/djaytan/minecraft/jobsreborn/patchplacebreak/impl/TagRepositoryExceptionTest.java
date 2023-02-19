@@ -24,131 +24,28 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
+import lombok.NonNull;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+class TagRepositoryExceptionTest extends ExceptionBaseTest {
 
-class TagRepositoryExceptionTest {
+  @Override
+  protected @NonNull Exception getException() {
+    return new TagRepositoryException();
+  }
 
-  @Nested
-  @DisplayName("When instantiating")
-  class WhenInstantiating {
+  @Override
+  protected @NonNull Exception getException(@NonNull String message) {
+    return new TagRepositoryException(message);
+  }
 
-    @Test
-    @DisplayName("Without args")
-    void withoutArgs_shouldMetExpectations() {
-      // Given
+  @Override
+  protected @NonNull Exception getException(Throwable cause) {
+    return new TagRepositoryException(cause);
+  }
 
-      // When
-      TagRepositoryException exception = new TagRepositoryException();
-
-      // Then
-      assertAll(
-          () -> assertThat(exception.getMessage()).isNull(),
-          () -> assertThat(exception.getCause()).isNull());
-    }
-
-    @Test
-    @DisplayName("With message")
-    void withoutMessage_shouldMetExpectations() {
-      // Given
-      String message = "A message";
-
-      // When
-      TagRepositoryException exception = new TagRepositoryException(message);
-
-      // Then
-      assertAll(
-          () -> assertThat(exception.getMessage()).isEqualTo(message),
-          () -> assertThat(exception.getCause()).isNull());
-    }
-
-    @Nested
-    @DisplayName("With cause")
-    class WithCause {
-
-      @Test
-      @DisplayName("Having message")
-      void havingMessage_shouldHaveCauseAndMessageDefined() {
-        // Given
-        Throwable cause = new IllegalArgumentException("Cause message");
-
-        // When
-        TagRepositoryException exception = new TagRepositoryException(cause);
-
-        // Then
-        assertAll(
-            () -> assertThat(exception.getMessage()).isEqualTo("Cause message"),
-            () -> assertThat(exception.getCause()).isEqualTo(cause));
-      }
-
-      @Test
-      @DisplayName("Not having message")
-      void notHavingMessage_shouldHaveOnlyCauseDefined() {
-        // Given
-        Throwable cause = new IllegalArgumentException();
-
-        // When
-        TagRepositoryException exception = new TagRepositoryException(cause);
-
-        // Then
-        assertAll(
-            () -> assertThat(exception.getMessage()).isNull(),
-            () -> assertThat(exception.getCause()).isEqualTo(cause));
-      }
-
-      @Test
-      @DisplayName("Being null")
-      void beingNull_shouldHaveNothingDefined() {
-        // Given
-
-        // When
-        TagRepositoryException exception = new TagRepositoryException((Throwable) null);
-
-        // Then
-        assertAll(
-            () -> assertThat(exception.getMessage()).isNull(),
-            () -> assertThat(exception.getCause()).isNull());
-      }
-    }
-
-    @Nested
-    @DisplayName("With message & cause")
-    class WithMessageAndCause {
-
-      @Test
-      @DisplayName("And cause not null")
-      void andCauseNotNull_shouldMetExpectations() {
-        // Given
-        String message = "A message";
-        Throwable cause = new IllegalArgumentException();
-
-        // When
-        TagRepositoryException exception = new TagRepositoryException(message, cause);
-
-        // Then
-        assertAll(
-            () -> assertThat(exception.getMessage()).isEqualTo(message),
-            () -> assertThat(exception.getCause()).isEqualTo(cause));
-      }
-
-      @Test
-      @DisplayName("And cause null")
-      void andCauseNull_shouldMetExpectations() {
-        // Given
-        String message = "A message";
-
-        // When
-        TagRepositoryException exception = new TagRepositoryException(message, null);
-
-        // Then
-        assertAll(
-            () -> assertThat(exception.getMessage()).isEqualTo(message),
-            () -> assertThat(exception.getCause()).isNull());
-      }
-    }
+  @Override
+  protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
+    return new TagRepositoryException(message, cause);
   }
 }

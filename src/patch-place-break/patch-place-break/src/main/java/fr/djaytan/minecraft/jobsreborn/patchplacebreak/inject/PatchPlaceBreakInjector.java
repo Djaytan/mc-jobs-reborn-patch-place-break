@@ -26,7 +26,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.inject;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreakCoreException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
 import java.nio.file.Path;
@@ -44,14 +44,14 @@ public final class PatchPlaceBreakInjector {
 
   public @NonNull PatchPlaceBreakApi getPatchApi() {
     if (injector == null) {
-      throw PatchPlaceBreakCoreException.injectionRequiredFirst();
+      throw PatchPlaceBreakException.injectionRequiredFirst();
     }
     return injector.getInstance(PatchPlaceBreakApi.class);
   }
 
   public @NonNull DataSource getDataSource() {
     if (injector == null) {
-      throw PatchPlaceBreakCoreException.injectionRequiredFirst();
+      throw PatchPlaceBreakException.injectionRequiredFirst();
     }
     return injector.getInstance(DataSource.class);
   }

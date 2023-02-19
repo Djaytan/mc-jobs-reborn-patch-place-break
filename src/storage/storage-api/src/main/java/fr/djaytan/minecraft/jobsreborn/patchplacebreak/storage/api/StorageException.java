@@ -24,9 +24,8 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
 import lombok.AccessLevel;
 import lombok.experimental.StandardException;
 
 @StandardException(access = AccessLevel.PROTECTED)
-public class StorageException extends PatchPlaceBreakException {}
+public class StorageException extends RuntimeException {}

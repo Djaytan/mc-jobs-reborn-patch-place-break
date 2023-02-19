@@ -24,14 +24,12 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.StorageException;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.experimental.StandardException;
 
 @StandardException(access = AccessLevel.PROTECTED)
-@SuppressWarnings("java:S110") // Not an issue for exception classes
-public class SqlStorageException extends StorageException {
+public class SqlStorageException extends RuntimeException {
 
   private static final String CONNECTION_POOL_NOT_SETUP =
       "The connection pool must be setup before using it.";

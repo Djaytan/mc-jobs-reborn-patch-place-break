@@ -22,30 +22,30 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
 import lombok.NonNull;
 
-class SqlStorageExceptionTest extends ExceptionBaseTest {
+class PatchPlaceBreakExceptionTest extends ExceptionBaseTest {
 
   @Override
   protected @NonNull Exception getException() {
-    return new SqlStorageException();
+    return new PatchPlaceBreakException();
   }
 
   @Override
   protected @NonNull Exception getException(@NonNull String message) {
-    return new SqlStorageException(message);
+    return new PatchPlaceBreakException(message);
   }
 
   @Override
   protected @NonNull Exception getException(Throwable cause) {
-    return new SqlStorageException(cause);
+    return new PatchPlaceBreakException(cause);
   }
 
   @Override
   protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
-    return new SqlStorageException(message, cause);
+    return new PatchPlaceBreakException(message, cause);
   }
 }

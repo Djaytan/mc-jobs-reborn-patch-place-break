@@ -24,7 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.inject.provider;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreakCoreException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.mysql.MysqlDataSourceInitializer;
@@ -57,7 +57,7 @@ public class SqlDataSourceInitializerProvider implements Provider<SqlDataSourceI
         }
       default:
         {
-          throw PatchPlaceBreakCoreException.unsupportedDataSourceType(dataSourceType);
+          throw PatchPlaceBreakException.unsupportedDataSourceType(dataSourceType);
         }
     }
   }

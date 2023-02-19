@@ -24,7 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.inject.provider;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreakCoreException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
@@ -58,7 +58,7 @@ public class DataSourceProvider implements Provider<DataSource> {
         }
       default:
         {
-          throw PatchPlaceBreakCoreException.unrecognisedDataSourceType(dataSourceType);
+          throw PatchPlaceBreakException.unrecognisedDataSourceType(dataSourceType);
         }
     }
   }

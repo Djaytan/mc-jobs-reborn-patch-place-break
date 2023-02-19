@@ -25,7 +25,6 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.inject.PatchPlaceBreakInjector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
 import java.nio.file.Path;

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +22,30 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 
-import lombok.AccessLevel;
-import lombok.experimental.StandardException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
+import lombok.NonNull;
 
-@StandardException(access = AccessLevel.PROTECTED)
-public class PatchPlaceBreakException extends RuntimeException {}
+class ConfigSerializationExceptionTest extends ExceptionBaseTest {
+
+  @Override
+  protected @NonNull Exception getException() {
+    return new ConfigSerializationException();
+  }
+
+  @Override
+  protected @NonNull Exception getException(@NonNull String message) {
+    return new ConfigSerializationException(message);
+  }
+
+  @Override
+  protected @NonNull Exception getException(Throwable cause) {
+    return new ConfigSerializationException(cause);
+  }
+
+  @Override
+  protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
+    return new ConfigSerializationException(message, cause);
+  }
+}

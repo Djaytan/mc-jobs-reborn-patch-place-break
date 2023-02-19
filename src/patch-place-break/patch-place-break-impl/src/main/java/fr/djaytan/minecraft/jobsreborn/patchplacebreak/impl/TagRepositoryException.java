@@ -24,7 +24,6 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import lombok.AccessLevel;
@@ -32,7 +31,7 @@ import lombok.NonNull;
 import lombok.experimental.StandardException;
 
 @StandardException(access = AccessLevel.PROTECTED)
-public class TagRepositoryException extends PatchPlaceBreakException {
+public class TagRepositoryException extends RuntimeException {
 
   private static final String PUT = "Failed to put the following tag: %s";
   private static final String FETCH = "Failed to fetch the tag with the following location: %s";
