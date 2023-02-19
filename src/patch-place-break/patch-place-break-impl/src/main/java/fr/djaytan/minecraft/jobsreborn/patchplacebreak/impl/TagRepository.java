@@ -71,7 +71,7 @@ public interface TagRepository {
    * <p>If no tag exists at the given location, then nothing is done.
    *
    * @param tagLocation The location of the tag to be deleted.
-   *        @throws TagRepositoryException If something prevents the tag to be deleted (except the case
+   * @throws TagRepositoryException If something prevents the tag to be deleted (except the case
    *     where it doesn't exist).
    */
   void delete(@NonNull TagLocation tagLocation);

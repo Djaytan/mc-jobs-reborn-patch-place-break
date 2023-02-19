@@ -28,7 +28,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepositoryException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
 import javax.inject.Inject;
@@ -45,43 +44,40 @@ public class TagSqlRepository implements TagRepository {
 
   @Override
   public void put(@NonNull Tag tag) {
-    try (Connection connection = connectionPool.getConnection()) {
-      try {
-        connection.setAutoCommit(false);
-        tagSqlDao.delete(connection, tag.getTagLocation());
-        tagSqlDao.insert(connection, tag);
-        connection.commit();
-      } catch (SQLException e) {
-        throw TagRepositoryException.put(tag, e);
-      }
-    } catch (SQLException e) {
-      throw SqlStorageException.databaseConnectionReleasing(e);
-    }
+    connectionPool.useConnection(
+        connection -> {
+          try {
+            connection.setAutoCommit(false);
+            tagSqlDao.delete(connection, tag.getTagLocation());
+            tagSqlDao.insert(connection, tag);
+            connection.commit();
+          } catch (SQLException e) {
+            throw TagRepositoryException.put(tag, e);
+          }
+        });
   }
 
   @Override
   public @NonNull Optional<Tag> findByLocation(@NonNull TagLocation tagLocation) {
-    try (Connection connection = connectionPool.getConnection()) {
-      try {
-        return tagSqlDao.findByLocation(connection, tagLocation);
-      } catch (SQLException e) {
-        throw TagRepositoryException.fetch(tagLocation, e);
-      }
-    } catch (SQLException e) {
-      throw SqlStorageException.databaseConnectionReleasing(e);
-    }
+    return connectionPool.useConnection(
+        connection -> {
+          try {
+            return tagSqlDao.findByLocation(connection, tagLocation);
+          } catch (SQLException e) {
+            throw TagRepositoryException.fetch(tagLocation, e);
+          }
+        });
   }
 
   @Override
   public void delete(@NonNull TagLocation tagLocation) {
-    try (Connection connection = connectionPool.getConnection()) {
-      try {
-        tagSqlDao.delete(connection, tagLocation);
-      } catch (SQLException e) {
-        throw TagRepositoryException.delete(tagLocation, e);
-      }
-    } catch (SQLException e) {
-      throw SqlStorageException.databaseConnectionReleasing(e);
-    }
+    connectionPool.useConnection(
+        connection -> {
+          try {
+            tagSqlDao.delete(connection, tagLocation);
+          } catch (SQLException e) {
+            throw TagRepositoryException.delete(tagLocation, e);
+          }
+        });
   }
 }

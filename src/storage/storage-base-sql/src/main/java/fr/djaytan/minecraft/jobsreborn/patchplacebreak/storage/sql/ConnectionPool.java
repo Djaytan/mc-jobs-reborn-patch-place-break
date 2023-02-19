@@ -29,6 +29,9 @@ import com.zaxxer.hikari.HikariDataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -72,15 +75,28 @@ public abstract class ConnectionPool {
     log.atInfo().log("Disconnected from the database '{}'.", hikariDataSource.getJdbcUrl());
   }
 
-  public @NonNull Connection getConnection() {
+  public void useConnection(@NonNull Consumer<Connection> consumer) {
     if (hikariDataSource == null) {
       throw SqlStorageException.connectionPoolNotSetup();
     }
 
-    try {
-      return hikariDataSource.getConnection();
+    try (Connection connection = hikariDataSource.getConnection()) {
+      consumer.accept(connection);
     } catch (SQLException e) {
-      throw SqlStorageException.databaseConnectionEstablishment(e);
+      throw SqlStorageException.databaseConnectionLifecycleManagement(e);
+    }
+  }
+
+  public <T> @NonNull Optional<T> useConnection(
+      @NonNull Function<Connection, Optional<T>> function) {
+    if (hikariDataSource == null) {
+      throw SqlStorageException.connectionPoolNotSetup();
+    }
+
+    try (Connection connection = hikariDataSource.getConnection()) {
+      return function.apply(connection);
+    } catch (SQLException e) {
+      throw SqlStorageException.databaseConnectionLifecycleManagement(e);
     }
   }
 

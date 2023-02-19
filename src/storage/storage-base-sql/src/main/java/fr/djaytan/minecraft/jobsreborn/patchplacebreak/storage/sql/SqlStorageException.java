@@ -33,10 +33,9 @@ public class SqlStorageException extends RuntimeException {
 
   private static final String CONNECTION_POOL_NOT_SETUP =
       "The connection pool must be setup before using it.";
-  private static final String DATABASE_CONNECTION_ESTABLISHMENT =
-      "Failed to establish connection to the database.";
-  private static final String DATABASE_CONNECTION_RELEASING =
-      "Something prevent the database connection releasing.";
+  private static final String DATABASE_CONNECTION_LIFECYCLE_MANAGEMENT =
+      "Something went wrong when managing database connection lifecycle "
+          + "(establishment, releasing, ...).";
   private static final String DATABASE_CREATION = "Unable to create the database '%s'.";
   private static final String TABLE_CREATION = "Unable to create the table '%s'.";
 
@@ -44,13 +43,9 @@ public class SqlStorageException extends RuntimeException {
     return new SqlStorageException(CONNECTION_POOL_NOT_SETUP);
   }
 
-  public static @NonNull SqlStorageException databaseConnectionEstablishment(
+  public static @NonNull SqlStorageException databaseConnectionLifecycleManagement(
       @NonNull Throwable cause) {
-    return new SqlStorageException(DATABASE_CONNECTION_ESTABLISHMENT, cause);
-  }
-
-  public static @NonNull SqlStorageException databaseConnectionReleasing(@NonNull Throwable cause) {
-    return new SqlStorageException(DATABASE_CONNECTION_RELEASING, cause);
+    return new SqlStorageException(DATABASE_CONNECTION_LIFECYCLE_MANAGEMENT, cause);
   }
 
   public static @NonNull SqlStorageException databaseCreation(

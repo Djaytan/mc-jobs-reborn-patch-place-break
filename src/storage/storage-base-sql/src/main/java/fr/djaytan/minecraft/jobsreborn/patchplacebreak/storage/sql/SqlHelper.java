@@ -25,7 +25,6 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import java.sql.Connection;
 import java.sql.SQLException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -44,21 +43,20 @@ public class SqlHelper {
   public void createTableIfNotExists() {
     String table = dataSourceProperties.getTable();
 
-    try (Connection connection = connectionPool.getConnection()) {
-      try {
-        connection.setAutoCommit(false);
+    connectionPool.useConnection(
+        connection -> {
+          try {
+            connection.setAutoCommit(false);
 
-        if (tagSqlDataDefiner.isTableExists(connection)) {
-          return;
-        }
-        tagSqlDataDefiner.createTable(connection);
-        connection.commit();
-        log.atInfo().log("The SQL table '{}' has been created successfully.", table);
-      } catch (SQLException e) {
-        throw SqlStorageException.tableCreation(table, e);
-      }
-    } catch (SQLException e) {
-      throw SqlStorageException.databaseConnectionReleasing(e);
-    }
+            if (tagSqlDataDefiner.isTableExists(connection)) {
+              return;
+            }
+            tagSqlDataDefiner.createTable(connection);
+            connection.commit();
+            log.atInfo().log("The SQL table '{}' has been created successfully.", table);
+          } catch (SQLException e) {
+            throw SqlStorageException.tableCreation(table, e);
+          }
+        });
   }
 }
