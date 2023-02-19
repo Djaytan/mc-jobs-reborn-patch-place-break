@@ -24,7 +24,6 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.StorageException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlDataSourceInitializer;
@@ -51,7 +50,7 @@ public class SqliteDataSourceInitializer extends SqlDataSourceInitializer {
   }
 
   @Override
-  public void initialize() throws StorageException {
+  public void initialize() {
     Validate.validState(
         dataSourceProperties.getType() == DataSourceType.SQLITE,
         "The data source type is expected to be 'SQLITE'.");

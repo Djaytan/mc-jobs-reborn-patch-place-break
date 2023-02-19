@@ -45,7 +45,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.Da
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsHostProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsServerProperties;
-import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -90,7 +89,8 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With already existing one")
-    void withAlreadyExistingOne_shouldDoNothing() throws IOException {
+    @SneakyThrows
+    void withAlreadyExistingOne_shouldDoNothing() {
       // Given
       String configFileName = "alreadyExisting.conf";
       DataSourceValidatingProperties defaultProperties = DataSourceValidatingProperties.ofDefault();
@@ -169,7 +169,8 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With nominal config file")
-    void withNominalConfigFile_shouldSuccess() throws IOException {
+    @SneakyThrows
+    void withNominalConfigFile_shouldSuccess() {
       // Given
       String nominalConfigFileName = "whenReadingAndValidatingConfig_withNominalConfigFile.conf";
       Path nominalConfigFile =
@@ -199,7 +200,8 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With missing required fields in config file")
-    void withMissingRequiredFieldsInConfigFile_shouldThrowException() throws IOException {
+    @SneakyThrows
+    void withMissingRequiredFieldsInConfigFile_shouldThrowException() {
       // Given
       String invalidConfigFileName =
           "whenReadingAndValidatingConfig_withMissingRequiredFieldsInConfigFile.conf";
@@ -221,7 +223,8 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With invalid config file")
-    void withInvalidConfigFile_shouldThrowException() throws IOException {
+    @SneakyThrows
+    void withInvalidConfigFile_shouldThrowException() {
       // Given
       String invalidConfigFileName = "whenReadingAndValidatingConfig_withInvalidConfigFile.conf";
       Path invalidConfigFile =
@@ -242,7 +245,8 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With empty config file")
-    void withEmptyConfigFile_shouldThrowException() throws IOException {
+    @SneakyThrows
+    void withEmptyConfigFile_shouldThrowException() {
       // Given
       String emptyConfigFileName = "whenReadingAndValidatingConfig_withEmptyConfigFile.conf";
       Path emptyConfigFile =

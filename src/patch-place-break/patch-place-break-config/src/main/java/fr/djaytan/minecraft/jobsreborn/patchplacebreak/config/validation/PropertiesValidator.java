@@ -53,8 +53,7 @@ public final class PropertiesValidator {
    * @throws PropertiesValidationException If {@link ConstraintViolation}s are detected.
    */
   public <T> @NonNull T validate(
-      @NonNull ValidatingConvertibleProperties<T> validatingConvertibleProperties)
-      throws PropertiesValidationException {
+      @NonNull ValidatingConvertibleProperties<T> validatingConvertibleProperties) {
     String propertiesTypeName = validatingConvertibleProperties.getClass().getSimpleName();
     log.atInfo().log("Validating properties of type '{}'...", propertiesTypeName);
 

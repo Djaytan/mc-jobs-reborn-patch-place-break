@@ -51,7 +51,7 @@ public class SqliteHelper {
     return dataFolder.resolve(SQLITE_DATABASE_FILE_NAME);
   }
 
-  public void createDatabaseIfNotExists() throws SqlStorageException {
+  public void createDatabaseIfNotExists() {
     Path sqliteDatabasePath = getSqliteDatabasePath();
     String sqliteDatabaseFileName = sqliteDatabasePath.getFileName().toString();
 

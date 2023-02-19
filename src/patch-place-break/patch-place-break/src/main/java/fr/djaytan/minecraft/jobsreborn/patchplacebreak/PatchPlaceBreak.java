@@ -49,8 +49,7 @@ public class PatchPlaceBreak {
 
   private DataSource dataSource;
 
-  public @NonNull PatchPlaceBreakApi enable(@NonNull Path dataFolder)
-      throws PatchPlaceBreakException {
+  public @NonNull PatchPlaceBreakApi enable(@NonNull Path dataFolder) {
     setupSlf4j();
     PatchPlaceBreakInjector injector = new PatchPlaceBreakInjector();
     injector.inject(dataFolder);
@@ -59,7 +58,7 @@ public class PatchPlaceBreak {
     return injector.getPatchApi();
   }
 
-  public void disable() throws PatchPlaceBreakException {
+  public void disable() {
     dataSource.disconnect();
   }
 

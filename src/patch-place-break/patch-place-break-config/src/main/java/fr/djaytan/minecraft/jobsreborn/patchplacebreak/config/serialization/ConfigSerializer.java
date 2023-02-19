@@ -48,8 +48,7 @@ public final class ConfigSerializer {
    * @param object The object to serialize.
    * @throws ConfigSerializationException If something prevent the serialization.
    */
-  public void serialize(@NonNull Path destConfigFile, @NonNull Object object)
-      throws ConfigSerializationException {
+  public void serialize(@NonNull Path destConfigFile, @NonNull Object object) {
     try {
       ConfigurationLoader<? extends ConfigurationNode> loader =
           ConfigLoaderFactory.createLoader(destConfigFile);
@@ -74,8 +73,7 @@ public final class ConfigSerializer {
    * @param <T> The expected type to be obtained from deserialization.
    * @throws ConfigSerializationException If something prevent the deserialization.
    */
-  public <T> @NonNull Optional<T> deserialize(@NonNull Path srcConfigFile, @NonNull Class<T> type)
-      throws ConfigSerializationException {
+  public <T> @NonNull Optional<T> deserialize(@NonNull Path srcConfigFile, @NonNull Class<T> type) {
     try {
       ConfigurationLoader<?> loader = ConfigLoaderFactory.createLoader(srcConfigFile);
 

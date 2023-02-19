@@ -34,9 +34,9 @@ public abstract class SqlDataSourceInitializer {
     this.sqlHelper = sqlHelper;
   }
 
-  public abstract void initialize() throws SqlStorageException;
+  public abstract void initialize();
 
-  public final void postConnection() throws SqlStorageException {
+  public final void postConnection() {
     sqlHelper.createTableIfNotExists();
   }
 }

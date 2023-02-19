@@ -25,7 +25,6 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.StorageException;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,12 +33,12 @@ import lombok.extern.slf4j.Slf4j;
 public class InMemoryDataSource implements DataSource {
 
   @Override
-  public void connect() throws StorageException {
+  public void connect() {
     log.atInfo().log("Nothing to do when connecting to the InMemory datasource.");
   }
 
   @Override
-  public void disconnect() throws StorageException {
+  public void disconnect() {
     log.atInfo().log("Nothing to do when disconnecting from the InMemory datasource.");
   }
 }

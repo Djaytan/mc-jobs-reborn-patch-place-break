@@ -41,7 +41,7 @@ public class SqlHelper {
   private final DataSourceProperties dataSourceProperties;
   private final TagSqlDataDefiner tagSqlDataDefiner;
 
-  public void createTableIfNotExists() throws SqlStorageException {
+  public void createTableIfNotExists() {
     String table = dataSourceProperties.getTable();
 
     try (Connection connection = connectionPool.getConnection()) {

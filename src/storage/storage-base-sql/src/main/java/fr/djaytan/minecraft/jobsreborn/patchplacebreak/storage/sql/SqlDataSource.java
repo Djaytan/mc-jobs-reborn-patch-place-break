@@ -25,7 +25,6 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.StorageException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.RequiredArgsConstructor;
@@ -38,14 +37,14 @@ public class SqlDataSource implements DataSource {
   private final SqlDataSourceInitializer sqlDataSourceInitializer;
 
   @Override
-  public void connect() throws StorageException {
+  public void connect() {
     sqlDataSourceInitializer.initialize();
     connectionPool.connect();
     sqlDataSourceInitializer.postConnection();
   }
 
   @Override
-  public void disconnect() throws StorageException {
+  public void disconnect() {
     connectionPool.disconnect();
   }
 }

@@ -38,6 +38,7 @@ import lombok.SneakyThrows;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /** This class represents a JobsReborn patch place-break plugin. */
+@SuppressWarnings("unused") // Instantiated by Bukkit's implementation (i.e. CraftBukkit)
 public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
   @Inject private ListenerRegister listenerRegister;
