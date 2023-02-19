@@ -77,7 +77,13 @@ If you are using IntelliJ IDEA, you can install the
 replace the default IDE code formatting behavior.
 
 However, because imports order aren't managed by the plugin, we recommend you to follow
-[these steps](https://github.com/google/google-java-format#intellij-android-studio-and-other-jetbrains-ides).
+[these steps](https://github.com/google/google-java-format#intellij-android-studio-and-other-jetbrains-ides):
+
+> The import ordering is not handled by this plugin, unfortunately. To fix the import order,
+> download the IntelliJ Java Google Style file and import it into File→Settings→Editor→Code Style.
+
+The file to
+download: [link](https://raw.githubusercontent.com/google/styleguide/gh-pages/intellij-java-google-style.xmlhttps://raw.githubusercontent.com/google/styleguide/gh-pages/intellij-java-google-style.xml).
 
 You may get the following error message when formatting:
 
