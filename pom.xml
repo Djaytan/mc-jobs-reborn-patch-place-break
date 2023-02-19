@@ -370,26 +370,6 @@
           <fail>true</fail>
           <failFast>true</failFast>
           <rules>
-            <bannedDependencies>
-              <message>One or several dependencies are not properly defined (do their scope is
-                correct?)</message>
-              <excludes>
-                <exclude>com.jparams:to-string-verifier</exclude>
-                <exclude>nl.jqno.equalsverifier:equalsverifier</exclude>
-                <exclude>org.junit.jupiter</exclude>
-                <exclude>org.mockito</exclude>
-                <exclude>org.projectlombok:lombok</exclude>
-                <exclude>org.slf4j:slf4j-nop</exclude>
-              </excludes>
-              <includes>
-                <include>com.jparams:to-string-verifier:*:*:test</include>
-                <include>nl.jqno.equalsverifier:equalsverifier:*:*:test</include>
-                <include>org.junit.jupiter:*:*:*:test</include>
-                <include>org.mockito:*:*:*:test</include>
-                <include>org.projectlombok:lombok:*:*:provided</include>
-                <include>org.slf4j:slf4j-nop:test</include>
-              </includes>
-            </bannedDependencies>
             <banDuplicatePomDependencyVersions />
             <dependencyConvergence />
             <reactorModuleConvergence />

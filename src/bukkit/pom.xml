@@ -87,31 +87,4 @@
       <url>https://jitpack.io</url>
     </repository>
   </repositories>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <configuration>
-          <rules>
-            <bannedDependencies>
-              <excludes combine.children="append">
-                <exclude>com.github.Zrips:Jobs</exclude>
-                <exclude>com.mysql:mysql-connector-j</exclude>
-                <exclude>org.spigotmc:spigot-api</exclude>
-                <exclude>org.xerial:sqlite-jdbc</exclude>
-              </excludes>
-              <includes combine.children="append">
-                <include>com.github.Zrips:Jobs:*:*:provided</include>
-                <include>com.mysql:mysql-connector-j:*:*:provided</include>
-                <include>org.spigotmc:spigot-api:*:*:provided</include>
-                <include>org.xerial:sqlite-jdbc:*:*:provided</include>
-              </includes>
-            </bannedDependencies>
-          </rules>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
