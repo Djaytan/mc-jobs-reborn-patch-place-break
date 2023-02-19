@@ -69,12 +69,38 @@ To help respecting this, an automatic-formatter as been configured through Maven
 automatically when building the project and running tests. If you forgot to run Maven before
 committing and pushing your changes, your PR will be prevented from being merged by our CI until
 you solve the issue.
-Unfortunately, the current automatic-formatter doesn't respect very well google-java-format style
-guidelines and this is why
-[an improvement is planed for this](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/40).
 
-If you are using IntelliJ IDEA, you can as well install the
+### IntelliJ IDEA plugin
+
+If you are using IntelliJ IDEA, you can install the
 [google-java-format plugin](https://plugins.jetbrains.com/plugin/8527-google-java-format) which will
-replace the default IDE code formatting behavior. However, because imports order aren't managed
-by the plugin, we recommend you to follow
+replace the default IDE code formatting behavior.
+
+However, because imports order aren't managed by the plugin, we recommend you to follow
 [these steps](https://github.com/google/google-java-format#intellij-android-studio-and-other-jetbrains-ides).
+
+You may get the following error message when formatting:
+
+```
+java.util.concurrent.ExecutionException: java.lang.IllegalAccessError:
+class com.google.googlejavaformat.java.JavaInput (in unnamed module @0xe655ab1)
+cannot access class com.sun.tools.javac.parser.Tokens$TokenKind (in module jdk.compiler)
+because module jdk.compiler does not export com.sun.tools.javac.parser to unnamed module @0xe655ab1
+```
+
+To solve this, you can simply add the following JVM arguments to IntelliJ according
+to [this GitHub response](https://github.com/google/google-java-format/issues/787#issuecomment-1158034061):
+
+```
+--add-opens=java.base/java.lang=ALL-UNNAMED
+--add-opens=java.base/java.util=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED
+```
+
+Instructions about how to achieve this can be
+found [here](https://www.jetbrains.com/help/idea/tuning-the-ide.html#configure-jvm-options).
+In short, simply go to Help > Edit Custom VM Options
