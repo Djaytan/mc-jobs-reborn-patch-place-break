@@ -89,24 +89,21 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
     CompletableFuture.runAsync(() -> tagRepository.delete(tagLocation));
   }
 
-  public @NonNull CompletableFuture<Boolean> isPlaceAndBreakExploit(
+  public boolean isPlaceAndBreakExploit(
       @NonNull BlockActionType blockActionType, @NonNull TagLocation tagLocation) {
-    return CompletableFuture.supplyAsync(
-        () -> {
-          Optional<Tag> tag = tagRepository.findByLocation(tagLocation);
+    Optional<Tag> tag = tagRepository.findByLocation(tagLocation);
 
-          if (!tag.isPresent()) {
-            return false;
-          }
+    if (!tag.isPresent()) {
+      return false;
+    }
 
-          if (!tag.get().isEphemeral()) {
-            return true;
-          }
+    if (!tag.get().isEphemeral()) {
+      return true;
+    }
 
-          LocalDateTime localDateTime = LocalDateTime.now();
-          Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
+    LocalDateTime localDateTime = LocalDateTime.now();
+    Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
 
-          return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
-        });
+    return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
   }
 }

@@ -30,7 +30,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
 import java.time.Duration;
 import java.util.Collection;
-import java.util.concurrent.CompletableFuture;
 import lombok.NonNull;
 
 /**
@@ -73,6 +72,8 @@ public interface PatchPlaceBreakApi {
    * active anymore and will be ignored by {@link #isPlaceAndBreakExploit(BlockActionType,
    * TagLocation)} method.
    *
+   * <p>The method is executed asynchronously for performances purposes.
+   *
    * @param tagLocation The location where the tag must be put.
    * @param isEphemeral <code>true</code> if the tag must be ephemeral, <code>false</code>
    *     otherwise.
@@ -86,6 +87,8 @@ public interface PatchPlaceBreakApi {
    * doesn't exist, then nothing else will be done for the concerned location. In other words: this
    * method will <b>never</b> create tag, at most just update existing ones when they are actives.
    *
+   * <p>The method is executed asynchronously for performances purposes.
+   *
    * @param tagLocations The locations from where to move existing tags.
    * @param direction The direction where to move existing tags.
    */
@@ -98,6 +101,8 @@ public interface PatchPlaceBreakApi {
    * <p><i>Note: Even if we expect to have only one existing and activated tag at the same time, it
    * is preferable to remove all the ones associated to the given location in order to prevent any
    * side effect because of any evolution, bug or whatever.
+   *
+   * <p>The method is executed asynchronously for performances purposes.
    *
    * @param tagLocation The location where to remove tags if existing.
    */
@@ -115,11 +120,12 @@ public interface PatchPlaceBreakApi {
    *       #EPHEMERAL_TAG_DURATION})
    * </ul>
    *
+   * <p>The method is blocking since the value retrieving depend on data source response time.
+   *
    * @param blockActionType The performed action type involving a block.
    * @param tagLocation The location where the action has been performed.
    * @return <code>true</code> if it's a place-and-break exploit, <code>false</code> otherwise.
    */
-  @NonNull
-  CompletableFuture<Boolean> isPlaceAndBreakExploit(
+  boolean isPlaceAndBreakExploit(
       @NonNull BlockActionType blockActionType, @NonNull TagLocation tagLocation);
 }

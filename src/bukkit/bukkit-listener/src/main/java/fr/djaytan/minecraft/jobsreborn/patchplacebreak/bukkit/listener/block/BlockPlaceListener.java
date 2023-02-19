@@ -24,7 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
@@ -45,7 +45,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BlockPlaceListener implements Listener {
 
-  private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
+  private final PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
 
   /**
    * This method is called when a {@link BlockPlaceEvent} is dispatched to put the place-and-break
@@ -62,6 +62,6 @@ public class BlockPlaceListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockPlace(@NonNull BlockPlaceEvent event) {
     Location location = event.getBlockPlaced().getLocation();
-    patchPlaceBreakBukkitAdapter.putTag(location, false);
+    patchPlaceBreakBukkitAdapterApi.putTag(location, false);
   }
 }

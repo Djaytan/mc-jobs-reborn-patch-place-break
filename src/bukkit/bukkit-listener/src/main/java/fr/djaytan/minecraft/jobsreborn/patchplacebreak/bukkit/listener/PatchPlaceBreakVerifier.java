@@ -25,7 +25,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener;
 
 import com.gamingmesh.jobs.container.ActionType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
 import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -53,13 +53,23 @@ public class PatchPlaceBreakVerifier {
    *  -> a listener (e.g. JobsExpGainVerificationListener) -> PatchPlaceBreakVerifier
    */
   private final Provider<ListenerRegister> listenerRegister;
-  private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
+  private final PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
 
+  /**
+   * Checks if the patch has been well-applied in case of exploit-detection. If exploit has been
+   * detected but patch has not been well-applied, then an attempt to fix the issue will be done.
+   * Otherwise, nothing will be done.
+   *
+   * <p>The method is executed asynchronously for performances purposes.
+   *
+   * @param environmentState The environment state useful to check the well-application of the
+   *     patch.
+   */
   public void checkAndAttemptFixListenersIfRequired(
       @NonNull BukkitPatchEnvironmentState environmentState) {
     CompletableFuture.runAsync(
         () -> {
-          if (!isPatchExpected(environmentState).join()) {
+          if (!isPatchExpected(environmentState)) {
             return;
           }
 
@@ -76,11 +86,10 @@ public class PatchPlaceBreakVerifier {
         });
   }
 
-  private @NonNull CompletableFuture<Boolean> isPatchExpected(
-      @NonNull BukkitPatchEnvironmentState environmentState) {
+  private boolean isPatchExpected(@NonNull BukkitPatchEnvironmentState environmentState) {
     ActionType jobActionType = environmentState.getJobActionType();
     Location targetedLocation = environmentState.getTargetedBlock().getLocation();
-    return patchPlaceBreakBukkitAdapter.isPlaceAndBreakExploit(jobActionType, targetedLocation);
+    return patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(jobActionType, targetedLocation);
   }
 
   private boolean isPatchApplied(@NonNull BukkitPatchEnvironmentState environmentState) {

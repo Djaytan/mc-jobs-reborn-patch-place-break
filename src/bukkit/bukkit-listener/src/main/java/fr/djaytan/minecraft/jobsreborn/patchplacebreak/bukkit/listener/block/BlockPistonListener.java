@@ -24,7 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
 import java.util.Collection;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -51,7 +51,7 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BlockPistonListener implements Listener {
 
-  private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
+  private final PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
 
   /**
    * This method is called when a {@link BlockPistonExtendEvent} is dispatched to move
@@ -66,7 +66,7 @@ public class BlockPistonListener implements Listener {
   public void onBlockPistonExtend(@NonNull BlockPistonExtendEvent event) {
     BlockFace blockFace = event.getDirection();
     Collection<Block> blocks = event.getBlocks();
-    patchPlaceBreakBukkitAdapter.moveTags(blocks, blockFace);
+    patchPlaceBreakBukkitAdapterApi.moveTags(blocks, blockFace);
   }
 
   /**
@@ -82,6 +82,6 @@ public class BlockPistonListener implements Listener {
   public void onBlockPistonRetract(@NonNull BlockPistonRetractEvent event) {
     BlockFace blockFace = event.getDirection();
     Collection<Block> blocks = event.getBlocks();
-    patchPlaceBreakBukkitAdapter.moveTags(blocks, blockFace);
+    patchPlaceBreakBukkitAdapterApi.moveTags(blocks, blockFace);
   }
 }

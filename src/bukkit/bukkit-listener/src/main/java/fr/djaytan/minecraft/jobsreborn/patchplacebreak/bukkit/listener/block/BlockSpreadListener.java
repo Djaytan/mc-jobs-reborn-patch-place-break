@@ -24,7 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
@@ -46,7 +46,7 @@ import org.bukkit.event.block.BlockSpreadEvent;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BlockSpreadListener implements Listener {
 
-  private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
+  private final PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
 
   /**
    * This method is called when a {@link BlockSpreadEvent} is dispatched to remove the potentially
@@ -60,6 +60,6 @@ public class BlockSpreadListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockSpread(@NonNull BlockSpreadEvent event) {
     Location location = event.getBlock().getLocation();
-    patchPlaceBreakBukkitAdapter.removeTags(location);
+    patchPlaceBreakBukkitAdapterApi.removeTags(location);
   }
 }

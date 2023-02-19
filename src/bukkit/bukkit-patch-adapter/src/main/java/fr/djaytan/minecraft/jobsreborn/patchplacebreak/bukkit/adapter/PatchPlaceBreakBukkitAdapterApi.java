@@ -33,7 +33,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.BlockFaceConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.LocationConverter;
 import java.util.Collection;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -50,7 +49,7 @@ import org.bukkit.block.BlockFace;
  */
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class PatchPlaceBreakBukkitAdapter {
+public class PatchPlaceBreakBukkitAdapterApi {
 
   private final ActionTypeConverter actionTypeConverter;
   private final LocationConverter locationConverter;
@@ -110,7 +109,7 @@ public class PatchPlaceBreakBukkitAdapter {
    *     patch-and-break exploit or not.
    * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, TagLocation)
    */
-  public @NonNull CompletableFuture<Boolean> isPlaceAndBreakExploit(
+  public boolean isPlaceAndBreakExploit(
       @NonNull ActionType actionType, @NonNull Location location) {
     BlockActionType patchActionType = actionTypeConverter.convert(actionType);
     TagLocation tagLocation = locationConverter.convert(location);

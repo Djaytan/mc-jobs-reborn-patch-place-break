@@ -27,7 +27,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs;
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapter;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.BukkitPatchEnvironmentState;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlaceBreakVerifier;
 import javax.inject.Inject;
@@ -50,7 +50,7 @@ import org.bukkit.event.Listener;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class JobsPrePaymentListener implements Listener {
 
-  private final PatchPlaceBreakBukkitAdapter patchPlaceBreakBukkitAdapter;
+  private final PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
   private final PatchPlaceBreakVerifier patchPlaceBreakVerifier;
 
   /**
@@ -80,7 +80,7 @@ public class JobsPrePaymentListener implements Listener {
 
     Location blockLocation = block.getLocation();
 
-    if (patchPlaceBreakBukkitAdapter.isPlaceAndBreakExploit(actionType, blockLocation).join()) {
+    if (patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionType, blockLocation)) {
       event.setCancelled(true);
     }
   }
