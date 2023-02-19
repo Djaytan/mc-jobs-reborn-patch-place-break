@@ -24,7 +24,6 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener;
 
-import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
 import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
@@ -33,7 +32,6 @@ import javax.inject.Singleton;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bukkit.Location;
 
 /**
  * Represents the patch-place-break verifier for the Bukkit plugin.
@@ -87,9 +85,8 @@ public class PatchPlaceBreakVerifier {
   }
 
   private boolean isPatchExpected(@NonNull BukkitPatchEnvironmentState environmentState) {
-    ActionType jobActionType = environmentState.getJobActionType();
-    Location targetedLocation = environmentState.getTargetedBlock().getLocation();
-    return patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(jobActionType, targetedLocation);
+    return patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(
+        environmentState.getJobActionInfo(), environmentState.getTargetedBlock());
   }
 
   private boolean isPatchApplied(@NonNull BukkitPatchEnvironmentState environmentState) {

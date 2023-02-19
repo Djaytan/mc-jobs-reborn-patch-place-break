@@ -26,7 +26,6 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs;
 
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.container.ActionInfo;
-import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.BukkitPatchEnvironmentState;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlaceBreakVerifier;
@@ -34,7 +33,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -65,22 +63,8 @@ public class JobsPrePaymentListener implements Listener {
    */
   @EventHandler(priority = EventPriority.HIGHEST)
   public void patchOnJobsPrePayment(@NonNull JobsPrePaymentEvent event) {
-    Block block = event.getBlock();
-    ActionInfo actionInfo = event.getActionInfo();
-
-    if (block == null || actionInfo == null) {
-      return;
-    }
-
-    ActionType actionType = actionInfo.getType();
-
-    if (actionType == null) {
-      return;
-    }
-
-    Location blockLocation = block.getLocation();
-
-    if (patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionType, blockLocation)) {
+    if (patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(
+        event.getActionInfo(), event.getBlock())) {
       event.setCancelled(true);
     }
   }
@@ -99,19 +83,13 @@ public class JobsPrePaymentListener implements Listener {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 
-    if (block == null || actionInfo == null) {
-      return;
-    }
-
-    ActionType actionType = actionInfo.getType();
-
-    if (actionType == null) {
+    if (block == null || actionInfo == null || actionInfo.getType() == null) {
       return;
     }
 
     BukkitPatchEnvironmentState environmentState =
         BukkitPatchEnvironmentState.builder()
-            .jobActionType(actionType)
+            .jobActionInfo(actionInfo)
             .targetedBlock(block)
             .involvedPlayer(event.getPlayer())
             .triggeredJob(event.getJob())

@@ -24,6 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
+import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
@@ -100,17 +101,26 @@ public class PatchPlaceBreakBukkitAdapterApi {
   }
 
   /**
-   * Checks if the specified job action type at the given location is a patch-and-break exploit or
-   * not.
+   * Checks if the specified job action for the specified block is a patch-and-break exploit or not.
    *
-   * @param actionType The job action type recorded.
-   * @param location The location where the job action type has been recorded.
-   * @return <code>true</code> if the specified job action type at the given location is a
+   * @param actionInfo The job action recorded.
+   * @param block The targeted block by job action which has been recorded.
+   * @return <code>true</code> if the specified job action for the specified block is a
    *     patch-and-break exploit or not.
    * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, TagLocation)
    */
-  public boolean isPlaceAndBreakExploit(
-      @NonNull ActionType actionType, @NonNull Location location) {
+  public boolean isPlaceAndBreakExploit(ActionInfo actionInfo, Block block) {
+    if (actionInfo == null || block == null) {
+      return false;
+    }
+
+    ActionType actionType = actionInfo.getType();
+    Location location = block.getLocation();
+
+    if (actionType == null || location == null) {
+      return false;
+    }
+
     BlockActionType patchActionType = actionTypeConverter.convert(actionType);
     TagLocation tagLocation = locationConverter.convert(location);
     return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, tagLocation);

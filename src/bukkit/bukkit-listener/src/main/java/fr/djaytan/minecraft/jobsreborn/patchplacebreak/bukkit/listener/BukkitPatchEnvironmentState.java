@@ -24,7 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener;
 
-import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.Job;
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,7 +44,7 @@ import org.bukkit.plugin.RegisteredListener;
 @Builder
 public class BukkitPatchEnvironmentState {
 
-  @NonNull ActionType jobActionType;
+  @NonNull ActionInfo jobActionInfo;
   @NonNull Block targetedBlock;
   @NonNull OfflinePlayer involvedPlayer;
   @NonNull Job triggeredJob;
@@ -57,7 +57,7 @@ public class BukkitPatchEnvironmentState {
     String eventHandlersToString = eventHandlersToString();
 
     return new ToStringBuilder(this)
-        .append("jobActionType", jobActionType.name())
+        .append("jobActionInfo", jobActionInfo.getType().name())
         .append("targetedBlock", targetedBlock.getType().name())
         .append("targetedLocation", targetedBlock.getLocation())
         .append("involvedPlayer", involvedPlayer.getName())
