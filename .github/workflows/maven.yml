@@ -55,8 +55,16 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Publish
-        run: mvn ${{ env.MAVEN_MAIN_ARGS }} ${{ env.MAVEN_SKIP_ARGS }} deploy
+      - name: Release
+        uses: qcastel/github-actions-maven-release@v1.12.39
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          maven-args: ${{ env.MAVEN_MAIN_ARGS }} ${{ env.MAVEN_SKIP_ARGS }} -Dmaven.javadoc.skip=true
+
+#      - name: Publish
+#        run: mvn ${{ env.MAVEN_MAIN_ARGS }} ${{ env.MAVEN_SKIP_ARGS }} deploy
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
