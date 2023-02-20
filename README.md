@@ -1,8 +1,9 @@
 # jobs-reborn-patch-place-break
 
+![License](https://img.shields.io/github/license/djaytan/mc-jobs-reborn-patch-place-break)
 ![Target](https://img.shields.io/badge/plugin-Minecraft-blueviolet)
 ![Minecraft version](https://img.shields.io/badge/version-1.11%20--%201.19-blue)
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/Djaytan/mc-jobs-reborn-patch-place-break/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Djaytan/mc-jobs-reborn-patch-place-break/tree/main)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/djaytan/mc-jobs-reborn-patch-place-break/maven.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
 
