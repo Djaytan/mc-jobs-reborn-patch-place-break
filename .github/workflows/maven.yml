@@ -2,9 +2,9 @@ name: CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ 'main' ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ 'main' ]
 
 env:
   MAVEN_MAIN_ARGS: -Pcontinuous-integration -U -B -e -C --fail-at-end --no-transfer-progress
@@ -62,6 +62,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           maven-args: ${{ env.MAVEN_MAIN_ARGS }} ${{ env.MAVEN_SKIP_ARGS }} -Dmaven.javadoc.skip=true
+          release-branch-name: 'main'
 
 #      - name: Publish
 #        run: mvn ${{ env.MAVEN_MAIN_ARGS }} ${{ env.MAVEN_SKIP_ARGS }} deploy
