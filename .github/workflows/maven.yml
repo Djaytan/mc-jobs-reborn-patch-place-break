@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI/CD with Maven
+name: CI
 
 on:
   push:
@@ -17,6 +17,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      MAVEN_ARGS: -Pcontinuous-integration -B -e -C --fail-at-end --no-transfer-progress
     steps:
     - name: Git checkout
       uses: actions/checkout@v3
@@ -26,31 +28,12 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package
-      
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Git checkout
-      uses: actions/checkout@v3
-    - name: Maven Release and Publish
-      if: github.event_name == 'push'
-      uses: mg-smartrent/github-actions-maven-release@v1.5
-      with:
-        release-branch-name: "main"
-        git-release-bot-name: "release-bot"
-        git-release-bot-email: "release-bot@djaytan.github.com"
-        access-token: ${GITHUB_TOKEN}
-
-        # Release
-        maven-repo-server-id: ${MAVEN_SERVER_ID}
-        maven-repo-server-username: ${GITHUB_USERNAME}
-        maven-repo-server-password: ${GITHUB_TOKEN}
-        maven-release-args: "-Dmaven.javadoc.skip=true -DskipTests=true -DskipITs=true -Dfmt.skip=true -Dsort.skip=true -Denforcer.skip=true"
-
-        # Publish artifacts to GitHub Packages
-        maven-publish-args: "-Dmaven.javadoc.skip=true -DskipTests=true -DskipITs=true -Dfmt.skip=true -Dsort.skip=true -Denforcer.skip=true"
-        maven-release-publish: "true"
-        maven-snapshot-publish: "true"
+    - name: Build
+      run: mvn ${{ env.MAVEN_ARGS }} compile
+    - name: Unit Tests
+      run: mvn ${{ env.MAVEN_ARGS }} test
+    - name: Integration Tests
+      run: mvn ${{ env.MAVEN_ARGS }} -DskipUnitTests verify
+    - name: SonarCloud Scan
+      run: mvn sonar:sonar -Dsonar.projectKey=Djaytan_mc-jobs-reborn-patch-place-break
       
