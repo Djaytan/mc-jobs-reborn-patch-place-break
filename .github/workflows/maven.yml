@@ -18,7 +18,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      MAVEN_ARGS: -Pcontinuous-integration -B -e -C --fail-at-end --no-transfer-progress
+      MAVEN_MAIN_ARGS: -Pcontinuous-integration -B -e -C --fail-at-end --no-transfer-progress
+      MAVEN_SKIP_ARGS: -Dfmt.skip=true -Dsort.skip=true -Denforcer.skip=true
     steps:
     - name: Git checkout
       uses: actions/checkout@v3
@@ -29,11 +30,11 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build
-      run: mvn ${{ env.MAVEN_ARGS }} compile
+      run: mvn ${{ env.MAVEN_MAIN_ARGS }} compile
     - name: Unit Tests
-      run: mvn ${{ env.MAVEN_ARGS }} test
+      run: mvn ${{ env.MAVEN_MAIN_ARGS }} ${{ env.MAVEN_SKIP_ARGS }} test
     - name: Integration Tests
-      run: mvn ${{ env.MAVEN_ARGS }} -DskipUnitTests verify
+      run: mvn ${{ env.MAVEN_MAIN_ARGS }} ${{ env.MAVEN_SKIP_ARGS }} -DskipUnitTests verify
     - name: SonarCloud Scan
       run: mvn sonar:sonar -Dsonar.projectKey=Djaytan_mc-jobs-reborn-patch-place-break
       
