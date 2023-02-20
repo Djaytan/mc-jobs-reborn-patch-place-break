@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      MAVEN_MAIN_ARGS: -Pcontinuous-integration -B -e -C --fail-at-end --no-transfer-progress
+      MAVEN_MAIN_ARGS: -Pcontinuous-integration -U -B -e -C --fail-at-end --no-transfer-progress
       MAVEN_SKIP_ARGS: -Dfmt.skip=true -Dsort.skip=true -Denforcer.skip=true
     steps:
     - name: Git checkout

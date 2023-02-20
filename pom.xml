@@ -94,6 +94,14 @@
     <mockito.version>4.11.0</mockito.version>
   </properties>
 
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/djaytan/mc-jobs-reborn-patch-place-break</url>
+    </repository>
+  </distributionManagement>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
