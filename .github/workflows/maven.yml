@@ -33,3 +33,16 @@ jobs:
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
       uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+      
+    - name: Maven Release and Publish
+      if: github.event_name == 'push'
+      uses: mg-smartrent/github-actions-maven-release@v1.5
+      with:
+        release-branch-name: "main"
+        
+        git-release-bot-name: "release-bot"
+        git-release-bot-email: "release-bot@djaytan.github.com"
+        
+        access-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        
+        maven-args: "-Dmaven.javadoc.skip=true -DskipTests=true -DskipITs=true -Dfmt.skip=true -Dsort.skip=true -Denforcer.skip=true"
