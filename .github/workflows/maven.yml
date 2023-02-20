@@ -37,6 +37,7 @@ jobs:
   publish:
     name: Publish
     if: github.event_name == 'push'
+    needs: build
     runs-on: ubuntu-latest
 
     permissions:
