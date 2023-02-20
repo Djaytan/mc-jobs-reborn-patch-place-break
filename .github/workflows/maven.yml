@@ -8,7 +8,7 @@ on:
 
 env:
   MAVEN_MAIN_ARGS: -Pcontinuous-integration -U -B -e -C --fail-at-end --no-transfer-progress
-  MAVEN_SKIP_ARGS: -Dmaven.test.skip=true -Dfmt.skip=true -Dsort.skip=true -Denforcer.skip=true
+  MAVEN_SKIP_ARGS: -DskipTests=true -DskipITs=true -Dfmt.skip=true -Dsort.skip=true -Denforcer.skip=true
 
 jobs:
   build:
