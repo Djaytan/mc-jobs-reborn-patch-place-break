@@ -70,6 +70,14 @@
     <url>https://app.circleci.com/pipelines/github/Djaytan/mc-jobs-reborn-patch-place-break</url>
   </ciManagement>
 
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/djaytan/mc-jobs-reborn-patch-place-break</url>
+    </repository>
+  </distributionManagement>
+
   <properties>
     <!-- ==================== General ==================== -->
     <main.basedir>${project.basedir}</main.basedir>
@@ -93,14 +101,6 @@
     <junit.version>5.9.2</junit.version>
     <mockito.version>4.11.0</mockito.version>
   </properties>
-
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/djaytan/mc-jobs-reborn-patch-place-break</url>
-    </repository>
-  </distributionManagement>
 
   <dependencyManagement>
     <dependencies>
