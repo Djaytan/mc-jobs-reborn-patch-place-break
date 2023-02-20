@@ -36,5 +36,7 @@ jobs:
     - name: Integration Tests
       run: mvn ${{ env.MAVEN_MAIN_ARGS }} ${{ env.MAVEN_SKIP_ARGS }} -DskipUnitTests verify
     - name: SonarCloud Scan
-      run: mvn sonar:sonar -Dsonar.projectKey=Djaytan_mc-jobs-reborn-patch-place-break
+      run: mvn sonar:sonar
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       
