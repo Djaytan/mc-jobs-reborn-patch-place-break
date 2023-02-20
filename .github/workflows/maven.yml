@@ -40,5 +40,15 @@ jobs:
         release-branch-name: "main"
         git-release-bot-name: "release-bot"
         git-release-bot-email: "release-bot@djaytan.github.com"
-        access-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
-        maven-args: "-Dmaven.javadoc.skip=true -DskipTests=true -DskipITs=true -Dfmt.skip=true -Dsort.skip=true -Denforcer.skip=true"
+        access-token: ${GITHUB_TOKEN}
+        
+        # Release
+        maven-repo-server-id: ${MAVEN_SERVER_ID}
+        maven-repo-server-username: ${GITHUB_USERNAME}
+        maven-repo-server-password: ${GITHUB_TOKEN}
+        maven-release-args: "-Dmaven.javadoc.skip=true -DskipTests=true -DskipITs=true -Dfmt.skip=true -Dsort.skip=true -Denforcer.skip=true"
+        
+        # Publish artifacts to GitHub Packages
+        maven-publish-args: "-Dmaven.javadoc.skip=true -DskipTests=true -DskipITs=true -Dfmt.skip=true -Dsort.skip=true -Denforcer.skip=true"
+        maven-release-publish: "true"
+        maven-snapshot-publish: "true"
