@@ -33,14 +33,22 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.SqliteData
 import javax.inject.Inject;
 import javax.inject.Provider;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class SqlDataSourceInitializerProvider implements Provider<SqlDataSourceInitializer> {
 
   private final DataSourceProperties dataSourceProperties;
   private final MysqlDataSourceInitializer mysqlDataSourceInitializer;
   private final SqliteDataSourceInitializer sqliteDataSourceInitializer;
+
+  @Inject
+  public SqlDataSourceInitializerProvider(
+      DataSourceProperties dataSourceProperties,
+      MysqlDataSourceInitializer mysqlDataSourceInitializer,
+      SqliteDataSourceInitializer sqliteDataSourceInitializer) {
+    this.dataSourceProperties = dataSourceProperties;
+    this.mysqlDataSourceInitializer = mysqlDataSourceInitializer;
+    this.sqliteDataSourceInitializer = sqliteDataSourceInitializer;
+  }
 
   @Override
   public @NonNull SqlDataSourceInitializer get() {

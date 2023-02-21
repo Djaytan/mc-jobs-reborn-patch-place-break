@@ -33,14 +33,22 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlDataSource
 import javax.inject.Inject;
 import javax.inject.Provider;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class DataSourceProvider implements Provider<DataSource> {
 
   private final DataSourceProperties dataSourceProperties;
   private final InMemoryDataSource inMemoryDataSource;
   private final SqlDataSource sqlDataSource;
+
+  @Inject
+  public DataSourceProvider(
+      DataSourceProperties dataSourceProperties,
+      InMemoryDataSource inMemoryDataSource,
+      SqlDataSource sqlDataSource) {
+    this.dataSourceProperties = dataSourceProperties;
+    this.inMemoryDataSource = inMemoryDataSource;
+    this.sqlDataSource = sqlDataSource;
+  }
 
   @Override
   public @NonNull DataSource get() {

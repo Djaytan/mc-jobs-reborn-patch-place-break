@@ -33,14 +33,18 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class TagSqlRepository implements TagRepository {
 
   private final ConnectionPool connectionPool;
   private final TagSqlDao tagSqlDao;
+
+  @Inject
+  public TagSqlRepository(ConnectionPool connectionPool, TagSqlDao tagSqlDao) {
+    this.connectionPool = connectionPool;
+    this.tagSqlDao = tagSqlDao;
+  }
 
   @Override
   public void put(@NonNull Tag tag) {

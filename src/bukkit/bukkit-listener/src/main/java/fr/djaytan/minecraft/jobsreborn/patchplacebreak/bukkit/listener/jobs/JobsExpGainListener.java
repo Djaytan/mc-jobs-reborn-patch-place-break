@@ -32,7 +32,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlac
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -45,11 +44,18 @@ import org.bukkit.event.Listener;
  * as a place-and-break one to be patched.
  */
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class JobsExpGainListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
   private final PatchPlaceBreakVerifier patchPlaceBreakVerifier;
+
+  @Inject
+  public JobsExpGainListener(
+      PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi,
+      PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
+    this.patchPlaceBreakBukkitAdapterApi = patchPlaceBreakBukkitAdapterApi;
+    this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;
+  }
 
   /**
    * This method is called when a {@link JobsExpGainEvent} is dispatched to cancel it if the

@@ -28,7 +28,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -43,10 +42,14 @@ import org.bukkit.event.block.BlockGrowEvent;
  * idea here is simply to remove the corresponding metadata from the grown blocks.
  */
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BlockGrowListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
+
+  @Inject
+  public BlockGrowListener(PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi) {
+    this.patchPlaceBreakBukkitAdapterApi = patchPlaceBreakBukkitAdapterApi;
+  }
 
   /**
    * This method is called when a {@link BlockGrowEvent} is dispatched to remove the potentially

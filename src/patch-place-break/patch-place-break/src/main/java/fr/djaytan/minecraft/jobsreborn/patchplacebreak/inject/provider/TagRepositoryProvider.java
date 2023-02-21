@@ -33,14 +33,22 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.TagSqlReposit
 import javax.inject.Inject;
 import javax.inject.Provider;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class TagRepositoryProvider implements Provider<TagRepository> {
 
   private final DataSourceProperties dataSourceProperties;
   private final TagInMemoryRepository tagInMemoryRepository;
   private final TagSqlRepository tagSqlRepository;
+
+  @Inject
+  public TagRepositoryProvider(
+      DataSourceProperties dataSourceProperties,
+      TagInMemoryRepository tagInMemoryRepository,
+      TagSqlRepository tagSqlRepository) {
+    this.dataSourceProperties = dataSourceProperties;
+    this.tagInMemoryRepository = tagInMemoryRepository;
+    this.tagSqlRepository = tagSqlRepository;
+  }
 
   @Override
   public @NonNull TagRepository get() {

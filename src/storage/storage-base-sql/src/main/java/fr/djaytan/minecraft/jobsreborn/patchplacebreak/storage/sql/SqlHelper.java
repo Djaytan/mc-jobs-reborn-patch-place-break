@@ -28,17 +28,25 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.Da
 import java.sql.SQLException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class SqlHelper {
 
   private final ConnectionPool connectionPool;
   private final DataSourceProperties dataSourceProperties;
   private final TagSqlDataDefiner tagSqlDataDefiner;
+
+  @Inject
+  public SqlHelper(
+      ConnectionPool connectionPool,
+      DataSourceProperties dataSourceProperties,
+      TagSqlDataDefiner tagSqlDataDefiner) {
+    this.connectionPool = connectionPool;
+    this.dataSourceProperties = dataSourceProperties;
+    this.tagSqlDataDefiner = tagSqlDataDefiner;
+  }
 
   public void createTableIfNotExists() {
     String table = dataSourceProperties.getTable();

@@ -29,16 +29,19 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.Da
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 /** API permitting to retrieve config properties. */
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public final class ConfigApi {
 
   private static final String DATA_SOURCE_CONFIG_FILE_NAME = "dataSource.conf";
 
   private final ConfigManager configManager;
+
+  @Inject
+  public ConfigApi(ConfigManager configManager) {
+    this.configManager = configManager;
+  }
 
   /**
    * Retrieves data source related properties.
