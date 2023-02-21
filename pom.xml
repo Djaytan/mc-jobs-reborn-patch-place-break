@@ -373,6 +373,11 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>3.1.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.2.1</version>
         <configuration>
@@ -386,22 +391,13 @@
               <version>[11,12)</version>
             </requireJavaVersion>
             <requireMavenVersion>
-              <version>[3.6,)</version>
+              <version>[3.8,)</version>
             </requireMavenVersion>
             <requirePluginVersions>
-              <banLatest>true</banLatest>
-              <banRelease>true</banRelease>
-              <banSnapshots>true</banSnapshots>
-              <!-- "deploy" and "site" phases are not applicable for this project -->
-              <unCheckedPluginList>org.apache.maven.plugins:maven-site-plugin,org.apache.maven.plugins:maven-deploy-plugin</unCheckedPluginList>
+              <message>Best Practice is to always define plugin versions!</message>
+              <!-- "site" phase is not applicable for this project -->
+              <unCheckedPluginList>org.apache.maven.plugins:maven-site-plugin</unCheckedPluginList>
             </requirePluginVersions>
-            <requireReleaseDeps>
-              <searchTransitive>true</searchTransitive>
-              <onlyWhenRelease>false</onlyWhenRelease>
-              <excludes>
-                <exclude>org.spigotmc:spigot-api</exclude>
-              </excludes>
-            </requireReleaseDeps>
             <requireUpperBoundDeps />
           </rules>
         </configuration>
