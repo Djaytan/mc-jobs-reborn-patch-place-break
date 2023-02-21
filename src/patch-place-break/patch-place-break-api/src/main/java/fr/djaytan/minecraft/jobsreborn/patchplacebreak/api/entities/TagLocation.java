@@ -39,6 +39,7 @@ public class TagLocation {
   /**
    * Creates a tag location from a specified one and a given direction.
    *
+   * @param tagLocation The original tag location from which to create the new one.
    * @param direction The direction where to move the tag location.
    * @return The new tag location with the movement to the given direction applied.
    */
