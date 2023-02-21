@@ -49,5 +49,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           maven-args: ${{ env.MAVEN_MAIN_ARGS }} ${{ env.MAVEN_SKIP_ARGS }} -Dmaven.javadoc.skip=true
+          maven-servers: '[{"id": "github", "username": "djaytan", "password": "${{ secrets.GITHUB_TOKEN }}", "privateKey": "${{ secrets.SSH_PRIVATE_KEY }}", "passphrase": ""}]'
           release-branch-name: 'main'
 
