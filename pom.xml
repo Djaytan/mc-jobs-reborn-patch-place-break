@@ -447,7 +447,9 @@
         <version>3.5.0</version>
         <configuration>
           <quiet>true</quiet>
-          <additionalOptions>-Xdoclint:none</additionalOptions>
+          <additionalJOptions>
+            <additionalJOption>-Xdoclint:all,-html</additionalJOption>
+          </additionalJOptions>
         </configuration>
         <executions>
           <execution>
