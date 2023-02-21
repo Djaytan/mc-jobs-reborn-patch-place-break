@@ -36,6 +36,9 @@ jobs:
     needs: ci
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
