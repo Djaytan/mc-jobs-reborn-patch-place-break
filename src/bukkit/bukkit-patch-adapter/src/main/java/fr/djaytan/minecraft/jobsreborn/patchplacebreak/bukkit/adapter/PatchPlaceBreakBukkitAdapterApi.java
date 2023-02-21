@@ -38,7 +38,6 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -49,13 +48,24 @@ import org.bukkit.block.BlockFace;
  * @see PatchPlaceBreakApi
  */
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PatchPlaceBreakBukkitAdapterApi {
 
   private final ActionTypeConverter actionTypeConverter;
   private final LocationConverter locationConverter;
   private final PatchPlaceBreakApi patchPlaceBreakApi;
   private final BlockFaceConverter blockFaceConverter;
+
+  @Inject
+  public PatchPlaceBreakBukkitAdapterApi(
+      ActionTypeConverter actionTypeConverter,
+      LocationConverter locationConverter,
+      PatchPlaceBreakApi patchPlaceBreakApi,
+      BlockFaceConverter blockFaceConverter) {
+    this.actionTypeConverter = actionTypeConverter;
+    this.locationConverter = locationConverter;
+    this.patchPlaceBreakApi = patchPlaceBreakApi;
+    this.blockFaceConverter = blockFaceConverter;
+  }
 
   /**
    * Puts a tag on the specified location.

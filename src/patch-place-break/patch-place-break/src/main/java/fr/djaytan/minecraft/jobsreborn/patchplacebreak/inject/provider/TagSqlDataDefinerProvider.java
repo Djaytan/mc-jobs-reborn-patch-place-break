@@ -33,14 +33,22 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.TagSqliteD
 import javax.inject.Inject;
 import javax.inject.Provider;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class TagSqlDataDefinerProvider implements Provider<TagSqlDataDefiner> {
 
   private final DataSourceProperties dataSourceProperties;
   private final TagMysqlDataDefiner tagMysqlDataDefiner;
   private final TagSqliteDataDefiner tagSqliteDataDefiner;
+
+  @Inject
+  public TagSqlDataDefinerProvider(
+      DataSourceProperties dataSourceProperties,
+      TagMysqlDataDefiner tagMysqlDataDefiner,
+      TagSqliteDataDefiner tagSqliteDataDefiner) {
+    this.dataSourceProperties = dataSourceProperties;
+    this.tagMysqlDataDefiner = tagMysqlDataDefiner;
+    this.tagSqliteDataDefiner = tagSqliteDataDefiner;
+  }
 
   @Override
   public @NonNull TagSqlDataDefiner get() {

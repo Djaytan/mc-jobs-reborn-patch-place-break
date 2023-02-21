@@ -38,16 +38,19 @@ import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /** Default implementation of {@link PatchPlaceBreakApi}. */
 @Singleton
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
 
   private final TagRepository tagRepository;
+
+  @Inject
+  public PatchPlaceBreakImpl(TagRepository tagRepository) {
+    this.tagRepository = tagRepository;
+  }
 
   public void putTag(@NonNull TagLocation tagLocation, boolean isEphemeral) {
     CompletableFuture.runAsync(

@@ -447,8 +447,7 @@
         <version>3.5.0</version>
         <configuration>
           <quiet>true</quiet>
-          <!-- TODO: reactive JavaDoc generation -->
-          <skip>true</skip>
+          <additionalOptions>-Xdoclint:none</additionalOptions>
         </configuration>
         <executions>
           <execution>

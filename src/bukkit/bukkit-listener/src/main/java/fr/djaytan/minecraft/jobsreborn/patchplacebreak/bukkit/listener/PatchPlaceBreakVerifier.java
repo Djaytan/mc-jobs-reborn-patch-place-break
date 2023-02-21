@@ -30,7 +30,6 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -43,7 +42,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PatchPlaceBreakVerifier {
 
   /*
@@ -52,6 +50,14 @@ public class PatchPlaceBreakVerifier {
    */
   private final Provider<ListenerRegister> listenerRegister;
   private final PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
+
+  @Inject
+  public PatchPlaceBreakVerifier(
+      Provider<ListenerRegister> listenerRegister,
+      PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi) {
+    this.listenerRegister = listenerRegister;
+    this.patchPlaceBreakBukkitAdapterApi = patchPlaceBreakBukkitAdapterApi;
+  }
 
   /**
    * Checks if the patch has been well-applied in case of exploit-detection. If exploit has been

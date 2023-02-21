@@ -29,7 +29,6 @@ import java.util.Collection;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
@@ -48,10 +47,14 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
  * the same direction as the moved blocks.
  */
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BlockPistonListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
+
+  @Inject
+  public BlockPistonListener(PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi) {
+    this.patchPlaceBreakBukkitAdapterApi = patchPlaceBreakBukkitAdapterApi;
+  }
 
   /**
    * This method is called when a {@link BlockPistonExtendEvent} is dispatched to move

@@ -30,17 +30,20 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /** Validator of any {@link ValidatingConvertibleProperties}. */
 @Singleton
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public final class PropertiesValidator {
 
   private static final String LINE_SEPARATOR = System.getProperty("line.separator");
   private final Validator validator;
+
+  @Inject
+  public PropertiesValidator(Validator validator) {
+    this.validator = validator;
+  }
 
   /**
    * Validates the specified {@link ValidatingConvertibleProperties} and convert it to the

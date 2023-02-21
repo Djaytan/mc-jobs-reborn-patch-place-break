@@ -40,18 +40,28 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class TagSqlDao {
 
   private final BooleanIntegerSerializer booleanIntegerSerializer;
   private final DataSourceProperties dataSourceProperties;
   private final LocalDateTimeStringSerializer localDateTimeStringSerializer;
   private final UUIDStringSerializer uuidStringSerializer;
+
+  @Inject
+  public TagSqlDao(
+      BooleanIntegerSerializer booleanIntegerSerializer,
+      DataSourceProperties dataSourceProperties,
+      LocalDateTimeStringSerializer localDateTimeStringSerializer,
+      UUIDStringSerializer uuidStringSerializer) {
+    this.booleanIntegerSerializer = booleanIntegerSerializer;
+    this.dataSourceProperties = dataSourceProperties;
+    this.localDateTimeStringSerializer = localDateTimeStringSerializer;
+    this.uuidStringSerializer = uuidStringSerializer;
+  }
 
   public void insert(@NonNull Connection connection, @NonNull Tag tag) throws SQLException {
     String sql =

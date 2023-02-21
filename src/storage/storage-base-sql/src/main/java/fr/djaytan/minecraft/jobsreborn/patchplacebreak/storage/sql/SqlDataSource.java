@@ -27,14 +27,19 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.RequiredArgsConstructor;
 
 @Singleton
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class SqlDataSource implements DataSource {
 
   private final ConnectionPool connectionPool;
   private final SqlDataSourceInitializer sqlDataSourceInitializer;
+
+  @Inject
+  public SqlDataSource(
+      ConnectionPool connectionPool, SqlDataSourceInitializer sqlDataSourceInitializer) {
+    this.connectionPool = connectionPool;
+    this.sqlDataSourceInitializer = sqlDataSourceInitializer;
+  }
 
   @Override
   public void connect() {
