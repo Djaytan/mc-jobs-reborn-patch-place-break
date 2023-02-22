@@ -32,7 +32,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  # Note: Artifacts can be retrieved with Jitpack -> No need to deploy
+  # Note: Artifacts can be retrieved with Jitpack based on tags -> No need to deploy
   cd:
     name: CD
     needs: ci
