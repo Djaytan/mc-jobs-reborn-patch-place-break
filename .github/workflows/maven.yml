@@ -52,3 +52,4 @@ jobs:
           maven-args: ${{ env.MAVEN_MAIN_ARGS }} ${{ env.MAVEN_SKIP_ARGS }} -Dmaven.javadoc.skip=true
           release-branch-name: 'main'
           skip-perform: true
+          git-release-bot-email: '41898282+github-actions[bot]@users.noreply.github.com'
