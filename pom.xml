@@ -498,6 +498,8 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M9</version>
         <configuration>
+          <parallel>all</parallel>
+          <useUnlimitedThreads>true</useUnlimitedThreads>
           <!--suppress UnresolvedMavenProperty - Defined at runtime by JaCoCo -->
           <argLine>${surefire.jacoco.args}</argLine>
           <includes>
@@ -621,15 +623,6 @@
         <groupId>org.sonarsource.scanner.maven</groupId>
         <artifactId>sonar-maven-plugin</artifactId>
         <version>3.9.1.2184</version>
-        <executions>
-          <execution>
-            <id>sonar-analysis</id>
-            <goals>
-              <goal>sonar</goal>
-            </goals>
-            <phase>verify</phase>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
@@ -641,8 +634,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <!-- Sonar must be run only in CI/CD environment -->
-        <sonar.skip>true</sonar.skip>
         <fmt.goal>format</fmt.goal>
         <fmt.phase>process-sources</fmt.phase>
         <sortpom.goal>sort</sortpom.goal>
