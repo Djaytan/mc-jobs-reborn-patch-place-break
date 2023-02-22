@@ -1,4 +1,4 @@
-name: CI/CD
+name: Maven
 
 on:
   push:
@@ -31,9 +31,9 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  # Perform part not required with Jitpack
-  cd-prepare:
-    name: CD - Prepare
+  # Note: Artifacts can be retrieved with Jitpack -> No need to deploy
+  cd:
+    name: CD
     needs: ci
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
