@@ -498,6 +498,8 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M9</version>
         <configuration>
+          <parallel>all</parallel>
+          <useUnlimitedThreads>true</useUnlimitedThreads>
           <!--suppress UnresolvedMavenProperty - Defined at runtime by JaCoCo -->
           <argLine>${surefire.jacoco.args}</argLine>
           <includes>
@@ -638,7 +640,7 @@
       </properties>
     </profile>
     <profile>
-      <id>continuous-integration</id>
+      <id>ci-cd</id>
       <properties>
         <fmt.goal>check</fmt.goal>
         <!-- We want to fail ASAP if format is invalid -->
