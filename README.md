@@ -1,6 +1,5 @@
 # jobs-reborn-patch-place-break
 
-![License](https://img.shields.io/github/license/djaytan/mc-jobs-reborn-patch-place-break)
 ![Target](https://img.shields.io/badge/plugin-Minecraft-blueviolet)
 ![Minecraft version](https://img.shields.io/badge/version-1.11%20--%201.19-blue)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/djaytan/mc-jobs-reborn-patch-place-break/maven.yml)
