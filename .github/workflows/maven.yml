@@ -7,8 +7,7 @@ on:
     branches: [ 'main' ]
 
 env:
-  MAVEN_CLI_OPTS: -Pcontinuous-integration -B -C -U --fail-at-end --show-version -e
-  MAVEN_CLI_SKIP_OPTS: -DskipTests=true -DskipITs=true -Dfmt.skip=true -Dsort.skip=true -Denforcer.skip=true
+  MAVEN_CLI_OPTS: -Pci-cd -B -C -U --fail-at-end --show-version -e -Dsonar.projectKey=Djaytan_mc-jobs-reborn-patch-place-break
 
 jobs:
   ci:
@@ -24,10 +23,8 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: maven
-      - name: Build & Test
-        run: mvn ${{ env.MAVEN_CLI_OPTS }} install
-      - name: SonarCloud Quality Scan
-        run: mvn sonar:sonar -Dsonar.projectKey=Djaytan_mc-jobs-reborn-patch-place-break
+      - name: Build, Test & Analyze
+        run: mvn ${{ env.MAVEN_CLI_OPTS }} verify
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
@@ -49,7 +46,7 @@ jobs:
           JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          maven-args: ${{ env.MAVEN_CLI_OPTS }} ${{ env.MAVEN_CLI_SKIP_OPTS }} -Dmaven.javadoc.skip=true
+          maven-args: ${{ env.MAVEN_CLI_OPTS }} -DskipTests=true -DskipITs=true -Dfmt.skip=true -Dsort.skip=true -Denforcer.skip=true -Dskip.sonar=true -Dmaven.javadoc.skip=true
           release-branch-name: 'main'
           skip-perform: true
           git-release-bot-email: '41898282+github-actions[bot]@users.noreply.github.com'
