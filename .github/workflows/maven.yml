@@ -14,7 +14,7 @@ jobs:
     name: CI
     runs-on: ubuntu-latest
     steps:
-      - name: Git checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
           # Useful for SonarCloud Scans
@@ -26,7 +26,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build & Test
-        run: mvn ${{ env.MAVEN_CLI_OPTS }} -T 1.5C install
+        run: mvn ${{ env.MAVEN_CLI_OPTS }} install
       - name: SonarCloud Quality Scan
         run: mvn sonar:sonar -Dsonar.projectKey=Djaytan_mc-jobs-reborn-patch-place-break
         env:
@@ -42,7 +42,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: Git checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
       - name: Prepare
         uses: qcastel/github-actions-maven-release@v1.12.39
