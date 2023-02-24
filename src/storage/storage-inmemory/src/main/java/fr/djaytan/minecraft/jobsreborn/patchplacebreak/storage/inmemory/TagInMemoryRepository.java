@@ -25,7 +25,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,15 +45,15 @@ public class TagInMemoryRepository implements TagRepository {
   }
 
   @Override
-  public @NonNull Optional<Tag> findByLocation(@NonNull TagLocation tagLocation) {
+  public @NonNull Optional<Tag> findByLocation(@NonNull Location location) {
     return tagMap.values().stream()
-        .filter(tag -> tag.getTagLocation().equals(tagLocation))
+        .filter(tag -> tag.getLocation().equals(location))
         .findFirst();
   }
 
   @Override
-  public void delete(@NonNull TagLocation tagLocation) {
-    Optional<Tag> tag = findByLocation(tagLocation);
+  public void delete(@NonNull Location location) {
+    Optional<Tag> tag = findByLocation(location);
     tag.ifPresent(t -> tagMap.remove(t.getUuid()));
   }
 }

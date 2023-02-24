@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -51,10 +51,10 @@ class TagTest {
     double x = 52.0D;
     double y = 68.1223D;
     double z = 1254.785D;
-    TagLocation tagLocation = TagLocation.of(worldName, x, y, z);
+    Location location = Location.of(worldName, x, y, z);
 
     // When
-    Tag tag = Tag.of(uuid, localDateTime, isEphemeral, tagLocation);
+    Tag tag = Tag.of(uuid, localDateTime, isEphemeral, location);
 
     // Then
     assertAll(
@@ -62,7 +62,7 @@ class TagTest {
         () -> assertThat(tag.getUuid()).isEqualTo(uuid),
         () -> assertThat(tag.getInitLocalDateTime()).isEqualTo(localDateTime),
         () -> assertThat(tag.isEphemeral()).isEqualTo(isEphemeral),
-        () -> assertThat(tag.getTagLocation()).isEqualTo(tagLocation));
+        () -> assertThat(tag.getLocation()).isEqualTo(location));
   }
 
   @Test

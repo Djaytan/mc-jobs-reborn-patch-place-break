@@ -27,9 +27,9 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 import lombok.NonNull;
 import lombok.Value;
 
-/** An immutable and thread-safe tag location. */
+/** An immutable and thread-safe location. */
 @Value(staticConstructor = "of")
-public class TagLocation {
+public class Location {
 
   @NonNull String worldName;
   double x;
@@ -37,17 +37,16 @@ public class TagLocation {
   double z;
 
   /**
-   * Creates a tag location from a specified one and a given direction.
+   * Creates a location from a specified one and a given direction.
    *
-   * @param tagLocation The original tag location from which to create the new one.
-   * @param direction The direction where to move the tag location.
-   * @return The new tag location with the movement to the given direction applied.
+   * @param location The original location from which to create the new one.
+   * @param direction The direction permitting to determine the new location.
+   * @return A new location from a specified one and a given direction.
    */
-  public static @NonNull TagLocation fromMove(
-      @NonNull TagLocation tagLocation, @NonNull TagVector direction) {
-    double newX = tagLocation.getX() + direction.getModX();
-    double newY = tagLocation.getY() + direction.getModY();
-    double newZ = tagLocation.getZ() + direction.getModZ();
-    return TagLocation.of(tagLocation.getWorldName(), newX, newY, newZ);
+  public static @NonNull Location from(@NonNull Location location, @NonNull TagVector direction) {
+    double newX = location.getX() + direction.getModX();
+    double newY = location.getY() + direction.getModY();
+    double newZ = location.getZ() + direction.getModZ();
+    return Location.of(location.getWorldName(), newX, newY, newZ);
   }
 }

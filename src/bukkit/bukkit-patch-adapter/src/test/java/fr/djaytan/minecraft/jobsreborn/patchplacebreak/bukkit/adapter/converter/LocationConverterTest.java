@@ -28,8 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.BDDMockito.given;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
-import org.bukkit.Location;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
 import org.bukkit.World;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,13 +58,13 @@ class LocationConverterTest {
     double x = -96.0D;
     double y = 5.7788D;
     double z = -7854.55D;
-    Location location = new Location(world, x, y, z);
+    org.bukkit.Location bukkitLocation = new org.bukkit.Location(world, x, y, z);
 
     // When
-    TagLocation tagLocation = locationConverter.convert(location);
+    Location location = locationConverter.convert(bukkitLocation);
 
     // Then
-    assertThat(tagLocation).isEqualTo(TagLocation.of(worldName, x, y, z));
+    assertThat(location).isEqualTo(Location.of(worldName, x, y, z));
   }
 
   @Test
@@ -75,10 +74,10 @@ class LocationConverterTest {
     double x = -96.0D;
     double y = 5.7788D;
     double z = -7854.55D;
-    Location location = new Location(null, x, y, z);
+    org.bukkit.Location bukkitLocation = new org.bukkit.Location(null, x, y, z);
 
     // When
-    Executable executable = () -> locationConverter.convert(location);
+    Executable executable = () -> locationConverter.convert(bukkitLocation);
 
     // Then
     assertThrowsExactly(NullPointerException.class, executable);

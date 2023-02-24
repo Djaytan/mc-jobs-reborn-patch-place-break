@@ -25,7 +25,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepositoryException;
 import java.sql.SQLException;
@@ -52,7 +52,7 @@ public class TagSqlRepository implements TagRepository {
         connection -> {
           try {
             connection.setAutoCommit(false);
-            tagSqlDao.delete(connection, tag.getTagLocation());
+            tagSqlDao.delete(connection, tag.getLocation());
             tagSqlDao.insert(connection, tag);
             connection.commit();
           } catch (SQLException e) {
@@ -62,25 +62,25 @@ public class TagSqlRepository implements TagRepository {
   }
 
   @Override
-  public @NonNull Optional<Tag> findByLocation(@NonNull TagLocation tagLocation) {
+  public @NonNull Optional<Tag> findByLocation(@NonNull Location location) {
     return connectionPool.useConnection(
         connection -> {
           try {
-            return tagSqlDao.findByLocation(connection, tagLocation);
+            return tagSqlDao.findByLocation(connection, location);
           } catch (SQLException e) {
-            throw TagRepositoryException.fetch(tagLocation, e);
+            throw TagRepositoryException.fetch(location, e);
           }
         });
   }
 
   @Override
-  public void delete(@NonNull TagLocation tagLocation) {
+  public void delete(@NonNull Location location) {
     connectionPool.useConnection(
         connection -> {
           try {
-            tagSqlDao.delete(connection, tagLocation);
+            tagSqlDao.delete(connection, location);
           } catch (SQLException e) {
-            throw TagRepositoryException.delete(tagLocation, e);
+            throw TagRepositoryException.delete(location, e);
           }
         });
   }
