@@ -36,8 +36,7 @@ import lombok.Value;
  *
  * <p>When an instance of this class is found in the metadata of a given block, this means that the
  * patch must be applied for eligible {@link BlockActionType}. See {@link
- * PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, Location)} for more details about
- * it.
+ * PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, Location)} for more details about it.
  *
  * <p>This tag contains the following information:
  *

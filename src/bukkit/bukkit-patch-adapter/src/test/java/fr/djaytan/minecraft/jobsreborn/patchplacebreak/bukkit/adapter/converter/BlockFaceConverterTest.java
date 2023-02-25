@@ -26,7 +26,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import org.bukkit.block.BlockFace;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -48,10 +48,10 @@ class BlockFaceConverterTest {
     BlockFace blockFace = BlockFace.NORTH;
 
     // When
-    TagVector tagVector = blockFaceConverter.convert(blockFace);
+    Vector vector = blockFaceConverter.convert(blockFace);
 
     // Then
-    assertThat(tagVector).isEqualTo(TagVector.of(0, 0, -1));
+    assertThat(vector).isEqualTo(Vector.of(0, 0, -1));
   }
 
   @Test
@@ -61,10 +61,10 @@ class BlockFaceConverterTest {
     BlockFace blockFace = BlockFace.SOUTH_EAST;
 
     // When
-    TagVector tagVector = blockFaceConverter.convert(blockFace);
+    Vector vector = blockFaceConverter.convert(blockFace);
 
     // Then
-    assertThat(tagVector).isEqualTo(TagVector.of(1, 0, 1));
+    assertThat(vector).isEqualTo(Vector.of(1, 0, 1));
   }
 
   @DisplayName("Conversion from a self-oriented direction")
@@ -74,10 +74,10 @@ class BlockFaceConverterTest {
     BlockFace blockFace = BlockFace.EAST_NORTH_EAST;
 
     // When
-    TagVector tagVector = blockFaceConverter.convert(blockFace);
+    Vector vector = blockFaceConverter.convert(blockFace);
 
     // Then
-    assertThat(tagVector).isEqualTo(TagVector.of(2, 0, -1));
+    assertThat(vector).isEqualTo(Vector.of(2, 0, -1));
   }
 
   @DisplayName("Conversion from a self-oriented direction")
@@ -87,9 +87,9 @@ class BlockFaceConverterTest {
     BlockFace blockFace = BlockFace.SELF;
 
     // When
-    TagVector tagVector = blockFaceConverter.convert(blockFace);
+    Vector vector = blockFaceConverter.convert(blockFace);
 
     // Then
-    assertThat(tagVector).isEqualTo(TagVector.of(0, 0, 0));
+    assertThat(vector).isEqualTo(Vector.of(0, 0, 0));
   }
 }

@@ -24,8 +24,8 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepositoryException;
 import java.sql.SQLException;

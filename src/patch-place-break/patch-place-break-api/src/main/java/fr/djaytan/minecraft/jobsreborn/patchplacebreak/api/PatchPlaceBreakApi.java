@@ -25,9 +25,9 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.time.Duration;
 import java.util.Collection;
 import lombok.NonNull;
@@ -48,12 +48,11 @@ import lombok.NonNull;
  *
  * <p>Nevertheless, an attached tag can be removed given specific conditions like when a block grow
  * event happens. This will permit farmers to achieve their job without seeing their action being
- * cancelled by this patch plugin. This is the purpose of the {@link #removeTags(Location)}
- * method.
+ * cancelled by this patch plugin. This is the purpose of the {@link #removeTags(Location)} method.
  *
  * <p>A tag can be placed with {@link #putTag(Location, boolean)} method. The {@link
- * #moveTags(Collection, TagVector)} has a special purpose: to permit to put back tags when blocks
- * are moved (e.g. by block piston extend and retract events).
+ * #moveTags(Collection, Vector)} has a special purpose: to permit to put back tags when blocks are
+ * moved (e.g. by block piston extend and retract events).
  *
  * <p>Finally, this API give the possibility to check if the jobs action type involving a given
  * block is a place-and-break exploit or no with the method {@link
@@ -83,16 +82,16 @@ public interface PatchPlaceBreakApi {
   /**
    * Moves given tags according to the specified direction.
    *
-   * <p>For each location a check will be done to ensure an active tag exist or not. If it
-   * doesn't exist, then nothing else will be done for the concerned location. In other words: this
-   * method will <b>never</b> create tag, at most just update existing ones when they are actives.
+   * <p>For each location a check will be done to ensure an active tag exist or not. If it doesn't
+   * exist, then nothing else will be done for the concerned location. In other words: this method
+   * will <b>never</b> create tag, at most just update existing ones when they are actives.
    *
    * <p>The method is executed asynchronously for performances purposes.
    *
    * @param locations The locations from where to move existing tags.
    * @param direction The direction where to move existing tags.
    */
-  void moveTags(@NonNull Collection<Location> locations, @NonNull TagVector direction);
+  void moveTags(@NonNull Collection<Location> locations, @NonNull Vector direction);
 
   /**
    * Removes existing tags from a specified location. This can be useful when the state of the block

@@ -24,19 +24,19 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import javax.inject.Singleton;
 import lombok.NonNull;
 import org.bukkit.block.BlockFace;
 
 @Singleton
-public class BlockFaceConverter implements UnidirectionalConverter<BlockFace, TagVector> {
+public class BlockFaceConverter implements UnidirectionalConverter<BlockFace, Vector> {
 
   @Override
-  public @NonNull TagVector convert(@NonNull BlockFace blockFace) {
+  public @NonNull Vector convert(@NonNull BlockFace blockFace) {
     double modX = blockFace.getModX();
     double modY = blockFace.getModY();
     double modZ = blockFace.getModZ();
-    return TagVector.of(modX, modY, modZ);
+    return Vector.of(modX, modY, modZ);
   }
 }

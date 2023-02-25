@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.util.stream.Stream;
 import lombok.NonNull;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -76,7 +76,7 @@ class LocationTest {
     @MethodSource
     @DisplayName("With copy constructor")
     void withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue(
-        @NonNull TagVector givenDirection, @NonNull Location expectedValue) {
+        @NonNull Vector givenDirection, @NonNull Location expectedValue) {
       // Given
       String worldName = "world";
       double initX = 1000;
@@ -97,13 +97,13 @@ class LocationTest {
         withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue() {
       return Stream.of(
           Arguments.of(
-              Named.of("With nominal values", TagVector.of(5.4, 0, -452.56)),
+              Named.of("With nominal values", Vector.of(5.4, 0, -452.56)),
               Location.of("world", 1005.4, -45, -451.06)),
           Arguments.of(
-              Named.of("On overflow", TagVector.of(Double.MAX_VALUE, 1, -1)),
+              Named.of("On overflow", Vector.of(Double.MAX_VALUE, 1, -1)),
               Location.of("world", Double.MAX_VALUE, -44, 0.5)),
           Arguments.of(
-              Named.of("On underflow", TagVector.of(10, -50, Double.MIN_VALUE)),
+              Named.of("On underflow", Vector.of(10, -50, Double.MIN_VALUE)),
               Location.of("world", 1010, -95, 1.5)));
     }
   }

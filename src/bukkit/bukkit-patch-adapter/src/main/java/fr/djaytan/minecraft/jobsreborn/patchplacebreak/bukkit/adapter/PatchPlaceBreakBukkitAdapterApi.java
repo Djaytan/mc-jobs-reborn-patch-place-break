@@ -29,7 +29,7 @@ import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.ActionTypeConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.BlockFaceConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.LocationConverter;
@@ -86,7 +86,7 @@ public class PatchPlaceBreakBukkitAdapterApi {
    *
    * @param blocks The list of blocks with potential tags to be moved.
    * @param blockFace The block face from which to infer the move direction.
-   * @see PatchPlaceBreakApi#moveTags(Collection, TagVector)
+   * @see PatchPlaceBreakApi#moveTags(Collection, Vector)
    */
   public void moveTags(@NonNull Collection<Block> blocks, @NonNull BlockFace blockFace) {
     Collection<Location> locations =
@@ -94,8 +94,8 @@ public class PatchPlaceBreakBukkitAdapterApi {
             .map(Block::getLocation)
             .map(locationConverter::convert)
             .collect(Collectors.toList());
-    TagVector tagVector = blockFaceConverter.convert(blockFace);
-    patchPlaceBreakApi.moveTags(locations, tagVector);
+    Vector vector = blockFaceConverter.convert(blockFace);
+    patchPlaceBreakApi.moveTags(locations, vector);
   }
 
   /**

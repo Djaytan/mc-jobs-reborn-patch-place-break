@@ -27,7 +27,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 import lombok.Value;
 
 @Value(staticConstructor = "of")
-public class TagVector {
+public class Vector {
 
   double modX;
   double modY;

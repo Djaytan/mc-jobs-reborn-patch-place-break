@@ -26,9 +26,9 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -62,8 +62,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
         });
   }
 
-  public void moveTags(
-      @NonNull Collection<Location> locations, @NonNull TagVector direction) {
+  public void moveTags(@NonNull Collection<Location> locations, @NonNull Vector direction) {
     CompletableFuture.runAsync(
         () -> {
           for (Location oldLocation : locations) {
@@ -81,9 +80,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   }
 
   private void moveTag(
-      @NonNull Location oldLocation,
-      @NonNull Location newLocation,
-      boolean isEphemeral) {
+      @NonNull Location oldLocation, @NonNull Location newLocation, boolean isEphemeral) {
     putTag(newLocation, isEphemeral);
     // TODO: old tag must be removed, but it must be done with a transaction
   }

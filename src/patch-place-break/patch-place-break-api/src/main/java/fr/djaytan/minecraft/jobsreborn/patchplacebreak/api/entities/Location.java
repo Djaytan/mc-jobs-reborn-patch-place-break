@@ -43,7 +43,7 @@ public class Location {
    * @param direction The direction permitting to determine the new location.
    * @return A new location from a specified one and a given direction.
    */
-  public static @NonNull Location from(@NonNull Location location, @NonNull TagVector direction) {
+  public static @NonNull Location from(@NonNull Location location, @NonNull Vector direction) {
     double newX = location.getX() + direction.getModX();
     double newY = location.getY() + direction.getModY();
     double newZ = location.getZ() + direction.getModZ();

@@ -24,8 +24,8 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.experimental.StandardException;

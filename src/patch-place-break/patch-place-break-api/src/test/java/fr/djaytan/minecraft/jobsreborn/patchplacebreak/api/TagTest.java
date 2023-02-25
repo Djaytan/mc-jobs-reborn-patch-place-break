@@ -29,8 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import nl.jqno.equalsverifier.EqualsVerifier;
