@@ -22,12 +22,13 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.access;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepositoryException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.ConnectionPool;
 import java.sql.SQLException;
 import java.util.Optional;
 import javax.inject.Inject;

@@ -25,7 +25,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.mysql;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.TagSqlDataDefiner;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.TagSqlDataDefiner;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

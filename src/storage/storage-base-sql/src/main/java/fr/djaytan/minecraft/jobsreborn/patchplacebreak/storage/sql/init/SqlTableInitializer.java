@@ -22,9 +22,11 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.ConnectionPool;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlStorageException;
 import java.sql.SQLException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -32,14 +34,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
-public class SqlHelper {
+public class SqlTableInitializer {
 
   private final ConnectionPool connectionPool;
   private final DataSourceProperties dataSourceProperties;
   private final TagSqlDataDefiner tagSqlDataDefiner;
 
   @Inject
-  public SqlHelper(
+  public SqlTableInitializer(
       ConnectionPool connectionPool,
       DataSourceProperties dataSourceProperties,
       TagSqlDataDefiner tagSqlDataDefiner) {

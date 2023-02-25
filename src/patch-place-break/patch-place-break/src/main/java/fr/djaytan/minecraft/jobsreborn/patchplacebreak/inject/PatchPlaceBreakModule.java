@@ -38,8 +38,8 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.inject.provider.TagReposi
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.inject.provider.TagSqlDataDefinerProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.ConnectionPool;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlDataSourceInitializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.TagSqlDataDefiner;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.SqlDataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.TagSqlDataDefiner;
 import java.nio.file.Path;
 import lombok.NonNull;
 

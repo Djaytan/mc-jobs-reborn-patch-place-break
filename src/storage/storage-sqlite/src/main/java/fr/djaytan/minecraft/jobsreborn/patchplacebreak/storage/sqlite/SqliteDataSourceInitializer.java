@@ -26,8 +26,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlDataSourceInitializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlHelper;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.SqlDataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.SqlTableInitializer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
@@ -42,9 +42,9 @@ public class SqliteDataSourceInitializer extends SqlDataSourceInitializer {
   @Inject
   public SqliteDataSourceInitializer(
       @NonNull DataSourceProperties dataSourceProperties,
-      @NonNull SqlHelper sqlHelper,
+      @NonNull SqlTableInitializer sqlTableInitializer,
       @NonNull SqliteHelper sqliteHelper) {
-    super(sqlHelper);
+    super(sqlTableInitializer);
     this.dataSourceProperties = dataSourceProperties;
     this.sqliteHelper = sqliteHelper;
   }

@@ -28,7 +28,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.mysql.TagMysqlDataDefiner;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.TagSqlDataDefiner;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.TagSqlDataDefiner;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.TagSqliteDataDefiner;
 import javax.inject.Inject;
 import javax.inject.Provider;

@@ -25,6 +25,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.SqlDataSourceInitializer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

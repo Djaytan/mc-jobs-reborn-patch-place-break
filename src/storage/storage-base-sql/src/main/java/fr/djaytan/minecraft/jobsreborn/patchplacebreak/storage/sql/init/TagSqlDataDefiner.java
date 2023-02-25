@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,21 +22,22 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
+import java.sql.Connection;
+import java.sql.SQLException;
 import lombok.NonNull;
 
-public abstract class SqlDataSourceInitializer {
+public abstract class TagSqlDataDefiner {
 
-  private final SqlHelper sqlHelper;
+  protected final DataSourceProperties dataSourceProperties;
 
-  protected SqlDataSourceInitializer(@NonNull SqlHelper sqlHelper) {
-    this.sqlHelper = sqlHelper;
+  protected TagSqlDataDefiner(@NonNull DataSourceProperties dataSourceProperties) {
+    this.dataSourceProperties = dataSourceProperties;
   }
 
-  public abstract void initialize();
+  public abstract boolean isTableExists(@NonNull Connection connection) throws SQLException;
 
-  public final void postConnection() {
-    sqlHelper.createTableIfNotExists();
-  }
+  public abstract void createTable(@NonNull Connection connection) throws SQLException;
 }

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.access;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
