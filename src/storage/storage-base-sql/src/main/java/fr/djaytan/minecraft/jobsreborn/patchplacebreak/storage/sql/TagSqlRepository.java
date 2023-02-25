@@ -24,7 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepositoryException;
@@ -52,7 +52,7 @@ public class TagSqlRepository implements TagRepository {
         connection -> {
           try {
             connection.setAutoCommit(false);
-            tagSqlDao.delete(connection, tag.getLocation());
+            tagSqlDao.delete(connection, tag.getBlockLocation());
             tagSqlDao.insert(connection, tag);
             connection.commit();
           } catch (SQLException e) {
@@ -62,25 +62,25 @@ public class TagSqlRepository implements TagRepository {
   }
 
   @Override
-  public @NonNull Optional<Tag> findByLocation(@NonNull Location location) {
+  public @NonNull Optional<Tag> findByLocation(@NonNull BlockLocation blockLocation) {
     return connectionPool.useConnection(
         connection -> {
           try {
-            return tagSqlDao.findByLocation(connection, location);
+            return tagSqlDao.findByLocation(connection, blockLocation);
           } catch (SQLException e) {
-            throw TagRepositoryException.fetch(location, e);
+            throw TagRepositoryException.fetch(blockLocation, e);
           }
         });
   }
 
   @Override
-  public void delete(@NonNull Location location) {
+  public void delete(@NonNull BlockLocation blockLocation) {
     connectionPool.useConnection(
         connection -> {
           try {
-            tagSqlDao.delete(connection, location);
+            tagSqlDao.delete(connection, blockLocation);
           } catch (SQLException e) {
-            throw TagRepositoryException.delete(location, e);
+            throw TagRepositoryException.delete(blockLocation, e);
           }
         });
   }

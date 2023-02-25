@@ -28,7 +28,7 @@ import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.ActionTypeConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.BlockFaceConverter;
@@ -71,11 +71,11 @@ public class PatchPlaceBreakBukkitAdapterApi {
    *
    * @param block The block where to put tag.
    * @param isEphemeral Whether the tag to put must be an ephemeral one or not.
-   * @see PatchPlaceBreakApi#putTag(Location, boolean)
+   * @see PatchPlaceBreakApi#putTag(BlockLocation, boolean)
    */
   public void putTag(@NonNull Block block, boolean isEphemeral) {
-    Location location = locationConverter.convert(block);
-    patchPlaceBreakApi.putTag(location, isEphemeral);
+    BlockLocation blockLocation = locationConverter.convert(block);
+    patchPlaceBreakApi.putTag(blockLocation, isEphemeral);
   }
 
   /**
@@ -89,21 +89,21 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * @see PatchPlaceBreakApi#moveTags(Collection, Vector)
    */
   public void moveTags(@NonNull Collection<Block> blocks, @NonNull BlockFace blockFace) {
-    Collection<Location> locations =
+    Collection<BlockLocation> blockLocations =
         blocks.stream().map(locationConverter::convert).collect(Collectors.toList());
     Vector vector = blockFaceConverter.convert(blockFace);
-    patchPlaceBreakApi.moveTags(locations, vector);
+    patchPlaceBreakApi.moveTags(blockLocations, vector);
   }
 
   /**
    * Removes existing tags from the specified location.
    *
    * @param block The block from which to remove the tags if they exist.
-   * @see PatchPlaceBreakApi#removeTags(Location)
+   * @see PatchPlaceBreakApi#removeTags(BlockLocation)
    */
   public void removeTags(@NonNull Block block) {
-    Location location = locationConverter.convert(block);
-    patchPlaceBreakApi.removeTags(location);
+    BlockLocation blockLocation = locationConverter.convert(block);
+    patchPlaceBreakApi.removeTags(blockLocation);
   }
 
   /**
@@ -113,7 +113,7 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * @param block The targeted block by job action which has been recorded.
    * @return <code>true</code> if the specified job action for the specified block is a
    *     patch-and-break exploit or not.
-   * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, Location)
+   * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, BlockLocation)
    */
   public boolean isPlaceAndBreakExploit(ActionInfo actionInfo, Block block) {
     if (actionInfo == null || block == null) {
@@ -127,7 +127,7 @@ public class PatchPlaceBreakBukkitAdapterApi {
     }
 
     BlockActionType patchActionType = actionTypeConverter.convert(actionType);
-    Location location = locationConverter.convert(block);
-    return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, location);
+    BlockLocation blockLocation = locationConverter.convert(block);
+    return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, blockLocation);
   }
 }

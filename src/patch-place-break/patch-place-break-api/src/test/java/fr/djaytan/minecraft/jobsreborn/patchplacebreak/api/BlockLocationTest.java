@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.util.stream.Stream;
 import lombok.NonNull;
@@ -44,7 +44,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-class LocationTest {
+class BlockLocationTest {
 
   @Nested
   @DisplayName("When instantiating")
@@ -61,36 +61,36 @@ class LocationTest {
       int z = 4872;
 
       // When
-      Location location = Location.of(worldName, x, y, z);
+      BlockLocation blockLocation = BlockLocation.of(worldName, x, y, z);
 
       // Then
       assertAll(
           "Verification of returned values from getters",
-          () -> assertThat(location.getWorldName()).isEqualTo(worldName),
-          () -> assertThat(location.getX()).isEqualTo(x),
-          () -> assertThat(location.getY()).isEqualTo(y),
-          () -> assertThat(location.getZ()).isEqualTo(z));
+          () -> assertThat(blockLocation.getWorldName()).isEqualTo(worldName),
+          () -> assertThat(blockLocation.getX()).isEqualTo(x),
+          () -> assertThat(blockLocation.getY()).isEqualTo(y),
+          () -> assertThat(blockLocation.getZ()).isEqualTo(z));
     }
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With copy constructor")
     void withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue(
-        @NonNull Vector givenDirection, @NonNull Location expectedValue) {
+        @NonNull Vector givenDirection, @NonNull BlockLocation expectedValue) {
       // Given
       String worldName = "world";
       int initX = 1;
       int initY = -45;
       int initZ = -1;
-      Location location = Location.of(worldName, initX, initY, initZ);
+      BlockLocation blockLocation = BlockLocation.of(worldName, initX, initY, initZ);
 
       // When
-      Location movedLocation = Location.from(location, givenDirection);
+      BlockLocation movedBlockLocation = BlockLocation.from(blockLocation, givenDirection);
 
       // Then
       assertAll(
-          () -> assertThat(movedLocation).isNotSameAs(location),
-          () -> assertThat(movedLocation).isEqualTo(expectedValue));
+          () -> assertThat(movedBlockLocation).isNotSameAs(blockLocation),
+          () -> assertThat(movedBlockLocation).isEqualTo(expectedValue));
     }
 
     private @NonNull Stream<Arguments>
@@ -98,25 +98,25 @@ class LocationTest {
       return Stream.of(
           Arguments.of(
               Named.of("With nominal values", Vector.of(5, 0, -452)),
-              Location.of("world", 6, -45, -453)),
+              BlockLocation.of("world", 6, -45, -453)),
           Arguments.of(
               Named.of("On overflow", Vector.of(Integer.MAX_VALUE, 1, -1)),
-              Location.of("world", Integer.MIN_VALUE, -44, -2)),
+              BlockLocation.of("world", Integer.MIN_VALUE, -44, -2)),
           Arguments.of(
               Named.of("On underflow", Vector.of(10, -50, Integer.MIN_VALUE)),
-              Location.of("world", 11, -95, Integer.MAX_VALUE)));
+              BlockLocation.of("world", 11, -95, Integer.MAX_VALUE)));
     }
   }
 
   @Test
   @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashCode_shouldMetContracts() {
-    EqualsVerifier.forClass(Location.class).verify();
+    EqualsVerifier.forClass(BlockLocation.class).verify();
   }
 
   @Test
   @DisplayName("When calling toString()")
   void whenCallingToString_shouldMetContracts() {
-    ToStringVerifier.forClass(Location.class).withClassName(NameStyle.SIMPLE_NAME).verify();
+    ToStringVerifier.forClass(BlockLocation.class).withClassName(NameStyle.SIMPLE_NAME).verify();
   }
 }

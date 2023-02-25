@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.BDDMockito.given;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +41,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class LocationConverterTest {
+class BlockLocationConverterTest {
 
   private LocationConverter locationConverter;
 
@@ -70,10 +70,10 @@ class LocationConverterTest {
       given(block.getWorld()).willReturn(world);
 
       // When
-      Location location = locationConverter.convert(block);
+      BlockLocation blockLocation = locationConverter.convert(block);
 
       // Then
-      assertThat(location).isEqualTo(Location.of(worldName, x, y, z));
+      assertThat(blockLocation).isEqualTo(BlockLocation.of(worldName, x, y, z));
     }
 
     @Test

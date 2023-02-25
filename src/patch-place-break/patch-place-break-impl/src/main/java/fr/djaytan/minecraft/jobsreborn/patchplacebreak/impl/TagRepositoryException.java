@@ -24,7 +24,7 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -43,14 +43,14 @@ public class TagRepositoryException extends RuntimeException {
   }
 
   public static @NonNull TagRepositoryException fetch(
-      @NonNull Location location, @NonNull Throwable cause) {
-    String message = String.format(FETCH, location);
+      @NonNull BlockLocation blockLocation, @NonNull Throwable cause) {
+    String message = String.format(FETCH, blockLocation);
     return new TagRepositoryException(message, cause);
   }
 
   public static @NonNull TagRepositoryException delete(
-      @NonNull Location location, @NonNull Throwable cause) {
-    String message = String.format(DELETE, location);
+      @NonNull BlockLocation blockLocation, @NonNull Throwable cause) {
+    String message = String.format(DELETE, blockLocation);
     return new TagRepositoryException(message, cause);
   }
 }

@@ -26,7 +26,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.time.Duration;
@@ -52,46 +52,49 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
     this.tagRepository = tagRepository;
   }
 
-  public void putTag(@NonNull Location location, boolean isEphemeral) {
+  public void putTag(@NonNull BlockLocation blockLocation, boolean isEphemeral) {
     CompletableFuture.runAsync(
         () -> {
           UUID tagUuid = UUID.randomUUID();
           LocalDateTime localDateTime = LocalDateTime.now();
-          Tag tag = Tag.of(tagUuid, localDateTime, isEphemeral, location);
+          Tag tag = Tag.of(tagUuid, localDateTime, isEphemeral, blockLocation);
           tagRepository.put(tag);
         });
   }
 
-  public void moveTags(@NonNull Collection<Location> locations, @NonNull Vector direction) {
+  public void moveTags(
+      @NonNull Collection<BlockLocation> blockLocations, @NonNull Vector direction) {
     CompletableFuture.runAsync(
         () -> {
-          for (Location oldLocation : locations) {
-            Optional<Tag> tag = tagRepository.findByLocation(oldLocation);
+          for (BlockLocation oldBlockLocation : blockLocations) {
+            Optional<Tag> tag = tagRepository.findByLocation(oldBlockLocation);
 
             if (!tag.isPresent()) {
               continue;
             }
 
-            Location newLocation = Location.from(oldLocation, direction);
+            BlockLocation newBlockLocation = BlockLocation.from(oldBlockLocation, direction);
 
-            moveTag(oldLocation, newLocation, tag.get().isEphemeral());
+            moveTag(oldBlockLocation, newBlockLocation, tag.get().isEphemeral());
           }
         });
   }
 
   private void moveTag(
-      @NonNull Location oldLocation, @NonNull Location newLocation, boolean isEphemeral) {
-    putTag(newLocation, isEphemeral);
+      @NonNull BlockLocation oldBlockLocation,
+      @NonNull BlockLocation newBlockLocation,
+      boolean isEphemeral) {
+    putTag(newBlockLocation, isEphemeral);
     // TODO: old tag must be removed, but it must be done with a transaction
   }
 
-  public void removeTags(@NonNull Location location) {
-    CompletableFuture.runAsync(() -> tagRepository.delete(location));
+  public void removeTags(@NonNull BlockLocation blockLocation) {
+    CompletableFuture.runAsync(() -> tagRepository.delete(blockLocation));
   }
 
   public boolean isPlaceAndBreakExploit(
-      @NonNull BlockActionType blockActionType, @NonNull Location location) {
-    Optional<Tag> tag = tagRepository.findByLocation(location);
+      @NonNull BlockActionType blockActionType, @NonNull BlockLocation blockLocation) {
+    Optional<Tag> tag = tagRepository.findByLocation(blockLocation);
 
     if (!tag.isPresent()) {
       return false;
