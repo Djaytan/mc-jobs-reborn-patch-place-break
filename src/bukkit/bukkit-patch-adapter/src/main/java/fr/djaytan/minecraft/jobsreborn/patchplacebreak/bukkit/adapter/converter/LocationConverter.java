@@ -28,28 +28,29 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Location;
 import javax.inject.Singleton;
 import lombok.NonNull;
 import org.apache.commons.lang3.Validate;
+import org.bukkit.block.Block;
 
-/** Represents a converter between Bukkit {@link org.bukkit.Location} and {@link Location}. */
+/** Represents a converter between {@link Block} and {@link Location}. */
 @Singleton
-public class LocationConverter implements UnidirectionalConverter<org.bukkit.Location, Location> {
+public class LocationConverter implements UnidirectionalConverter<Block, Location> {
 
   /**
    * Converts a Bukkit location.
    *
    * <p><i>Note: the Bukkit world of the Bukkit location shall never be <code>null</code>.</i>
    *
-   * @param bukkitLocation The Bukkit location to convert.
-   * @return The converted Bukkit location.
+   * @param block The block to convert into a location.
+   * @return The converted location.
    * @throws NullPointerException if the Bukkit world of the Bukkit location is <code>null</code>.
    */
   @Override
-  public @NonNull Location convert(@NonNull org.bukkit.Location bukkitLocation) {
-    Validate.notNull(bukkitLocation.getWorld(), "The world is null in the given Bukkit location");
+  public @NonNull Location convert(@NonNull Block block) {
+    Validate.notNull(block.getWorld(), "The world is null in the given Bukkit location");
 
-    String worldName = bukkitLocation.getWorld().getName();
-    double x = bukkitLocation.getX();
-    double y = bukkitLocation.getY();
-    double z = bukkitLocation.getZ();
+    String worldName = block.getWorld().getName();
+    int x = block.getX();
+    int y = block.getY();
+    int z = block.getZ();
     return Location.of(worldName, x, y, z);
   }
 }

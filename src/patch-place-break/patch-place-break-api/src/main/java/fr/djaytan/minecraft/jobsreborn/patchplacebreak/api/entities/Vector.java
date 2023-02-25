@@ -29,7 +29,7 @@ import lombok.Value;
 @Value(staticConstructor = "of")
 public class Vector {
 
-  double modX;
-  double modY;
-  double modZ;
+  int modX;
+  int modY;
+  int modZ;
 }

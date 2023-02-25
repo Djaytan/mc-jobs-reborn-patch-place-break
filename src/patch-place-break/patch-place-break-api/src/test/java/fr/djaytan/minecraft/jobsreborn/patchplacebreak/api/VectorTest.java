@@ -40,9 +40,9 @@ class VectorTest {
   @DisplayName("Constructor - Successful nominal case")
   void shouldSuccessWhenCreatingWithNominalValues() {
     // Given
-    double modX = 152.11D;
-    double modY = -2D;
-    double modZ = 999.6523D;
+    int modX = 152;
+    int modY = -2;
+    int modZ = 999;
 
     // When
     Vector vector = Vector.of(modX, modY, modZ);

@@ -48,9 +48,9 @@ class TagTest {
     boolean isEphemeral = true;
 
     String worldName = "world";
-    double x = 52.0D;
-    double y = 68.1223D;
-    double z = 1254.785D;
+    int x = 52;
+    int y = 68;
+    int z = 1254;
     Location location = Location.of(worldName, x, y, z);
 
     // When

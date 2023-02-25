@@ -69,12 +69,12 @@ public class PatchPlaceBreakBukkitAdapterApi {
   /**
    * Puts a tag on the specified location.
    *
-   * @param bukkitLocation The Bukkit location where to put tag.
+   * @param block The block where to put tag.
    * @param isEphemeral Whether the tag to put must be an ephemeral one or not.
    * @see PatchPlaceBreakApi#putTag(Location, boolean)
    */
-  public void putTag(@NonNull org.bukkit.Location bukkitLocation, boolean isEphemeral) {
-    Location location = locationConverter.convert(bukkitLocation);
+  public void putTag(@NonNull Block block, boolean isEphemeral) {
+    Location location = locationConverter.convert(block);
     patchPlaceBreakApi.putTag(location, isEphemeral);
   }
 
@@ -90,10 +90,7 @@ public class PatchPlaceBreakBukkitAdapterApi {
    */
   public void moveTags(@NonNull Collection<Block> blocks, @NonNull BlockFace blockFace) {
     Collection<Location> locations =
-        blocks.stream()
-            .map(Block::getLocation)
-            .map(locationConverter::convert)
-            .collect(Collectors.toList());
+        blocks.stream().map(locationConverter::convert).collect(Collectors.toList());
     Vector vector = blockFaceConverter.convert(blockFace);
     patchPlaceBreakApi.moveTags(locations, vector);
   }
@@ -101,11 +98,11 @@ public class PatchPlaceBreakBukkitAdapterApi {
   /**
    * Removes existing tags from the specified location.
    *
-   * @param bukkitLocation The Bukkit location from which to remove the tags if they exist.
+   * @param block The block from which to remove the tags if they exist.
    * @see PatchPlaceBreakApi#removeTags(Location)
    */
-  public void removeTags(@NonNull org.bukkit.Location bukkitLocation) {
-    Location location = locationConverter.convert(bukkitLocation);
+  public void removeTags(@NonNull Block block) {
+    Location location = locationConverter.convert(block);
     patchPlaceBreakApi.removeTags(location);
   }
 
@@ -124,14 +121,13 @@ public class PatchPlaceBreakBukkitAdapterApi {
     }
 
     ActionType actionType = actionInfo.getType();
-    org.bukkit.Location bukkitLocation = block.getLocation();
 
-    if (actionType == null || bukkitLocation == null) {
+    if (actionType == null) {
       return false;
     }
 
     BlockActionType patchActionType = actionTypeConverter.convert(actionType);
-    Location location = locationConverter.convert(bukkitLocation);
+    Location location = locationConverter.convert(block);
     return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, location);
   }
 }

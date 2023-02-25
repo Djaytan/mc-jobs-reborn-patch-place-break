@@ -118,9 +118,14 @@ public class TagSqlDao {
         localDateTimeStringSerializer.deserialize(resultSet.getString("init_timestamp"));
     boolean isEphemeral = booleanIntegerSerializer.deserialize(resultSet.getInt("is_ephemeral"));
     String worldName = resultSet.getString("world_name");
-    double x = resultSet.getDouble("location_x");
-    double y = resultSet.getDouble("location_y");
-    double z = resultSet.getDouble("location_z");
+
+    /*
+     The logic is temporary only
+     TODO: Flyway migration logic
+    */
+    int x = (int) Math.round(resultSet.getDouble("location_x"));
+    int y = (int) resultSet.getDouble("location_y");
+    int z = (int) resultSet.getDouble("location_z");
 
     Location location = Location.of(worldName, x, y, z);
     Tag tag = Tag.of(tagUuid, initLocalDateTime, isEphemeral, location);

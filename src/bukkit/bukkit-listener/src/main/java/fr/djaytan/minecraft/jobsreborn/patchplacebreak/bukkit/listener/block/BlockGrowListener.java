@@ -28,7 +28,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
-import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -62,7 +62,7 @@ public class BlockGrowListener implements Listener {
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockGrow(@NonNull BlockGrowEvent event) {
-    Location location = event.getBlock().getLocation();
-    patchPlaceBreakBukkitAdapterApi.removeTags(location);
+    Block block = event.getBlock();
+    patchPlaceBreakBukkitAdapterApi.removeTags(block);
   }
 }

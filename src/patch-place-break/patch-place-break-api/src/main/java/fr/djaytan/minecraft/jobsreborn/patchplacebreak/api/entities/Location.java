@@ -29,12 +29,13 @@ import lombok.Value;
 
 /** An immutable and thread-safe location. */
 @Value(staticConstructor = "of")
+// TODO: rename to BlockLocation
 public class Location {
 
   @NonNull String worldName;
-  double x;
-  double y;
-  double z;
+  int x;
+  int y;
+  int z;
 
   /**
    * Creates a location from a specified one and a given direction.
@@ -44,9 +45,9 @@ public class Location {
    * @return A new location from a specified one and a given direction.
    */
   public static @NonNull Location from(@NonNull Location location, @NonNull Vector direction) {
-    double newX = location.getX() + direction.getModX();
-    double newY = location.getY() + direction.getModY();
-    double newZ = location.getZ() + direction.getModZ();
+    int newX = location.getX() + direction.getModX();
+    int newY = location.getY() + direction.getModY();
+    int newZ = location.getZ() + direction.getModZ();
     return Location.of(location.getWorldName(), newX, newY, newZ);
   }
 }

@@ -56,9 +56,9 @@ class LocationTest {
     void withAllArgsConstructorAndNominalValues_shouldSuccess() {
       // Given
       String worldName = "world";
-      double x = -54.0D;
-      double y = 67.785D;
-      double z = 4872.45152D;
+      int x = -54;
+      int y = 67;
+      int z = 4872;
 
       // When
       Location location = Location.of(worldName, x, y, z);
@@ -79,9 +79,9 @@ class LocationTest {
         @NonNull Vector givenDirection, @NonNull Location expectedValue) {
       // Given
       String worldName = "world";
-      double initX = 1000;
-      double initY = -45;
-      double initZ = 1.5;
+      int initX = 1;
+      int initY = -45;
+      int initZ = -1;
       Location location = Location.of(worldName, initX, initY, initZ);
 
       // When
@@ -97,14 +97,14 @@ class LocationTest {
         withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue() {
       return Stream.of(
           Arguments.of(
-              Named.of("With nominal values", Vector.of(5.4, 0, -452.56)),
-              Location.of("world", 1005.4, -45, -451.06)),
+              Named.of("With nominal values", Vector.of(5, 0, -452)),
+              Location.of("world", 6, -45, -453)),
           Arguments.of(
-              Named.of("On overflow", Vector.of(Double.MAX_VALUE, 1, -1)),
-              Location.of("world", Double.MAX_VALUE, -44, 0.5)),
+              Named.of("On overflow", Vector.of(Integer.MAX_VALUE, 1, -1)),
+              Location.of("world", Integer.MIN_VALUE, -44, -2)),
           Arguments.of(
-              Named.of("On underflow", Vector.of(10, -50, Double.MIN_VALUE)),
-              Location.of("world", 1010, -95, 1.5)));
+              Named.of("On underflow", Vector.of(10, -50, Integer.MIN_VALUE)),
+              Location.of("world", 11, -95, Integer.MAX_VALUE)));
     }
   }
 
