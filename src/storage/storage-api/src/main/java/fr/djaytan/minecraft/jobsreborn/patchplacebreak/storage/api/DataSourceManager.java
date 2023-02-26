@@ -22,35 +22,11 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.SqlDataSourceInitializer;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+public interface DataSourceManager {
 
-@Singleton
-public class SqlDataSource implements DataSource {
+  void connect();
 
-  private final ConnectionPool connectionPool;
-  private final SqlDataSourceInitializer sqlDataSourceInitializer;
-
-  @Inject
-  public SqlDataSource(
-      ConnectionPool connectionPool, SqlDataSourceInitializer sqlDataSourceInitializer) {
-    this.connectionPool = connectionPool;
-    this.sqlDataSourceInitializer = sqlDataSourceInitializer;
-  }
-
-  @Override
-  public void connect() {
-    sqlDataSourceInitializer.initialize();
-    connectionPool.connect();
-    sqlDataSourceInitializer.postConnection();
-  }
-
-  @Override
-  public void disconnect() {
-    connectionPool.disconnect();
-  }
+  void disconnect();
 }

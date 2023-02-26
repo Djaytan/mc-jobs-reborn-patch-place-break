@@ -37,10 +37,10 @@ public final class GuiceBukkitInjector {
     // Static class
   }
 
-  public static void inject(@NonNull JavaPlugin javaPlugin) {
+  public static void inject(@NonNull ClassLoader classLoader, @NonNull JavaPlugin javaPlugin) {
     GuiceBukkitModule bukkitModule = new GuiceBukkitModule(javaPlugin);
     GuiceJobsRebornPatchPlaceBreakModule jobsRebornPatchPlaceBreakModule =
-        new GuiceJobsRebornPatchPlaceBreakModule();
+        new GuiceJobsRebornPatchPlaceBreakModule(classLoader);
     Injector injector = Guice.createInjector(bukkitModule, jobsRebornPatchPlaceBreakModule);
     injector.injectMembers(javaPlugin);
     log.atInfo().log("Dependencies injected.");

@@ -24,13 +24,13 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
-public class InMemoryDataSource implements DataSource {
+public class InMemoryDataSourceManager implements DataSourceManager {
 
   @Override
   public void connect() {

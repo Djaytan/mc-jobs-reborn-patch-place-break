@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,21 +22,18 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
 import lombok.NonNull;
 
-public abstract class SqlDataSourceInitializer {
+/** Represents a JDBC URL required to establish connexion with underlying data source. */
+public interface JdbcUrl {
 
-  private final SqlTableInitializer sqlTableInitializer;
-
-  protected SqlDataSourceInitializer(@NonNull SqlTableInitializer sqlTableInitializer) {
-    this.sqlTableInitializer = sqlTableInitializer;
-  }
-
-  public abstract void initialize();
-
-  public final void postConnection() {
-    sqlTableInitializer.createTableIfNotExists();
-  }
+  /**
+   * Returns the JDBC URL of the underlying data source.
+   *
+   * @return The JDBC URL of the underlying data source.
+   */
+  @NonNull
+  String get();
 }

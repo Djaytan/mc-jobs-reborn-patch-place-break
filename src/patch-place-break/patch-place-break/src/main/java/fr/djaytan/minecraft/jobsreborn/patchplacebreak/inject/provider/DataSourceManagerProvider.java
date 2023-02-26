@@ -25,47 +25,48 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.inject.provider;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreakException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.mysql.MysqlDataSourceInitializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.SqlDataSourceInitializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.SqliteDataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory.InMemoryDataSourceManager;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlDataSourceManager;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import lombok.NonNull;
 
-public class SqlDataSourceInitializerProvider implements Provider<SqlDataSourceInitializer> {
+public class DataSourceManagerProvider implements Provider<DataSourceManager> {
 
   private final DataSourceProperties dataSourceProperties;
-  private final MysqlDataSourceInitializer mysqlDataSourceInitializer;
-  private final SqliteDataSourceInitializer sqliteDataSourceInitializer;
+  private final InMemoryDataSourceManager inMemoryDataSource;
+  private final SqlDataSourceManager sqlDataSource;
 
   @Inject
-  public SqlDataSourceInitializerProvider(
+  public DataSourceManagerProvider(
       DataSourceProperties dataSourceProperties,
-      MysqlDataSourceInitializer mysqlDataSourceInitializer,
-      SqliteDataSourceInitializer sqliteDataSourceInitializer) {
+      InMemoryDataSourceManager inMemoryDataSource,
+      SqlDataSourceManager sqlDataSource) {
     this.dataSourceProperties = dataSourceProperties;
-    this.mysqlDataSourceInitializer = mysqlDataSourceInitializer;
-    this.sqliteDataSourceInitializer = sqliteDataSourceInitializer;
+    this.inMemoryDataSource = inMemoryDataSource;
+    this.sqlDataSource = sqlDataSource;
   }
 
   @Override
-  public @NonNull SqlDataSourceInitializer get() {
+  public @NonNull DataSourceManager get() {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {
-      case MYSQL:
+      case IN_MEMORY:
         {
-          return mysqlDataSourceInitializer;
+          return inMemoryDataSource;
         }
+      case MYSQL:
       case SQLITE:
         {
-          return sqliteDataSourceInitializer;
+          return sqlDataSource;
         }
       default:
         {
-          throw PatchPlaceBreakException.unsupportedDataSourceType(dataSourceType);
+          throw PatchPlaceBreakException.unrecognisedDataSourceType(dataSourceType);
         }
     }
   }

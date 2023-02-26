@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,20 +24,15 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import java.sql.Connection;
-import java.sql.SQLException;
-import lombok.NonNull;
+/**
+ * Represents a data source initializer which put at disposition a simple {@link #initialize()}
+ * method which must be overridden by the underlying storage implementation (e.g. SQLite or MySQL).
+ *
+ * <p>The data source must be initialized before establishing any connection (e.g. SQLite database
+ * creation).
+ */
+public interface DataSourceInitializer {
 
-public abstract class TagSqlDataDefiner {
-
-  protected final DataSourceProperties dataSourceProperties;
-
-  protected TagSqlDataDefiner(@NonNull DataSourceProperties dataSourceProperties) {
-    this.dataSourceProperties = dataSourceProperties;
-  }
-
-  public abstract boolean isTableExists(@NonNull Connection connection) throws SQLException;
-
-  public abstract void createTable(@NonNull Connection connection) throws SQLException;
+  /** Initializes the data source before establishing any connection. */
+  void initialize();
 }

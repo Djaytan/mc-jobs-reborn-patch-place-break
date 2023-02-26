@@ -35,10 +35,16 @@ import lombok.NonNull;
 
 public class GuiceJobsRebornPatchPlaceBreakModule extends AbstractModule {
 
+  private final ClassLoader classLoader;
+
+  public GuiceJobsRebornPatchPlaceBreakModule(@NonNull ClassLoader classLoader) {
+    this.classLoader = classLoader;
+  }
+
   @Provides
   @Singleton
   public @NonNull PatchPlaceBreakApi providePatchPlaceBreakApi(
-      @NonNull PatchPlaceBreak patchPlaceBreak, @Named("dataFolder") @NonNull Path dataFolder) {
-    return patchPlaceBreak.enable(dataFolder);
+      @Named("dataFolder") Path dataFolder, PatchPlaceBreak patchPlaceBreak) {
+    return patchPlaceBreak.enable(classLoader, dataFolder);
   }
 }

@@ -179,6 +179,11 @@
         <version>3.24.2</version>
       </dependency>
       <dependency>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-core</artifactId>
+        <version>9.15.1</version>
+      </dependency>
+      <dependency>
         <groupId>org.glassfish</groupId>
         <artifactId>jakarta.el</artifactId>
         <!-- Glassfish EL v4 is compatible with JEE 9 -->

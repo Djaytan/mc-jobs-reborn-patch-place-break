@@ -158,6 +158,7 @@
               <pattern>com</pattern>
               <shadedPattern>${package.lib}.com</shadedPattern>
               <includes>
+                <include>com.fasterxml.jackson.**</include>
                 <include>com.fasterxml.classmate.**</include>
                 <include>com.google.common.**</include>
                 <include>com.google.errorprone.**</include>
@@ -201,6 +202,7 @@
                 <include>org.apache.commons.lang3.**</include>
                 <include>org.bstats.**</include>
                 <include>org.checkerframework.**</include>
+                <include>org.flywaydb.**</include>
                 <include>org.hibernate.validator.**</include>
                 <include>org.jboss.logging.**</include>
                 <include>org.sqlite.**</include>

@@ -26,26 +26,23 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.mysql;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.SqlDataSourceInitializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.SqlTableInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import org.apache.commons.lang3.Validate;
 
+/** Represents an initializer for a MySQL data source. */
 @Singleton
-public class MysqlDataSourceInitializer extends SqlDataSourceInitializer {
+public final class MysqlDataSourceInitializer implements DataSourceInitializer {
 
   private final DataSourceProperties dataSourceProperties;
 
   @Inject
-  public MysqlDataSourceInitializer(
-      @NonNull DataSourceProperties dataSourceProperties,
-      @NonNull SqlTableInitializer sqlTableInitializer) {
-    super(sqlTableInitializer);
+  public MysqlDataSourceInitializer(DataSourceProperties dataSourceProperties) {
     this.dataSourceProperties = dataSourceProperties;
   }
 
+  /** {@inheritDoc} */
   @Override
   public void initialize() {
     Validate.validState(

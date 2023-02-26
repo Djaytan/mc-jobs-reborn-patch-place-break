@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,27 +26,30 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.SqlDataSourceInitializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.SqlTableInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlStorageException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
-import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 
+@Slf4j
 @Singleton
-public class SqliteDataSourceInitializer extends SqlDataSourceInitializer {
+public final class SqliteDataSourceInitializer implements DataSourceInitializer {
 
   private final DataSourceProperties dataSourceProperties;
-  private final SqliteHelper sqliteHelper;
+  private final Path sqliteDatabaseFile;
 
   @Inject
   public SqliteDataSourceInitializer(
-      @NonNull DataSourceProperties dataSourceProperties,
-      @NonNull SqlTableInitializer sqlTableInitializer,
-      @NonNull SqliteHelper sqliteHelper) {
-    super(sqlTableInitializer);
+      DataSourceProperties dataSourceProperties,
+      @Named("sqliteDatabaseFile") Path sqliteDatabaseFile) {
     this.dataSourceProperties = dataSourceProperties;
-    this.sqliteHelper = sqliteHelper;
+    this.sqliteDatabaseFile = sqliteDatabaseFile;
   }
 
   @Override
@@ -54,6 +57,25 @@ public class SqliteDataSourceInitializer extends SqlDataSourceInitializer {
     Validate.validState(
         dataSourceProperties.getType() == DataSourceType.SQLITE,
         "The data source type is expected to be 'SQLITE'.");
-    sqliteHelper.createDatabaseIfNotExists();
+
+    createDatabaseIfNotExists();
+  }
+
+  private void createDatabaseIfNotExists() {
+    String sqliteDatabaseFileName = sqliteDatabaseFile.getFileName().toString();
+
+    if (Files.exists(sqliteDatabaseFile)) {
+      return;
+    }
+
+    log.atInfo().log("No SQLite database '{}' found. Creating it...", sqliteDatabaseFileName);
+
+    try {
+      Files.createFile(sqliteDatabaseFile);
+      log.atInfo().log(
+          "The SQLite database '{}' has been created successfully.", sqliteDatabaseFileName);
+    } catch (IOException e) {
+      throw SqlStorageException.databaseCreation(sqliteDatabaseFileName, e);
+    }
   }
 }

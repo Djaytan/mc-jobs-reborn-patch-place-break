@@ -27,41 +27,40 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.inject.provider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.mysql.TagMysqlDataDefiner;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.TagSqlDataDefiner;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.TagSqliteDataDefiner;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.mysql.MysqlJdbcUrl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.SqliteJdbcUrl;
 import javax.inject.Inject;
 import javax.inject.Provider;
-import lombok.NonNull;
 
-public class TagSqlDataDefinerProvider implements Provider<TagSqlDataDefiner> {
+public class JdbcUrlProvider implements Provider<JdbcUrl> {
 
   private final DataSourceProperties dataSourceProperties;
-  private final TagMysqlDataDefiner tagMysqlDataDefiner;
-  private final TagSqliteDataDefiner tagSqliteDataDefiner;
+  private final MysqlJdbcUrl mysqlJdbcUrl;
+  private final SqliteJdbcUrl sqliteJdbcUrl;
 
   @Inject
-  public TagSqlDataDefinerProvider(
+  public JdbcUrlProvider(
       DataSourceProperties dataSourceProperties,
-      TagMysqlDataDefiner tagMysqlDataDefiner,
-      TagSqliteDataDefiner tagSqliteDataDefiner) {
+      MysqlJdbcUrl mysqlJdbcUrl,
+      SqliteJdbcUrl sqliteJdbcUrl) {
     this.dataSourceProperties = dataSourceProperties;
-    this.tagMysqlDataDefiner = tagMysqlDataDefiner;
-    this.tagSqliteDataDefiner = tagSqliteDataDefiner;
+    this.mysqlJdbcUrl = mysqlJdbcUrl;
+    this.sqliteJdbcUrl = sqliteJdbcUrl;
   }
 
   @Override
-  public @NonNull TagSqlDataDefiner get() {
+  public JdbcUrl get() {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {
       case MYSQL:
         {
-          return tagMysqlDataDefiner;
+          return mysqlJdbcUrl;
         }
       case SQLITE:
         {
-          return tagSqliteDataDefiner;
+          return sqliteJdbcUrl;
         }
       default:
         {

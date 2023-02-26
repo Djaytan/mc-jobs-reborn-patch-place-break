@@ -32,26 +32,32 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.sql.DataSource;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class ConnectionPool {
+@Singleton
+public class ConnectionPool {
 
-  protected final DataSourceProperties dataSourceProperties;
+  private final DataSourceProperties dataSourceProperties;
+  private final JdbcUrl jdbcUrl;
   private HikariDataSource hikariDataSource;
 
-  protected ConnectionPool(@NonNull DataSourceProperties dataSourceProperties) {
+  @Inject
+  public ConnectionPool(DataSourceProperties dataSourceProperties, JdbcUrl jdbcUrl) {
     this.dataSourceProperties = dataSourceProperties;
+    this.jdbcUrl = jdbcUrl;
   }
 
+  // TODO: rename connect and disconnect -> enable/disable
   public void connect() {
-    String jdbcUrl = getJdbcUrl();
-
     log.atInfo().log("Connecting to database '{}'...", jdbcUrl);
 
     HikariConfig hikariConfig = new HikariConfig();
-    hikariConfig.setJdbcUrl(jdbcUrl);
+    hikariConfig.setJdbcUrl(jdbcUrl.get());
     hikariConfig.setConnectionTimeout(
         dataSourceProperties.getConnectionPool().getConnectionTimeout());
     hikariConfig.setMaximumPoolSize(dataSourceProperties.getConnectionPool().getPoolSize());
@@ -100,5 +106,7 @@ public abstract class ConnectionPool {
     }
   }
 
-  protected abstract @NonNull String getJdbcUrl();
+  public @NonNull DataSource getDataSource() {
+    return hikariDataSource;
+  }
 }

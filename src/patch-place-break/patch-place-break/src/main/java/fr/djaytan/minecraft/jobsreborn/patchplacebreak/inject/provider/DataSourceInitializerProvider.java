@@ -27,45 +27,44 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.inject.provider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.mysql.MysqlConnectionPool;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.ConnectionPool;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.SqliteConnectionPool;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.mysql.MysqlDataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.SqliteDataSourceInitializer;
 import javax.inject.Inject;
 import javax.inject.Provider;
-import lombok.NonNull;
 
-public class ConnectionPoolProvider implements Provider<ConnectionPool> {
+public class DataSourceInitializerProvider implements Provider<DataSourceInitializer> {
 
   private final DataSourceProperties dataSourceProperties;
-  private final MysqlConnectionPool mysqlConnectionPool;
-  private final SqliteConnectionPool sqliteConnectionPool;
+  private final MysqlDataSourceInitializer mysqlDataSourceInitializer;
+  private final SqliteDataSourceInitializer sqliteDataSourceInitializer;
 
   @Inject
-  public ConnectionPoolProvider(
+  public DataSourceInitializerProvider(
       DataSourceProperties dataSourceProperties,
-      MysqlConnectionPool mysqlConnectionPool,
-      SqliteConnectionPool sqliteConnectionPool) {
+      MysqlDataSourceInitializer mysqlDataSourceInitializer,
+      SqliteDataSourceInitializer sqliteDataSourceInitializer) {
     this.dataSourceProperties = dataSourceProperties;
-    this.mysqlConnectionPool = mysqlConnectionPool;
-    this.sqliteConnectionPool = sqliteConnectionPool;
+    this.mysqlDataSourceInitializer = mysqlDataSourceInitializer;
+    this.sqliteDataSourceInitializer = sqliteDataSourceInitializer;
   }
 
   @Override
-  public @NonNull ConnectionPool get() {
+  public DataSourceInitializer get() {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {
       case MYSQL:
         {
-          return mysqlConnectionPool;
+          return mysqlDataSourceInitializer;
         }
       case SQLITE:
         {
-          return sqliteConnectionPool;
+          return sqliteDataSourceInitializer;
         }
       default:
         {
-          throw PatchPlaceBreakException.unsupportedDataSourceType(dataSourceType);
+          throw PatchPlaceBreakException.unrecognisedDataSourceType(dataSourceType);
         }
     }
   }

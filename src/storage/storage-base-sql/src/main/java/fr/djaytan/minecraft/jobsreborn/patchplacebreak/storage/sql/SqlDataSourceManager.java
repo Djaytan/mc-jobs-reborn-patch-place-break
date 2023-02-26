@@ -22,49 +22,45 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlStorageException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataMigrationExecutor;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
+import javax.sql.DataSource;
 
-@Slf4j
 @Singleton
-public class SqliteHelper {
+public class SqlDataSourceManager implements DataSourceManager {
 
-  private static final String SQLITE_DATABASE_FILE_NAME = "sqlite-data.db";
-
-  private final Path dataFolder;
+  private final ConnectionPool connectionPool;
+  private final DataMigrationExecutor dataMigrationExecutor;
+  private final DataSourceInitializer dataSourceInitializer;
 
   @Inject
-  public SqliteHelper(@Named("dataFolder") @NonNull Path dataFolder) {
-    this.dataFolder = dataFolder;
+  public SqlDataSourceManager(
+      ConnectionPool connectionPool,
+      DataMigrationExecutor dataMigrationExecutor,
+      DataSourceInitializer dataSourceInitializer) {
+    this.connectionPool = connectionPool;
+    this.dataMigrationExecutor = dataMigrationExecutor;
+    this.dataSourceInitializer = dataSourceInitializer;
   }
 
-  public @NonNull Path getSqliteDatabasePath() {
-    return dataFolder.resolve(SQLITE_DATABASE_FILE_NAME);
+  @Override
+  public void connect() {
+    dataSourceInitializer.initialize();
+
+    connectionPool.connect();
+    DataSource dataSource = connectionPool.getDataSource();
+
+    dataMigrationExecutor.prepare(dataSource);
+    dataMigrationExecutor.migrate();
   }
 
-  public void createDatabaseIfNotExists() {
-    Path sqliteDatabasePath = getSqliteDatabasePath();
-    String sqliteDatabaseFileName = sqliteDatabasePath.getFileName().toString();
-
-    if (Files.exists(sqliteDatabasePath)) {
-      return;
-    }
-
-    try {
-      Files.createFile(sqliteDatabasePath);
-      log.atInfo().log(
-          "The SQLite database '{}' has been created successfully.", sqliteDatabaseFileName);
-    } catch (IOException e) {
-      throw SqlStorageException.databaseCreation(sqliteDatabaseFileName, e);
-    }
+  @Override
+  public void disconnect() {
+    connectionPool.disconnect();
   }
 }
