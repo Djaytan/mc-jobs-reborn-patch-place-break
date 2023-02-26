@@ -24,9 +24,12 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictionMode;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import javax.inject.Singleton;
+import java.util.HashSet;
+import lombok.NonNull;
 
 final class ConfigModule extends AbstractModule {
 
@@ -38,5 +41,11 @@ final class ConfigModule extends AbstractModule {
   @Singleton
   static DataSourceProperties dataSourceProperties(ConfigApi configApi) {
     return configApi.getDataSourceProperties();
+  }
+
+  @Provides
+  @Singleton
+  public @NonNull RestrictedBlocksProperties provideRestrictedBlocksProperties() {
+    return RestrictedBlocksProperties.of(new HashSet<>(), RestrictionMode.DISABLED);
   }
 }
