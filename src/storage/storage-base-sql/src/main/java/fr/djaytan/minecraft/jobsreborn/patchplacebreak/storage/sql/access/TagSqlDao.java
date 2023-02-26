@@ -74,9 +74,9 @@ public class TagSqlDao {
           2, localDateTimeStringSerializer.serialize(tag.getInitLocalDateTime()));
       preparedStatement.setInt(3, booleanIntegerSerializer.serialize(tag.isEphemeral()));
       preparedStatement.setString(4, tag.getBlockLocation().getWorldName());
-      preparedStatement.setDouble(5, tag.getBlockLocation().getX());
-      preparedStatement.setDouble(6, tag.getBlockLocation().getY());
-      preparedStatement.setDouble(7, tag.getBlockLocation().getZ());
+      preparedStatement.setInt(5, tag.getBlockLocation().getX());
+      preparedStatement.setInt(6, tag.getBlockLocation().getY());
+      preparedStatement.setInt(7, tag.getBlockLocation().getZ());
       preparedStatement.executeUpdate();
     }
   }
@@ -91,9 +91,9 @@ public class TagSqlDao {
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setString(1, blockLocation.getWorldName());
-      preparedStatement.setDouble(2, blockLocation.getX());
-      preparedStatement.setDouble(3, blockLocation.getY());
-      preparedStatement.setDouble(4, blockLocation.getZ());
+      preparedStatement.setInt(2, blockLocation.getX());
+      preparedStatement.setInt(3, blockLocation.getY());
+      preparedStatement.setInt(4, blockLocation.getZ());
 
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         return extractTag(resultSet);
@@ -119,13 +119,9 @@ public class TagSqlDao {
     boolean isEphemeral = booleanIntegerSerializer.deserialize(resultSet.getInt("is_ephemeral"));
     String worldName = resultSet.getString("world_name");
 
-    /*
-     The logic is temporary only
-     TODO: Flyway migration logic
-    */
-    int x = (int) Math.round(resultSet.getDouble("location_x"));
-    int y = (int) resultSet.getDouble("location_y");
-    int z = (int) resultSet.getDouble("location_z");
+    int x = resultSet.getInt("location_x");
+    int y = resultSet.getInt("location_y");
+    int z = resultSet.getInt("location_z");
 
     BlockLocation blockLocation = BlockLocation.of(worldName, x, y, z);
     Tag tag = Tag.of(tagUuid, initLocalDateTime, isEphemeral, blockLocation);
@@ -142,9 +138,9 @@ public class TagSqlDao {
 
     try (PreparedStatement deleteStmt = connection.prepareStatement(sqlDelete)) {
       deleteStmt.setString(1, blockLocation.getWorldName());
-      deleteStmt.setDouble(2, blockLocation.getX());
-      deleteStmt.setDouble(3, blockLocation.getY());
-      deleteStmt.setDouble(4, blockLocation.getZ());
+      deleteStmt.setInt(2, blockLocation.getX());
+      deleteStmt.setInt(3, blockLocation.getY());
+      deleteStmt.setInt(4, blockLocation.getZ());
       deleteStmt.executeUpdate();
     }
   }
