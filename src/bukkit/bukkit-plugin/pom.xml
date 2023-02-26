@@ -149,6 +149,7 @@
                 <exclude>META-INF/*.DSA</exclude>
                 <exclude>META-INF/*.RSA</exclude>
                 <exclude>META-INF/MANIFEST*</exclude>
+                <exclude>META-INF/README.txt</exclude>
               </excludes>
             </filter>
           </filters>
