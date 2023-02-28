@@ -22,32 +22,11 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
-import lombok.NonNull;
-import lombok.Value;
+public interface DataSourceManager {
 
-/** An immutable and thread-safe tag location. */
-@Value(staticConstructor = "of")
-public class TagLocation {
+  void connect();
 
-  @NonNull String worldName;
-  double x;
-  double y;
-  double z;
-
-  /**
-   * Creates a tag location from a specified one and a given direction.
-   *
-   * @param tagLocation The original tag location from which to create the new one.
-   * @param direction The direction where to move the tag location.
-   * @return The new tag location with the movement to the given direction applied.
-   */
-  public static @NonNull TagLocation fromMove(
-      @NonNull TagLocation tagLocation, @NonNull TagVector direction) {
-    double newX = tagLocation.getX() + direction.getModX();
-    double newY = tagLocation.getY() + direction.getModY();
-    double newZ = tagLocation.getZ() + direction.getModZ();
-    return TagLocation.of(tagLocation.getWorldName(), newX, newY, newZ);
-  }
+  void disconnect();
 }

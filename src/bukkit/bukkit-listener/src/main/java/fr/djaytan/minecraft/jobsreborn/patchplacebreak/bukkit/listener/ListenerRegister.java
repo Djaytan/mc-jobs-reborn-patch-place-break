@@ -94,7 +94,7 @@ public class ListenerRegister {
     log.atInfo().log("Reloading event listeners...");
     unregisterListeners();
     registerListeners();
-    log.atInfo().log("Event listeners reloaded.");
+    log.atInfo().log("Event listeners reloaded successfully.");
   }
 
   private void unregisterListeners() {

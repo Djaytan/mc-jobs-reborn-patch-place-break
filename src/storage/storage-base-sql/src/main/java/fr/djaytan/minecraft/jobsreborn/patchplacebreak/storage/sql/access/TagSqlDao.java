@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.access;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer.BooleanIntegerSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer.LocalDateTimeStringSerializer;
@@ -73,16 +73,16 @@ public class TagSqlDao {
       preparedStatement.setString(
           2, localDateTimeStringSerializer.serialize(tag.getInitLocalDateTime()));
       preparedStatement.setInt(3, booleanIntegerSerializer.serialize(tag.isEphemeral()));
-      preparedStatement.setString(4, tag.getTagLocation().getWorldName());
-      preparedStatement.setDouble(5, tag.getTagLocation().getX());
-      preparedStatement.setDouble(6, tag.getTagLocation().getY());
-      preparedStatement.setDouble(7, tag.getTagLocation().getZ());
+      preparedStatement.setString(4, tag.getBlockLocation().getWorldName());
+      preparedStatement.setInt(5, tag.getBlockLocation().getX());
+      preparedStatement.setInt(6, tag.getBlockLocation().getY());
+      preparedStatement.setInt(7, tag.getBlockLocation().getZ());
       preparedStatement.executeUpdate();
     }
   }
 
   public @NonNull Optional<Tag> findByLocation(
-      @NonNull Connection connection, @NonNull TagLocation tagLocation) throws SQLException {
+      @NonNull Connection connection, @NonNull BlockLocation blockLocation) throws SQLException {
     String sql =
         String.format(
             "SELECT * FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
@@ -90,10 +90,10 @@ public class TagSqlDao {
             dataSourceProperties.getTable());
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      preparedStatement.setString(1, tagLocation.getWorldName());
-      preparedStatement.setDouble(2, tagLocation.getX());
-      preparedStatement.setDouble(3, tagLocation.getY());
-      preparedStatement.setDouble(4, tagLocation.getZ());
+      preparedStatement.setString(1, blockLocation.getWorldName());
+      preparedStatement.setInt(2, blockLocation.getX());
+      preparedStatement.setInt(3, blockLocation.getY());
+      preparedStatement.setInt(4, blockLocation.getZ());
 
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         return extractTag(resultSet);
@@ -118,16 +118,17 @@ public class TagSqlDao {
         localDateTimeStringSerializer.deserialize(resultSet.getString("init_timestamp"));
     boolean isEphemeral = booleanIntegerSerializer.deserialize(resultSet.getInt("is_ephemeral"));
     String worldName = resultSet.getString("world_name");
-    double x = resultSet.getDouble("location_x");
-    double y = resultSet.getDouble("location_y");
-    double z = resultSet.getDouble("location_z");
 
-    TagLocation location = TagLocation.of(worldName, x, y, z);
-    Tag tag = Tag.of(tagUuid, initLocalDateTime, isEphemeral, location);
+    int x = resultSet.getInt("location_x");
+    int y = resultSet.getInt("location_y");
+    int z = resultSet.getInt("location_z");
+
+    BlockLocation blockLocation = BlockLocation.of(worldName, x, y, z);
+    Tag tag = Tag.of(tagUuid, initLocalDateTime, isEphemeral, blockLocation);
     return Optional.of(tag);
   }
 
-  public void delete(@NonNull Connection connection, @NonNull TagLocation tagLocation)
+  public void delete(@NonNull Connection connection, @NonNull BlockLocation blockLocation)
       throws SQLException {
     String sqlDelete =
         String.format(
@@ -136,10 +137,10 @@ public class TagSqlDao {
             dataSourceProperties.getTable());
 
     try (PreparedStatement deleteStmt = connection.prepareStatement(sqlDelete)) {
-      deleteStmt.setString(1, tagLocation.getWorldName());
-      deleteStmt.setDouble(2, tagLocation.getX());
-      deleteStmt.setDouble(3, tagLocation.getY());
-      deleteStmt.setDouble(4, tagLocation.getZ());
+      deleteStmt.setString(1, blockLocation.getWorldName());
+      deleteStmt.setInt(2, blockLocation.getX());
+      deleteStmt.setInt(3, blockLocation.getY());
+      deleteStmt.setInt(4, blockLocation.getZ());
       deleteStmt.executeUpdate();
     }
   }

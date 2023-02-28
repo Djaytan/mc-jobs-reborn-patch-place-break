@@ -36,7 +36,7 @@ public class ConfigModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public @NonNull DataSourceProperties provideDataSourceProperties(@NonNull ConfigApi configApi) {
+  public @NonNull DataSourceProperties provideDataSourceProperties(ConfigApi configApi) {
     return configApi.getDataSourceProperties();
   }
 }

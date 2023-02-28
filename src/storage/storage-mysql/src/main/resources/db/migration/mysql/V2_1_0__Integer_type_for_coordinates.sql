@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +22,11 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
+ALTER TABLE ${patchPlaceBreakTableName}
+  MODIFY location_x INTEGER;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSource;
-import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
+ALTER TABLE ${patchPlaceBreakTableName}
+  MODIFY location_y INTEGER;
 
-@Slf4j
-@Singleton
-public class InMemoryDataSource implements DataSource {
-
-  @Override
-  public void connect() {
-    log.atInfo().log("Nothing to do when connecting to the InMemory datasource.");
-  }
-
-  @Override
-  public void disconnect() {
-    log.atInfo().log("Nothing to do when disconnecting from the InMemory datasource.");
-  }
-}
+ALTER TABLE ${patchPlaceBreakTableName}
+  MODIFY location_z INTEGER;

@@ -65,7 +65,7 @@ public class GuiceBukkitModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public @NonNull Executor provideMainThreadExecutor(@NonNull BukkitScheduler bukkitScheduler) {
+  public @NonNull Executor provideMainThreadExecutor(BukkitScheduler bukkitScheduler) {
     return runnable -> bukkitScheduler.runTask(javaPlugin, runnable);
   }
 }

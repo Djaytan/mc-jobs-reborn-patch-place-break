@@ -43,7 +43,7 @@ public class ValidationModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public @NonNull Validator provideValidator(@NonNull ValidatorFactory validatorFactory) {
+  public @NonNull Validator provideValidator(ValidatorFactory validatorFactory) {
     return validatorFactory.getValidator();
   }
 }

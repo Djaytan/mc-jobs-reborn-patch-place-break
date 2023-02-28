@@ -22,21 +22,17 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
-import javax.inject.Singleton;
-import lombok.NonNull;
-import org.bukkit.block.BlockFace;
+/**
+ * Represents a data source initializer which put at disposition a simple {@link #initialize()}
+ * method which must be overridden by the underlying storage implementation (e.g. SQLite or MySQL).
+ *
+ * <p>The data source must be initialized before establishing any connection (e.g. creating SQLite
+ * database before being able to connect onto it).
+ */
+public interface DataSourceInitializer {
 
-@Singleton
-public class BlockFaceConverter implements UnidirectionalConverter<BlockFace, Vector> {
-
-  @Override
-  public @NonNull Vector convert(@NonNull BlockFace blockFace) {
-    int modX = blockFace.getModX();
-    int modY = blockFace.getModY();
-    int modZ = blockFace.getModZ();
-    return Vector.of(modX, modY, modZ);
-  }
+  /** Initializes the data source before establishing any connection. */
+  void initialize();
 }

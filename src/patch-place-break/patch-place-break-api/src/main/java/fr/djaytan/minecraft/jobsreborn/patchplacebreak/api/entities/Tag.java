@@ -36,7 +36,7 @@ import lombok.Value;
  *
  * <p>When an instance of this class is found in the metadata of a given block, this means that the
  * patch must be applied for eligible {@link BlockActionType}. See {@link
- * PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, TagLocation)} for more details about
+ * PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, BlockLocation)} for more details about
  * it.
  *
  * <p>This tag contains the following information:
@@ -45,7 +45,7 @@ import lombok.Value;
  *   <li>The initial date-time of when the tag as been created ;
  *   <li>The validity duration of the tag. If null, this means that the tag isn't an "ephemeral" one
  *       and will be persisted forever until removed explicitly from metadata of block (e.g. by
- *       calling {@link PatchPlaceBreakApi#removeTags(TagLocation)}).
+ *       calling {@link PatchPlaceBreakApi#removeTags(BlockLocation)}).
  * </ul>
  *
  * This class is thread-safe and immutable.
@@ -56,5 +56,5 @@ public class Tag {
   @NonNull UUID uuid;
   @NonNull LocalDateTime initLocalDateTime;
   boolean isEphemeral;
-  @NonNull TagLocation tagLocation;
+  @NonNull BlockLocation blockLocation;
 }

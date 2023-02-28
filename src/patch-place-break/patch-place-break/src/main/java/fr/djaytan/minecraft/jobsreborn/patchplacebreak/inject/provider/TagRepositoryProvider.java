@@ -29,7 +29,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory.TagInMemoryRepository;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.TagSqlRepository;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.access.TagSqlRepository;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import lombok.NonNull;

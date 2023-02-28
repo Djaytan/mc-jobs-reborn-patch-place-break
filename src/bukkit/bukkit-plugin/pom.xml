@@ -27,7 +27,7 @@
   <parent>
     <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
     <artifactId>bukkit</artifactId>
-    <version>2.0.20-SNAPSHOT</version>
+    <version>2.1.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>bukkit-plugin</artifactId>
@@ -149,6 +149,7 @@
                 <exclude>META-INF/*.DSA</exclude>
                 <exclude>META-INF/*.RSA</exclude>
                 <exclude>META-INF/MANIFEST*</exclude>
+                <exclude>META-INF/README.txt</exclude>
               </excludes>
             </filter>
           </filters>
@@ -158,6 +159,7 @@
               <pattern>com</pattern>
               <shadedPattern>${package.lib}.com</shadedPattern>
               <includes>
+                <include>com.fasterxml.jackson.**</include>
                 <include>com.fasterxml.classmate.**</include>
                 <include>com.google.common.**</include>
                 <include>com.google.errorprone.**</include>
@@ -201,6 +203,7 @@
                 <include>org.apache.commons.lang3.**</include>
                 <include>org.bstats.**</include>
                 <include>org.checkerframework.**</include>
+                <include>org.flywaydb.**</include>
                 <include>org.hibernate.validator.**</include>
                 <include>org.jboss.logging.**</include>
                 <include>org.sqlite.**</include>

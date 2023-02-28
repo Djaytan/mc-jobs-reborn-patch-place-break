@@ -29,41 +29,41 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class TagVectorTest {
+class VectorTest {
 
   @Test
   @DisplayName("Constructor - Successful nominal case")
   void shouldSuccessWhenCreatingWithNominalValues() {
     // Given
-    double modX = 152.11D;
-    double modY = -2D;
-    double modZ = 999.6523D;
+    int modX = 152;
+    int modY = -2;
+    int modZ = 999;
 
     // When
-    TagVector tagVector = TagVector.of(modX, modY, modZ);
+    Vector vector = Vector.of(modX, modY, modZ);
 
     // Then
     assertAll(
         "Verification of returned values from getters",
-        () -> assertThat(tagVector.getModX()).isEqualTo(modX),
-        () -> assertThat(tagVector.getModY()).isEqualTo(modY),
-        () -> assertThat(tagVector.getModZ()).isEqualTo(modZ));
+        () -> assertThat(vector.getModX()).isEqualTo(modX),
+        () -> assertThat(vector.getModY()).isEqualTo(modY),
+        () -> assertThat(vector.getModZ()).isEqualTo(modZ));
   }
 
   @Test
   @DisplayName("equals() & hashCode() - Verifications")
   void equalsAndHashcodeContractVerification() {
-    EqualsVerifier.forClass(TagVector.class).verify();
+    EqualsVerifier.forClass(Vector.class).verify();
   }
 
   @Test
   @DisplayName("toString() - Verifications")
   void toStringContractVerification() {
-    ToStringVerifier.forClass(TagVector.class).withClassName(NameStyle.SIMPLE_NAME).verify();
+    ToStringVerifier.forClass(Vector.class).withClassName(NameStyle.SIMPLE_NAME).verify();
   }
 }

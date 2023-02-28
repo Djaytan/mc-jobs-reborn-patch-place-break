@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,30 +22,43 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.inject.provider;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.ConnectionPool;
-import java.nio.file.Path;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import javax.inject.Inject;
-import javax.inject.Singleton;
+import javax.inject.Provider;
 import lombok.NonNull;
+import org.flywaydb.core.api.Location;
 
-@Singleton
-public class SqliteConnectionPool extends ConnectionPool {
+public class LocationProvider implements Provider<Location> {
 
-  private final SqliteHelper sqliteHelper;
+  private static final String DB_MIGRATION_DESCRIPTOR_FORMAT = "/db/migration/%s";
+
+  private final DataSourceProperties dataSourceProperties;
 
   @Inject
-  public SqliteConnectionPool(
-      @NonNull DataSourceProperties dataSourceProperties, @NonNull SqliteHelper sqliteHelper) {
-    super(dataSourceProperties);
-    this.sqliteHelper = sqliteHelper;
+  public LocationProvider(DataSourceProperties dataSourceProperties) {
+    this.dataSourceProperties = dataSourceProperties;
   }
 
   @Override
-  protected @NonNull String getJdbcUrl() {
-    Path sqliteDatabasePath = sqliteHelper.getSqliteDatabasePath();
-    return String.format("jdbc:sqlite:%s", sqliteDatabasePath);
+  public @NonNull Location get() {
+    DataSourceType dataSourceType = dataSourceProperties.getType();
+
+    switch (dataSourceType) {
+      case MYSQL:
+      case SQLITE:
+        {
+          String descriptor =
+              String.format(DB_MIGRATION_DESCRIPTOR_FORMAT, dataSourceType.name().toLowerCase());
+          return new Location(descriptor);
+        }
+      default:
+        {
+          throw PatchPlaceBreakException.unsupportedDataSourceType(dataSourceType);
+        }
+    }
   }
 }

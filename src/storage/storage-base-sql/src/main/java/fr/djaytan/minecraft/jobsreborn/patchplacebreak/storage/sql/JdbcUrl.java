@@ -24,20 +24,16 @@
 
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import java.sql.Connection;
-import java.sql.SQLException;
 import lombok.NonNull;
 
-public abstract class TagSqlDataDefiner {
+/** Represents a JDBC URL required to establish connexion with underlying data source. */
+public interface JdbcUrl {
 
-  protected final DataSourceProperties dataSourceProperties;
-
-  protected TagSqlDataDefiner(@NonNull DataSourceProperties dataSourceProperties) {
-    this.dataSourceProperties = dataSourceProperties;
-  }
-
-  public abstract boolean isTableExists(@NonNull Connection connection) throws SQLException;
-
-  public abstract void createTable(@NonNull Connection connection) throws SQLException;
+  /**
+   * Returns the JDBC URL of the underlying data source.
+   *
+   * @return The JDBC URL of the underlying data source.
+   */
+  @NonNull
+  String get();
 }

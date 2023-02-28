@@ -26,25 +26,27 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.mysql;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsServerProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.ConnectionPool;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
 
 @Singleton
-public class MysqlConnectionPool extends ConnectionPool {
+public final class MysqlJdbcUrl implements JdbcUrl {
 
   private static final String MYSQL_JDBC_URL_TEMPLATE =
       "jdbc:mysql://%s:%d/%s?useSSL=%s&serverTimezone=%s";
   private static final String SERVER_TIME_ZONE = "UTC";
 
+  private final DataSourceProperties dataSourceProperties;
+
   @Inject
-  public MysqlConnectionPool(@NonNull DataSourceProperties dataSourceProperties) {
-    super(dataSourceProperties);
+  public MysqlJdbcUrl(DataSourceProperties dataSourceProperties) {
+    this.dataSourceProperties = dataSourceProperties;
   }
 
   @Override
-  protected @NonNull String getJdbcUrl() {
+  public @NonNull String get() {
     DbmsServerProperties dbmsServerProperties = dataSourceProperties.getDbmsServer();
     String hostname = dbmsServerProperties.getHost().getHostname();
     int port = dbmsServerProperties.getHost().getPort();

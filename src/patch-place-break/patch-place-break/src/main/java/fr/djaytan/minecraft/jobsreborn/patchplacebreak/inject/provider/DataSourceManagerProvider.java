@@ -22,49 +22,52 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.inject.provider;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreakException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import java.sql.SQLException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory.InMemoryDataSourceManager;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlDataSourceManager;
 import javax.inject.Inject;
-import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
+import javax.inject.Provider;
+import lombok.NonNull;
 
-@Slf4j
-@Singleton
-public class SqlHelper {
+public class DataSourceManagerProvider implements Provider<DataSourceManager> {
 
-  private final ConnectionPool connectionPool;
   private final DataSourceProperties dataSourceProperties;
-  private final TagSqlDataDefiner tagSqlDataDefiner;
+  private final InMemoryDataSourceManager inMemoryDataSource;
+  private final SqlDataSourceManager sqlDataSource;
 
   @Inject
-  public SqlHelper(
-      ConnectionPool connectionPool,
+  public DataSourceManagerProvider(
       DataSourceProperties dataSourceProperties,
-      TagSqlDataDefiner tagSqlDataDefiner) {
-    this.connectionPool = connectionPool;
+      InMemoryDataSourceManager inMemoryDataSource,
+      SqlDataSourceManager sqlDataSource) {
     this.dataSourceProperties = dataSourceProperties;
-    this.tagSqlDataDefiner = tagSqlDataDefiner;
+    this.inMemoryDataSource = inMemoryDataSource;
+    this.sqlDataSource = sqlDataSource;
   }
 
-  public void createTableIfNotExists() {
-    String table = dataSourceProperties.getTable();
+  @Override
+  public @NonNull DataSourceManager get() {
+    DataSourceType dataSourceType = dataSourceProperties.getType();
 
-    connectionPool.useConnection(
-        connection -> {
-          try {
-            connection.setAutoCommit(false);
-
-            if (tagSqlDataDefiner.isTableExists(connection)) {
-              return;
-            }
-            tagSqlDataDefiner.createTable(connection);
-            connection.commit();
-            log.atInfo().log("The SQL table '{}' has been created successfully.", table);
-          } catch (SQLException e) {
-            throw SqlStorageException.tableCreation(table, e);
-          }
-        });
+    switch (dataSourceType) {
+      case IN_MEMORY:
+        {
+          return inMemoryDataSource;
+        }
+      case MYSQL:
+      case SQLITE:
+        {
+          return sqlDataSource;
+        }
+      default:
+        {
+          throw PatchPlaceBreakException.unrecognisedDataSourceType(dataSourceType);
+        }
+    }
   }
 }

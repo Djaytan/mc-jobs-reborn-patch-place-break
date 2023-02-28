@@ -28,8 +28,8 @@ import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.ActionTypeConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.BlockFaceConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.LocationConverter;
@@ -38,7 +38,6 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
@@ -70,13 +69,13 @@ public class PatchPlaceBreakBukkitAdapterApi {
   /**
    * Puts a tag on the specified location.
    *
-   * @param location The location where to put tag.
+   * @param block The block where to put tag.
    * @param isEphemeral Whether the tag to put must be an ephemeral one or not.
-   * @see PatchPlaceBreakApi#putTag(TagLocation, boolean)
+   * @see PatchPlaceBreakApi#putTag(BlockLocation, boolean)
    */
-  public void putTag(@NonNull Location location, boolean isEphemeral) {
-    TagLocation tagLocation = locationConverter.convert(location);
-    patchPlaceBreakApi.putTag(tagLocation, isEphemeral);
+  public void putTag(@NonNull Block block, boolean isEphemeral) {
+    BlockLocation blockLocation = locationConverter.convert(block);
+    patchPlaceBreakApi.putTag(blockLocation, isEphemeral);
   }
 
   /**
@@ -87,27 +86,24 @@ public class PatchPlaceBreakBukkitAdapterApi {
    *
    * @param blocks The list of blocks with potential tags to be moved.
    * @param blockFace The block face from which to infer the move direction.
-   * @see PatchPlaceBreakApi#moveTags(Collection, TagVector)
+   * @see PatchPlaceBreakApi#moveTags(Collection, Vector)
    */
   public void moveTags(@NonNull Collection<Block> blocks, @NonNull BlockFace blockFace) {
-    Collection<TagLocation> tagLocations =
-        blocks.stream()
-            .map(Block::getLocation)
-            .map(locationConverter::convert)
-            .collect(Collectors.toList());
-    TagVector tagVector = blockFaceConverter.convert(blockFace);
-    patchPlaceBreakApi.moveTags(tagLocations, tagVector);
+    Collection<BlockLocation> blockLocations =
+        blocks.stream().map(locationConverter::convert).collect(Collectors.toList());
+    Vector vector = blockFaceConverter.convert(blockFace);
+    patchPlaceBreakApi.moveTags(blockLocations, vector);
   }
 
   /**
    * Removes existing tags from the specified location.
    *
-   * @param location The location from which to remove the tags if they exist.
-   * @see PatchPlaceBreakApi#removeTags(TagLocation)
+   * @param block The block from which to remove the tags if they exist.
+   * @see PatchPlaceBreakApi#removeTags(BlockLocation)
    */
-  public void removeTags(@NonNull Location location) {
-    TagLocation tagLocation = locationConverter.convert(location);
-    patchPlaceBreakApi.removeTags(tagLocation);
+  public void removeTags(@NonNull Block block) {
+    BlockLocation blockLocation = locationConverter.convert(block);
+    patchPlaceBreakApi.removeTags(blockLocation);
   }
 
   /**
@@ -117,7 +113,7 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * @param block The targeted block by job action which has been recorded.
    * @return <code>true</code> if the specified job action for the specified block is a
    *     patch-and-break exploit or not.
-   * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, TagLocation)
+   * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, BlockLocation)
    */
   public boolean isPlaceAndBreakExploit(ActionInfo actionInfo, Block block) {
     if (actionInfo == null || block == null) {
@@ -125,14 +121,13 @@ public class PatchPlaceBreakBukkitAdapterApi {
     }
 
     ActionType actionType = actionInfo.getType();
-    Location location = block.getLocation();
 
-    if (actionType == null || location == null) {
+    if (actionType == null) {
       return false;
     }
 
     BlockActionType patchActionType = actionTypeConverter.convert(actionType);
-    TagLocation tagLocation = locationConverter.convert(location);
-    return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, tagLocation);
+    BlockLocation blockLocation = locationConverter.convert(block);
+    return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, blockLocation);
   }
 }

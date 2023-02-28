@@ -28,11 +28,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.BDDMockito.given;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
-import org.bukkit.Location;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
@@ -40,7 +41,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class LocationConverterTest {
+class BlockLocationConverterTest {
 
   private LocationConverter locationConverter;
 
@@ -49,38 +50,42 @@ class LocationConverterTest {
     locationConverter = new LocationConverter();
   }
 
-  @Test
-  @DisplayName("convert() - Successful nominal case")
-  void shouldSuccessNominalLocationConversion(@Mock World world) {
-    // Given
-    String worldName = "world";
-    given(world.getName()).willReturn(worldName);
+  @Nested
+  @DisplayName("When converting")
+  class WhenConverting {
 
-    double x = -96.0D;
-    double y = 5.7788D;
-    double z = -7854.55D;
-    Location location = new Location(world, x, y, z);
+    @Test
+    @DisplayName("From nominal block")
+    void fromNominalBlock(@Mock Block block, @Mock World world) {
+      // Given
+      String worldName = "world";
+      given(world.getName()).willReturn(worldName);
 
-    // When
-    TagLocation tagLocation = locationConverter.convert(location);
+      int x = -11;
+      int y = 69;
+      int z = 19;
+      given(block.getX()).willReturn(x);
+      given(block.getY()).willReturn(y);
+      given(block.getZ()).willReturn(z);
+      given(block.getWorld()).willReturn(world);
 
-    // Then
-    assertThat(tagLocation).isEqualTo(TagLocation.of(worldName, x, y, z));
-  }
+      // When
+      BlockLocation blockLocation = locationConverter.convert(block);
 
-  @Test
-  @DisplayName("convert() - Fail when Bukkit world value is null")
-  void shouldFailLocationConversionWithNullBukkitWorld() {
-    // Given
-    double x = -96.0D;
-    double y = 5.7788D;
-    double z = -7854.55D;
-    Location location = new Location(null, x, y, z);
+      // Then
+      assertThat(blockLocation).isEqualTo(BlockLocation.of(worldName, x, y, z));
+    }
 
-    // When
-    Executable executable = () -> locationConverter.convert(location);
+    @Test
+    @DisplayName("From block without world value")
+    void fromLocationWithoutWorldValue(@Mock Block block) {
+      // Given
 
-    // Then
-    assertThrowsExactly(NullPointerException.class, executable);
+      // When
+      Executable executable = () -> locationConverter.convert(block);
+
+      // Then
+      assertThrowsExactly(NullPointerException.class, executable);
+    }
   }
 }

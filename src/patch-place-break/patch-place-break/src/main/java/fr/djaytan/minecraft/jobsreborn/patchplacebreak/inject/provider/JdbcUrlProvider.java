@@ -27,41 +27,41 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.inject.provider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.mysql.MysqlDataSourceInitializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlDataSourceInitializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.SqliteDataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.mysql.MysqlJdbcUrl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.SqliteJdbcUrl;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import lombok.NonNull;
 
-public class SqlDataSourceInitializerProvider implements Provider<SqlDataSourceInitializer> {
+public class JdbcUrlProvider implements Provider<JdbcUrl> {
 
   private final DataSourceProperties dataSourceProperties;
-  private final MysqlDataSourceInitializer mysqlDataSourceInitializer;
-  private final SqliteDataSourceInitializer sqliteDataSourceInitializer;
+  private final MysqlJdbcUrl mysqlJdbcUrl;
+  private final SqliteJdbcUrl sqliteJdbcUrl;
 
   @Inject
-  public SqlDataSourceInitializerProvider(
+  public JdbcUrlProvider(
       DataSourceProperties dataSourceProperties,
-      MysqlDataSourceInitializer mysqlDataSourceInitializer,
-      SqliteDataSourceInitializer sqliteDataSourceInitializer) {
+      MysqlJdbcUrl mysqlJdbcUrl,
+      SqliteJdbcUrl sqliteJdbcUrl) {
     this.dataSourceProperties = dataSourceProperties;
-    this.mysqlDataSourceInitializer = mysqlDataSourceInitializer;
-    this.sqliteDataSourceInitializer = sqliteDataSourceInitializer;
+    this.mysqlJdbcUrl = mysqlJdbcUrl;
+    this.sqliteJdbcUrl = sqliteJdbcUrl;
   }
 
   @Override
-  public @NonNull SqlDataSourceInitializer get() {
+  public @NonNull JdbcUrl get() {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {
       case MYSQL:
         {
-          return mysqlDataSourceInitializer;
+          return mysqlJdbcUrl;
         }
       case SQLITE:
         {
-          return sqliteDataSourceInitializer;
+          return sqliteJdbcUrl;
         }
       default:
         {

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,31 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite;
 
-import lombok.Value;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
+import java.nio.file.Path;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+import lombok.NonNull;
 
-@Value(staticConstructor = "of")
-public class TagVector {
+/** Represents the SQLite JDBC URL. */
+@Singleton
+public final class SqliteJdbcUrl implements JdbcUrl {
 
-  double modX;
-  double modY;
-  double modZ;
+  private static final String SQLITE_JDBC_URL_FORMAT = "jdbc:sqlite:%s";
+
+  private final Path sqliteDatabaseFile;
+
+  @Inject
+  public SqliteJdbcUrl(@Named("sqliteDatabaseFile") Path sqliteDatabaseFile) {
+    this.sqliteDatabaseFile = sqliteDatabaseFile;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public @NonNull String get() {
+    return String.format(SQLITE_JDBC_URL_FORMAT, sqliteDatabaseFile);
+  }
 }

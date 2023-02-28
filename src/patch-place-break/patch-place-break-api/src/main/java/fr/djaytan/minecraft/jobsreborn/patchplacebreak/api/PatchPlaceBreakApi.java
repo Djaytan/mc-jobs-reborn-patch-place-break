@@ -25,9 +25,9 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.TagVector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.time.Duration;
 import java.util.Collection;
 import lombok.NonNull;
@@ -48,16 +48,16 @@ import lombok.NonNull;
  *
  * <p>Nevertheless, an attached tag can be removed given specific conditions like when a block grow
  * event happens. This will permit farmers to achieve their job without seeing their action being
- * cancelled by this patch plugin. This is the purpose of the {@link #removeTags(TagLocation)}
+ * cancelled by this patch plugin. This is the purpose of the {@link #removeTags(BlockLocation)}
  * method.
  *
- * <p>A tag can be placed with {@link #putTag(TagLocation, boolean)} method. The {@link
- * #moveTags(Collection, TagVector)} has a special purpose: to permit to put back tags when blocks
- * are moved (e.g. by block piston extend and retract events).
+ * <p>A tag can be placed with {@link #putTag(BlockLocation, boolean)} method. The {@link
+ * #moveTags(Collection, Vector)} has a special purpose: to permit to put back tags when blocks are
+ * moved (e.g. by block piston extend and retract events).
  *
  * <p>Finally, this API give the possibility to check if the jobs action type involving a given
  * block is a place-and-break exploit or no with the method {@link
- * #isPlaceAndBreakExploit(BlockActionType, TagLocation)}.
+ * #isPlaceAndBreakExploit(BlockActionType, BlockLocation)}.
  */
 public interface PatchPlaceBreakApi {
 
@@ -70,29 +70,29 @@ public interface PatchPlaceBreakApi {
    * <p>If the tag must be considered as an ephemeral one, then a validity duration of {@link
    * #EPHEMERAL_TAG_DURATION} will be applied. After this delay the tag will not be considered as
    * active anymore and will be ignored by {@link #isPlaceAndBreakExploit(BlockActionType,
-   * TagLocation)} method.
+   * BlockLocation)} method.
    *
    * <p>The method is executed asynchronously for performances purposes.
    *
-   * @param tagLocation The location where the tag must be put.
+   * @param blockLocation The block location where the tag must be put.
    * @param isEphemeral <code>true</code> if the tag must be ephemeral, <code>false</code>
    *     otherwise.
    */
-  void putTag(@NonNull TagLocation tagLocation, boolean isEphemeral);
+  void putTag(@NonNull BlockLocation blockLocation, boolean isEphemeral);
 
   /**
    * Moves given tags according to the specified direction.
    *
-   * <p>For each tag location a check will be done to ensure an active tag exist or not. If it
-   * doesn't exist, then nothing else will be done for the concerned location. In other words: this
-   * method will <b>never</b> create tag, at most just update existing ones when they are actives.
+   * <p>For each location a check will be done to ensure an active tag exist or not. If it doesn't
+   * exist, then nothing else will be done for the concerned location. In other words: this method
+   * will <b>never</b> create tag, at most just update existing ones when they are actives.
    *
    * <p>The method is executed asynchronously for performances purposes.
    *
-   * @param tagLocations The locations from where to move existing tags.
+   * @param blockLocations The locations from where to move existing tags.
    * @param direction The direction where to move existing tags.
    */
-  void moveTags(@NonNull Collection<TagLocation> tagLocations, @NonNull TagVector direction);
+  void moveTags(@NonNull Collection<BlockLocation> blockLocations, @NonNull Vector direction);
 
   /**
    * Removes existing tags from a specified location. This can be useful when the state of the block
@@ -104,9 +104,9 @@ public interface PatchPlaceBreakApi {
    *
    * <p>The method is executed asynchronously for performances purposes.
    *
-   * @param tagLocation The location where to remove tags if existing.
+   * @param blockLocation The location where to remove tags if existing.
    */
-  void removeTags(@NonNull TagLocation tagLocation);
+  void removeTags(@NonNull BlockLocation blockLocation);
 
   /**
    * Checks if the specified block action type at the given location is a place-and-break exploit or
@@ -123,9 +123,9 @@ public interface PatchPlaceBreakApi {
    * <p>The method is blocking since the value retrieving depend on data source response time.
    *
    * @param blockActionType The performed action type involving a block.
-   * @param tagLocation The location where the action has been performed.
+   * @param blockLocation The location where the action has been performed.
    * @return <code>true</code> if it's a place-and-break exploit, <code>false</code> otherwise.
    */
   boolean isPlaceAndBreakExploit(
-      @NonNull BlockActionType blockActionType, @NonNull TagLocation tagLocation);
+      @NonNull BlockActionType blockActionType, @NonNull BlockLocation blockLocation);
 }

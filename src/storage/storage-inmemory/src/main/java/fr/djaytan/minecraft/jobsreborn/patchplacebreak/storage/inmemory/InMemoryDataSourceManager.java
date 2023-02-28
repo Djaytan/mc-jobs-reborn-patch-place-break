@@ -22,21 +22,23 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
 import javax.inject.Singleton;
-import lombok.NonNull;
-import org.bukkit.block.BlockFace;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Singleton
-public class BlockFaceConverter implements UnidirectionalConverter<BlockFace, Vector> {
+public class InMemoryDataSourceManager implements DataSourceManager {
 
   @Override
-  public @NonNull Vector convert(@NonNull BlockFace blockFace) {
-    int modX = blockFace.getModX();
-    int modY = blockFace.getModY();
-    int modZ = blockFace.getModZ();
-    return Vector.of(modX, modY, modZ);
+  public void connect() {
+    log.atInfo().log("Nothing to do when connecting to the InMemory datasource.");
+  }
+
+  @Override
+  public void disconnect() {
+    log.atInfo().log("Nothing to do when disconnecting from the InMemory datasource.");
   }
 }

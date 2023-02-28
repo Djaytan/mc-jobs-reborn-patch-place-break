@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022-2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ * Copyright (c) 2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,21 +22,22 @@
  * SOFTWARE.
  */
 
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
+CREATE TABLE ${patchPlaceBreakTableName}_migration
+(
+  tag_uuid       TEXT PRIMARY KEY NOT NULL,
+  init_timestamp TEXT             NOT NULL,
+  is_ephemeral   INTEGER          NOT NULL,
+  world_name     TEXT             NOT NULL,
+  location_x     INTEGER          NOT NULL,
+  location_y     INTEGER          NOT NULL,
+  location_z     INTEGER          NOT NULL
+);
 
-import lombok.NonNull;
+INSERT INTO ${patchPlaceBreakTableName}_migration
+SELECT *
+FROM ${patchPlaceBreakTableName};
 
-public abstract class SqlDataSourceInitializer {
+DROP TABLE ${patchPlaceBreakTableName};
 
-  private final SqlHelper sqlHelper;
-
-  protected SqlDataSourceInitializer(@NonNull SqlHelper sqlHelper) {
-    this.sqlHelper = sqlHelper;
-  }
-
-  public abstract void initialize();
-
-  public final void postConnection() {
-    sqlHelper.createTableIfNotExists();
-  }
-}
+ALTER TABLE ${patchPlaceBreakTableName}_migration
+  RENAME TO ${patchPlaceBreakTableName};

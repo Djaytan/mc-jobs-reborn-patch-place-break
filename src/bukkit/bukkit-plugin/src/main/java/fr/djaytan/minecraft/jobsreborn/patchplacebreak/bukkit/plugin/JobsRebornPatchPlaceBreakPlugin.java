@@ -50,7 +50,7 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
   public void onEnable() {
     createFolderIfNotExist(getDataFolder().toPath());
     enableSlf4j(getLogger());
-    GuiceBukkitInjector.inject(this);
+    GuiceBukkitInjector.inject(getClassLoader(), this);
     listenerRegister.registerListeners();
     metricsFacade.activateMetricsCollection();
     getLogger().info("JobsReborn-PatchPlaceBreak successfully enabled.");
