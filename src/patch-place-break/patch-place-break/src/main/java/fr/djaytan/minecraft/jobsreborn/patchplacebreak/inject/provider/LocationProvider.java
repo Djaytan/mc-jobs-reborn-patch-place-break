@@ -29,6 +29,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.Da
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import lombok.NonNull;
 import org.flywaydb.core.api.Location;
 
 public class LocationProvider implements Provider<Location> {
@@ -43,7 +44,7 @@ public class LocationProvider implements Provider<Location> {
   }
 
   @Override
-  public Location get() {
+  public @NonNull Location get() {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {
@@ -56,7 +57,7 @@ public class LocationProvider implements Provider<Location> {
         }
       default:
         {
-          throw PatchPlaceBreakException.unrecognisedDataSourceType(dataSourceType);
+          throw PatchPlaceBreakException.unsupportedDataSourceType(dataSourceType);
         }
     }
   }

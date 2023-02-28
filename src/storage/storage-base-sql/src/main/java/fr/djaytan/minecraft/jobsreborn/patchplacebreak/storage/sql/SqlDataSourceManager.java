@@ -55,8 +55,7 @@ public class SqlDataSourceManager implements DataSourceManager {
     connectionPool.connect();
     DataSource dataSource = connectionPool.getDataSource();
 
-    dataMigrationExecutor.prepare(dataSource);
-    dataMigrationExecutor.migrate();
+    dataMigrationExecutor.migrate(dataSource);
   }
 
   @Override

@@ -32,6 +32,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSour
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.SqliteDataSourceInitializer;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import lombok.NonNull;
 
 public class DataSourceInitializerProvider implements Provider<DataSourceInitializer> {
 
@@ -50,7 +51,7 @@ public class DataSourceInitializerProvider implements Provider<DataSourceInitial
   }
 
   @Override
-  public DataSourceInitializer get() {
+  public @NonNull DataSourceInitializer get() {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {
@@ -64,7 +65,7 @@ public class DataSourceInitializerProvider implements Provider<DataSourceInitial
         }
       default:
         {
-          throw PatchPlaceBreakException.unrecognisedDataSourceType(dataSourceType);
+          throw PatchPlaceBreakException.unsupportedDataSourceType(dataSourceType);
         }
     }
   }

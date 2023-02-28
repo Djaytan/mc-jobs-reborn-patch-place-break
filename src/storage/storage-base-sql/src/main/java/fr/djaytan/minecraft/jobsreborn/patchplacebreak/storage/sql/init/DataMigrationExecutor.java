@@ -31,15 +31,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.sql.DataSource;
 import lombok.NonNull;
-import org.apache.commons.lang3.Validate;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.Location;
 
 /**
  * Represents the data migration executor.
  *
- * <p>It is in charge of performing data migrations with {@link #migrate()} method. However, the
- * {@link #prepare(DataSource)} one must be called first.
+ * <p>It is in charge of performing data migrations with {@link #migrate(DataSource)} method.
  *
  * <p>Interactions with this class are expected only after having established connections with the
  * data source (i.e. after having enabled the connection pool).
@@ -54,7 +52,6 @@ public class DataMigrationExecutor {
   private final ClassLoader classLoader;
   private final DataSourceProperties dataSourceProperties;
   private final Location location;
-  private Flyway flyway;
 
   @Inject
   public DataMigrationExecutor(
@@ -65,36 +62,31 @@ public class DataMigrationExecutor {
   }
 
   /**
-   * Prepares the migration.
+   * Performs migrations into the currently in-used data source. Once done, validates that
+   * migrations have been well-performed and are up-to-date.
    *
    * @param dataSource The data source to be used when establishing connections at migration time.
    */
-  public void prepare(@NonNull DataSource dataSource) {
+  public void migrate(@NonNull DataSource dataSource) {
+    Flyway flyway = prepare(dataSource);
+    flyway.migrate();
+    flyway.validate();
+  }
+
+  private @NonNull Flyway prepare(@NonNull DataSource dataSource) {
     Map<String, String> placeholders = new HashMap<>();
     placeholders.put(PLACEHOLDER_PATCH_PLACE_BREAK_TABLE_NAME, dataSourceProperties.getTable());
 
-    flyway =
-        Flyway.configure(classLoader)
-            .baselineOnMigrate(true)
-            .dataSource(dataSource)
-            .failOnMissingLocations(true)
-            .locations(location)
-            .loggers("slf4j")
-            .placeholders(placeholders)
-            .table(MIGRATION_HISTORY_TABLE_NAME)
-            .validateOnMigrate(false)
-            .validateMigrationNaming(true)
-            .load();
-  }
-
-  /**
-   * Performs migrations into the currently in-used data source. Once done, validates that
-   * migrations have been well-performed and are up-to-date.
-   */
-  public void migrate() {
-    Validate.validState(flyway != null, "The prepare step must be performed first.");
-
-    flyway.migrate();
-    flyway.validate();
+    return Flyway.configure(classLoader)
+        .baselineOnMigrate(true)
+        .dataSource(dataSource)
+        .failOnMissingLocations(true)
+        .locations(location)
+        .loggers("slf4j")
+        .placeholders(placeholders)
+        .table(MIGRATION_HISTORY_TABLE_NAME)
+        .validateOnMigrate(false)
+        .validateMigrationNaming(true)
+        .load();
   }
 }

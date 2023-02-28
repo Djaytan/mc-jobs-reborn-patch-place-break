@@ -32,6 +32,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sqlite.SqliteJdbcUrl;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import lombok.NonNull;
 
 public class JdbcUrlProvider implements Provider<JdbcUrl> {
 
@@ -50,7 +51,7 @@ public class JdbcUrlProvider implements Provider<JdbcUrl> {
   }
 
   @Override
-  public JdbcUrl get() {
+  public @NonNull JdbcUrl get() {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {
@@ -64,7 +65,7 @@ public class JdbcUrlProvider implements Provider<JdbcUrl> {
         }
       default:
         {
-          throw PatchPlaceBreakException.unrecognisedDataSourceType(dataSourceType);
+          throw PatchPlaceBreakException.unsupportedDataSourceType(dataSourceType);
         }
     }
   }
