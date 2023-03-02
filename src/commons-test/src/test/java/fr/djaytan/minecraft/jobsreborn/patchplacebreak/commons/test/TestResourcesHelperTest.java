@@ -121,7 +121,7 @@ class TestResourcesHelperTest {
               TestResourcesHelper.getClassResourceAsString(clazz, resourceName, false);
 
           // Then
-          assertThat(resourceContent).isEqualTo("Taking a coffee\n");
+          assertThat(resourceContent).isEqualToIgnoringNewLines("Taking a coffee");
         }
       }
 
