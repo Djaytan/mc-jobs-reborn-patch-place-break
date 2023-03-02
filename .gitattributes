@@ -2,7 +2,7 @@
 # Helpful article: https://rehansaeed.com/gitattributes-best-practices/
 
 # Set default behavior to automatically normalize line endings.
-* text=auto
+* text eol=lf
 
 # Force batch scripts to always use CRLF line endings so that if a repo is accessed
 # in Windows via a file share from Linux, the scripts will work.
@@ -12,3 +12,15 @@
 # Force bash scripts to always use LF line endings so that if a repo is accessed
 # in Unix via a file share from Windows, the scripts will work.
 *.sh text eol=lf
+
+# Binaries
+*.ico binary
+*.png binary
+*.gif binary
+*.jar binary
+*.nofilter binary
+*.kdbx binary
+*.exe binary
+*.dll binary
+*.zip binary
+*.tar.gz binary

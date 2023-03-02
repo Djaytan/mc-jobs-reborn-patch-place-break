@@ -1,3 +1,6 @@
+-- NEVER MODIFY THIS FILE
+-- Flyway use checksum to detect accidental changes and fail if so
+
 CREATE TABLE ${patchPlaceBreakTableName}
 (
   tag_uuid       TEXT PRIMARY KEY NOT NULL,
