@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    The MIT License
+    Copyright © 2022 Loïc DUBOIS-TERMOZ (alias Djaytan)
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -304,6 +328,54 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>4.1</version>
+        <configuration>
+          <properties>
+            <owner>Loïc DUBOIS-TERMOZ (alias Djaytan)</owner>
+          </properties>
+          <useDefaultExcludes>true</useDefaultExcludes>
+          <licenseSets>
+            <licenseSet>
+              <header>com/mycila/maven/plugin/license/templates/MIT.txt</header>
+              <excludes>
+                <exclude>src/main/resources/**</exclude>
+                <exclude>src/test/resources/**</exclude>
+                <exclude>**/dir.empty</exclude>
+                <exclude>.editorconfig</exclude>
+                <exclude>renovate.json5</exclude>
+                <exclude>lombok.config</exclude>
+              </excludes>
+            </licenseSet>
+          </licenseSets>
+        </configuration>
+        <executions>
+          <execution>
+            <id>format-header-copyright</id>
+            <goals>
+              <goal>format</goal>
+            </goals>
+            <phase>process-sources</phase>
+            <configuration>
+              <skip>${license.skipFormat}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>check-header-copyright</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>validate</phase>
+            <configuration>
+              <failIfMissing>true</failIfMissing>
+              <failIfUnknown>true</failIfUnknown>
+              <skip>${license.skipCheck}</skip>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>com.spotify.fmt</groupId>
         <artifactId>fmt-maven-plugin</artifactId>
         <version>2.19</version>
@@ -504,51 +576,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-        <version>2.0.0</version>
-        <configuration>
-          <licenseName>mit</licenseName>
-          <projectName>JobsReborn-PatchPlaceBreak</projectName>
-          <organizationName>Loïc DUBOIS-TERMOZ (alias Djaytan)</organizationName>
-          <canUpdateCopyright>true</canUpdateCopyright>
-          <canUpdateDescription>true</canUpdateDescription>
-          <canUpdateLicense>true</canUpdateLicense>
-          <failIfWarning>true</failIfWarning>
-          <ignoreNoFileToScan>true</ignoreNoFileToScan>
-          <trimHeaderLine>true</trimHeaderLine>
-          <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
-          <emptyLineAfterHeader>true</emptyLineAfterHeader>
-          <roots>
-            <root>src/main/java</root>
-            <root>src/test/java</root>
-          </roots>
-        </configuration>
-        <executions>
-          <execution>
-            <id>update-file-header</id>
-            <goals>
-              <goal>update-file-header</goal>
-            </goals>
-            <phase>process-sources</phase>
-            <configuration>
-              <skipUpdateLicense>${license.skipUpdate}</skipUpdateLicense>
-            </configuration>
-          </execution>
-          <execution>
-            <id>check-file-header</id>
-            <goals>
-              <goal>check-file-header</goal>
-            </goals>
-            <phase>validate</phase>
-            <configuration>
-              <failOnMissingHeader>true</failOnMissingHeader>
-              <skipCheckLicense>${license.skipCheck}</skipCheckLicense>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.8</version>
@@ -672,7 +699,7 @@
       <properties>
         <fmt.goal>format</fmt.goal>
         <fmt.phase>process-sources</fmt.phase>
-        <license.skipUpdate>false</license.skipUpdate>
+        <license.skipFormat>false</license.skipFormat>
         <license.skipCheck>true</license.skipCheck>
         <sortpom.goal>sort</sortpom.goal>
       </properties>
@@ -682,7 +709,7 @@
       <properties>
         <fmt.goal>check</fmt.goal>
         <fmt.phase>validate</fmt.phase>
-        <license.skipUpdate>true</license.skipUpdate>
+        <license.skipFormat>true</license.skipFormat>
         <license.skipCheck>false</license.skipCheck>
         <sortpom.goal>verify</sortpom.goal>
       </properties>
