@@ -20,34 +20,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import javax.inject.Singleton;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
 import lombok.NonNull;
 
-@Singleton
-public class TagInMemoryRepository implements TagRepository {
-
-  private final Map<BlockLocation, Tag> tagMap = new HashMap<>();
+@SuppressWarnings("java:S2187")
+class TagRepositoryExceptionTest extends ExceptionBaseTest {
 
   @Override
-  public void put(@NonNull Tag tag) {
-    tagMap.put(tag.getBlockLocation(), tag);
+  protected @NonNull Exception getException() {
+    return new TagRepositoryException();
   }
 
   @Override
-  public @NonNull Optional<Tag> findByLocation(@NonNull BlockLocation blockLocation) {
-    return Optional.ofNullable(tagMap.get(blockLocation));
+  protected @NonNull Exception getException(@NonNull String message) {
+    return new TagRepositoryException(message);
   }
 
   @Override
-  public void delete(@NonNull BlockLocation blockLocation) {
-    tagMap.remove(blockLocation);
+  protected @NonNull Exception getException(Throwable cause) {
+    return new TagRepositoryException(cause);
+  }
+
+  @Override
+  protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
+    return new TagRepositoryException(message, cause);
   }
 }

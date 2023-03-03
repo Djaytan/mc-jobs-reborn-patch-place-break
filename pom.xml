@@ -47,15 +47,8 @@
   <modules>
     <module>src/bukkit</module>
     <module>src/commons-test</module>
-    <module>src/patch-place-break/patch-place-break</module>
-    <module>src/patch-place-break/patch-place-break-api</module>
-    <module>src/patch-place-break/patch-place-break-config</module>
-    <module>src/patch-place-break/patch-place-break-impl</module>
-    <module>src/storage/storage-api</module>
-    <module>src/storage/storage-base-sql</module>
-    <module>src/storage/storage-inmemory</module>
-    <module>src/storage/storage-mysql</module>
-    <module>src/storage/storage-sqlite</module>
+    <module>src/patch-place-break</module>
+    <module>src/storage</module>
   </modules>
 
   <scm>

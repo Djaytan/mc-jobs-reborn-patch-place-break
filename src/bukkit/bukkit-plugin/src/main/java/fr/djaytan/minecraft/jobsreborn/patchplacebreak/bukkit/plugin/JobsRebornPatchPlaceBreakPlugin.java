@@ -22,10 +22,10 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.PatchPlaceBreak;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.ListenerRegister;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject.GuiceBukkitInjector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.slf4j.BukkitLoggerFactory;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,7 +41,7 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
   @Inject private ListenerRegister listenerRegister;
   @Inject private MetricsFacade metricsFacade;
-  @Inject private PatchPlaceBreak patchPlaceBreak;
+  @Inject private PatchPlaceBreakCore patchPlaceBreakCore;
 
   @Override
   @SneakyThrows
@@ -56,7 +56,7 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
   @Override
   public void onDisable() {
-    patchPlaceBreak.disable();
+    patchPlaceBreakCore.disable();
     getLogger().info("JobsReborn-PatchPlaceBreak successfully disabled.");
   }
 

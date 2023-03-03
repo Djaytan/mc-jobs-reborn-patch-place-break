@@ -32,10 +32,10 @@
     <relativePath>../../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>storage-base-sql</artifactId>
+  <artifactId>patch-place-break-core</artifactId>
   <packaging>jar</packaging>
-  <name>Storage SQL</name>
-  <description>SQL commons to store data of the place-and-break patch</description>
+  <name>PatchPlaceBreak</name>
+  <description>The place-break patch extension</description>
 
   <properties>
     <main.basedir>${project.basedir}/../../../</main.basedir>
@@ -43,8 +43,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
@@ -53,8 +53,37 @@
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>patch-place-break-config</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>storage-api</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>storage-base-sql</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>storage-inmemory</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>storage-mysql</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>storage-sqlite</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
     </dependency>
     <dependency>
       <groupId>javax.inject</groupId>
@@ -74,9 +103,24 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.glassfish</groupId>
+      <artifactId>jakarta.el</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>commons-test</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
