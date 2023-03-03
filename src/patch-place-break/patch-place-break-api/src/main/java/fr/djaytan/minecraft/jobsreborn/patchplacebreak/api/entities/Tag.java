@@ -28,7 +28,6 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import lombok.NonNull;
 import lombok.Value;
 
@@ -47,7 +46,7 @@ import lombok.Value;
  *   <li>The initial date-time of when the tag as been created ;
  *   <li>The validity duration of the tag. If null, this means that the tag isn't an "ephemeral" one
  *       and will be persisted forever until removed explicitly from metadata of block (e.g. by
- *       calling {@link PatchPlaceBreakApi#removeTags(BlockLocation)}).
+ *       calling {@link PatchPlaceBreakApi#removeTag(BlockLocation)}).
  * </ul>
  *
  * This class is thread-safe and immutable.
@@ -55,8 +54,7 @@ import lombok.Value;
 @Value(staticConstructor = "of")
 public class Tag {
 
-  @NonNull UUID uuid;
-  @NonNull LocalDateTime initLocalDateTime;
-  boolean isEphemeral;
   @NonNull BlockLocation blockLocation;
+  boolean isEphemeral;
+  @NonNull LocalDateTime initLocalDateTime;
 }

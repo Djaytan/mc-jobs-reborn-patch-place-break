@@ -65,6 +65,6 @@ public class BlockGrowListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBlockGrow(@NonNull BlockGrowEvent event) {
     Block block = event.getBlock();
-    patchPlaceBreakBukkitAdapterApi.removeTags(block);
+    patchPlaceBreakBukkitAdapterApi.removeTag(block);
   }
 }

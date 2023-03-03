@@ -98,14 +98,14 @@ public class PatchPlaceBreakBukkitAdapterApi {
   }
 
   /**
-   * Removes existing tags from the specified location.
+   * Removes existing tag from the specified location.
    *
-   * @param block The block from which to remove the tags if they exist.
-   * @see PatchPlaceBreakApi#removeTags(BlockLocation)
+   * @param block The block from which to remove the tag if it exists.
+   * @see PatchPlaceBreakApi#removeTag(BlockLocation)
    */
-  public void removeTags(@NonNull Block block) {
+  public void removeTag(@NonNull Block block) {
     BlockLocation blockLocation = locationConverter.convert(block);
-    patchPlaceBreakApi.removeTags(blockLocation);
+    patchPlaceBreakApi.removeTag(blockLocation);
   }
 
   /**

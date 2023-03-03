@@ -39,7 +39,6 @@ public class SqlStorageException extends RuntimeException {
       "Something went wrong when managing database connection lifecycle "
           + "(establishment, releasing, ...).";
   private static final String DATABASE_CREATION = "Unable to create the database '%s'.";
-  private static final String TABLE_CREATION = "Unable to create the table '%s'.";
 
   public static @NonNull SqlStorageException connectionPoolNotSetup() {
     return new SqlStorageException(CONNECTION_POOL_NOT_SETUP);
@@ -53,12 +52,6 @@ public class SqlStorageException extends RuntimeException {
   public static @NonNull SqlStorageException databaseCreation(
       @NonNull String databaseName, @NonNull Throwable cause) {
     String message = String.format(DATABASE_CREATION, databaseName);
-    return new SqlStorageException(message, cause);
-  }
-
-  public static @NonNull SqlStorageException tableCreation(
-      @NonNull String tableName, @NonNull Throwable cause) {
-    String message = String.format(TABLE_CREATION, tableName);
     return new SqlStorageException(message, cause);
   }
 }

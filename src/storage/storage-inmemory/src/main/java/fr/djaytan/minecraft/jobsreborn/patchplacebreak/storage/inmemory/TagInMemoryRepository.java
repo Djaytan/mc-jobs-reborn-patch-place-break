@@ -32,30 +32,26 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.impl.TagRepository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import javax.inject.Singleton;
 import lombok.NonNull;
 
 @Singleton
 public class TagInMemoryRepository implements TagRepository {
 
-  private final Map<UUID, Tag> tagMap = new HashMap<>();
+  private final Map<BlockLocation, Tag> tagMap = new HashMap<>();
 
   @Override
   public void put(@NonNull Tag tag) {
-    tagMap.put(tag.getUuid(), tag);
+    tagMap.put(tag.getBlockLocation(), tag);
   }
 
   @Override
   public @NonNull Optional<Tag> findByLocation(@NonNull BlockLocation blockLocation) {
-    return tagMap.values().stream()
-        .filter(tag -> tag.getBlockLocation().equals(blockLocation))
-        .findFirst();
+    return Optional.ofNullable(tagMap.get(blockLocation));
   }
 
   @Override
   public void delete(@NonNull BlockLocation blockLocation) {
-    Optional<Tag> tag = findByLocation(blockLocation);
-    tag.ifPresent(t -> tagMap.remove(t.getUuid()));
+    tagMap.remove(blockLocation);
   }
 }
