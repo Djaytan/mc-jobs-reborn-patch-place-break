@@ -35,7 +35,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -57,9 +56,8 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   public void putTag(@NonNull BlockLocation blockLocation, boolean isEphemeral) {
     CompletableFuture.runAsync(
         () -> {
-          UUID tagUuid = UUID.randomUUID();
           LocalDateTime localDateTime = LocalDateTime.now();
-          Tag tag = Tag.of(tagUuid, localDateTime, isEphemeral, blockLocation);
+          Tag tag = Tag.of(blockLocation, isEphemeral, localDateTime);
           tagRepository.put(tag);
         });
   }
@@ -90,7 +88,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
     // TODO: old tag must be removed, but it must be done with a transaction
   }
 
-  public void removeTags(@NonNull BlockLocation blockLocation) {
+  public void removeTag(@NonNull BlockLocation blockLocation) {
     CompletableFuture.runAsync(() -> tagRepository.delete(blockLocation));
   }
 

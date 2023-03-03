@@ -34,7 +34,6 @@ import com.jparams.verifier.tostring.ToStringVerifier;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,23 +44,21 @@ class TagTest {
   @DisplayName("Constructor - Successful nominal case")
   void shouldSuccessWhenCreatingWithNominalValues() {
     // Given
-    UUID uuid = UUID.randomUUID();
-    LocalDateTime localDateTime = LocalDateTime.now();
-    boolean isEphemeral = true;
-
     String worldName = "world";
     int x = 52;
     int y = 68;
     int z = 1254;
     BlockLocation blockLocation = BlockLocation.of(worldName, x, y, z);
 
+    boolean isEphemeral = true;
+    LocalDateTime localDateTime = LocalDateTime.now();
+
     // When
-    Tag tag = Tag.of(uuid, localDateTime, isEphemeral, blockLocation);
+    Tag tag = Tag.of(blockLocation, isEphemeral, localDateTime);
 
     // Then
     assertAll(
         "Verification of returned values from getters",
-        () -> assertThat(tag.getUuid()).isEqualTo(uuid),
         () -> assertThat(tag.getInitLocalDateTime()).isEqualTo(localDateTime),
         () -> assertThat(tag.isEphemeral()).isEqualTo(isEphemeral),
         () -> assertThat(tag.getBlockLocation()).isEqualTo(blockLocation));

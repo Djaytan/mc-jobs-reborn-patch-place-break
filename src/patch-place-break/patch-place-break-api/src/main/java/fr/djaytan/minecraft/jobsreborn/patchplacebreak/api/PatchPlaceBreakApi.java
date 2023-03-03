@@ -50,7 +50,7 @@ import lombok.NonNull;
  *
  * <p>Nevertheless, an attached tag can be removed given specific conditions like when a block grow
  * event happens. This will permit farmers to achieve their job without seeing their action being
- * cancelled by this patch plugin. This is the purpose of the {@link #removeTags(BlockLocation)}
+ * cancelled by this patch plugin. This is the purpose of the {@link #removeTag(BlockLocation)}
  * method.
  *
  * <p>A tag can be placed with {@link #putTag(BlockLocation, boolean)} method. The {@link
@@ -97,18 +97,14 @@ public interface PatchPlaceBreakApi {
   void moveTags(@NonNull Collection<BlockLocation> blockLocations, @NonNull Vector direction);
 
   /**
-   * Removes existing tags from a specified location. This can be useful when the state of the block
+   * Removes existing tag from a specified location. This can be useful when the state of the block
    * change (e.g. crops grow like with wheat).
-   *
-   * <p><i>Note: Even if we expect to have only one existing and activated tag at the same time, it
-   * is preferable to remove all the ones associated to the given location in order to prevent any
-   * side effect because of any evolution, bug or whatever.
    *
    * <p>The method is executed asynchronously for performances purposes.
    *
    * @param blockLocation The location where to remove tags if existing.
    */
-  void removeTags(@NonNull BlockLocation blockLocation);
+  void removeTag(@NonNull BlockLocation blockLocation);
 
   /**
    * Checks if the specified block action type at the given location is a place-and-break exploit or
