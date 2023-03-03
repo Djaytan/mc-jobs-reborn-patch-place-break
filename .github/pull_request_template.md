@@ -10,5 +10,4 @@ through PRs.
 - [ ] I have performed a self-review of my code
 - [ ] I have covered my code with tests, particularly for core features
 - [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] Will this be part of a product update? If yes, please write one phrase about this update
+- [ ] I have made corresponding changes to the documentation if needed
