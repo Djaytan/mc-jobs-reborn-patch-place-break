@@ -20,34 +20,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.NonNull;
+import lombok.experimental.StandardException;
 
-@Singleton
-public class TagInMemoryRepository implements TagRepository {
+@StandardException(access = AccessLevel.PROTECTED)
+public class TagRepositoryException extends RuntimeException {
 
-  private final Map<BlockLocation, Tag> tagMap = new HashMap<>();
+  private static final String PUT = "Failed to put the following tag: %s";
+  private static final String FETCH = "Failed to fetch the tag with the following location: %s";
+  private static final String DELETE = "Failed to delete the tag with the following location: %s";
 
-  @Override
-  public void put(@NonNull Tag tag) {
-    tagMap.put(tag.getBlockLocation(), tag);
+  public static @NonNull TagRepositoryException put(@NonNull Tag tag, @NonNull Throwable cause) {
+    String message = String.format(PUT, tag);
+    return new TagRepositoryException(message, cause);
   }
 
-  @Override
-  public @NonNull Optional<Tag> findByLocation(@NonNull BlockLocation blockLocation) {
-    return Optional.ofNullable(tagMap.get(blockLocation));
+  public static @NonNull TagRepositoryException fetch(
+      @NonNull BlockLocation blockLocation, @NonNull Throwable cause) {
+    String message = String.format(FETCH, blockLocation);
+    return new TagRepositoryException(message, cause);
   }
 
-  @Override
-  public void delete(@NonNull BlockLocation blockLocation) {
-    tagMap.remove(blockLocation);
+  public static @NonNull TagRepositoryException delete(
+      @NonNull BlockLocation blockLocation, @NonNull Throwable cause) {
+    String message = String.format(DELETE, blockLocation);
+    return new TagRepositoryException(message, cause);
   }
 }

@@ -29,55 +29,23 @@
     <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
     <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
     <version>2.1.7-SNAPSHOT</version>
-    <relativePath>../../../pom.xml</relativePath>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>storage-base-sql</artifactId>
-  <packaging>jar</packaging>
-  <name>Storage SQL</name>
-  <description>SQL commons to store data of the place-and-break patch</description>
+  <artifactId>storage</artifactId>
+  <packaging>pom</packaging>
+  <name>Storage Aggregator</name>
+  <description>The aggregator of storage modules</description>
+
+  <modules>
+    <module>storage-api</module>
+    <module>storage-base-sql</module>
+    <module>storage-inmemory</module>
+    <module>storage-mysql</module>
+    <module>storage-sqlite</module>
+  </modules>
 
   <properties>
-    <main.basedir>${project.basedir}/../../../</main.basedir>
+    <main.basedir>${project.basedir}/../../</main.basedir>
   </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>patch-place-break-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>storage-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>commons-test</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 </project>

@@ -20,34 +20,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import javax.inject.Singleton;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import lombok.NonNull;
 
-@Singleton
-public class TagInMemoryRepository implements TagRepository {
+/** Represents validation related configs. */
+public class ValidationModule extends AbstractModule {
 
-  private final Map<BlockLocation, Tag> tagMap = new HashMap<>();
-
-  @Override
-  public void put(@NonNull Tag tag) {
-    tagMap.put(tag.getBlockLocation(), tag);
+  @Provides
+  @Singleton
+  public @NonNull ValidatorFactory provideValidatorFactory() {
+    return Validation.buildDefaultValidatorFactory();
   }
 
-  @Override
-  public @NonNull Optional<Tag> findByLocation(@NonNull BlockLocation blockLocation) {
-    return Optional.ofNullable(tagMap.get(blockLocation));
-  }
-
-  @Override
-  public void delete(@NonNull BlockLocation blockLocation) {
-    tagMap.remove(blockLocation);
+  @Provides
+  @Singleton
+  public @NonNull Validator provideValidator(ValidatorFactory validatorFactory) {
+    return validatorFactory.getValidator();
   }
 }

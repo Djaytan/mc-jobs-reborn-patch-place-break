@@ -20,34 +20,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import javax.inject.Singleton;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakImpl;
+import java.nio.file.Path;
 import lombok.NonNull;
 
-@Singleton
-public class TagInMemoryRepository implements TagRepository {
+/** Represents general patch configs. */
+public class PatchPlaceBreakModule extends AbstractModule {
 
-  private final Map<BlockLocation, Tag> tagMap = new HashMap<>();
+  private final ClassLoader classLoader;
+  private final Path dataFolder;
 
-  @Override
-  public void put(@NonNull Tag tag) {
-    tagMap.put(tag.getBlockLocation(), tag);
+  public PatchPlaceBreakModule(@NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
+    this.classLoader = classLoader;
+    this.dataFolder = dataFolder;
   }
 
   @Override
-  public @NonNull Optional<Tag> findByLocation(@NonNull BlockLocation blockLocation) {
-    return Optional.ofNullable(tagMap.get(blockLocation));
+  protected void configure() {
+    bind(PatchPlaceBreakApi.class).to(PatchPlaceBreakImpl.class);
   }
 
-  @Override
-  public void delete(@NonNull BlockLocation blockLocation) {
-    tagMap.remove(blockLocation);
+  @Provides
+  @Singleton
+  public @NonNull ClassLoader provideClassLoader() {
+    return classLoader;
+  }
+
+  @Provides
+  @Named("dataFolder")
+  @Singleton
+  public @NonNull Path provideDataFolder() {
+    // TODO: create folder if doesn't exists (same to do in bukkit-plugin side if applicable)
+    return dataFolder;
   }
 }

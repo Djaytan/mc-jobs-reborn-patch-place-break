@@ -20,29 +20,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
 import java.nio.file.Path;
 import lombok.NonNull;
 
-public class GuiceJobsRebornPatchPlaceBreakModule extends AbstractModule {
+public final class PatchPlaceBreakInjector {
 
-  private final ClassLoader classLoader;
+  private Injector injector;
 
-  public GuiceJobsRebornPatchPlaceBreakModule(@NonNull ClassLoader classLoader) {
-    this.classLoader = classLoader;
+  public void inject(@NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
+    injector =
+        Guice.createInjector(
+            new ConfigModule(),
+            new StorageModule(),
+            new ValidationModule(),
+            new PatchPlaceBreakModule(classLoader, dataFolder));
   }
 
-  @Provides
-  @Singleton
-  public @NonNull PatchPlaceBreakApi providePatchPlaceBreakApi(
-      @Named("dataFolder") Path dataFolder, PatchPlaceBreakCore patchPlaceBreakCore) {
-    return patchPlaceBreakCore.enable(classLoader, dataFolder);
+  public @NonNull PatchPlaceBreakApi getPatchApi() {
+    if (injector == null) {
+      throw PatchPlaceBreakException.injectionRequiredFirst();
+    }
+    return injector.getInstance(PatchPlaceBreakApi.class);
+  }
+
+  public @NonNull DataSourceManager getDataSourceManager() {
+    if (injector == null) {
+      throw PatchPlaceBreakException.injectionRequiredFirst();
+    }
+    return injector.getInstance(DataSourceManager.class);
   }
 }
