@@ -1,9 +1,7 @@
-/*-
- * #%L
- * JobsReborn-PatchPlaceBreak
- * %%
- * Copyright (C) 2022 - 2023 Loïc DUBOIS-TERMOZ (alias Djaytan)
- * %%
+/*
+ * The MIT License
+ * Copyright © 2022 Loïc DUBOIS-TERMOZ (alias Djaytan)
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -21,9 +19,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- * #L%
  */
-
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
