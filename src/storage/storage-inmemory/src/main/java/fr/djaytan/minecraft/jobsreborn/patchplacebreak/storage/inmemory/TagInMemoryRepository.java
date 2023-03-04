@@ -24,6 +24,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.inmemory;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPair;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +44,15 @@ public class TagInMemoryRepository implements TagRepository {
   }
 
   @Override
-  public void updateLocation(
+  public void updateLocations(@NonNull OldNewBlockLocationPairSet oldNewLocationPairs) {
+    for (OldNewBlockLocationPair oldNewLocationPair :
+        oldNewLocationPairs.getOldNewBlockLocationPairs()) {
+      updateLocation(
+          oldNewLocationPair.getOldBlockLocation(), oldNewLocationPair.getNewBlockLocation());
+    }
+  }
+
+  private void updateLocation(
       @NonNull BlockLocation oldBlockLocation, @NonNull BlockLocation newBlockLocation) {
     Tag tag = tagMap.get(oldBlockLocation);
     Tag movedTag = tag.withBlockLocation(newBlockLocation);

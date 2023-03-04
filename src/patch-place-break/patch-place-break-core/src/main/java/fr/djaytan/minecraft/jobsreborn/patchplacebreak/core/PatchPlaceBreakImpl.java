@@ -27,12 +27,15 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionT
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPair;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
@@ -62,17 +65,17 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   public void moveTags(@NonNull Set<BlockLocation> blockLocations, @NonNull Vector direction) {
     CompletableFuture.runAsync(
         () -> {
-          for (BlockLocation oldBlockLocation : blockLocations) {
-            Optional<Tag> tag = tagRepository.findByLocation(oldBlockLocation);
+          OldNewBlockLocationPairSet oldNewLocationPairs =
+              new OldNewBlockLocationPairSet(
+                  blockLocations.stream()
+                      .map(
+                          oldBlockLocation ->
+                              new OldNewBlockLocationPair(
+                                  oldBlockLocation,
+                                  BlockLocation.from(oldBlockLocation, direction)))
+                      .collect(Collectors.toSet()));
 
-            if (!tag.isPresent()) {
-              continue;
-            }
-
-            BlockLocation newBlockLocation = BlockLocation.from(oldBlockLocation, direction);
-
-            tagRepository.updateLocation(oldBlockLocation, newBlockLocation);
-          }
+          tagRepository.updateLocations(oldNewLocationPairs);
         });
   }
 
