@@ -61,6 +61,22 @@ public class TagSqlRepository implements TagRepository {
   }
 
   @Override
+  public void updateLocation(
+      @NonNull BlockLocation oldBlockLocation, @NonNull BlockLocation newBlockLocation) {
+    connectionPool.useConnection(
+        connection -> {
+          try {
+            connection.setAutoCommit(false);
+            tagSqlDao.delete(connection, newBlockLocation);
+            tagSqlDao.updateLocation(connection, oldBlockLocation, newBlockLocation);
+            connection.commit();
+          } catch (SQLException e) {
+            throw TagRepositoryException.update(oldBlockLocation, e);
+          }
+        });
+  }
+
+  @Override
   public @NonNull Optional<Tag> findByLocation(@NonNull BlockLocation blockLocation) {
     return connectionPool.useConnection(
         connection -> {

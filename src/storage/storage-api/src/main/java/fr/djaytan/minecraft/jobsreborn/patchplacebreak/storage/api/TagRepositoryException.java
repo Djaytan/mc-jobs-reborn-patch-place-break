@@ -32,11 +32,18 @@ import lombok.experimental.StandardException;
 public class TagRepositoryException extends RuntimeException {
 
   private static final String PUT = "Failed to put the following tag: %s";
+  private static final String UPDATE = "Failed to update the tag at the following location: %s";
   private static final String FETCH = "Failed to fetch the tag with the following location: %s";
   private static final String DELETE = "Failed to delete the tag with the following location: %s";
 
   public static @NonNull TagRepositoryException put(@NonNull Tag tag, @NonNull Throwable cause) {
     String message = String.format(PUT, tag);
+    return new TagRepositoryException(message, cause);
+  }
+
+  public static @NonNull TagRepositoryException update(
+      @NonNull BlockLocation blockLocation, @NonNull Throwable cause) {
+    String message = String.format(UPDATE, blockLocation);
     return new TagRepositoryException(message, cause);
   }
 

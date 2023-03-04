@@ -72,6 +72,31 @@ public class TagSqlDao {
     }
   }
 
+  public void updateLocation(
+      @NonNull Connection connection,
+      @NonNull BlockLocation oldLocation,
+      @NonNull BlockLocation newLocation)
+      throws SQLException {
+    String sql =
+        String.format(
+            "UPDATE %s "
+                + "SET world_name = ?, location_x = ?, location_y = ?, location_z = ? "
+                + "WHERE world_name = ? AND location_x = ? AND location_y = ? AND location_z = ?",
+            dataSourceProperties.getTable());
+
+    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+      preparedStatement.setString(1, newLocation.getWorldName());
+      preparedStatement.setInt(2, newLocation.getX());
+      preparedStatement.setInt(3, newLocation.getY());
+      preparedStatement.setInt(4, newLocation.getZ());
+      preparedStatement.setString(5, oldLocation.getWorldName());
+      preparedStatement.setInt(6, oldLocation.getX());
+      preparedStatement.setInt(7, oldLocation.getY());
+      preparedStatement.setInt(8, oldLocation.getZ());
+      preparedStatement.executeUpdate();
+    }
+  }
+
   public @NonNull Optional<Tag> findByLocation(
       @NonNull Connection connection, @NonNull BlockLocation blockLocation) throws SQLException {
     String sql =

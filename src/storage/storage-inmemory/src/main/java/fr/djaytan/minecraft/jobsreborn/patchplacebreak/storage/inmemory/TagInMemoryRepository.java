@@ -42,6 +42,14 @@ public class TagInMemoryRepository implements TagRepository {
   }
 
   @Override
+  public void updateLocation(
+      @NonNull BlockLocation oldBlockLocation, @NonNull BlockLocation newBlockLocation) {
+    Tag tag = tagMap.get(oldBlockLocation);
+    Tag movedTag = tag.withBlockLocation(newBlockLocation);
+    tagMap.put(newBlockLocation, movedTag);
+  }
+
+  @Override
   public @NonNull Optional<Tag> findByLocation(@NonNull BlockLocation blockLocation) {
     return Optional.ofNullable(tagMap.get(blockLocation));
   }

@@ -38,7 +38,7 @@ import javax.inject.Singleton;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
-/** Default implementation of {@link PatchPlaceBreakApi}. */
+/** Implementation of {@link PatchPlaceBreakApi}. */
 @Singleton
 @Slf4j
 public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
@@ -59,6 +59,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
         });
   }
 
+  // TODO: use Set instead of Collection for block locations (no duplicates expected and allowed)
   public void moveTags(
       @NonNull Collection<BlockLocation> blockLocations, @NonNull Vector direction) {
     CompletableFuture.runAsync(
@@ -72,17 +73,9 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
 
             BlockLocation newBlockLocation = BlockLocation.from(oldBlockLocation, direction);
 
-            moveTag(oldBlockLocation, newBlockLocation, tag.get().isEphemeral());
+            tagRepository.updateLocation(oldBlockLocation, newBlockLocation);
           }
         });
-  }
-
-  private void moveTag(
-      @NonNull BlockLocation oldBlockLocation,
-      @NonNull BlockLocation newBlockLocation,
-      boolean isEphemeral) {
-    putTag(newBlockLocation, isEphemeral);
-    // TODO: old tag must be removed, but it must be done with a transaction
   }
 
   public void removeTag(@NonNull BlockLocation blockLocation) {
