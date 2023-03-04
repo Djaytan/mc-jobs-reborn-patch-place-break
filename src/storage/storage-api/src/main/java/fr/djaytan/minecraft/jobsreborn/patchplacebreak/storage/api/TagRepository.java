@@ -54,6 +54,16 @@ public interface TagRepository {
   void put(@NonNull Tag tag);
 
   /**
+   * Updates the locations of tags from old to new ones.
+   *
+   * <p>More concretely, a tag from an old location must overwrite the existing one at the new
+   * location. Then, no tag must exist anymore at the old location.
+   *
+   * @param oldNewLocationPairs The set of old-new location pairs
+   */
+  void updateLocations(@NonNull OldNewBlockLocationPairSet oldNewLocationPairs);
+
+  /**
    * Finds a tag from a {@link BlockLocation}.
    *
    * @param blockLocation The location where the sought tag may be.

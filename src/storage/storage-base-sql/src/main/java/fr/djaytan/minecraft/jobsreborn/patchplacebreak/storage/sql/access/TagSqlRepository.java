@@ -24,11 +24,16 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.access;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPair;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepositoryException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.ConnectionPool;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
@@ -58,6 +63,65 @@ public class TagSqlRepository implements TagRepository {
             throw TagRepositoryException.put(tag, e);
           }
         });
+  }
+
+  @Override
+  public void updateLocations(@NonNull OldNewBlockLocationPairSet oldNewLocationPairs) {
+    connectionPool.useConnection(
+        connection -> {
+          try {
+            connection.setAutoCommit(false);
+            Set<Tag> newTags = prepareNewTags(connection, oldNewLocationPairs);
+            cleanUpTags(connection, oldNewLocationPairs);
+            putNewTags(connection, newTags);
+            connection.commit();
+          } catch (SQLException e) {
+            throw TagRepositoryException.update(oldNewLocationPairs, e);
+          }
+        });
+  }
+
+  private @NonNull Set<Tag> prepareNewTags(
+      @NonNull Connection connection, @NonNull OldNewBlockLocationPairSet oldNewLocationPairs)
+      throws SQLException {
+    Set<Tag> newTags = new HashSet<>();
+
+    for (OldNewBlockLocationPair oldNewLocationPair :
+        oldNewLocationPairs.getOldNewBlockLocationPairs()) {
+      Optional<Tag> oldTag =
+          tagSqlDao.findByLocation(connection, oldNewLocationPair.getOldBlockLocation());
+
+      if (!oldTag.isPresent()) {
+        continue;
+      }
+
+      Tag newTag =
+          Tag.of(
+              oldNewLocationPair.getNewBlockLocation(),
+              oldTag.get().isEphemeral(),
+              oldTag.get().getInitLocalDateTime());
+      newTags.add(newTag);
+    }
+
+    return newTags;
+  }
+
+  private void cleanUpTags(
+      @NonNull Connection connection,
+      @NonNull OldNewBlockLocationPairSet oldNewBlockLocationPairSet)
+      throws SQLException {
+    Set<BlockLocation> tagsToRemove = oldNewBlockLocationPairSet.flattenBlockLocations();
+
+    for (BlockLocation oldTagLocation : tagsToRemove) {
+      tagSqlDao.delete(connection, oldTagLocation);
+    }
+  }
+
+  private void putNewTags(@NonNull Connection connection, @NonNull Set<Tag> newTags)
+      throws SQLException {
+    for (Tag newTag : newTags) {
+      tagSqlDao.insert(connection, newTag);
+    }
   }
 
   @Override
