@@ -32,6 +32,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.BlockFaceConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.LocationConverter;
 import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -84,11 +85,11 @@ public class PatchPlaceBreakBukkitAdapterApi {
    *
    * @param blocks The list of blocks with potential tags to be moved.
    * @param blockFace The block face from which to infer the move direction.
-   * @see PatchPlaceBreakApi#moveTags(Collection, Vector)
+   * @see PatchPlaceBreakApi#moveTags(Set, Vector)
    */
   public void moveTags(@NonNull Collection<Block> blocks, @NonNull BlockFace blockFace) {
-    Collection<BlockLocation> blockLocations =
-        blocks.stream().map(locationConverter::convert).collect(Collectors.toList());
+    Set<BlockLocation> blockLocations =
+        blocks.stream().map(locationConverter::convert).collect(Collectors.toSet());
     Vector vector = blockFaceConverter.convert(blockFace);
     patchPlaceBreakApi.moveTags(blockLocations, vector);
   }

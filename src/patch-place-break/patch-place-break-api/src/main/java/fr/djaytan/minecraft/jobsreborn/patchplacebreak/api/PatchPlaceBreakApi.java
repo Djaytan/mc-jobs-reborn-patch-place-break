@@ -27,7 +27,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocatio
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.time.Duration;
-import java.util.Collection;
+import java.util.Set;
 import lombok.NonNull;
 
 /**
@@ -50,8 +50,8 @@ import lombok.NonNull;
  * method.
  *
  * <p>A tag can be placed with {@link #putTag(BlockLocation, boolean)} method. The {@link
- * #moveTags(Collection, Vector)} has a special purpose: to permit to put back tags when blocks are
- * moved (e.g. by block piston extend and retract events).
+ * #moveTags(Set, Vector)} has a special purpose: to permit to put back tags when blocks are moved
+ * (e.g. by block piston extend and retract events).
  *
  * <p>Finally, this API give the possibility to check if the jobs action type involving a given
  * block is a place-and-break exploit or no with the method {@link
@@ -90,7 +90,7 @@ public interface PatchPlaceBreakApi {
    * @param blockLocations The locations from where to move existing tags.
    * @param direction The direction where to move existing tags.
    */
-  void moveTags(@NonNull Collection<BlockLocation> blockLocations, @NonNull Vector direction);
+  void moveTags(@NonNull Set<BlockLocation> blockLocations, @NonNull Vector direction);
 
   /**
    * Removes existing tag from a specified location. This can be useful when the state of the block

@@ -30,8 +30,8 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -59,9 +59,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
         });
   }
 
-  // TODO: use Set instead of Collection for block locations (no duplicates expected and allowed)
-  public void moveTags(
-      @NonNull Collection<BlockLocation> blockLocations, @NonNull Vector direction) {
+  public void moveTags(@NonNull Set<BlockLocation> blockLocations, @NonNull Vector direction) {
     CompletableFuture.runAsync(
         () -> {
           for (BlockLocation oldBlockLocation : blockLocations) {
