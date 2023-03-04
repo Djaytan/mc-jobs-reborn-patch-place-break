@@ -31,7 +31,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Getter
 public enum DataSourceType {
-  IN_MEMORY(false),
   MYSQL(true),
   SQLITE(false);
 
