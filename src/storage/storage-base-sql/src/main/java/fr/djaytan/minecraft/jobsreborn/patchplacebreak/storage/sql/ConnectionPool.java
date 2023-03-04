@@ -52,7 +52,7 @@ public class ConnectionPool {
 
   // TODO: rename connect and disconnect -> enable/disable
   public void connect() {
-    log.atInfo().log("Connecting to database '{}'...", jdbcUrl);
+    log.atInfo().log("Connecting to database '{}'...", jdbcUrl.get());
 
     HikariConfig hikariConfig = new HikariConfig();
     hikariConfig.setJdbcUrl(jdbcUrl.get());
