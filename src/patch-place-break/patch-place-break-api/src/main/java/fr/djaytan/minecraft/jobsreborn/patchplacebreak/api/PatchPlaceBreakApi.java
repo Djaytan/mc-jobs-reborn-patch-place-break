@@ -22,10 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.*;
 import java.time.Duration;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -47,16 +44,15 @@ import lombok.NonNull;
  *
  * <p>Nevertheless, an attached tag can be removed given specific conditions like when a block grow
  * event happens. This will permit farmers to achieve their job without seeing their action being
- * cancelled by this patch plugin. This is the purpose of the {@link #removeTag(BlockLocation)}
- * method.
+ * cancelled by this patch plugin. This is the purpose of the {@link #removeTag(Block)} method.
  *
- * <p>A tag can be placed with {@link #putTag(BlockLocation, boolean)} method. The {@link
- * #moveTags(Set, Vector)} has a special purpose: to permit to put back tags when blocks are moved
- * (e.g. by block piston extend and retract events).
+ * <p>A tag can be placed with {@link #putTag(Block, boolean)} method. The {@link #moveTags(Set,
+ * Vector)} has a special purpose: to permit to put back tags when blocks are moved (e.g. by block
+ * piston extend and retract events).
  *
  * <p>Finally, this API give the possibility to check if the jobs action type involving a given
  * block is a place-and-break exploit or no with the method {@link
- * #isPlaceAndBreakExploit(BlockActionType, BlockLocation)}.
+ * #isPlaceAndBreakExploit(BlockActionType, Block)}.
  */
 public interface PatchPlaceBreakApi {
 
@@ -68,18 +64,18 @@ public interface PatchPlaceBreakApi {
    *
    * <p>If the tag must be considered as an ephemeral one, then a validity duration of {@link
    * #EPHEMERAL_TAG_DURATION} will be applied. After this delay the tag will not be considered as
-   * active anymore and will be ignored by {@link #isPlaceAndBreakExploit(BlockActionType,
-   * BlockLocation)} method.
+   * active anymore and will be ignored by {@link #isPlaceAndBreakExploit(BlockActionType, Block)}
+   * method.
    *
    * <p>The method is executed asynchronously for performances purposes.
    *
-   * @param blockLocation The block location where the tag must be put.
+   * @param block The block where the tag must be put.
    * @param isEphemeral <code>true</code> if the tag must be ephemeral, <code>false</code>
    *     otherwise.
    * @return The completable future object.
    */
   @NonNull
-  CompletableFuture<Void> putTag(@NonNull BlockLocation blockLocation, boolean isEphemeral);
+  CompletableFuture<Void> putTag(@NonNull Block block, boolean isEphemeral);
 
   /**
    * Moves given tags according to the specified direction.
@@ -90,13 +86,13 @@ public interface PatchPlaceBreakApi {
    *
    * <p>The method is executed asynchronously for performances purposes.
    *
-   * @param blockLocations The locations from where to move existing tags.
+   * @param blocks Blocks from where to move existing tags.
    * @param direction The direction where to move existing tags.
    * @return The completable future object.
    */
   @NonNull
   CompletableFuture<Void> moveTags(
-      @NonNull Set<BlockLocation> blockLocations, @NonNull Vector direction);
+      @NonNull Set<Block> blocks, @NonNull Vector direction);
 
   /**
    * Removes existing tag from a specified location. This can be useful when the state of the block
@@ -104,11 +100,11 @@ public interface PatchPlaceBreakApi {
    *
    * <p>The method is executed asynchronously for performances purposes.
    *
-   * @param blockLocation The location where to remove tags if existing.
+   * @param block The block where to remove tags if existing.
    * @return The completable future object.
    */
   @NonNull
-  CompletableFuture<Void> removeTag(@NonNull BlockLocation blockLocation);
+  CompletableFuture<Void> removeTag(@NonNull Block block);
 
   /**
    * Checks if the specified block action type at the given location is a place-and-break exploit or
@@ -125,9 +121,8 @@ public interface PatchPlaceBreakApi {
    * <p>The method is blocking since the value retrieving depend on data source response time.
    *
    * @param blockActionType The performed action type involving a block.
-   * @param blockLocation The location where the action has been performed.
+   * @param block The block where the action has been performed.
    * @return <code>true</code> if it's a place-and-break exploit, <code>false</code> otherwise.
    */
-  boolean isPlaceAndBreakExploit(
-      @NonNull BlockActionType blockActionType, @NonNull BlockLocation blockLocation);
+  boolean isPlaceAndBreakExploit(@NonNull BlockActionType blockActionType, @NonNull Block block);
 }

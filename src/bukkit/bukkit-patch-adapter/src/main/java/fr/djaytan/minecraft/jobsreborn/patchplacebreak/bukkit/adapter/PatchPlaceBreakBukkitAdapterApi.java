@@ -25,6 +25,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Block;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
@@ -38,7 +39,6 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.NonNull;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 /**
@@ -69,14 +69,14 @@ public class PatchPlaceBreakBukkitAdapterApi {
   /**
    * Puts a tag on the specified location.
    *
-   * @param block The block where to put tag.
+   * @param bukkitBlock The block where to put tag.
    * @param isEphemeral Whether the tag to put must be an ephemeral one or not.
    * @return The completable future object.
-   * @see PatchPlaceBreakApi#putTag(BlockLocation, boolean)
+   * @see PatchPlaceBreakApi#putTag(Block, boolean)
    */
-  public @NonNull CompletableFuture<Void> putTag(@NonNull Block block, boolean isEphemeral) {
-    BlockLocation blockLocation = locationConverter.convert(block);
-    return patchPlaceBreakApi.putTag(blockLocation, isEphemeral);
+  public @NonNull CompletableFuture<Void> putTag(@NonNull org.bukkit.block.Block bukkitBlock, boolean isEphemeral) {
+    BlockLocation blockLocation = locationConverter.convert(bukkitBlock);
+    return patchPlaceBreakApi.putTag(Block.of(blockLocation, bukkitBlock.getType().name()), isEphemeral);
   }
 
   /**
@@ -85,15 +85,19 @@ public class PatchPlaceBreakBukkitAdapterApi {
    *
    * <p><i>The performed move is of only one block in the specified direction.
    *
-   * @param blocks The list of blocks with potential tags to be moved.
+   * @param bukkitBlocks The list of blocks with potential tags to be moved.
    * @param blockFace The block face from which to infer the move direction.
    * @return The completable future object.
    * @see PatchPlaceBreakApi#moveTags(Set, Vector)
    */
   public @NonNull CompletableFuture<Void> moveTags(
-      @NonNull Collection<Block> blocks, @NonNull BlockFace blockFace) {
-    Set<BlockLocation> blockLocations =
-        blocks.stream().map(locationConverter::convert).collect(Collectors.toSet());
+      @NonNull Collection<org.bukkit.block.Block> bukkitBlocks, @NonNull BlockFace blockFace) {
+    Set<Block> blockLocations =
+      bukkitBlocks.stream()
+        .map(
+          bukkitBlock ->
+            Block.of(locationConverter.convert(bukkitBlock), bukkitBlock.getType().name()))
+        .collect(Collectors.toSet());
     Vector vector = blockFaceConverter.convert(blockFace);
     return patchPlaceBreakApi.moveTags(blockLocations, vector);
   }
@@ -101,26 +105,26 @@ public class PatchPlaceBreakBukkitAdapterApi {
   /**
    * Removes existing tag from the specified location.
    *
-   * @param block The block from which to remove the tag if it exists.
+   * @param bukkitBlock The block from which to remove the tag if it exists.
    * @return The completable future object.
-   * @see PatchPlaceBreakApi#removeTag(BlockLocation)
+   * @see PatchPlaceBreakApi#removeTag(Block)
    */
-  public @NonNull CompletableFuture<Void> removeTag(@NonNull Block block) {
-    BlockLocation blockLocation = locationConverter.convert(block);
-    return patchPlaceBreakApi.removeTag(blockLocation);
+  public @NonNull CompletableFuture<Void> removeTag(@NonNull org.bukkit.block.Block bukkitBlock) {
+    BlockLocation blockLocation = locationConverter.convert(bukkitBlock);
+    return patchPlaceBreakApi.removeTag(Block.of(blockLocation, bukkitBlock.getType().name()));
   }
 
   /**
    * Checks if the specified job action for the specified block is a patch-and-break exploit or not.
    *
    * @param actionInfo The job action recorded.
-   * @param block The targeted block by job action which has been recorded.
+   * @param bukkitBlock The targeted block by job action which has been recorded.
    * @return <code>true</code> if the specified job action for the specified block is a
    *     patch-and-break exploit or not.
-   * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, BlockLocation)
+   * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, Block)
    */
-  public boolean isPlaceAndBreakExploit(ActionInfo actionInfo, Block block) {
-    if (actionInfo == null || block == null) {
+  public boolean isPlaceAndBreakExploit(ActionInfo actionInfo, org.bukkit.block.Block bukkitBlock) {
+    if (actionInfo == null || bukkitBlock == null) {
       return false;
     }
 
@@ -131,7 +135,7 @@ public class PatchPlaceBreakBukkitAdapterApi {
     }
 
     BlockActionType patchActionType = actionTypeConverter.convert(actionType);
-    BlockLocation blockLocation = locationConverter.convert(block);
-    return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, blockLocation);
+    Block block = Block.of(locationConverter.convert(bukkitBlock), bukkitBlock.getType().name());
+    return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, block);
   }
 }
