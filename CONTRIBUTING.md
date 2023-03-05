@@ -94,19 +94,5 @@ cannot access class com.sun.tools.javac.parser.Tokens$TokenKind (in module jdk.c
 because module jdk.compiler does not export com.sun.tools.javac.parser to unnamed module @0xe655ab1
 ```
 
-To solve this, you can simply add the following JVM arguments to IntelliJ according
-to [this GitHub response](https://github.com/google/google-java-format/issues/787#issuecomment-1158034061):
-
-```
---add-opens=java.base/java.lang=ALL-UNNAMED
---add-opens=java.base/java.util=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED
-```
-
-Instructions about how to achieve this can be
-found [here](https://www.jetbrains.com/help/idea/tuning-the-ide.html#configure-jvm-options).
-In short, simply go to Help > Edit Custom VM Options
+To solve this, you can simply add the following JVM arguments to IntelliJ by
+following [these instructions](https://github.com/google/google-java-format/blob/master/README.md#intellij-jre-config).
