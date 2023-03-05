@@ -96,3 +96,17 @@ because module jdk.compiler does not export com.sun.tools.javac.parser to unname
 
 To solve this, you can simply add the following JVM arguments to IntelliJ by
 following [these instructions](https://github.com/google/google-java-format/blob/master/README.md#intellij-jre-config).
+BUT put the following JVM arguments instead (otherwise it may not work):
+
+```
+--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED
+--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED
+--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED
+```
