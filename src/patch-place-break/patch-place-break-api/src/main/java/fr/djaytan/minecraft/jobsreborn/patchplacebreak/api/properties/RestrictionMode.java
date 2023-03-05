@@ -22,6 +22,20 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties;
 
+/**
+ * Represents the restriction modes for a block filtering system.
+ *
+ * <p>The available restriction modes are:
+ *
+ * <p>BLACKLIST: All blocks in the block list should be ignored, while all other
+ * blocks are allowed.
+ *
+ * <p>WHITELIST: Only blocks in the block list should be allowed, and all other blocks
+ * should be ignored.
+ *
+ * <p>DISABLED: The restriction system is disabled, and all blocks will be taken into
+ * account without any filtering.
+ */
 public enum RestrictionMode {
   BLACKLIST,
   WHITELIST,

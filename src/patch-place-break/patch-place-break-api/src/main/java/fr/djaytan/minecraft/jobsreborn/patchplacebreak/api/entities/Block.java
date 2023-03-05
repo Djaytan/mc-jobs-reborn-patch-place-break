@@ -25,6 +25,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 import lombok.NonNull;
 import lombok.Value;
 
+/** Representation of a block */
 @Value(staticConstructor = "of")
 public class Block {
 

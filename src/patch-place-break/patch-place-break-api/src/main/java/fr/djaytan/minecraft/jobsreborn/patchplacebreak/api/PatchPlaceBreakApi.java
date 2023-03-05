@@ -22,7 +22,10 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.*;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Block;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.time.Duration;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -86,16 +89,15 @@ public interface PatchPlaceBreakApi {
    *
    * <p>The method is executed asynchronously for performances purposes.
    *
-   * @param blocks Blocks from where to move existing tags.
+   * @param blocks The blocks from where to move existing tags.
    * @param direction The direction where to move existing tags.
    * @return The completable future object.
    */
   @NonNull
-  CompletableFuture<Void> moveTags(
-      @NonNull Set<Block> blocks, @NonNull Vector direction);
+  CompletableFuture<Void> moveTags(@NonNull Set<Block> blocks, @NonNull Vector direction);
 
   /**
-   * Removes existing tag from a specified location. This can be useful when the state of the block
+   * Removes existing tag from a specified block. This can be useful when the state of the block
    * change (e.g. crops grow like with wheat).
    *
    * <p>The method is executed asynchronously for performances purposes.
@@ -107,7 +109,7 @@ public interface PatchPlaceBreakApi {
   CompletableFuture<Void> removeTag(@NonNull Block block);
 
   /**
-   * Checks if the specified block action type at the given location is a place-and-break exploit or
+   * Checks if the specified block action type on the given block is a place-and-break exploit or
    * not.
    *
    * <p>This method will return <code>true</code> if one of the following tags exist:
@@ -118,10 +120,10 @@ public interface PatchPlaceBreakApi {
    *       #EPHEMERAL_TAG_DURATION})
    * </ul>
    *
-   * <p>The method is blocking since the value retrieving depend on data source response time.
+   * <p>The method is blocking since the value retrieving depends on data source response time.
    *
    * @param blockActionType The performed action type involving a block.
-   * @param block The block where the action has been performed.
+   * @param block The block on which the action has been performed.
    * @return <code>true</code> if it's a place-and-break exploit, <code>false</code> otherwise.
    */
   boolean isPlaceAndBreakExploit(@NonNull BlockActionType blockActionType, @NonNull Block block);

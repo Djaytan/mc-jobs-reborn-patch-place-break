@@ -74,9 +74,11 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * @return The completable future object.
    * @see PatchPlaceBreakApi#putTag(Block, boolean)
    */
-  public @NonNull CompletableFuture<Void> putTag(@NonNull org.bukkit.block.Block bukkitBlock, boolean isEphemeral) {
+  public @NonNull CompletableFuture<Void> putTag(
+      @NonNull org.bukkit.block.Block bukkitBlock, boolean isEphemeral) {
     BlockLocation blockLocation = locationConverter.convert(bukkitBlock);
-    return patchPlaceBreakApi.putTag(Block.of(blockLocation, bukkitBlock.getType().name()), isEphemeral);
+    return patchPlaceBreakApi.putTag(
+        Block.of(blockLocation, bukkitBlock.getType().name()), isEphemeral);
   }
 
   /**
@@ -92,14 +94,14 @@ public class PatchPlaceBreakBukkitAdapterApi {
    */
   public @NonNull CompletableFuture<Void> moveTags(
       @NonNull Collection<org.bukkit.block.Block> bukkitBlocks, @NonNull BlockFace blockFace) {
-    Set<Block> blockLocations =
-      bukkitBlocks.stream()
-        .map(
-          bukkitBlock ->
-            Block.of(locationConverter.convert(bukkitBlock), bukkitBlock.getType().name()))
-        .collect(Collectors.toSet());
+    Set<Block> blocks =
+        bukkitBlocks.stream()
+            .map(
+                bukkitBlock ->
+                    Block.of(locationConverter.convert(bukkitBlock), bukkitBlock.getType().name()))
+            .collect(Collectors.toSet());
     Vector vector = blockFaceConverter.convert(blockFace);
-    return patchPlaceBreakApi.moveTags(blockLocations, vector);
+    return patchPlaceBreakApi.moveTags(blocks, vector);
   }
 
   /**
