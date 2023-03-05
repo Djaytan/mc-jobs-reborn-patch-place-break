@@ -23,10 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.*;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPair;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
@@ -54,17 +51,17 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   }
 
   public @NonNull CompletableFuture<Void> putTag(
-      @NonNull BlockLocation blockLocation, boolean isEphemeral) {
+      @NonNull Block block, boolean isEphemeral) {
     return CompletableFuture.runAsync(
         () -> {
           LocalDateTime localDateTime = LocalDateTime.now();
-          Tag tag = Tag.of(blockLocation, isEphemeral, localDateTime);
+          Tag tag = Tag.of(block.getBlockLocation(), isEphemeral, localDateTime);
           tagRepository.put(tag);
         });
   }
 
   public @NonNull CompletableFuture<Void> moveTags(
-      @NonNull Set<BlockLocation> blockLocations, @NonNull Vector direction) {
+      @NonNull Set<Block> blocks, @NonNull Vector direction) {
     return CompletableFuture.runAsync(
         () -> {
           OldNewBlockLocationPairSet oldNewLocationPairs =
@@ -73,21 +70,22 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
                       .map(
                           oldBlockLocation ->
                               new OldNewBlockLocationPair(
-                                  oldBlockLocation,
-                                  BlockLocation.from(oldBlockLocation, direction)))
+                                  oldBlockLocation.getBlockLocation(),
+                                  BlockLocation.from(
+                                      oldBlockLocation.getBlockLocation(), direction)))
                       .collect(Collectors.toSet()));
 
           tagRepository.updateLocations(oldNewLocationPairs);
         });
   }
 
-  public @NonNull CompletableFuture<Void> removeTag(@NonNull BlockLocation blockLocation) {
-    return CompletableFuture.runAsync(() -> tagRepository.delete(blockLocation));
+  public @NonNull CompletableFuture<Void> removeTag(@NonNull Block block) {
+    return CompletableFuture.runAsync(() -> tagRepository.delete(block));
   }
 
   public boolean isPlaceAndBreakExploit(
-      @NonNull BlockActionType blockActionType, @NonNull BlockLocation blockLocation) {
-    Optional<Tag> tag = tagRepository.findByLocation(blockLocation);
+      @NonNull BlockActionType blockActionType, @NonNull Block block) {
+    Optional<Tag> tag = tagRepository.findByLocation(block.getBlockLocation());
 
     if (!tag.isPresent()) {
       return false;
