@@ -23,7 +23,12 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.*;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Block;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictedBlocksProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPair;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
@@ -43,17 +48,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
 
+  private final BlocksFilter blocksFilter;
+  private final RestrictedBlocksProperties restrictedBlocksProperties;
   private final TagRepository tagRepository;
 
   @Inject
-  public PatchPlaceBreakImpl(TagRepository tagRepository) {
+  public PatchPlaceBreakImpl(
+      BlocksFilter blocksFilter,
+      RestrictedBlocksProperties restrictedBlocksProperties,
+      TagRepository tagRepository) {
+    this.blocksFilter = blocksFilter;
+    this.restrictedBlocksProperties = restrictedBlocksProperties;
     this.tagRepository = tagRepository;
   }
 
-  public @NonNull CompletableFuture<Void> putTag(
-      @NonNull Block block, boolean isEphemeral) {
+  public @NonNull CompletableFuture<Void> putTag(@NonNull Block block, boolean isEphemeral) {
     return CompletableFuture.runAsync(
         () -> {
+          if (restrictedBlocksProperties.isRestricted(block.getMaterial())) {
+            return;
+          }
+
           LocalDateTime localDateTime = LocalDateTime.now();
           Tag tag = Tag.of(block.getBlockLocation(), isEphemeral, localDateTime);
           tagRepository.put(tag);
@@ -64,15 +79,20 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
       @NonNull Set<Block> blocks, @NonNull Vector direction) {
     return CompletableFuture.runAsync(
         () -> {
+          Set<Block> filteredBlocks = blocksFilter.filter(blocks);
+
+          if (filteredBlocks.isEmpty()) {
+            return;
+          }
+
           OldNewBlockLocationPairSet oldNewLocationPairs =
               new OldNewBlockLocationPairSet(
-                  blockLocations.stream()
+                  filteredBlocks.stream()
                       .map(
-                          oldBlockLocation ->
+                          oldBlock ->
                               new OldNewBlockLocationPair(
-                                  oldBlockLocation.getBlockLocation(),
-                                  BlockLocation.from(
-                                      oldBlockLocation.getBlockLocation(), direction)))
+                                  oldBlock.getBlockLocation(),
+                                  BlockLocation.from(oldBlock.getBlockLocation(), direction)))
                       .collect(Collectors.toSet()));
 
           tagRepository.updateLocations(oldNewLocationPairs);
@@ -80,11 +100,22 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   }
 
   public @NonNull CompletableFuture<Void> removeTag(@NonNull Block block) {
-    return CompletableFuture.runAsync(() -> tagRepository.delete(block));
+    return CompletableFuture.runAsync(
+        () -> {
+          if (restrictedBlocksProperties.isRestricted(block.getMaterial())) {
+            return;
+          }
+
+          tagRepository.delete(block.getBlockLocation());
+        });
   }
 
   public boolean isPlaceAndBreakExploit(
       @NonNull BlockActionType blockActionType, @NonNull Block block) {
+    if (restrictedBlocksProperties.isRestricted(block.getMaterial())) {
+      return false;
+    }
+
     Optional<Tag> tag = tagRepository.findByLocation(block.getBlockLocation());
 
     if (!tag.isPresent()) {

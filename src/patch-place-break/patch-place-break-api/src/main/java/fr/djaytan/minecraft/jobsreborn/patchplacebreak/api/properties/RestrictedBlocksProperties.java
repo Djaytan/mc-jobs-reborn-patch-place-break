@@ -30,6 +30,12 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.Value;
 
+/**
+ * Represents the properties related to block restrictions when handling tags.
+ *
+ * <p>You can check if a block should be ignored according to the current properties thanks to the
+ * {@link #isRestricted(String)} method.
+ */
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RestrictedBlocksProperties {
@@ -41,5 +47,24 @@ public class RestrictedBlocksProperties {
       @NonNull Set<String> materials, @NonNull RestrictionMode mode) {
     return new RestrictedBlocksProperties(
         Collections.unmodifiableSet(new HashSet<>(materials)), mode);
+  }
+
+  /**
+   * Checks if a given material is restricted based on defined properties.
+   *
+   * @param material The material name to check.
+   * @return true if the material is restricted, false otherwise.
+   */
+  public boolean isRestricted(@NonNull String material) {
+    switch (mode) {
+      case BLACKLIST:
+        return materials.contains(material);
+      case WHITELIST:
+        return !materials.contains(material);
+      case DISABLED:
+        return false;
+      default:
+        throw new IllegalStateException(String.format("Mode %s is not supported.", mode));
+    }
   }
 }

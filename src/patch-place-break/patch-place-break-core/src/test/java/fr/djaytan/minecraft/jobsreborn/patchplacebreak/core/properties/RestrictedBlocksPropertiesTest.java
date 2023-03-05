@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -28,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictedBlocksProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictionMode;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

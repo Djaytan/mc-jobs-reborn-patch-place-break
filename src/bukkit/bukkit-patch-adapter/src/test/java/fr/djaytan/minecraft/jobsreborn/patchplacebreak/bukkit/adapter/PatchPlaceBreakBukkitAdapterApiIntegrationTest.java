@@ -41,6 +41,7 @@ import java.util.Collections;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -97,6 +98,7 @@ class PatchPlaceBreakBukkitAdapterApiIntegrationTest {
     given(block.getX()).willReturn(12);
     given(block.getY()).willReturn(45);
     given(block.getZ()).willReturn(-234);
+    given(block.getType()).willReturn(Material.STONE);
     boolean isEphemeral = false;
 
     // When
@@ -119,6 +121,7 @@ class PatchPlaceBreakBukkitAdapterApiIntegrationTest {
     given(block.getX()).willReturn(12);
     given(block.getY()).willReturn(45);
     given(block.getZ()).willReturn(-234);
+    given(block.getType()).willReturn(Material.STONE);
 
     // When
     boolean isExploit = patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionInfo, block);
@@ -138,6 +141,7 @@ class PatchPlaceBreakBukkitAdapterApiIntegrationTest {
     given(block.getX()).willReturn(12);
     given(block.getY()).willReturn(45);
     given(block.getZ()).willReturn(-234);
+    given(block.getType()).willReturn(Material.STONE);
     Collection<Block> blocks = Collections.singleton(block);
 
     // When
@@ -161,11 +165,13 @@ class PatchPlaceBreakBukkitAdapterApiIntegrationTest {
     given(oldBlock.getX()).willReturn(12);
     given(oldBlock.getY()).willReturn(45);
     given(oldBlock.getZ()).willReturn(-234);
+    given(oldBlock.getType()).willReturn(Material.STONE);
 
     given(newBlock.getWorld()).willReturn(world);
     given(newBlock.getX()).willReturn(13);
     given(newBlock.getY()).willReturn(45);
     given(newBlock.getZ()).willReturn(-234);
+    given(newBlock.getType()).willReturn(Material.STONE);
 
     // When
     boolean isOnOldBlockAnExploit =
@@ -189,6 +195,7 @@ class PatchPlaceBreakBukkitAdapterApiIntegrationTest {
     given(block.getX()).willReturn(13);
     given(block.getY()).willReturn(45);
     given(block.getZ()).willReturn(-234);
+    given(block.getType()).willReturn(Material.STONE);
 
     // When
     ThrowingCallable throwingCallable =
@@ -210,6 +217,7 @@ class PatchPlaceBreakBukkitAdapterApiIntegrationTest {
     given(block.getX()).willReturn(13);
     given(block.getY()).willReturn(45);
     given(block.getZ()).willReturn(-234);
+    given(block.getType()).willReturn(Material.STONE);
 
     // When
     boolean isExploit = patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionInfo, block);

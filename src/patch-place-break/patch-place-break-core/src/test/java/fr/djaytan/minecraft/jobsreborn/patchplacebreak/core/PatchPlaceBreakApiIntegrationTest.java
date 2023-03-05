@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Block;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
@@ -44,8 +45,11 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @TestMethodOrder(OrderAnnotation.class)
+@ExtendWith(MockitoExtension.class)
 class PatchPlaceBreakApiIntegrationTest {
 
   private static Path dataFolder;
@@ -73,12 +77,11 @@ class PatchPlaceBreakApiIntegrationTest {
   @DisplayName("When putting tag")
   void whenPuttingTag_shouldNotThrow() {
     // Given
-    BlockLocation blockLocation = BlockLocation.of("world", 12, 45, -234);
+    Block block = Block.of(BlockLocation.of("world", 12, 45, -234), "STONE");
     boolean isEphemeral = false;
 
     // When
-    ThrowingCallable throwingCallable =
-        () -> patchPlaceBreakApi.putTag(blockLocation, isEphemeral).join();
+    ThrowingCallable throwingCallable = () -> patchPlaceBreakApi.putTag(block, isEphemeral).join();
 
     // Then
     assertThatCode(throwingCallable).doesNotThrowAnyException();
@@ -90,10 +93,10 @@ class PatchPlaceBreakApiIntegrationTest {
   void whenCheckingExploit_withExistingTag_shouldDetectExploit() {
     // Given
     BlockActionType blockActionType = BlockActionType.BREAK;
-    BlockLocation blockLocation = BlockLocation.of("world", 12, 45, -234);
+    Block block = Block.of(BlockLocation.of("world", 12, 45, -234), "STONE");
 
     // When
-    boolean isExploit = patchPlaceBreakApi.isPlaceAndBreakExploit(blockActionType, blockLocation);
+    boolean isExploit = patchPlaceBreakApi.isPlaceAndBreakExploit(blockActionType, block);
 
     // Then
     assertThat(isExploit).isTrue();
@@ -105,12 +108,12 @@ class PatchPlaceBreakApiIntegrationTest {
   void whenMovingTag_shouldNotThrow() {
     // Given
     Vector direction = Vector.of(1, 0, 0);
-    BlockLocation blockLocation = BlockLocation.of("world", 12, 45, -234);
-    Set<BlockLocation> blockLocationSet = Collections.singleton(blockLocation);
+    Block block = Block.of(BlockLocation.of("world", 12, 45, -234), "STONE");
+    Set<Block> blockSet = Collections.singleton(block);
 
     // When
     ThrowingCallable throwingCallable =
-        () -> patchPlaceBreakApi.moveTags(blockLocationSet, direction).join();
+        () -> patchPlaceBreakApi.moveTags(blockSet, direction).join();
 
     // Then
     assertThatCode(throwingCallable).doesNotThrowAnyException();
@@ -122,14 +125,14 @@ class PatchPlaceBreakApiIntegrationTest {
   void whenCheckingExploit_withMovedTag_shouldDetectExploitInNewLocationButNotInOldOne() {
     // Given
     BlockActionType blockActionType = BlockActionType.BREAK;
-    BlockLocation oldBlockLocation = BlockLocation.of("world", 12, 45, -234);
-    BlockLocation newBlockLocation = BlockLocation.of("world", 13, 45, -234);
+    Block oldBlock = Block.of(BlockLocation.of("world", 12, 45, -234), "STONE");
+    Block newBlock = Block.of(BlockLocation.of("world", 13, 45, -234), "STONE");
 
     // When
     boolean isOnOldLocationAnExploit =
-        patchPlaceBreakApi.isPlaceAndBreakExploit(blockActionType, oldBlockLocation);
+        patchPlaceBreakApi.isPlaceAndBreakExploit(blockActionType, oldBlock);
     boolean isOnNewLocationAnExploit =
-        patchPlaceBreakApi.isPlaceAndBreakExploit(blockActionType, newBlockLocation);
+        patchPlaceBreakApi.isPlaceAndBreakExploit(blockActionType, newBlock);
 
     // Then
     assertAll(
@@ -142,10 +145,10 @@ class PatchPlaceBreakApiIntegrationTest {
   @DisplayName("When removing tag")
   void whenRemovingTag_shouldNotThrow() {
     // Given
-    BlockLocation blockLocation = BlockLocation.of("world", 13, 45, -234);
+    Block block = Block.of(BlockLocation.of("world", 13, 45, -234), "STONE");
 
     // When
-    ThrowingCallable throwingCallable = () -> patchPlaceBreakApi.removeTag(blockLocation).join();
+    ThrowingCallable throwingCallable = () -> patchPlaceBreakApi.removeTag(block).join();
 
     // Then
     assertThatCode(throwingCallable).doesNotThrowAnyException();
@@ -157,10 +160,10 @@ class PatchPlaceBreakApiIntegrationTest {
   void whenCheckingExploit_withoutExistingTag_shouldNotDetectExploit() {
     // Given
     BlockActionType blockActionType = BlockActionType.BREAK;
-    BlockLocation blockLocation = BlockLocation.of("world", 13, 45, -234);
+    Block block = Block.of(BlockLocation.of("world", 13, 45, -234), "STONE");
 
     // When
-    boolean isExploit = patchPlaceBreakApi.isPlaceAndBreakExploit(blockActionType, blockLocation);
+    boolean isExploit = patchPlaceBreakApi.isPlaceAndBreakExploit(blockActionType, block);
 
     // Then
     assertThat(isExploit).isFalse();
