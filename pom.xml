@@ -90,14 +90,14 @@
     <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco-merged-test-coverage-report/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 
     <!-- ==================== Dependencies versions ==================== -->
-    <configurate.version>4.1.2</configurate.version>
-    <flyway.version>9.15.2</flyway.version>
-    <lombok.version>1.18.26</lombok.version>
-    <slf4j.version>2.0.6</slf4j.version>
+    <version.configurate>4.1.2</version.configurate>
+    <version.flyway>9.15.2</version.flyway>
+    <version.lombok>1.18.26</version.lombok>
+    <version.slf4j>2.0.6</version.slf4j>
 
     <!-- ==================== Test Dependencies versions ==================== -->
-    <junit.version>5.9.2</junit.version>
-    <mockito.version>5.1.1</mockito.version>
+    <version.junit>5.9.2</version.junit>
+    <version.mockito>5.1.1</version.mockito>
   </properties>
 
   <dependencyManagement>
@@ -179,12 +179,12 @@
       <dependency>
         <groupId>org.flywaydb</groupId>
         <artifactId>flyway-core</artifactId>
-        <version>${flyway.version}</version>
+        <version>${version.flyway}</version>
       </dependency>
       <dependency>
         <groupId>org.flywaydb</groupId>
         <artifactId>flyway-mysql</artifactId>
-        <version>${flyway.version}</version>
+        <version>${version.flyway}</version>
       </dependency>
       <dependency>
         <groupId>org.glassfish</groupId>
@@ -219,47 +219,47 @@
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
-        <version>${junit.version}</version>
+        <version>${version.junit}</version>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-params</artifactId>
-        <version>${junit.version}</version>
+        <version>${version.junit}</version>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
-        <version>${mockito.version}</version>
+        <version>${version.mockito}</version>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-inline</artifactId>
-        <version>${mockito.version}</version>
+        <version>${version.mockito}</version>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-junit-jupiter</artifactId>
-        <version>${mockito.version}</version>
+        <version>${version.mockito}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>${slf4j.version}</version>
+        <version>${version.slf4j}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-nop</artifactId>
-        <version>${slf4j.version}</version>
+        <version>${version.slf4j}</version>
       </dependency>
       <dependency>
         <groupId>org.spongepowered</groupId>
         <artifactId>configurate-core</artifactId>
-        <version>${configurate.version}</version>
+        <version>${version.configurate}</version>
       </dependency>
       <dependency>
         <groupId>org.spongepowered</groupId>
         <artifactId>configurate-hocon</artifactId>
-        <version>${configurate.version}</version>
+        <version>${version.configurate}</version>
       </dependency>
       <dependency>
         <groupId>org.xerial</groupId>
@@ -269,7 +269,7 @@
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <version>${lombok.version}</version>
+        <version>${version.lombok}</version>
         <scope>provided</scope>
         <!-- Useful only before compile time for code generation -->
       </dependency>
@@ -398,7 +398,7 @@
             <path>
               <groupId>org.projectlombok</groupId>
               <artifactId>lombok</artifactId>
-              <version>${lombok.version}</version>
+              <version>${version.lombok}</version>
             </path>
           </annotationProcessorPaths>
         </configuration>
