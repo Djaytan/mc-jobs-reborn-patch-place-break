@@ -176,7 +176,6 @@
         <artifactId>assertj-core</artifactId>
         <version>3.24.2</version>
       </dependency>
-      <!-- TODO: use BOM when possible: https://github.com/spring-projects/spring-boot/pull/34342 -->
       <dependency>
         <groupId>org.flywaydb</groupId>
         <artifactId>flyway-core</artifactId>
