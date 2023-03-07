@@ -91,7 +91,7 @@
 
     <!-- ==================== Dependencies versions ==================== -->
     <configurate.version>4.1.2</configurate.version>
-    <flyway.version>9.15.1</flyway.version>
+    <flyway.version>9.15.2</flyway.version>
     <slf4j.version>2.0.6</slf4j.version>
 
     <!-- ==================== Test Dependencies versions ==================== -->
