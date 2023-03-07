@@ -1,35 +1,32 @@
----
-name: Bug report  
-about: Create a report to help us improve  
-title: ''  
-labels: ''  
-assignees: Djaytan
+name: Error or Problem
+description: Report issues
+body:
+  - type: textarea
+    attributes:
+      label: Observed/problematic behavior
+      description: What you saw.
+    validations:
+      required: true
 
----
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: What you expected to see.
+    validations:
+      required: true
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: This may include a video, link to a broken Hangar page, or detailed instructions to help reconstruct the issue.
+    validations:
+      required: true
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
-
-**Expected behavior**
-A clear and concise description of what you expected to happen.
-
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Environment (please complete the following information):**
- - Minecraft Server Platform: [e.g. Spigot, PaperMC, ...]
- - Minecraft Game Version: [e.g. 1.19.3]
- - Java Version: [e.g. 17]
- - JobsReborn Plugin Version: [e.g. 5.1.2.0]
- - JobsReborn-PatchPlaceBreak Plugin Version: [e.g. 1.3.0]
- - Relevant Third-Party Plugins (Remove if not needed): [e.g. McMMO]
-
-**Additional context**
-Add any other context about the problem here.
+  - type: textarea
+    attributes:
+      label: Other
+      description: |
+        Please include other helpful information below.
+        The more information we receive, the quicker and more effective we can be at finding the solution to the issue.
+    validations:
+      required: false
