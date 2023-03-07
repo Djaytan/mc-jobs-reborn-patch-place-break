@@ -50,7 +50,7 @@ public class SqlDataSourceManager implements DataSourceManager {
   public void connect() {
     dataSourceInitializer.initialize();
 
-    connectionPool.connect();
+    connectionPool.enable();
     DataSource dataSource = connectionPool.getDataSource();
 
     dataMigrationExecutor.migrate(dataSource);
@@ -58,6 +58,6 @@ public class SqlDataSourceManager implements DataSourceManager {
 
   @Override
   public void disconnect() {
-    connectionPool.disconnect();
+    connectionPool.disable();
   }
 }

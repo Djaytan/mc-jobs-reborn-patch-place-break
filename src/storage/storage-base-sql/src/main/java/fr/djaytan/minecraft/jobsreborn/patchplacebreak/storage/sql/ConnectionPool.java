@@ -50,8 +50,7 @@ public class ConnectionPool {
     this.jdbcUrl = jdbcUrl;
   }
 
-  // TODO: rename connect and disconnect -> enable/disable
-  public void connect() {
+  public void enable() {
     log.atInfo().log("Connecting to database '{}'...", jdbcUrl.get());
 
     HikariConfig hikariConfig = new HikariConfig();
@@ -66,7 +65,7 @@ public class ConnectionPool {
     log.atInfo().log("Connected to the database successfully.");
   }
 
-  public void disconnect() {
+  public void disable() {
     if (hikariDataSource == null) {
       log.atWarn().log("Database disconnection impossible: no existing connection.");
       return;
