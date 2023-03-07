@@ -3,10 +3,7 @@ description: Suggest an idea for this project
 body:
   - type: markdown
     attributes:
-      value: |
-        Please be as detailed as possible so that we may consider and review the request easier.
-        We ask that you search all the issues to avoid a duplicate feature request.
-        If one exists, please reply if you have anything to add.
+      value: Please be as detailed as possible so that we may consider and review the request easier. We ask that you search all the issues to avoid a duplicate feature request. If one exists, please reply if you have anything to add.
 
   - type: textarea
     attributes:
@@ -38,6 +35,4 @@ body:
 
   - type: markdown
     attributes:
-      value: |
-        Before submitting this feature request, please search our issue tracker to ensure
-        your feature has not already been requested.
+      value: Before submitting this feature request, please search our issue tracker to ensure your feature has not already been requested.
