@@ -26,6 +26,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakImpl;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -55,8 +57,8 @@ final class PatchPlaceBreakModule extends AbstractModule {
   @Provides
   @Named("dataFolder")
   @Singleton
-  Path dataFolder() {
-    // TODO: create folder if doesn't exists (same to do in bukkit-plugin side if applicable)
+  Path dataFolder() throws IOException {
+    Files.createDirectories(dataFolder);
     return dataFolder;
   }
 }

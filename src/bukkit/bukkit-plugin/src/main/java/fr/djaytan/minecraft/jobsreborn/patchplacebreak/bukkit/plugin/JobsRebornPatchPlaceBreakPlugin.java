@@ -26,9 +26,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.ListenerR
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject.JobsRebornPatchPlaceBreakFactory;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.slf4j.BukkitLoggerFactory;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.logging.Logger;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -43,7 +40,6 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
   @Override
   @SneakyThrows
   public void onEnable() {
-    createFolderIfNotExist(getDataFolder().toPath());
     enableSlf4j(getLogger());
 
     JobsRebornPatchPlaceBreakFactory factory = new JobsRebornPatchPlaceBreakFactory(this);
@@ -61,10 +57,6 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
   public void onDisable() {
     patchPlaceBreakCore.disable();
     getLogger().info("JobsReborn-PatchPlaceBreak successfully disabled.");
-  }
-
-  private static void createFolderIfNotExist(@NonNull Path dataFolder) throws IOException {
-    Files.createDirectories(dataFolder);
   }
 
   private static void enableSlf4j(@NonNull Logger bukkitLogger) {

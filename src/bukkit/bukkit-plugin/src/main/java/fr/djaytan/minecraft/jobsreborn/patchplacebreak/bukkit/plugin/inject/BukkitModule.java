@@ -24,6 +24,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -61,8 +63,10 @@ final class BukkitModule extends AbstractModule {
   @Provides
   @Named("dataFolder")
   @Singleton
-  Path dataFolder() {
-    return javaPlugin.getDataFolder().toPath();
+  Path dataFolder() throws IOException {
+    Path dataFolder = javaPlugin.getDataFolder().toPath();
+    Files.createDirectories(dataFolder);
+    return dataFolder;
   }
 
   @Provides
