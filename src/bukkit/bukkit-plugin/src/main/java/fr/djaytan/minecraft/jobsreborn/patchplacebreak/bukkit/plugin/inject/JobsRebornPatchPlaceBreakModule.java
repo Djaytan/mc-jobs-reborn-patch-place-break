@@ -22,25 +22,22 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
-import org.bukkit.plugin.java.JavaPlugin;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
+import java.nio.file.Path;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-@Slf4j
-public final class GuiceBukkitInjector {
+final class JobsRebornPatchPlaceBreakModule extends AbstractModule {
 
-  private GuiceBukkitInjector() {
-    // Static class
-  }
-
-  public static void inject(@NonNull ClassLoader classLoader, @NonNull JavaPlugin javaPlugin) {
-    GuiceBukkitModule bukkitModule = new GuiceBukkitModule(javaPlugin);
-    GuiceJobsRebornPatchPlaceBreakModule jobsRebornPatchPlaceBreakModule =
-        new GuiceJobsRebornPatchPlaceBreakModule(classLoader);
-    Injector injector = Guice.createInjector(bukkitModule, jobsRebornPatchPlaceBreakModule);
-    injector.injectMembers(javaPlugin);
-    log.atInfo().log("Dependencies injected.");
+  @Provides
+  @Singleton
+  PatchPlaceBreakApi patchPlaceBreakApi(
+      ClassLoader classLoader,
+      @Named("dataFolder") Path dataFolder,
+      PatchPlaceBreakCore patchPlaceBreakCore) {
+    return patchPlaceBreakCore.enable(classLoader, dataFolder);
   }
 }

@@ -92,6 +92,7 @@
     <!-- ==================== Dependencies versions ==================== -->
     <configurate.version>4.1.2</configurate.version>
     <flyway.version>9.15.2</flyway.version>
+    <lombok.version>1.18.26</lombok.version>
     <slf4j.version>2.0.6</slf4j.version>
 
     <!-- ==================== Test Dependencies versions ==================== -->
@@ -269,7 +270,7 @@
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <version>1.18.26</version>
+        <version>${lombok.version}</version>
         <scope>provided</scope>
         <!-- Useful only before compile time for code generation -->
       </dependency>
@@ -394,6 +395,13 @@
           <release>${java.version}</release>
           <failOnWarning>true</failOnWarning>
           <showDeprecation>true</showDeprecation>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
       <plugin>
