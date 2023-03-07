@@ -1,4 +1,4 @@
-name: Error or Problem
+name: Error or problem
 description: Report issues
 body:
   - type: textarea
