@@ -24,20 +24,19 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakImpl;
 import java.nio.file.Path;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import lombok.NonNull;
 
-/** Represents general patch configs. */
-public class PatchPlaceBreakModule extends AbstractModule {
+final class PatchPlaceBreakModule extends AbstractModule {
 
   private final ClassLoader classLoader;
   private final Path dataFolder;
 
-  public PatchPlaceBreakModule(@NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
+  PatchPlaceBreakModule(@NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
     this.classLoader = classLoader;
     this.dataFolder = dataFolder;
   }
@@ -49,14 +48,14 @@ public class PatchPlaceBreakModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public @NonNull ClassLoader provideClassLoader() {
+  ClassLoader classLoader() {
     return classLoader;
   }
 
   @Provides
   @Named("dataFolder")
   @Singleton
-  public @NonNull Path provideDataFolder() {
+  Path dataFolder() {
     // TODO: create folder if doesn't exists (same to do in bukkit-plugin side if applicable)
     return dataFolder;
   }

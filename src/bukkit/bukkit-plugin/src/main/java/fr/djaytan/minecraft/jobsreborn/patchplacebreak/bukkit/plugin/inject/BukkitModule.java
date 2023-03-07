@@ -24,25 +24,50 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
 import java.nio.file.Path;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import lombok.NonNull;
+import org.bukkit.Server;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public class GuiceJobsRebornPatchPlaceBreakModule extends AbstractModule {
+final class BukkitModule extends AbstractModule {
 
-  private final ClassLoader classLoader;
+  private final JavaPlugin javaPlugin;
 
-  public GuiceJobsRebornPatchPlaceBreakModule(@NonNull ClassLoader classLoader) {
-    this.classLoader = classLoader;
+  BukkitModule(@NonNull JavaPlugin javaPlugin) {
+    this.javaPlugin = javaPlugin;
   }
 
   @Provides
   @Singleton
-  public @NonNull PatchPlaceBreakApi providePatchPlaceBreakApi(
-      @Named("dataFolder") Path dataFolder, PatchPlaceBreakCore patchPlaceBreakCore) {
-    return patchPlaceBreakCore.enable(classLoader, dataFolder);
+  JavaPlugin javaPlugin() {
+    return javaPlugin;
+  }
+
+  @Provides
+  @Singleton
+  Server server() {
+    return javaPlugin.getServer();
+  }
+
+  @Provides
+  @Singleton
+  PluginManager pluginManager(Server server) {
+    return server.getPluginManager();
+  }
+
+  @Provides
+  @Named("dataFolder")
+  @Singleton
+  Path dataFolder() {
+    return javaPlugin.getDataFolder().toPath();
+  }
+
+  @Provides
+  @Singleton
+  ClassLoader classLoader() {
+    return javaPlugin.getClass().getClassLoader();
   }
 }

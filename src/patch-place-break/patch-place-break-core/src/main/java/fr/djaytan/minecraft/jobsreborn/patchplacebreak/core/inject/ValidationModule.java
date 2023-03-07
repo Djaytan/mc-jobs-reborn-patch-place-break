@@ -24,24 +24,26 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import lombok.NonNull;
+import javax.inject.Singleton;
 
-/** Represents validation related configs. */
-public class ValidationModule extends AbstractModule {
+final class ValidationModule extends AbstractModule {
+
+  ValidationModule() {
+    // Instantiated for Guice
+  }
 
   @Provides
   @Singleton
-  public @NonNull ValidatorFactory provideValidatorFactory() {
+  static ValidatorFactory validatorFactory() {
     return Validation.buildDefaultValidatorFactory();
   }
 
   @Provides
   @Singleton
-  public @NonNull Validator provideValidator(ValidatorFactory validatorFactory) {
+  static Validator validator(ValidatorFactory validatorFactory) {
     return validatorFactory.getValidator();
   }
 }

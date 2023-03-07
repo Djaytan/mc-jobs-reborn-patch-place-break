@@ -24,38 +24,46 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.DataSourceInitializerProvider;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.DataSourceManagerProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.JdbcUrlProvider;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.LocationProvider;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.TagRepositoryProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlDataSourceManager;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.access.SqlTagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
 import java.nio.file.Path;
 import javax.inject.Named;
-import lombok.NonNull;
+import javax.inject.Singleton;
 import org.flywaydb.core.api.Location;
 
-public class StorageModule extends AbstractModule {
+final class StorageModule extends AbstractModule {
 
+  private static final String DB_MIGRATION_DESCRIPTOR_FORMAT = "/db/migration/%s";
   private static final String SQLITE_DATABASE_FILE_NAME = "sqlite-data.db";
 
   @Override
   protected void configure() {
-    bind(DataSourceManager.class).toProvider(DataSourceManagerProvider.class);
     bind(DataSourceInitializer.class).toProvider(DataSourceInitializerProvider.class);
+    bind(DataSourceManager.class).to(SqlDataSourceManager.class);
     bind(JdbcUrl.class).toProvider(JdbcUrlProvider.class);
-    bind(Location.class).toProvider(LocationProvider.class);
-    bind(TagRepository.class).toProvider(TagRepositoryProvider.class);
+    bind(TagRepository.class).to(SqlTagRepository.class);
+  }
+
+  @Provides
+  @Singleton
+  static Location location(DataSourceProperties dataSourceProperties) {
+    String descriptor =
+        String.format(
+            DB_MIGRATION_DESCRIPTOR_FORMAT, dataSourceProperties.getType().name().toLowerCase());
+    return new Location(descriptor);
   }
 
   @Provides
   @Named("sqliteDatabaseFile")
   @Singleton
-  public @NonNull Path provideSqliteDatabasePath(@Named("dataFolder") Path dataFolder) {
+  static Path sqliteDatabaseFile(@Named("dataFolder") Path dataFolder) {
     return dataFolder.resolve(SQLITE_DATABASE_FILE_NAME);
   }
 }

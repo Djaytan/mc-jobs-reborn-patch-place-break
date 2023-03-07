@@ -23,7 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.PatchPlaceBreakInjector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.PatchPlaceBreakFactory;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
 import java.nio.file.Path;
 import javax.inject.Singleton;
@@ -50,11 +50,10 @@ public class PatchPlaceBreakCore {
   public @NonNull PatchPlaceBreakApi enable(
       @NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
     setupSlf4j();
-    PatchPlaceBreakInjector injector = new PatchPlaceBreakInjector();
-    injector.inject(classLoader, dataFolder);
-    dataSourceManager = injector.getDataSourceManager();
+    PatchPlaceBreakFactory factory = new PatchPlaceBreakFactory(classLoader, dataFolder);
+    dataSourceManager = factory.dataSourceManager();
     dataSourceManager.connect();
-    return injector.getPatchApi();
+    return factory.patchPlaceBreakApi();
   }
 
   public void disable() {

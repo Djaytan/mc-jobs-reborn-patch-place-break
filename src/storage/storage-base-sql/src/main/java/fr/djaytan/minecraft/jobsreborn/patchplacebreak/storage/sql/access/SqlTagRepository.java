@@ -39,13 +39,13 @@ import javax.inject.Singleton;
 import lombok.NonNull;
 
 @Singleton
-public class TagSqlRepository implements TagRepository {
+public class SqlTagRepository implements TagRepository {
 
   private final ConnectionPool connectionPool;
   private final TagSqlDao tagSqlDao;
 
   @Inject
-  public TagSqlRepository(ConnectionPool connectionPool, TagSqlDao tagSqlDao) {
+  public SqlTagRepository(ConnectionPool connectionPool, TagSqlDao tagSqlDao) {
     this.connectionPool = connectionPool;
     this.tagSqlDao = tagSqlDao;
   }
