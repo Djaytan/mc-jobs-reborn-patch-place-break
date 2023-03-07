@@ -18,7 +18,7 @@ body:
   - type: textarea
     attributes:
       label: Steps to reproduce
-      description: This may include a video, link to a broken Hangar page, or detailed instructions to help reconstruct the issue.
+      description: This may include a screenshot, a video, or detailed instructions to help reconstruct the issue.
     validations:
       required: true
 
