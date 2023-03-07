@@ -654,33 +654,6 @@
               <outputDirectory>${project.reporting.outputDirectory}/jacoco-merged-test-coverage-report</outputDirectory>
             </configuration>
           </execution>
-          <execution>
-            <id>check</id>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <phase>verify</phase>
-            <configuration>
-              <rules>
-                <rule>
-                  <element>CLASS</element>
-                  <excludes>
-                    <exclude>*Test</exclude>
-                    <exclude>*IT</exclude>
-                  </excludes>
-                  <limits>
-                    <limit>
-                      <counter>LINE</counter>
-                      <value>COVEREDRATIO</value>
-                      <!-- TODO: increase this value -->
-                      <minimum>0%</minimum>
-                    </limit>
-                  </limits>
-                </rule>
-              </rules>
-              <dataFile>${project.build.directory}/jacoco-output/merged.exec</dataFile>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
       <plugin>
