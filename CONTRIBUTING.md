@@ -76,37 +76,4 @@ If you are using IntelliJ IDEA, you can install the
 [google-java-format plugin](https://plugins.jetbrains.com/plugin/8527-google-java-format) which will
 replace the default IDE code formatting behavior.
 
-However, because imports order aren't managed by the plugin, we recommend you to follow
-[these steps](https://github.com/google/google-java-format#intellij-android-studio-and-other-jetbrains-ides):
-
-> The import ordering is not handled by this plugin, unfortunately. To fix the import order,
-> download the IntelliJ Java Google Style file and import it into File→Settings→Editor→Code Style.
-
-The file to
-download: [link](https://raw.githubusercontent.com/google/styleguide/gh-pages/intellij-java-google-style.xmlhttps://raw.githubusercontent.com/google/styleguide/gh-pages/intellij-java-google-style.xml).
-
-You may get the following error message when formatting:
-
-```
-java.util.concurrent.ExecutionException: java.lang.IllegalAccessError:
-class com.google.googlejavaformat.java.JavaInput (in unnamed module @0xe655ab1)
-cannot access class com.sun.tools.javac.parser.Tokens$TokenKind (in module jdk.compiler)
-because module jdk.compiler does not export com.sun.tools.javac.parser to unnamed module @0xe655ab1
-```
-
-To solve this, you can simply add the following JVM arguments to IntelliJ by
-following [these instructions](https://github.com/google/google-java-format/blob/master/README.md#intellij-jre-config).
-BUT put the following JVM arguments instead (otherwise it may not work):
-
-```
---add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED
---add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED
---add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED
-```
+Take care to well follow [these instructions](https://github.com/google/google-java-format/blob/master/README.md#intellij-jre-config).
