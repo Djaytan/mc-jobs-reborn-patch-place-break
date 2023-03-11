@@ -88,6 +88,9 @@
     <sonar.organization>djaytan</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco-merged-test-coverage-report/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    <!-- Properties defined at docker:start goal -->
+    <mariadb.port />
+    <mysql.port />
 
     <!-- ==================== Dependencies versions ==================== -->
     <version.configurate>4.1.2</version.configurate>
@@ -382,6 +385,66 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>0.42.0</version>
+        <inherited>false</inherited>
+        <configuration>
+          <images>
+            <image>
+              <alias>mysql</alias>
+              <name>mysql:8.0.31-oracle</name>
+              <run>
+                <ports>
+                  <port>mysql.port:3306</port>
+                </ports>
+                <env>
+                  <MYSQL_ALLOW_EMPTY_PASSWORD>yes</MYSQL_ALLOW_EMPTY_PASSWORD>
+                  <MYSQL_DATABASE>patch_place_break</MYSQL_DATABASE>
+                </env>
+                <wait>
+                  <log>port: 3306  MySQL Community Server - GPL</log>
+                  <time>30000</time>
+                </wait>
+              </run>
+            </image>
+            <image>
+              <alias>mariadb</alias>
+              <name>mariadb:10.10.2-jammy</name>
+              <run>
+                <ports>
+                  <port>mariadb.port:3306</port>
+                </ports>
+                <env>
+                  <MARIADB_ALLOW_EMPTY_ROOT_PASSWORD>yes</MARIADB_ALLOW_EMPTY_ROOT_PASSWORD>
+                  <MARIADB_DATABASE>patch_place_break</MARIADB_DATABASE>
+                </env>
+                <wait>
+                  <log>port: 3306  mariadb.org binary distribution</log>
+                  <time>30000</time>
+                </wait>
+              </run>
+            </image>
+          </images>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start</id>
+            <goals>
+              <goal>start</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+          </execution>
+          <execution>
+            <id>stop</id>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
         <version>3.2.0</version>
@@ -479,6 +542,10 @@
         <configuration>
           <!--suppress UnresolvedMavenProperty - Defined at runtime by JaCoCo -->
           <argLine>${failsafe.jacoco.args}</argLine>
+          <systemPropertyVariables>
+            <mariadb.port>${mariadb.port}</mariadb.port>
+            <mysql.port>${mysql.port}</mysql.port>
+          </systemPropertyVariables>
         </configuration>
         <executions>
           <execution>
