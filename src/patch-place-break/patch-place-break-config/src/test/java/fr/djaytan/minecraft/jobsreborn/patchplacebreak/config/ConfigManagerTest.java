@@ -30,19 +30,19 @@ import static org.mockito.Mockito.doThrow;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DataSourceValidatingProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.ConnectionPoolPropertiesImpl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DataSourcePropertiesImpl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DbmsCredentialsPropertiesImpl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DbmsHostPropertiesImpl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DbmsServerPropertiesImpl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.Properties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidator;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.ConnectionPoolProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.CredentialsProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsHostProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsServerProperties;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -91,7 +91,7 @@ class ConfigManagerTest {
     void withAlreadyExistingOne_shouldDoNothing() {
       // Given
       String configFileName = "alreadyExisting.conf";
-      DataSourceValidatingProperties defaultProperties = DataSourceValidatingProperties.ofDefault();
+      DataSourcePropertiesImpl defaultProperties = new DataSourcePropertiesImpl();
       Path configFile = dataFolder.resolve(configFileName);
       Files.createFile(configFile);
 
@@ -110,8 +110,7 @@ class ConfigManagerTest {
     void withGenericDefaultProperties_shouldSerializeConfig() {
       // Given
       String configFileName = "nominalCase.conf";
-      ValidatingConvertibleProperties<?> defaultProperties =
-          DataSourceValidatingProperties.ofDefault();
+      Properties defaultProperties = new DataSourcePropertiesImpl();
 
       // When
       configManager.createDefaultIfNotExists(configFileName, defaultProperties);
@@ -131,7 +130,7 @@ class ConfigManagerTest {
     void withExceptionThrownAtSerializationTime_shouldThrowWrapperException() {
       // Given
       String configFileName = "exception.conf";
-      DataSourceValidatingProperties defaultProperties = DataSourceValidatingProperties.ofDefault();
+      DataSourcePropertiesImpl defaultProperties = new DataSourcePropertiesImpl();
       doThrow(ConfigSerializationException.class)
           .when(configSerializerSpied)
           .serialize(any(), any());
@@ -149,8 +148,8 @@ class ConfigManagerTest {
     void withInvalidDefaultProperties_shouldThrowException() {
       // Given
       String configFileName = "exception.conf";
-      DataSourceValidatingProperties defaultProperties =
-          DataSourceValidatingProperties.of(null, null, null, null);
+      DataSourcePropertiesImpl defaultProperties =
+          new DataSourcePropertiesImpl(null, null, null, null);
 
       // When
       ThrowingCallable throwingCallable =
@@ -181,19 +180,19 @@ class ConfigManagerTest {
 
       // When
       DataSourceProperties dataSourceProperties =
-          configManager.readAndValidate(configFileName, DataSourceValidatingProperties.class);
+          configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class);
 
       // Then
       assertThat(dataSourceProperties)
           .isEqualTo(
-              DataSourceProperties.of(
+              new DataSourcePropertiesImpl(
                   DataSourceType.SQLITE,
                   "patch_place_break_tag",
-                  DbmsServerProperties.of(
-                      DbmsHostProperties.of("localhost", 3306, true),
-                      CredentialsProperties.of("username", "password"),
+                  new DbmsServerPropertiesImpl(
+                      new DbmsHostPropertiesImpl("localhost", 3306, true),
+                      new DbmsCredentialsPropertiesImpl("username", "password"),
                       "database"),
-                  ConnectionPoolProperties.of(30000, 10)));
+                  new ConnectionPoolPropertiesImpl(30000, 10)));
     }
 
     @Test
@@ -213,7 +212,7 @@ class ConfigManagerTest {
 
       // When
       ThrowingCallable throwingCallable =
-          () -> configManager.readAndValidate(configFileName, DataSourceValidatingProperties.class);
+          () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class);
 
       // Then
       assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigSerializationException.class);
@@ -235,7 +234,7 @@ class ConfigManagerTest {
 
       // When
       ThrowingCallable throwingCallable =
-          () -> configManager.readAndValidate(configFileName, DataSourceValidatingProperties.class);
+          () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class);
 
       // Then
       assertThatThrownBy(throwingCallable).isExactlyInstanceOf(PropertiesValidationException.class);
@@ -256,7 +255,7 @@ class ConfigManagerTest {
 
       // When
       ThrowingCallable throwingCallable =
-          () -> configManager.readAndValidate(configFileName, DataSourceValidatingProperties.class);
+          () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class);
 
       // Then
       assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigException.class);
@@ -270,7 +269,7 @@ class ConfigManagerTest {
 
       // When
       ThrowingCallable throwingCallable =
-          () -> configManager.readAndValidate(configFileName, DataSourceValidatingProperties.class);
+          () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class);
 
       // Then
       assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigException.class);

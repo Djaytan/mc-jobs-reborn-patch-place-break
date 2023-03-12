@@ -23,13 +23,40 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties;
 
 import lombok.NonNull;
-import lombok.Value;
 
-@Value(staticConstructor = "of")
-public class DataSourceProperties {
+/** Represents the properties related to the data source to be used for storage. */
+public interface DataSourceProperties {
 
-  @NonNull DataSourceType type;
-  @NonNull String table;
-  @NonNull DbmsServerProperties dbmsServer;
-  @NonNull ConnectionPoolProperties connectionPool;
+  /**
+   * Gets the data source type to be used for storage.
+   *
+   * @return The data source type to be used for storage.
+   */
+  @NonNull
+  DataSourceType getType();
+
+  /**
+   * Gets the table name to be used for storage.
+   *
+   * @return The table name to be used for storage.
+   */
+  @NonNull
+  String getTable();
+
+  /**
+   * Gets the properties related to the DBMS server (not applicable for all data source types like
+   * {@link DataSourceType#SQLITE}).
+   *
+   * @return The properties related to the DBMS server.
+   */
+  @NonNull
+  DbmsServerProperties getDbmsServer();
+
+  /**
+   * Gets the properties related to the connection pool.
+   *
+   * @return The properties related to the connection pool.
+   */
+  @NonNull
+  ConnectionPoolProperties getConnectionPool();
 }

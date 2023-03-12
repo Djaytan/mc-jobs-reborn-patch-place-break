@@ -22,23 +22,24 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.experimental.FieldDefaults;
+import lombok.NonNull;
 
-/**
- * Represents the data source type to be used as solution for storing and retrieving {@link
- * fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag}s.
- */
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@Getter
-public enum DataSourceType {
-  /** The MySQL data source type which is compatible with MariaDB as well. */
-  MYSQL(true),
-  /** The SQLite data source type. */
-  SQLITE(false);
+/** Represents the DBMS server properties related to credentials. */
+public interface DbmsCredentialsProperties {
 
-  boolean areCredentialsRequired;
+  /**
+   * Gets the username to be used for authentication with the DBMS server.
+   *
+   * @return The username to be used for authentication with the DBMS server.
+   */
+  @NonNull
+  String getUsername();
+
+  /**
+   * Gets the password to be used for authentication with the DBMS server.
+   *
+   * @return The password to be used for authentication with the DBMS server.
+   */
+  @NonNull
+  String getPassword();
 }

@@ -22,11 +22,20 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties;
 
-import lombok.Value;
+/** Represents the properties related to the connection pool. */
+public interface ConnectionPoolProperties {
 
-@Value(staticConstructor = "of")
-public class ConnectionPoolProperties {
+  /**
+   * Gets the timeout when attempting to establish a new connection to the DBMS server.
+   *
+   * @return The timeout when attempting to establish a new connection to the DBMS server.
+   */
+  long getConnectionTimeout();
 
-  long connectionTimeout;
-  int poolSize;
+  /**
+   * Gets the connection pool size.
+   *
+   * @return The connection pool size.
+   */
+  int getPoolSize();
 }

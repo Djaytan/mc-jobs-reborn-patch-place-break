@@ -23,12 +23,36 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties;
 
 import lombok.NonNull;
-import lombok.Value;
 
-@Value(staticConstructor = "of")
-public class DbmsServerProperties {
+/**
+ * Represents the properties related to the DBMS server.
+ *
+ * <p>These properties are applicable only for DBMS servers like MySQL/MariaDB (i.e. does not apply
+ * for SQLite which is just a file in local file system).
+ */
+public interface DbmsServerProperties {
 
-  @NonNull DbmsHostProperties host;
-  @NonNull CredentialsProperties credentials;
-  @NonNull String database;
+  /**
+   * Gets the DBMS server properties related to the host.
+   *
+   * @return The DBMS server properties related to the host.
+   */
+  @NonNull
+  DbmsHostProperties getHost();
+
+  /**
+   * Gets the DBMS server properties related to the credentials.
+   *
+   * @return The DBMS server properties related to the credentials.
+   */
+  @NonNull
+  DbmsCredentialsProperties getCredentials();
+
+  /**
+   * Gets the targeted database name when establishing connection with the DBMS server.
+   *
+   * @return The targeted database name when establishing connection with the DBMS server.
+   */
+  @NonNull
+  String getDatabase();
 }

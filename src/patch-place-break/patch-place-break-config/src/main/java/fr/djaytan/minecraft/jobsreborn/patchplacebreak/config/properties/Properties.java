@@ -20,16 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
-import lombok.NonNull;
-import lombok.ToString;
-import lombok.Value;
-
-@Value(staticConstructor = "of")
-@ToString(exclude = {"password"})
-public class CredentialsProperties {
-
-  @NonNull String username;
-  @NonNull String password;
-}
+/** This interface represents just a marker to ease identification of properties classes. */
+public interface Properties {}

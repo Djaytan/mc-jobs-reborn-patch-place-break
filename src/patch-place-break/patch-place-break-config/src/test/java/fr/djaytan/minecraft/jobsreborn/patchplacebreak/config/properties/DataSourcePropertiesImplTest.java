@@ -20,10 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -35,9 +34,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResource
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.CredentialsProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsHostProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsServerProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import jakarta.validation.ConstraintViolation;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -65,7 +62,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.spongepowered.configurate.serialize.SerializationException;
 
-class DbmsServerValidatingPropertiesTest {
+class DataSourcePropertiesImplTest {
 
   private FileSystem imfs;
 
@@ -83,7 +80,7 @@ class DbmsServerValidatingPropertiesTest {
   @Test
   @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashcode_shouldMetContracts() {
-    EqualsVerifier.forClass(DbmsServerValidatingProperties.class)
+    EqualsVerifier.forClass(DataSourcePropertiesImpl.class)
         .withRedefinedSuperclass()
         .suppress(Warning.NONFINAL_FIELDS)
         .verify();
@@ -92,7 +89,7 @@ class DbmsServerValidatingPropertiesTest {
   @Test
   @DisplayName("When calling toString()")
   void whenCallingToString_shouldMetContracts() {
-    ToStringVerifier.forClass(DbmsServerValidatingProperties.class)
+    ToStringVerifier.forClass(DataSourcePropertiesImpl.class)
         .withClassName(NameStyle.SIMPLE_NAME)
         .verify();
   }
@@ -107,94 +104,53 @@ class DbmsServerValidatingPropertiesTest {
       // Given
 
       // When
-      DbmsServerValidatingProperties dbmsServerValidatingProperties =
-          DbmsServerValidatingProperties.ofDefault();
+      DataSourcePropertiesImpl dataSourcePropertiesImpl = new DataSourcePropertiesImpl();
 
       // Then
       assertAll(
+          () -> assertThat(dataSourcePropertiesImpl.getType()).isEqualTo(DataSourceType.SQLITE),
+          () -> assertThat(dataSourcePropertiesImpl.getTable()).isEqualTo("patch_place_break_tag"),
           () ->
-              assertThat(dbmsServerValidatingProperties.getHost())
-                  .isEqualTo(DbmsHostValidatingProperties.of("localhost", 3306, true)),
+              assertThat(dataSourcePropertiesImpl.getDbmsServer())
+                  .isEqualTo(
+                      new DbmsServerPropertiesImpl(
+                          new DbmsHostPropertiesImpl("localhost", 3306, true),
+                          new DbmsCredentialsPropertiesImpl("username", "password"),
+                          "database")),
           () ->
-              assertThat(dbmsServerValidatingProperties.getCredentials())
-                  .isEqualTo(CredentialsValidatingProperties.of("username", "password")),
-          () -> assertThat(dbmsServerValidatingProperties.getDatabase()).isEqualTo("database"),
-          () -> assertThat(dbmsServerValidatingProperties.isValidated()).isFalse());
+              assertThat(dataSourcePropertiesImpl.getConnectionPool())
+                  .isEqualTo(new ConnectionPoolPropertiesImpl(30000, 10)));
     }
 
     @Test
     @DisplayName("With all args constructor")
     void withAllArgsConstructor_shouldMatchGivenArguments() {
       // Given
-      DbmsHostValidatingProperties host =
-          DbmsHostValidatingProperties.of("example.com", 1234, true);
-      CredentialsValidatingProperties credentials =
-          CredentialsValidatingProperties.of("foo", "bar");
-      String database = "patch_database";
-
-      // When
-      DbmsServerValidatingProperties dbmsServerValidatingProperties =
-          DbmsServerValidatingProperties.of(host, credentials, database);
-
-      // Then
-      assertAll(
-          () -> assertThat(dbmsServerValidatingProperties.getHost()).isEqualTo(host),
-          () -> assertThat(dbmsServerValidatingProperties.getCredentials()).isEqualTo(credentials),
-          () -> assertThat(dbmsServerValidatingProperties.getDatabase()).isEqualTo(database),
-          () -> assertThat(dbmsServerValidatingProperties.isValidated()).isFalse());
-    }
-  }
-
-  @Nested
-  @DisplayName("When converting")
-  class WhenConverting {
-
-    @Test
-    @DisplayName("With properties marked as validated")
-    void withPropertiesMarkedAsValidated_shouldConvertSuccessfully() {
-      // Given
-      DbmsServerValidatingProperties dbmsServerValidatingProperties =
-          DbmsServerValidatingProperties.of(
-              DbmsHostValidatingProperties.of("example.com", 1234, true),
-              CredentialsValidatingProperties.of("foo", "bar"),
+      DataSourceType dataSourceType = DataSourceType.MYSQL;
+      String table = "patch_place_break";
+      DbmsServerPropertiesImpl dbmsServerPropertiesImpl =
+          new DbmsServerPropertiesImpl(
+              new DbmsHostPropertiesImpl("example.com", 1234, true),
+              new DbmsCredentialsPropertiesImpl("foo", "bar"),
               "patch_database");
-      dbmsServerValidatingProperties.markAsValidated();
+      ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+          new ConnectionPoolPropertiesImpl(60000, 10);
 
       // When
-      DbmsServerProperties dbmsServerProperties = dbmsServerValidatingProperties.convert();
+      DataSourcePropertiesImpl dataSourcePropertiesImpl =
+          new DataSourcePropertiesImpl(
+              dataSourceType, table, dbmsServerPropertiesImpl, connectionPoolPropertiesImpl);
 
       // Then
       assertAll(
-          () -> assertThat(dbmsServerValidatingProperties.isValidated()).isTrue(),
+          () -> assertThat(dataSourcePropertiesImpl.getType()).isEqualTo(dataSourceType),
+          () -> assertThat(dataSourcePropertiesImpl.getTable()).isEqualTo(table),
           () ->
-              assertThat(dbmsServerProperties.getHost())
-                  .isEqualTo(DbmsHostProperties.of("example.com", 1234, true)),
+              assertThat(dataSourcePropertiesImpl.getDbmsServer())
+                  .isEqualTo(dbmsServerPropertiesImpl),
           () ->
-              assertThat(dbmsServerProperties.getCredentials())
-                  .isEqualTo(CredentialsProperties.of("foo", "bar")),
-          () -> assertThat(dbmsServerProperties.getDatabase()).isEqualTo("patch_database"));
-    }
-
-    @Test
-    @DisplayName("With properties not marked as validated")
-    void withPropertiesNotMarkedAsValidated_shouldThrowException() {
-      // Given
-      DbmsServerValidatingProperties dbmsServerValidatingProperties =
-          DbmsServerValidatingProperties.of(
-              DbmsHostValidatingProperties.of("example.com", 1234, true),
-              CredentialsValidatingProperties.of("foo", "bar"),
-              "patch_database");
-
-      // When
-      ThrowingCallable throwingCallable = dbmsServerValidatingProperties::convert;
-
-      // Then
-      assertAll(
-          () -> assertThat(dbmsServerValidatingProperties.isValidated()).isFalse(),
-          () ->
-              assertThatIllegalStateException()
-                  .isThrownBy(throwingCallable)
-                  .withMessage("Properties must be validated before being converted"));
+              assertThat(dataSourcePropertiesImpl.getConnectionPool())
+                  .isEqualTo(connectionPoolPropertiesImpl));
     }
   }
 
@@ -206,12 +162,11 @@ class DbmsServerValidatingPropertiesTest {
     @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
-      DbmsServerValidatingProperties dbmsServerValidatingProperties =
-          DbmsServerValidatingProperties.ofDefault();
+      DataSourcePropertiesImpl dataSourcePropertiesImpl = new DataSourcePropertiesImpl();
 
       // When
-      Set<ConstraintViolation<DbmsServerValidatingProperties>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsServerValidatingProperties);
+      Set<ConstraintViolation<DataSourcePropertiesImpl>> constraintViolations =
+          ValidatorTestWrapper.validate(dataSourcePropertiesImpl);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -221,15 +176,19 @@ class DbmsServerValidatingPropertiesTest {
     @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
-      DbmsServerValidatingProperties dbmsServerValidatingProperties =
-          DbmsServerValidatingProperties.of(
-              DbmsHostValidatingProperties.of("example.com", 1234, true),
-              CredentialsValidatingProperties.of("foo", "bar"),
-              "patch_database");
+      DataSourcePropertiesImpl dataSourcePropertiesImpl =
+          new DataSourcePropertiesImpl(
+              DataSourceType.MYSQL,
+              "patch_place_break",
+              new DbmsServerPropertiesImpl(
+                  new DbmsHostPropertiesImpl("example.com", 1234, true),
+                  new DbmsCredentialsPropertiesImpl("foo", "bar"),
+                  "patch_database"),
+              new ConnectionPoolPropertiesImpl(60000, 10));
 
       // When
-      Set<ConstraintViolation<DbmsServerValidatingProperties>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsServerValidatingProperties);
+      Set<ConstraintViolation<DataSourcePropertiesImpl>> constraintViolations =
+          ValidatorTestWrapper.validate(dataSourcePropertiesImpl);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -239,54 +198,62 @@ class DbmsServerValidatingPropertiesTest {
     @DisplayName("With only shallow invalid values")
     void withOnlyShallowInvalidValues_shouldGenerateConstraintViolations() {
       // Given
-      DbmsServerValidatingProperties dbmsServerValidatingProperties =
-          DbmsServerValidatingProperties.of(null, null, " ");
+      DataSourcePropertiesImpl dataSourcePropertiesImpl =
+          new DataSourcePropertiesImpl(null, null, null, null);
 
       // When
-      Set<ConstraintViolation<DbmsServerValidatingProperties>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsServerValidatingProperties);
+      Set<ConstraintViolation<DataSourcePropertiesImpl>> constraintViolations =
+          ValidatorTestWrapper.validate(dataSourcePropertiesImpl);
 
       // Then
-      assertThat(constraintViolations).hasSize(3);
+      assertThat(constraintViolations).hasSize(4);
     }
 
     @Test
     @DisplayName("With only deep invalid values")
     void withOnlyDeepInvalidValues_shouldGenerateConstraintViolations() {
       // Given
-      DbmsHostValidatingProperties invalidHost = DbmsHostValidatingProperties.of(" ", 0, false);
-      CredentialsValidatingProperties invalidCredentials =
-          CredentialsValidatingProperties.of("", null);
-      DbmsServerValidatingProperties dbmsServerValidatingProperties =
-          DbmsServerValidatingProperties.of(invalidHost, invalidCredentials, " ");
+      DataSourcePropertiesImpl dataSourcePropertiesImpl =
+          new DataSourcePropertiesImpl(
+              null,
+              null,
+              new DbmsServerPropertiesImpl(
+                  new DbmsHostPropertiesImpl(null, -1, false),
+                  new DbmsCredentialsPropertiesImpl("", null),
+                  null),
+              new ConnectionPoolPropertiesImpl(-1, -1));
 
       // When
-      Set<ConstraintViolation<DbmsServerValidatingProperties>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsServerValidatingProperties);
+      Set<ConstraintViolation<DataSourcePropertiesImpl>> constraintViolations =
+          ValidatorTestWrapper.validate(dataSourcePropertiesImpl);
 
       // Then
-      assertThat(constraintViolations).hasSize(5);
+      assertThat(constraintViolations).hasSize(9);
     }
 
     @Nested
-    @DisplayName("'database' field")
+    @DisplayName("'table' field")
     @TestInstance(Lifecycle.PER_CLASS)
-    class DatabaseField {
+    class TableField {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With valid values")
-      void withValidValues_shouldNotGenerateConstraintViolations(@NonNull String validDatabase) {
+      void withValidValues_shouldNotGenerateConstraintViolations(@NonNull String validTable) {
         // Given
-        DbmsServerValidatingProperties dbmsServerValidatingProperties =
-            DbmsServerValidatingProperties.of(
-                DbmsHostValidatingProperties.of("example.com", 1234, true),
-                CredentialsValidatingProperties.of("foo", "bar"),
-                validDatabase);
+        DataSourcePropertiesImpl dataSourcePropertiesImpl =
+            new DataSourcePropertiesImpl(
+                DataSourceType.MYSQL,
+                validTable,
+                new DbmsServerPropertiesImpl(
+                    new DbmsHostPropertiesImpl("example.com", 1234, true),
+                    new DbmsCredentialsPropertiesImpl("foo", "bar"),
+                    "patch_database"),
+                new ConnectionPoolPropertiesImpl(60000, 10));
 
         // When
-        Set<ConstraintViolation<DbmsServerValidatingProperties>> constraintViolations =
-            ValidatorTestWrapper.validate(dbmsServerValidatingProperties);
+        Set<ConstraintViolation<DataSourcePropertiesImpl>> constraintViolations =
+            ValidatorTestWrapper.validate(dataSourcePropertiesImpl);
 
         // Then
         assertThat(constraintViolations).isEmpty();
@@ -301,17 +268,21 @@ class DbmsServerValidatingPropertiesTest {
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With invalid values")
-      void withInvalidValues_shouldGenerateConstraintViolations(String invalidDatabase) {
+      void withInvalidValues_shouldGenerateConstraintViolations(String invalidTable) {
         // Given
-        DbmsServerValidatingProperties dbmsServerValidatingProperties =
-            DbmsServerValidatingProperties.of(
-                DbmsHostValidatingProperties.of("example.com", 1234, true),
-                CredentialsValidatingProperties.of("foo", "bar"),
-                invalidDatabase);
+        DataSourcePropertiesImpl dataSourcePropertiesImpl =
+            new DataSourcePropertiesImpl(
+                DataSourceType.MYSQL,
+                invalidTable,
+                new DbmsServerPropertiesImpl(
+                    new DbmsHostPropertiesImpl("example.com", 1234, true),
+                    new DbmsCredentialsPropertiesImpl("foo", "bar"),
+                    "patch_database"),
+                new ConnectionPoolPropertiesImpl(60000, 10));
 
         // When
-        Set<ConstraintViolation<DbmsServerValidatingProperties>> constraintViolations =
-            ValidatorTestWrapper.validate(dbmsServerValidatingProperties);
+        Set<ConstraintViolation<DataSourcePropertiesImpl>> constraintViolations =
+            ValidatorTestWrapper.validate(dataSourcePropertiesImpl);
 
         // Then
         assertThat(constraintViolations)
@@ -319,13 +290,13 @@ class DbmsServerValidatingPropertiesTest {
             .element(0)
             .matches(
                 constraintViolation ->
-                    constraintViolation.getRootBeanClass() == DbmsServerValidatingProperties.class)
+                    constraintViolation.getRootBeanClass() == DataSourcePropertiesImpl.class)
             .matches(
                 constraintViolation ->
-                    Objects.equals(constraintViolation.getInvalidValue(), invalidDatabase))
+                    Objects.equals(constraintViolation.getInvalidValue(), invalidTable))
             .matches(
                 constraintViolation ->
-                    constraintViolation.getPropertyPath().toString().equals("database"));
+                    constraintViolation.getPropertyPath().toString().equals("table"));
       }
 
       private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
@@ -348,7 +319,7 @@ class DbmsServerValidatingPropertiesTest {
     @DisplayName("With valid values")
     @SneakyThrows
     void withValidValues_shouldMatchExpectedYamlContent(
-        @NonNull DbmsServerValidatingProperties givenValue, @NonNull String expectedYamlFileName) {
+        @NonNull DataSourcePropertiesImpl givenValue, @NonNull String expectedYamlFileName) {
       // Given
       Path imDestFile = imfs.getPath("test.conf");
 
@@ -366,15 +337,19 @@ class DbmsServerValidatingPropertiesTest {
     private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
           Arguments.of(
-              Named.of("With default values", DbmsServerValidatingProperties.ofDefault()),
+              Named.of("With default values", new DataSourcePropertiesImpl()),
               "whenSerializing_withDefaultValues.conf"),
           Arguments.of(
               Named.of(
                   "With custom values",
-                  DbmsServerValidatingProperties.of(
-                      DbmsHostValidatingProperties.of("example.com", 1234, true),
-                      CredentialsValidatingProperties.of("foo", "bar"),
-                      "patch_database")),
+                  new DataSourcePropertiesImpl(
+                      DataSourceType.MYSQL,
+                      "patch_place_break",
+                      new DbmsServerPropertiesImpl(
+                          new DbmsHostPropertiesImpl("example.com", 1234, true),
+                          new DbmsCredentialsPropertiesImpl("foo", "bar"),
+                          "patch_database"),
+                      new ConnectionPoolPropertiesImpl(60000, 10))),
               "whenSerializing_withCustomValues.conf"));
     }
   }
@@ -388,39 +363,51 @@ class DbmsServerValidatingPropertiesTest {
     @MethodSource
     @DisplayName("With valid content")
     void withValidContent_shouldMatchExpectedValue(
-        @NonNull String confFileName, @NonNull DbmsServerValidatingProperties expectedValue) {
+        @NonNull String confFileName, @NonNull DataSourcePropertiesImpl expectedValue) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      Optional<DbmsServerValidatingProperties> optionalDbmsServerValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(confFile, DbmsServerValidatingProperties.class);
+      Optional<DataSourcePropertiesImpl> optionalDataSourceValidatingProperties =
+          ConfigSerializerTestWrapper.deserialize(confFile, DataSourcePropertiesImpl.class);
 
       // Then
-      assertThat(optionalDbmsServerValidatingProperties).isPresent().get().isEqualTo(expectedValue);
+      assertThat(optionalDataSourceValidatingProperties).isPresent().get().isEqualTo(expectedValue);
     }
 
     private @NonNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
           Arguments.of(
               Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
-              DbmsServerValidatingProperties.of(
-                  DbmsHostValidatingProperties.of("example.com", 1234, true),
-                  CredentialsValidatingProperties.of("foo", "bar"),
-                  "patch_database")),
+              new DataSourcePropertiesImpl(
+                  DataSourceType.MYSQL,
+                  "patch_place_break",
+                  new DbmsServerPropertiesImpl(
+                      new DbmsHostPropertiesImpl("example.com", 1234, true),
+                      new DbmsCredentialsPropertiesImpl("foo", "bar"),
+                      "patch_database"),
+                  new ConnectionPoolPropertiesImpl(60000, 10))),
           Arguments.of(
               Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
-              DbmsServerValidatingProperties.of(
-                  DbmsHostValidatingProperties.of("example.com", 1234, true),
-                  CredentialsValidatingProperties.of("foo", "bar"),
-                  "patch_database")),
+              new DataSourcePropertiesImpl(
+                  DataSourceType.MYSQL,
+                  "patch_place_break",
+                  new DbmsServerPropertiesImpl(
+                      new DbmsHostPropertiesImpl("example.com", 1234, true),
+                      new DbmsCredentialsPropertiesImpl("foo", "bar"),
+                      "patch_database"),
+                  new ConnectionPoolPropertiesImpl(60000, 10))),
           Arguments.of(
               Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
-              DbmsServerValidatingProperties.of(
-                  DbmsHostValidatingProperties.of("example.com", 1234, true),
-                  CredentialsValidatingProperties.of("foo", "bar"),
-                  "patch_database")));
+              new DataSourcePropertiesImpl(
+                  DataSourceType.MYSQL,
+                  "patch_place_break",
+                  new DbmsServerPropertiesImpl(
+                      new DbmsHostPropertiesImpl("example.com", 1234, true),
+                      new DbmsCredentialsPropertiesImpl("foo", "bar"),
+                      "patch_database"),
+                  new ConnectionPoolPropertiesImpl(60000, 10))));
     }
 
     @ParameterizedTest(name = "{index} - {0}")
@@ -433,9 +420,7 @@ class DbmsServerValidatingPropertiesTest {
 
       // When
       ThrowingCallable throwingCallable =
-          () ->
-              ConfigSerializerTestWrapper.deserialize(
-                  confFile, DbmsServerValidatingProperties.class);
+          () -> ConfigSerializerTestWrapper.deserialize(confFile, DataSourcePropertiesImpl.class);
 
       // Then
       assertThatThrownBy(throwingCallable)
@@ -446,15 +431,18 @@ class DbmsServerValidatingPropertiesTest {
     private @NonNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
           Arguments.of(
-              Named.of("With missing 'host' field", "whenDeserializing_withMissingHostField.conf")),
+              Named.of("With missing 'type' field", "whenDeserializing_withMissingTypeField.conf")),
           Arguments.of(
               Named.of(
-                  "With missing 'credentials' field",
-                  "whenDeserializing_withMissingCredentialsField.conf")),
+                  "With missing 'table' field", "whenDeserializing_withMissingTableField.conf")),
           Arguments.of(
               Named.of(
-                  "With missing 'database' field",
-                  "whenDeserializing_withMissingDatabaseField.conf")));
+                  "With missing 'dbmsServer' field",
+                  "whenDeserializing_withMissingDbmsServerField.conf")),
+          Arguments.of(
+              Named.of(
+                  "With missing 'connectionPool' field",
+                  "whenDeserializing_withMissingConnectionPoolField.conf")));
     }
 
     @Test
@@ -466,11 +454,11 @@ class DbmsServerValidatingPropertiesTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      Optional<DbmsServerValidatingProperties> dbmsServerValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(confFile, DbmsServerValidatingProperties.class);
+      Optional<DataSourcePropertiesImpl> dataSourceValidatingProperties =
+          ConfigSerializerTestWrapper.deserialize(confFile, DataSourcePropertiesImpl.class);
 
       // Then
-      assertThat(dbmsServerValidatingProperties).isNotPresent();
+      assertThat(dataSourceValidatingProperties).isNotPresent();
     }
   }
 }

@@ -22,7 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DataSourceValidatingProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DataSourcePropertiesImpl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -48,8 +48,8 @@ public final class ConfigApi {
    */
   public @NonNull DataSourceProperties getDataSourceProperties() {
     configManager.createDefaultIfNotExists(
-        DATA_SOURCE_CONFIG_FILE_NAME, DataSourceValidatingProperties.ofDefault());
+        DATA_SOURCE_CONFIG_FILE_NAME, new DataSourcePropertiesImpl());
     return configManager.readAndValidate(
-        DATA_SOURCE_CONFIG_FILE_NAME, DataSourceValidatingProperties.class);
+        DATA_SOURCE_CONFIG_FILE_NAME, DataSourcePropertiesImpl.class);
   }
 }

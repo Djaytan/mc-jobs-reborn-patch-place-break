@@ -22,6 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.Properties;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import java.util.Set;
@@ -30,7 +31,6 @@ import javax.inject.Singleton;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
-/** Validator of any {@link ValidatingConvertibleProperties}. */
 @Singleton
 @Slf4j
 public final class PropertiesValidator {
@@ -44,22 +44,16 @@ public final class PropertiesValidator {
   }
 
   /**
-   * Validates the specified {@link ValidatingConvertibleProperties} and convert it to the
-   * corresponding final data structure.
+   * Validates the specified properties.
    *
-   * @param validatingConvertibleProperties The properties to validate and then convert to the final
-   *     data structure.
-   * @param <T> The targeted type for the conversion.
-   * @return The validated config converted to the final data structure.
+   * @param properties The properties to validate.
    * @throws PropertiesValidationException If {@link ConstraintViolation}s are detected.
    */
-  public <T> @NonNull T validate(
-      @NonNull ValidatingConvertibleProperties<T> validatingConvertibleProperties) {
-    String propertiesTypeName = validatingConvertibleProperties.getClass().getSimpleName();
+  public void validate(@NonNull Properties properties) {
+    String propertiesTypeName = properties.getClass().getSimpleName();
     log.atInfo().log("Validating properties of type '{}'...", propertiesTypeName);
 
-    Set<ConstraintViolation<ValidatingConvertibleProperties<T>>> constraintViolations =
-        validator.validate(validatingConvertibleProperties);
+    Set<ConstraintViolation<Properties>> constraintViolations = validator.validate(properties);
 
     if (!constraintViolations.isEmpty()) {
       String formatted = ConstraintViolationFormatter.format(constraintViolations);
@@ -67,9 +61,6 @@ public final class PropertiesValidator {
       throw PropertiesValidationException.constraintViolations(constraintViolations);
     }
 
-    validatingConvertibleProperties.markAsValidated();
-    T validatedProperties = validatingConvertibleProperties.convert();
     log.atInfo().log("Properties of type '{}' validated.", propertiesTypeName);
-    return validatedProperties;
   }
 }

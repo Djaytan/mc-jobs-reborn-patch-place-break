@@ -22,6 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.Properties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializer;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -31,17 +32,17 @@ import lombok.NonNull;
 public final class ConfigSerializerTestWrapper {
 
   /**
-   * @see ConfigSerializer#serialize(Path, Object)
+   * @see ConfigSerializer#serialize(Path, Properties)
    */
-  public static void serialize(@NonNull Path destConfigFile, @NonNull Object object) {
+  public static void serialize(@NonNull Path destConfigFile, @NonNull Properties properties) {
     ConfigSerializer configSerializer = new ConfigSerializer();
-    configSerializer.serialize(destConfigFile, object);
+    configSerializer.serialize(destConfigFile, properties);
   }
 
   /**
    * @see ConfigSerializer#deserialize(Path, Class)
    */
-  public static <T> @NonNull Optional<T> deserialize(
+  public static <T extends Properties> @NonNull Optional<T> deserialize(
       @NonNull Path srcConfigFile, @NonNull Class<T> type) {
     ConfigSerializer configSerializer = new ConfigSerializer();
     return configSerializer.deserialize(srcConfigFile, type);

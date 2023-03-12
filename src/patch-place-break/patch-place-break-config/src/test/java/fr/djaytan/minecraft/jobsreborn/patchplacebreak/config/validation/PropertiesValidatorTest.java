@@ -22,22 +22,16 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.ConnectionPoolValidatingProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.CredentialsValidatingProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DataSourceValidatingProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DbmsHostValidatingProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DbmsServerValidatingProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.ConnectionPoolPropertiesImpl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DataSourcePropertiesImpl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DbmsCredentialsPropertiesImpl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DbmsHostPropertiesImpl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DbmsServerPropertiesImpl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.ConnectionPoolProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.CredentialsProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsHostProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsServerProperties;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -56,53 +50,41 @@ class PropertiesValidatorTest {
   @DisplayName("When validating with valid values")
   void whenValidating_withValidValues_shouldSuccess() {
     // Given
-    DataSourceValidatingProperties dataSourceValidatingProperties =
-        DataSourceValidatingProperties.of(
+    DataSourcePropertiesImpl dataSourcePropertiesImpl =
+        new DataSourcePropertiesImpl(
             DataSourceType.MYSQL,
             "patch_place_break",
-            DbmsServerValidatingProperties.of(
-                DbmsHostValidatingProperties.of("example.com", 1234, true),
-                CredentialsValidatingProperties.of("foo", "bar"),
+            new DbmsServerPropertiesImpl(
+                new DbmsHostPropertiesImpl("example.com", 1234, true),
+                new DbmsCredentialsPropertiesImpl("foo", "bar"),
                 "patch_database"),
-            ConnectionPoolValidatingProperties.of(60000, 10));
+            new ConnectionPoolPropertiesImpl(60000, 10));
 
     // When
-    DataSourceProperties dataSourceProperties =
-        propertiesValidator.validate(dataSourceValidatingProperties);
+    ThrowingCallable throwingCallable =
+        () -> propertiesValidator.validate(dataSourcePropertiesImpl);
 
     // Then
-    assertAll(
-        () -> assertThat(dataSourceValidatingProperties.isValidated()).isTrue(),
-        () ->
-            assertThat(dataSourceProperties)
-                .isEqualTo(
-                    DataSourceProperties.of(
-                        DataSourceType.MYSQL,
-                        "patch_place_break",
-                        DbmsServerProperties.of(
-                            DbmsHostProperties.of("example.com", 1234, true),
-                            CredentialsProperties.of("foo", "bar"),
-                            "patch_database"),
-                        ConnectionPoolProperties.of(60000, 10))));
+    assertThatCode(throwingCallable).doesNotThrowAnyException();
   }
 
   @Test
   @DisplayName("When validating with invalid values")
   void whenValidating_withInvalidValues_shouldThrowException() {
     // Given
-    DataSourceValidatingProperties dataSourceValidatingProperties =
-        DataSourceValidatingProperties.of(
+    DataSourcePropertiesImpl dataSourcePropertiesImpl =
+        new DataSourcePropertiesImpl(
             DataSourceType.MYSQL,
             "patch_place_break",
-            DbmsServerValidatingProperties.of(
-                DbmsHostValidatingProperties.of("example.com", -1, true),
-                CredentialsValidatingProperties.of("foo", "bar"),
+            new DbmsServerPropertiesImpl(
+                new DbmsHostPropertiesImpl("example.com", -1, true),
+                new DbmsCredentialsPropertiesImpl("foo", "bar"),
                 "patch_database"),
-            ConnectionPoolValidatingProperties.of(60000, 10));
+            new ConnectionPoolPropertiesImpl(60000, 10));
 
     // When
     ThrowingCallable throwingCallable =
-        () -> propertiesValidator.validate(dataSourceValidatingProperties);
+        () -> propertiesValidator.validate(dataSourcePropertiesImpl);
 
     // Then
     assertThatThrownBy(throwingCallable).isExactlyInstanceOf(PropertiesValidationException.class);
