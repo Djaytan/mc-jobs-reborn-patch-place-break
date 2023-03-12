@@ -23,12 +23,29 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties;
 
 import lombok.NonNull;
-import lombok.Value;
 
-@Value(staticConstructor = "of")
-public class DbmsHostProperties {
+/** Represents the DBMS server properties related to the host. */
+public interface DbmsHostProperties {
 
-  @NonNull String hostname;
-  int port;
-  boolean isSslEnabled;
+  /**
+   * Gets the hostname of the targeted DBMS server.
+   *
+   * @return The hostname of the targeted DBMS server.
+   */
+  @NonNull
+  String getHostname();
+
+  /**
+   * Gets the port on which the targeted DBMS server is exposed.
+   *
+   * @return The port on which the targeted DBMS server is exposed.
+   */
+  int getPort();
+
+  /**
+   * Gets <code>true</code> if the SSL communication is enabled, <code>false</code> otherwise.
+   *
+   * @return <code>true</code> if the SSL communication is enabled, <code>false</code> otherwise.
+   */
+  boolean isSslEnabled();
 }

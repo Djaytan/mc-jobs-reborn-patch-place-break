@@ -20,49 +20,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.CredentialsProperties;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.ConnectionPoolProperties;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.ToString;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
-/** Represents an annotated Java Beans version of a {@link CredentialsProperties}. */
 @ConfigSerializable
 @Getter
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true, exclude = "password")
-@NoArgsConstructor(staticName = "ofDefault")
-@AllArgsConstructor(staticName = "of")
-public final class CredentialsValidatingProperties
-    extends ValidatingConvertibleProperties<CredentialsProperties> {
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public final class ConnectionPoolPropertiesImpl implements ConnectionPoolProperties, Properties {
 
-  @NotBlank
-  @Size(max = 32)
+  @Max(600000)
+  @Positive
   @Required
   @Comment(
-      "Under behalf of which user to connect on the DBMS server\n"
-          + "Value can't be empty or blank")
-  private String username = "username";
+      "The connection timeout in milliseconds\n"
+          + "Corresponds to the maximum time the connection pool will wait to acquire a new connection\n"
+          + "from the DBMS server\n"
+          + "Not applicable for SQLite\n"
+          + "Accepted range values: [1-600000]")
+  private long connectionTimeout = 30000;
 
-  @NotNull
-  @Size(max = 128)
+  @Max(100)
+  @Positive
   @Required
-  @Comment("Password of the user (optional but highly recommended)")
-  private String password = "password";
-
-  @Override
-  protected @NonNull CredentialsProperties convertValidated() {
-    return CredentialsProperties.of(username, password);
-  }
+  @Comment(
+      "The number of DBMS connections in the pool\n"
+          + "Could be best determined by the executing environment\n"
+          + "Accepted range values: [1-100]")
+  private int poolSize = 10;
 }

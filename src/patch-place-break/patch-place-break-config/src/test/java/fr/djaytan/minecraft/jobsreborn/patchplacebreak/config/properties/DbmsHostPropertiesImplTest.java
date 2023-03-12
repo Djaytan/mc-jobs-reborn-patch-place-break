@@ -20,10 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -35,7 +34,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResource
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsHostProperties;
 import jakarta.validation.ConstraintViolation;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -63,7 +61,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.spongepowered.configurate.serialize.SerializationException;
 
-class DbmsHostValidatingPropertiesTest {
+class DbmsHostPropertiesImplTest {
 
   private FileSystem imfs;
 
@@ -81,7 +79,7 @@ class DbmsHostValidatingPropertiesTest {
   @Test
   @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashcode_shouldMetContracts() {
-    EqualsVerifier.forClass(DbmsHostValidatingProperties.class)
+    EqualsVerifier.forClass(DbmsHostPropertiesImpl.class)
         .withRedefinedSuperclass()
         .suppress(Warning.NONFINAL_FIELDS)
         .verify();
@@ -90,7 +88,7 @@ class DbmsHostValidatingPropertiesTest {
   @Test
   @DisplayName("When calling toString()")
   void whenCallingToString_shouldMetContracts() {
-    ToStringVerifier.forClass(DbmsHostValidatingProperties.class)
+    ToStringVerifier.forClass(DbmsHostPropertiesImpl.class)
         .withClassName(NameStyle.SIMPLE_NAME)
         .verify();
   }
@@ -105,15 +103,13 @@ class DbmsHostValidatingPropertiesTest {
       // Given
 
       // When
-      DbmsHostValidatingProperties dbmsHostValidatingProperties =
-          DbmsHostValidatingProperties.ofDefault();
+      DbmsHostPropertiesImpl dbmsHostPropertiesImpl = new DbmsHostPropertiesImpl();
 
       // Then
       assertAll(
-          () -> assertThat(dbmsHostValidatingProperties.getHostname()).isEqualTo("localhost"),
-          () -> assertThat(dbmsHostValidatingProperties.getPort()).isEqualTo(3306),
-          () -> assertThat(dbmsHostValidatingProperties.isSslEnabled()).isTrue(),
-          () -> assertThat(dbmsHostValidatingProperties.isValidated()).isFalse());
+          () -> assertThat(dbmsHostPropertiesImpl.getHostname()).isEqualTo("localhost"),
+          () -> assertThat(dbmsHostPropertiesImpl.getPort()).isEqualTo(3306),
+          () -> assertThat(dbmsHostPropertiesImpl.isSslEnabled()).isTrue());
     }
 
     @Test
@@ -125,58 +121,14 @@ class DbmsHostValidatingPropertiesTest {
       boolean isSslEnabled = true;
 
       // When
-      DbmsHostValidatingProperties dbmsHostValidatingProperties =
-          DbmsHostValidatingProperties.of(hostname, port, isSslEnabled);
+      DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
+          new DbmsHostPropertiesImpl(hostname, port, isSslEnabled);
 
       // Then
       assertAll(
-          () -> assertThat(dbmsHostValidatingProperties.getHostname()).isEqualTo("example.com"),
-          () -> assertThat(dbmsHostValidatingProperties.getPort()).isEqualTo(1234),
-          () -> assertThat(dbmsHostValidatingProperties.isSslEnabled()).isTrue(),
-          () -> assertThat(dbmsHostValidatingProperties.isValidated()).isFalse());
-    }
-  }
-
-  @Nested
-  @DisplayName("When converting")
-  class WhenConverting {
-
-    @Test
-    @DisplayName("With properties marked as validated")
-    void withPropertiesMarkedAsValidated_shouldConvertSuccessfully() {
-      // Given
-      DbmsHostValidatingProperties dbmsHostValidatingProperties =
-          DbmsHostValidatingProperties.of("example.com", 1234, true);
-      dbmsHostValidatingProperties.markAsValidated();
-
-      // When
-      DbmsHostProperties dbmsHostProperties = dbmsHostValidatingProperties.convert();
-
-      // Then
-      assertAll(
-          () -> assertThat(dbmsHostValidatingProperties.isValidated()).isTrue(),
-          () -> assertThat(dbmsHostProperties.getHostname()).isEqualTo("example.com"),
-          () -> assertThat(dbmsHostProperties.getPort()).isEqualTo(1234),
-          () -> assertThat(dbmsHostProperties.isSslEnabled()).isTrue());
-    }
-
-    @Test
-    @DisplayName("With properties not marked as validated")
-    void withPropertiesNotMarkedAsValidated_shouldThrowException() {
-      // Given
-      DbmsHostValidatingProperties dbmsHostValidatingProperties =
-          DbmsHostValidatingProperties.of("example.com", 1234, true);
-
-      // When
-      ThrowingCallable throwingCallable = dbmsHostValidatingProperties::convert;
-
-      // Then
-      assertAll(
-          () -> assertThat(dbmsHostValidatingProperties.isValidated()).isFalse(),
-          () ->
-              assertThatIllegalStateException()
-                  .isThrownBy(throwingCallable)
-                  .withMessage("Properties must be validated before being converted"));
+          () -> assertThat(dbmsHostPropertiesImpl.getHostname()).isEqualTo("example.com"),
+          () -> assertThat(dbmsHostPropertiesImpl.getPort()).isEqualTo(1234),
+          () -> assertThat(dbmsHostPropertiesImpl.isSslEnabled()).isTrue());
     }
   }
 
@@ -188,12 +140,11 @@ class DbmsHostValidatingPropertiesTest {
     @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
-      DbmsHostValidatingProperties dbmsHostValidatingProperties =
-          DbmsHostValidatingProperties.ofDefault();
+      DbmsHostPropertiesImpl dbmsHostPropertiesImpl = new DbmsHostPropertiesImpl();
 
       // When
-      Set<ConstraintViolation<DbmsHostValidatingProperties>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsHostValidatingProperties);
+      Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
+          ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -203,12 +154,12 @@ class DbmsHostValidatingPropertiesTest {
     @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
-      DbmsHostValidatingProperties dbmsHostValidatingProperties =
-          DbmsHostValidatingProperties.of("example.com", 1234, true);
+      DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
+          new DbmsHostPropertiesImpl("example.com", 1234, true);
 
       // When
-      Set<ConstraintViolation<DbmsHostValidatingProperties>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsHostValidatingProperties);
+      Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
+          ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -221,12 +172,11 @@ class DbmsHostValidatingPropertiesTest {
     @DisplayName("With only invalid values")
     void withOnlyInvalidValues_shouldGenerateConstraintViolations() {
       // Given
-      DbmsHostValidatingProperties dbmsHostValidatingProperties =
-          DbmsHostValidatingProperties.of("", -1, false);
+      DbmsHostPropertiesImpl dbmsHostPropertiesImpl = new DbmsHostPropertiesImpl("", -1, false);
 
       // When
-      Set<ConstraintViolation<DbmsHostValidatingProperties>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsHostValidatingProperties);
+      Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
+          ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
 
       // Then
       assertThat(constraintViolations).hasSize(2);
@@ -242,12 +192,12 @@ class DbmsHostValidatingPropertiesTest {
       @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(@NonNull String validHostname) {
         // Given
-        DbmsHostValidatingProperties dbmsHostValidatingProperties =
-            DbmsHostValidatingProperties.of(validHostname, 1234, true);
+        DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
+            new DbmsHostPropertiesImpl(validHostname, 1234, true);
 
         // When
-        Set<ConstraintViolation<DbmsHostValidatingProperties>> constraintViolations =
-            ValidatorTestWrapper.validate(dbmsHostValidatingProperties);
+        Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
+            ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
 
         // Then
         assertThat(constraintViolations).isEmpty();
@@ -275,12 +225,12 @@ class DbmsHostValidatingPropertiesTest {
       @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(String invalidHostname) {
         // Given
-        DbmsHostValidatingProperties dbmsHostValidatingProperties =
-            DbmsHostValidatingProperties.of(invalidHostname, 1234, true);
+        DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
+            new DbmsHostPropertiesImpl(invalidHostname, 1234, true);
 
         // When
-        Set<ConstraintViolation<DbmsHostValidatingProperties>> constraintViolations =
-            ValidatorTestWrapper.validate(dbmsHostValidatingProperties);
+        Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
+            ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
 
         // Then
         assertThat(constraintViolations)
@@ -288,7 +238,7 @@ class DbmsHostValidatingPropertiesTest {
             .element(0)
             .matches(
                 constraintViolation ->
-                    constraintViolation.getRootBeanClass() == DbmsHostValidatingProperties.class)
+                    constraintViolation.getRootBeanClass() == DbmsHostPropertiesImpl.class)
             .matches(
                 constraintViolation ->
                     Objects.equals(constraintViolation.getInvalidValue(), invalidHostname))
@@ -316,12 +266,12 @@ class DbmsHostValidatingPropertiesTest {
       @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(int validPort) {
         // Given
-        DbmsHostValidatingProperties dbmsHostValidatingProperties =
-            DbmsHostValidatingProperties.of("example.com", validPort, true);
+        DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
+            new DbmsHostPropertiesImpl("example.com", validPort, true);
 
         // When
-        Set<ConstraintViolation<DbmsHostValidatingProperties>> constraintViolations =
-            ValidatorTestWrapper.validate(dbmsHostValidatingProperties);
+        Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
+            ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
 
         // Then
         assertThat(constraintViolations).isEmpty();
@@ -338,12 +288,12 @@ class DbmsHostValidatingPropertiesTest {
       @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(int invalidPort) {
         // Given
-        DbmsHostValidatingProperties dbmsHostValidatingProperties =
-            DbmsHostValidatingProperties.of("example.com", invalidPort, true);
+        DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
+            new DbmsHostPropertiesImpl("example.com", invalidPort, true);
 
         // When
-        Set<ConstraintViolation<DbmsHostValidatingProperties>> constraintViolations =
-            ValidatorTestWrapper.validate(dbmsHostValidatingProperties);
+        Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
+            ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
 
         // Then
         assertThat(constraintViolations)
@@ -351,7 +301,7 @@ class DbmsHostValidatingPropertiesTest {
             .element(0)
             .matches(
                 constraintViolation ->
-                    constraintViolation.getRootBeanClass() == DbmsHostValidatingProperties.class)
+                    constraintViolation.getRootBeanClass() == DbmsHostPropertiesImpl.class)
             .matches(
                 constraintViolation ->
                     Objects.equals(constraintViolation.getInvalidValue(), invalidPort))
@@ -379,7 +329,7 @@ class DbmsHostValidatingPropertiesTest {
     @DisplayName("With valid values")
     @SneakyThrows
     void withValidValues_shouldMatchExpectedYamlContent(
-        @NonNull DbmsHostValidatingProperties givenValue, @NonNull String expectedYamlFileName) {
+        @NonNull DbmsHostPropertiesImpl givenValue, @NonNull String expectedYamlFileName) {
       // Given
       Path imDestFile = imfs.getPath("test.conf");
 
@@ -397,11 +347,10 @@ class DbmsHostValidatingPropertiesTest {
     private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
           Arguments.of(
-              Named.of("With default values", DbmsHostValidatingProperties.ofDefault()),
+              Named.of("With default values", new DbmsHostPropertiesImpl()),
               "whenSerializing_withDefaultValues.conf"),
           Arguments.of(
-              Named.of(
-                  "With custom values", DbmsHostValidatingProperties.of("example.com", 1234, true)),
+              Named.of("With custom values", new DbmsHostPropertiesImpl("example.com", 1234, true)),
               "whenSerializing_withCustomValues.conf"));
     }
   }
@@ -415,14 +364,14 @@ class DbmsHostValidatingPropertiesTest {
     @MethodSource
     @DisplayName("With valid content")
     void withValidContent_shouldMatchExpectedValue(
-        @NonNull String confFileName, @NonNull DbmsHostValidatingProperties expectedValue) {
+        @NonNull String confFileName, @NonNull DbmsHostPropertiesImpl expectedValue) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      Optional<DbmsHostValidatingProperties> optionalHostValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(confFile, DbmsHostValidatingProperties.class);
+      Optional<DbmsHostPropertiesImpl> optionalHostValidatingProperties =
+          ConfigSerializerTestWrapper.deserialize(confFile, DbmsHostPropertiesImpl.class);
 
       // Then
       assertThat(optionalHostValidatingProperties).isPresent().get().isEqualTo(expectedValue);
@@ -432,13 +381,13 @@ class DbmsHostValidatingPropertiesTest {
       return Stream.of(
           Arguments.of(
               Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
-              DbmsHostValidatingProperties.of("example.com", 1234, true)),
+              new DbmsHostPropertiesImpl("example.com", 1234, true)),
           Arguments.of(
               Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
-              DbmsHostValidatingProperties.of("example.com", 1234, true)),
+              new DbmsHostPropertiesImpl("example.com", 1234, true)),
           Arguments.of(
               Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
-              DbmsHostValidatingProperties.of("example.com", 1234, true)));
+              new DbmsHostPropertiesImpl("example.com", 1234, true)));
     }
 
     @ParameterizedTest(name = "{index} - {0}")
@@ -451,8 +400,7 @@ class DbmsHostValidatingPropertiesTest {
 
       // When
       ThrowingCallable throwingCallable =
-          () ->
-              ConfigSerializerTestWrapper.deserialize(confFile, DbmsHostValidatingProperties.class);
+          () -> ConfigSerializerTestWrapper.deserialize(confFile, DbmsHostPropertiesImpl.class);
 
       // Then
       assertThatThrownBy(throwingCallable)
@@ -483,8 +431,8 @@ class DbmsHostValidatingPropertiesTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      Optional<DbmsHostValidatingProperties> dbmsHostValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(confFile, DbmsHostValidatingProperties.class);
+      Optional<DbmsHostPropertiesImpl> dbmsHostValidatingProperties =
+          ConfigSerializerTestWrapper.deserialize(confFile, DbmsHostPropertiesImpl.class);
 
       // Then
       assertThat(dbmsHostValidatingProperties).isNotPresent();

@@ -22,9 +22,9 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.Properties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidator;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -37,9 +37,9 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Manages config creation and manipulations.
  *
- * <p>The method {@link #createDefaultIfNotExists(String, ValidatingConvertibleProperties)} permits
- * to create a config if missing under the data folder. Then, {@link #readAndValidate(String,
- * Class)} can be used to read and validate it.
+ * <p>The method {@link #createDefaultIfNotExists(String, Properties)} permits to create a config if
+ * missing under the data folder. Then, {@link #readAndValidate(String, Class)} can be used to read
+ * and validate it.
  *
  * <p>The data folder definition is let to the patch enabler (e.g. the Bukkit plugin enabling and
  * calling the patch).
@@ -72,8 +72,7 @@ final class ConfigManager {
    *     yet.
    */
   public void createDefaultIfNotExists(
-      @NonNull String configFileName,
-      @NonNull ValidatingConvertibleProperties<?> defaultProperties) {
+      @NonNull String configFileName, @NonNull Properties defaultProperties) {
     Path configFile = dataFolder.resolve(configFileName);
 
     if (Files.exists(configFile)) {
@@ -88,37 +87,33 @@ final class ConfigManager {
 
   /**
    * Reads config file from a predefined location. It is recommended to call {@link
-   * #createDefaultIfNotExists(String, ValidatingConvertibleProperties)} first at least one time.
+   * #createDefaultIfNotExists(String, Properties)} first at least one time.
    *
    * @param configFileName The config file name to read under the data folder.
-   * @param type The type to be instantiated and returned once config file read.
+   * @param propertiesType The type to be instantiated and returned once config file read.
    * @param <T> The final type to be instantiated and returned once config file validated.
    * @return The specified final type instantiated and populated with values coming from the config
    *     file content.
    */
-  public <T> @NonNull T readAndValidate(
-      @NonNull String configFileName,
-      @NonNull Class<? extends ValidatingConvertibleProperties<T>> type) {
-    ValidatingConvertibleProperties<T> configValidatingProperties =
-        readAndDeserializeConfigToValidate(configFileName, type);
-    return propertiesValidator.validate(configValidatingProperties);
+  public <T extends Properties> @NonNull T readAndValidate(
+      @NonNull String configFileName, @NonNull Class<T> propertiesType) {
+    T properties = readAndDeserializeProperties(configFileName, propertiesType);
+    propertiesValidator.validate(properties);
+    return properties;
   }
 
-  private <T> @NonNull ValidatingConvertibleProperties<T> readAndDeserializeConfigToValidate(
-      @NonNull String configFileName,
-      @NonNull Class<? extends ValidatingConvertibleProperties<T>> type) {
+  private <T extends Properties> @NonNull T readAndDeserializeProperties(
+      @NonNull String configFileName, @NonNull Class<T> propertiesType) {
     Path configFile = dataFolder.resolve(configFileName);
 
     log.atInfo().log("Reading '{}' file...", configFileName);
-    Optional<? extends ValidatingConvertibleProperties<T>> configValidatingProperties =
-        configSerializer.deserialize(configFile, type);
+    Optional<T> properties = configSerializer.deserialize(configFile, propertiesType);
 
-    if (!configValidatingProperties.isPresent()) {
+    if (!properties.isPresent()) {
       throw ConfigException.failedReadingConfig(configFileName);
     }
 
-    ValidatingConvertibleProperties<T> readConfig = configValidatingProperties.get();
     log.atInfo().log("File '{}' read successfully.", configFileName);
-    return readConfig;
+    return properties.get();
   }
 }

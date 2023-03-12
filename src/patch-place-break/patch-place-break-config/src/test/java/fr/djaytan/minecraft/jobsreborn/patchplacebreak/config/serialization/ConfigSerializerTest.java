@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated.DbmsHostValidatingProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DbmsHostPropertiesImpl;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -69,11 +69,11 @@ class ConfigSerializerTest {
     void withNominalValues_shouldCreateAndFillYamlFile() {
       // Given
       Path targetFileLocation = imfs.getPath("test.conf");
-      DbmsHostValidatingProperties dbmsHostValidatingProperties =
-          DbmsHostValidatingProperties.of("example.com", 1234, true);
+      DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
+          new DbmsHostPropertiesImpl("example.com", 1234, true);
 
       // When
-      configSerializer.serialize(targetFileLocation, dbmsHostValidatingProperties);
+      configSerializer.serialize(targetFileLocation, dbmsHostPropertiesImpl);
 
       // Then
       String expectedYamlFile = "whenSerializing_withNominalValues.conf";
@@ -97,14 +97,14 @@ class ConfigSerializerTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      Optional<DbmsHostValidatingProperties> optionalHostValidatingProperties =
-          configSerializer.deserialize(confFile, DbmsHostValidatingProperties.class);
+      Optional<DbmsHostPropertiesImpl> optionalHostValidatingProperties =
+          configSerializer.deserialize(confFile, DbmsHostPropertiesImpl.class);
 
       // Then
       assertThat(optionalHostValidatingProperties)
           .isPresent()
           .get()
-          .isEqualTo(DbmsHostValidatingProperties.of("example.com", 1234, true));
+          .isEqualTo(new DbmsHostPropertiesImpl("example.com", 1234, true));
     }
 
     @Test
@@ -117,7 +117,7 @@ class ConfigSerializerTest {
 
       // When
       ThrowingCallable throwingCallable =
-          () -> configSerializer.deserialize(confFile, DbmsHostValidatingProperties.class);
+          () -> configSerializer.deserialize(confFile, DbmsHostPropertiesImpl.class);
 
       // Then
       assertThatThrownBy(throwingCallable)

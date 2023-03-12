@@ -22,6 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.Properties;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -33,20 +34,20 @@ import org.spongepowered.configurate.loader.ConfigurationLoader;
 /**
  * Config serializer.
  *
- * <p>Two methods are exposed for serialization: {@link #serialize(Path, Object)} and {@link
+ * <p>Two methods are exposed for serialization: {@link #serialize(Path, Properties)} and {@link
  * #deserialize(Path, Class)}.
  */
 @Singleton
 public final class ConfigSerializer {
 
   /**
-   * Serializes the given object into the specified destination file.
+   * Serializes the given properties into the specified destination file.
    *
-   * @param destConfigFile The destination config file into which serialize object.
-   * @param object The object to serialize.
+   * @param destConfigFile The destination config file into which serialize properties.
+   * @param properties The properties to serialize.
    * @throws ConfigSerializationException If something prevent the serialization.
    */
-  public void serialize(@NonNull Path destConfigFile, @NonNull Object object) {
+  public void serialize(@NonNull Path destConfigFile, @NonNull Properties properties) {
     try {
       ConfigurationLoader<? extends ConfigurationNode> loader =
           ConfigLoaderFactory.createLoader(destConfigFile);
@@ -55,7 +56,7 @@ public final class ConfigSerializer {
         throw ConfigSerializationException.failToSerialize();
       }
 
-      ConfigurationNode configurationNode = loader.createNode(node -> node.set(object));
+      ConfigurationNode configurationNode = loader.createNode(node -> node.set(properties));
       loader.save(configurationNode);
     } catch (IOException e) {
       throw ConfigSerializationException.failToSerialize(e);
@@ -63,15 +64,16 @@ public final class ConfigSerializer {
   }
 
   /**
-   * Deserializes the given source file to the specified targeted type.
+   * Deserializes the given source file to the specified targeted properties type.
    *
    * @param srcConfigFile The source config file from which deserializing.
-   * @param type The targeted type of YAML deserialization.
-   * @return The deserialized value if present and of valid type.
-   * @param <T> The expected type to be obtained from deserialization.
+   * @param propertiesType The targeted properties type of YAML deserialization.
+   * @return The deserialized value if present and of valid properties type.
+   * @param <T> The expected properties type to be obtained from deserialization.
    * @throws ConfigSerializationException If something prevent the deserialization.
    */
-  public <T> @NonNull Optional<T> deserialize(@NonNull Path srcConfigFile, @NonNull Class<T> type) {
+  public <T extends Properties> @NonNull Optional<T> deserialize(
+      @NonNull Path srcConfigFile, @NonNull Class<T> propertiesType) {
     try {
       ConfigurationLoader<?> loader = ConfigLoaderFactory.createLoader(srcConfigFile);
 
@@ -80,7 +82,7 @@ public final class ConfigSerializer {
       }
 
       ConfigurationNode rootNode = loader.load();
-      return Optional.ofNullable(rootNode.get(type));
+      return Optional.ofNullable(rootNode.get(propertiesType));
     } catch (IOException e) {
       throw ConfigSerializationException.failToDeserialize(e);
     }

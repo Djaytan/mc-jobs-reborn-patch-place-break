@@ -20,10 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -35,7 +34,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResource
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializationException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.CredentialsProperties;
 import jakarta.validation.ConstraintViolation;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -48,7 +46,6 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,7 +60,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.spongepowered.configurate.serialize.SerializationException;
 
-class CredentialsValidatingPropertiesTest {
+class ConnectionPoolPropertiesImplTest {
 
   private FileSystem imfs;
 
@@ -81,7 +78,7 @@ class CredentialsValidatingPropertiesTest {
   @Test
   @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashcode_shouldMetContracts() {
-    EqualsVerifier.forClass(CredentialsValidatingProperties.class)
+    EqualsVerifier.forClass(ConnectionPoolPropertiesImpl.class)
         .withRedefinedSuperclass()
         .suppress(Warning.NONFINAL_FIELDS)
         .verify();
@@ -90,10 +87,8 @@ class CredentialsValidatingPropertiesTest {
   @Test
   @DisplayName("When calling toString()")
   void whenCallingToString_shouldMetContracts() {
-    ToStringVerifier.forClass(CredentialsValidatingProperties.class)
+    ToStringVerifier.forClass(ConnectionPoolPropertiesImpl.class)
         .withClassName(NameStyle.SIMPLE_NAME)
-        .withIgnoredFields("password")
-        .withFailOnExcludedFields(true)
         .verify();
   }
 
@@ -107,74 +102,32 @@ class CredentialsValidatingPropertiesTest {
       // Given
 
       // When
-      CredentialsValidatingProperties credentialsValidatingProperties =
-          CredentialsValidatingProperties.ofDefault();
+      ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+          new ConnectionPoolPropertiesImpl();
 
       // Then
       assertAll(
-          () -> assertThat(credentialsValidatingProperties.getUsername()).isEqualTo("username"),
-          () -> assertThat(credentialsValidatingProperties.getPassword()).isEqualTo("password"),
-          () -> assertThat(credentialsValidatingProperties.isValidated()).isFalse());
+          () -> assertThat(connectionPoolPropertiesImpl.getConnectionTimeout()).isEqualTo(30000),
+          () -> assertThat(connectionPoolPropertiesImpl.getPoolSize()).isEqualTo(10));
     }
 
     @Test
     @DisplayName("With all args constructor")
     void withAllArgsConstructor_shouldMatchGivenArguments() {
       // Given
-      String username = "foo";
-      String password = "bar";
+      long connectionTimeout = 30000;
+      int poolSize = 10;
 
       // When
-      CredentialsValidatingProperties credentialsValidatingProperties =
-          CredentialsValidatingProperties.of(username, password);
+      ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+          new ConnectionPoolPropertiesImpl(connectionTimeout, poolSize);
 
       // Then
       assertAll(
-          () -> assertThat(credentialsValidatingProperties.getUsername()).isEqualTo("foo"),
-          () -> assertThat(credentialsValidatingProperties.getPassword()).isEqualTo("bar"),
-          () -> assertThat(credentialsValidatingProperties.isValidated()).isFalse());
-    }
-  }
-
-  @Nested
-  @DisplayName("When converting")
-  class WhenConverting {
-
-    @Test
-    @DisplayName("With properties marked as validated")
-    void withPropertiesMarkedAsValidated_shouldConvertSuccessfully() {
-      // Given
-      CredentialsValidatingProperties credentialsValidatingProperties =
-          CredentialsValidatingProperties.of("foo", "bar");
-      credentialsValidatingProperties.markAsValidated();
-
-      // When
-      CredentialsProperties credentialsProperties = credentialsValidatingProperties.convert();
-
-      // Then
-      assertAll(
-          () -> assertThat(credentialsValidatingProperties.isValidated()).isTrue(),
-          () -> assertThat(credentialsProperties.getUsername()).isEqualTo("foo"),
-          () -> assertThat(credentialsProperties.getPassword()).isEqualTo("bar"));
-    }
-
-    @Test
-    @DisplayName("With properties not marked as validated")
-    void withPropertiesNotMarkedAsValidated_shouldThrowException() {
-      // Given
-      CredentialsValidatingProperties credentialsValidatingProperties =
-          CredentialsValidatingProperties.of("foo", "bar");
-
-      // When
-      ThrowingCallable throwingCallable = credentialsValidatingProperties::convert;
-
-      // Then
-      assertAll(
-          () -> assertThat(credentialsValidatingProperties.isValidated()).isFalse(),
           () ->
-              assertThatIllegalStateException()
-                  .isThrownBy(throwingCallable)
-                  .withMessage("Properties must be validated before being converted"));
+              assertThat(connectionPoolPropertiesImpl.getConnectionTimeout())
+                  .isEqualTo(connectionTimeout),
+          () -> assertThat(connectionPoolPropertiesImpl.getPoolSize()).isEqualTo(poolSize));
     }
   }
 
@@ -186,12 +139,12 @@ class CredentialsValidatingPropertiesTest {
     @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
-      CredentialsValidatingProperties credentialsValidatingProperties =
-          CredentialsValidatingProperties.ofDefault();
+      ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+          new ConnectionPoolPropertiesImpl();
 
       // When
-      Set<ConstraintViolation<CredentialsValidatingProperties>> constraintViolations =
-          ValidatorTestWrapper.validate(credentialsValidatingProperties);
+      Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
+          ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -201,12 +154,12 @@ class CredentialsValidatingPropertiesTest {
     @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
-      CredentialsValidatingProperties credentialsValidatingProperties =
-          CredentialsValidatingProperties.of("foo", "bar");
+      ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+          new ConnectionPoolPropertiesImpl(30000, 10);
 
       // When
-      Set<ConstraintViolation<CredentialsValidatingProperties>> constraintViolations =
-          ValidatorTestWrapper.validate(credentialsValidatingProperties);
+      Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
+          ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -216,33 +169,33 @@ class CredentialsValidatingPropertiesTest {
     @DisplayName("With only invalid values")
     void withOnlyInvalidValues_shouldGenerateConstraintViolations() {
       // Given
-      CredentialsValidatingProperties credentialsValidatingProperties =
-          CredentialsValidatingProperties.of("", null);
+      ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+          new ConnectionPoolPropertiesImpl(-1, -1);
 
       // When
-      Set<ConstraintViolation<CredentialsValidatingProperties>> constraintViolations =
-          ValidatorTestWrapper.validate(credentialsValidatingProperties);
+      Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
+          ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
 
       // Then
       assertThat(constraintViolations).hasSize(2);
     }
 
     @Nested
-    @DisplayName("'username' field")
+    @DisplayName("'connectionTimeout' field")
     @TestInstance(Lifecycle.PER_CLASS)
-    class UsernameField {
+    class ConnectionTimeoutField {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With valid values")
-      void withValidValues_shouldNotGenerateConstraintViolations(@NonNull String validUsername) {
+      void withValidValues_shouldNotGenerateConstraintViolations(long validConnectionTimeout) {
         // Given
-        CredentialsValidatingProperties credentialsValidatingProperties =
-            CredentialsValidatingProperties.of(validUsername, "bar");
+        ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+            new ConnectionPoolPropertiesImpl(validConnectionTimeout, 10);
 
         // When
-        Set<ConstraintViolation<CredentialsValidatingProperties>> constraintViolations =
-            ValidatorTestWrapper.validate(credentialsValidatingProperties);
+        Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
+            ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
 
         // Then
         assertThat(constraintViolations).isEmpty();
@@ -250,21 +203,21 @@ class CredentialsValidatingPropertiesTest {
 
       private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Longest allowed value", StringUtils.repeat("s", 32))),
-            Arguments.of(Named.of("Shortest allowed value", "s")));
+            Arguments.of(Named.of("Highest allowed value", 600000)),
+            Arguments.of(Named.of("Lowest allowed value", 1)));
       }
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With invalid values")
-      void withInvalidValues_shouldGenerateConstraintViolations(String invalidUsername) {
+      void withInvalidValues_shouldGenerateConstraintViolations(long invalidConnectionTimeout) {
         // Given
-        CredentialsValidatingProperties credentialsValidatingProperties =
-            CredentialsValidatingProperties.of(invalidUsername, "bar");
+        ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+            new ConnectionPoolPropertiesImpl(invalidConnectionTimeout, 10);
 
         // When
-        Set<ConstraintViolation<CredentialsValidatingProperties>> constraintViolations =
-            ValidatorTestWrapper.validate(credentialsValidatingProperties);
+        Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
+            ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
 
         // Then
         assertThat(constraintViolations)
@@ -272,40 +225,38 @@ class CredentialsValidatingPropertiesTest {
             .element(0)
             .matches(
                 constraintViolation ->
-                    constraintViolation.getRootBeanClass() == CredentialsValidatingProperties.class)
+                    constraintViolation.getRootBeanClass() == ConnectionPoolPropertiesImpl.class)
             .matches(
                 constraintViolation ->
-                    Objects.equals(constraintViolation.getInvalidValue(), invalidUsername))
+                    Objects.equals(constraintViolation.getInvalidValue(), invalidConnectionTimeout))
             .matches(
                 constraintViolation ->
-                    constraintViolation.getPropertyPath().toString().equals("username"));
+                    constraintViolation.getPropertyPath().toString().equals("connectionTimeout"));
       }
 
       private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Null value", null)),
-            Arguments.of(Named.of("Empty value", "")),
-            Arguments.of(Named.of("Blank value", " ")),
-            Arguments.of(Named.of("Too long value", StringUtils.repeat("s", 33))));
+            Arguments.of(Named.of("Null value", 0)),
+            Arguments.of(Named.of("Too high value", 600001)));
       }
     }
 
     @Nested
-    @DisplayName("'password' field")
+    @DisplayName("'poolSize' field")
     @TestInstance(Lifecycle.PER_CLASS)
-    class PasswordField {
+    class PoolSizeField {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With valid values")
-      void withValidValues_shouldNotGenerateConstraintViolations(@NonNull String validPassword) {
+      void withValidValues_shouldNotGenerateConstraintViolations(int validPoolSize) {
         // Given
-        CredentialsValidatingProperties credentialsValidatingProperties =
-            CredentialsValidatingProperties.of("for", validPassword);
+        ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+            new ConnectionPoolPropertiesImpl(60000, validPoolSize);
 
         // When
-        Set<ConstraintViolation<CredentialsValidatingProperties>> constraintViolations =
-            ValidatorTestWrapper.validate(credentialsValidatingProperties);
+        Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
+            ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
 
         // Then
         assertThat(constraintViolations).isEmpty();
@@ -313,22 +264,21 @@ class CredentialsValidatingPropertiesTest {
 
       private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Longest allowed value", StringUtils.repeat("s", 128))),
-            Arguments.of(Named.of("Shortest allowed value", "")),
-            Arguments.of(Named.of("Blank value", " ")));
+            Arguments.of(Named.of("Highest allowed value", 100)),
+            Arguments.of(Named.of("Lowest allowed value", 1)));
       }
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With invalid values")
-      void withInvalidValues_shouldGenerateConstraintViolations(String invalidPassword) {
+      void withInvalidValues_shouldGenerateConstraintViolations(int invalidPoolSize) {
         // Given
-        CredentialsValidatingProperties credentialsValidatingProperties =
-            CredentialsValidatingProperties.of("foo", invalidPassword);
+        ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+            new ConnectionPoolPropertiesImpl(60000, invalidPoolSize);
 
         // When
-        Set<ConstraintViolation<CredentialsValidatingProperties>> constraintViolations =
-            ValidatorTestWrapper.validate(credentialsValidatingProperties);
+        Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
+            ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
 
         // Then
         assertThat(constraintViolations)
@@ -336,19 +286,18 @@ class CredentialsValidatingPropertiesTest {
             .element(0)
             .matches(
                 constraintViolation ->
-                    constraintViolation.getRootBeanClass() == CredentialsValidatingProperties.class)
+                    constraintViolation.getRootBeanClass() == ConnectionPoolPropertiesImpl.class)
             .matches(
                 constraintViolation ->
-                    Objects.equals(constraintViolation.getInvalidValue(), invalidPassword))
+                    Objects.equals(constraintViolation.getInvalidValue(), invalidPoolSize))
             .matches(
                 constraintViolation ->
-                    constraintViolation.getPropertyPath().toString().equals("password"));
+                    constraintViolation.getPropertyPath().toString().equals("poolSize"));
       }
 
       private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Null value", null)),
-            Arguments.of(Named.of("Too long value", StringUtils.repeat("s", 129))));
+            Arguments.of(Named.of("Null value", 0)), Arguments.of(Named.of("Too high value", 101)));
       }
     }
   }
@@ -363,7 +312,7 @@ class CredentialsValidatingPropertiesTest {
     @DisplayName("With valid values")
     @SneakyThrows
     void withValidValues_shouldMatchExpectedYamlContent(
-        @NonNull CredentialsValidatingProperties givenValue, @NonNull String expectedYamlFileName) {
+        @NonNull ConnectionPoolPropertiesImpl givenValue, @NonNull String expectedYamlFileName) {
       // Given
       Path imDestFile = imfs.getPath("test.conf");
 
@@ -381,10 +330,10 @@ class CredentialsValidatingPropertiesTest {
     private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
           Arguments.of(
-              Named.of("With default values", CredentialsValidatingProperties.ofDefault()),
+              Named.of("With default values", new ConnectionPoolPropertiesImpl()),
               "whenSerializing_withDefaultValues.conf"),
           Arguments.of(
-              Named.of("With custom values", CredentialsValidatingProperties.of("foo", "bar")),
+              Named.of("With custom values", new ConnectionPoolPropertiesImpl(30000, 5)),
               "whenSerializing_withCustomValues.conf"));
     }
   }
@@ -398,17 +347,17 @@ class CredentialsValidatingPropertiesTest {
     @MethodSource
     @DisplayName("With valid content")
     void withValidContent_shouldMatchExpectedValue(
-        @NonNull String confFileName, @NonNull CredentialsValidatingProperties expectedValue) {
+        @NonNull String confFileName, @NonNull ConnectionPoolPropertiesImpl expectedValue) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      Optional<CredentialsValidatingProperties> optionalCredentialsValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(confFile, CredentialsValidatingProperties.class);
+      Optional<ConnectionPoolPropertiesImpl> optionalConnectionPoolValidatingProperties =
+          ConfigSerializerTestWrapper.deserialize(confFile, ConnectionPoolPropertiesImpl.class);
 
       // Then
-      assertThat(optionalCredentialsValidatingProperties)
+      assertThat(optionalConnectionPoolValidatingProperties)
           .isPresent()
           .get()
           .isEqualTo(expectedValue);
@@ -418,13 +367,13 @@ class CredentialsValidatingPropertiesTest {
       return Stream.of(
           Arguments.of(
               Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
-              CredentialsValidatingProperties.of("foo", "bar")),
+              new ConnectionPoolPropertiesImpl(60000, 10)),
           Arguments.of(
               Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
-              CredentialsValidatingProperties.of("foo", "bar")),
+              new ConnectionPoolPropertiesImpl(60000, 10)),
           Arguments.of(
               Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
-              CredentialsValidatingProperties.of("foo", "bar")));
+              new ConnectionPoolPropertiesImpl(60000, 10)));
     }
 
     @ParameterizedTest(name = "{index} - {0}")
@@ -438,8 +387,7 @@ class CredentialsValidatingPropertiesTest {
       // When
       ThrowingCallable throwingCallable =
           () ->
-              ConfigSerializerTestWrapper.deserialize(
-                  confFile, CredentialsValidatingProperties.class);
+              ConfigSerializerTestWrapper.deserialize(confFile, ConnectionPoolPropertiesImpl.class);
 
       // Then
       assertThatThrownBy(throwingCallable)
@@ -451,12 +399,12 @@ class CredentialsValidatingPropertiesTest {
       return Stream.of(
           Arguments.of(
               Named.of(
-                  "With missing 'username' field",
-                  "whenDeserializing_withMissingUsernameField.conf")),
+                  "With missing 'connectionTimeout' field",
+                  "whenDeserializing_withMissingConnectionTimeoutField.conf")),
           Arguments.of(
               Named.of(
-                  "With missing 'password' field",
-                  "whenDeserializing_withMissingPasswordField.conf")));
+                  "With missing 'poolSize' field",
+                  "whenDeserializing_withMissingPoolSizeField.conf")));
     }
 
     @Test
@@ -468,11 +416,11 @@ class CredentialsValidatingPropertiesTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      Optional<CredentialsValidatingProperties> credentialsValidatingProperties =
-          ConfigSerializerTestWrapper.deserialize(confFile, CredentialsValidatingProperties.class);
+      Optional<ConnectionPoolPropertiesImpl> connectionPoolValidatingProperties =
+          ConfigSerializerTestWrapper.deserialize(confFile, ConnectionPoolPropertiesImpl.class);
 
       // Then
-      assertThat(credentialsValidatingProperties).isNotPresent();
+      assertThat(connectionPoolValidatingProperties).isNotPresent();
     }
   }
 }

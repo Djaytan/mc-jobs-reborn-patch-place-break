@@ -20,54 +20,59 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.annotated;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.ValidatingConvertibleProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.ConnectionPoolProperties;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Positive;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.ToString;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
-/** Represents an annotated Java Beans version of a {@link ConnectionPoolProperties}. */
 @ConfigSerializable
 @Getter
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-@NoArgsConstructor(staticName = "ofDefault")
-@AllArgsConstructor(staticName = "of")
-public final class ConnectionPoolValidatingProperties
-    extends ValidatingConvertibleProperties<ConnectionPoolProperties> {
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public final class DataSourcePropertiesImpl implements DataSourceProperties, Properties {
 
-  @Max(600000)
-  @Positive
+  @NotNull
   @Required
   @Comment(
-      "The connection timeout in milliseconds\n"
-          + "Corresponds to the maximum time the connection pool will wait to acquire a new connection\n"
-          + "from the DBMS server\n"
-          + "Not applicable for SQLite\n"
-          + "Accepted range values: [1-600000]")
-  private long connectionTimeout = 30000;
+      "The type of datasource to use\n"
+          + "Available types:\n"
+          + "- SQLITE: use a local file as database (easy & fast setup)\n"
+          + "- MYSQL: use a MySQL database server (better performances)")
+  private DataSourceType type = DataSourceType.SQLITE;
 
-  @Max(100)
-  @Positive
+  @NotBlank
+  @Size(max = 128)
+  @Required
+  @Comment("The table where data will be stored\n" + "Value can't be empty or blank")
+  private String table = "patch_place_break_tag";
+
+  @NotNull
+  @Valid
   @Required
   @Comment(
-      "The number of DBMS connections in the pool\n"
-          + "Could be best determined by the executing environment\n"
-          + "Accepted range values: [1-100]")
-  private int poolSize = 10;
+      "The DBMS server properties for connection establishment\n" + "Not applicable for SQLite")
+  private DbmsServerPropertiesImpl dbmsServer = new DbmsServerPropertiesImpl();
 
-  @Override
-  protected @NonNull ConnectionPoolProperties convertValidated() {
-    return ConnectionPoolProperties.of(connectionTimeout, poolSize);
-  }
+  @NotNull
+  @Valid
+  @Required
+  @Comment(
+      "Connection pool properties\n"
+          + "This is reserved for advanced usage only\n"
+          + "Change these settings only if you know what you are doing")
+  private ConnectionPoolPropertiesImpl connectionPool = new ConnectionPoolPropertiesImpl();
 }

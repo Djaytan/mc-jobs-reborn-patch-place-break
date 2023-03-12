@@ -20,25 +20,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
-import lombok.AccessLevel;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsCredentialsProperties;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
-/**
- * Represents the data source type to be used as solution for storing and retrieving {@link
- * fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag}s.
- */
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@ConfigSerializable
 @Getter
-public enum DataSourceType {
-  /** The MySQL data source type which is compatible with MariaDB as well. */
-  MYSQL(true),
-  /** The SQLite data source type. */
-  SQLITE(false);
+@EqualsAndHashCode
+@ToString(exclude = "password")
+@NoArgsConstructor
+@AllArgsConstructor
+public final class DbmsCredentialsPropertiesImpl implements DbmsCredentialsProperties, Properties {
 
-  boolean areCredentialsRequired;
+  @NotBlank
+  @Size(max = 32)
+  @Required
+  @Comment(
+      "Under behalf of which user to connect on the DBMS server\n"
+          + "Value can't be empty or blank")
+  private String username = "username";
+
+  @NotNull
+  @Size(max = 128)
+  @Required
+  @Comment("Password of the user (optional but highly recommended)")
+  private String password = "password";
 }
