@@ -57,7 +57,7 @@ class PatchPlaceBreakApiIntegrationTest {
   @BeforeAll
   @SneakyThrows
   static void beforeAll() {
-    dataFolder = Files.createTempDirectory("pbb-api-it");
+    dataFolder = Files.createTempDirectory("ppb-api-it");
     ClassLoader classLoader = PatchPlaceBreakCore.class.getClassLoader();
     patchPlaceBreakCore = new PatchPlaceBreakCore();
     patchPlaceBreakApi = patchPlaceBreakCore.enable(classLoader, dataFolder);
