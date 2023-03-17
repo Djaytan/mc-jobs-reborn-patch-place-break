@@ -20,18 +20,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
-import javax.inject.Singleton;
+import static org.assertj.core.api.Assertions.assertThat;
 
-/** Represents an initializer for a MySQL data source. */
-@Singleton
-public final class MysqlDataSourceInitializer implements DataSourceInitializer {
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
+import java.nio.file.FileSystem;
+import java.nio.file.Path;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-  /** {@inheritDoc} */
-  @Override
-  public void initialize() {
-    // Nothing to do
+class SqliteJdbcUrlTest {
+
+  private final FileSystem imfs = Jimfs.newFileSystem(Configuration.unix());
+
+  @AfterEach
+  @SneakyThrows
+  void afterEach() {
+    imfs.close();
+  }
+
+  @Test
+  @DisplayName("When getting JDBC URL from dummy path")
+  void whenGettingJdbcUrl_fromDummyPath() {
+    // Given
+    Path dummySqliteDatabasePath = imfs.getPath("/dummy/sqlite-data.db");
+    SqliteJdbcUrl sqliteJdbcUrl = new SqliteJdbcUrl(dummySqliteDatabasePath);
+
+    // When
+    String actualSqliteJdbcUrl = sqliteJdbcUrl.get();
+
+    // Then
+    String expectedSqliteJdbcUrl = "jdbc:sqlite:/dummy/sqlite-data.db";
+
+    assertThat(actualSqliteJdbcUrl).isEqualTo(expectedSqliteJdbcUrl);
   }
 }
