@@ -76,7 +76,7 @@ class SqlDataSourceManagerIntegrationTest {
   @SneakyThrows
   private static @NonNull Arguments forSqlite() {
     DataSourceProperties dataSourcePropertiesMocked = DataSourcePropertiesMock.get();
-    Path sqliteDatabaseFile = Files.createTempFile("pbb-datasourcemanager", "");
+    Path sqliteDatabaseFile = Files.createTempFile("ppb-datasourcemanager", "");
     JdbcUrl jdbcUrl = new SqliteJdbcUrl(sqliteDatabaseFile);
     ConnectionPool connectionPool = new ConnectionPool(dataSourcePropertiesMocked, jdbcUrl);
 

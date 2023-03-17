@@ -52,7 +52,7 @@ class PatchPlaceBreakCoreIntegrationTest {
   @BeforeEach
   @SneakyThrows
   void beforeEach() {
-    dataFolder = Files.createTempDirectory("pbb-core-it");
+    dataFolder = Files.createTempDirectory("ppb-core-it");
   }
 
   @AfterEach

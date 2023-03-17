@@ -28,8 +28,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NonNull;
-import lombok.Value;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
@@ -38,7 +38,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredListener;
 
 /** Represents the Bukkit environment state under which the patch API as been executed. */
-@Value
+@Getter
 @Builder
 public class BukkitPatchEnvironmentState {
 
