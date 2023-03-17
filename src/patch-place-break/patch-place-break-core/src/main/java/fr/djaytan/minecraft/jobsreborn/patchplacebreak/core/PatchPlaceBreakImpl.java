@@ -53,8 +53,9 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
     this.tagRepository = tagRepository;
   }
 
-  public void putTag(@NonNull BlockLocation blockLocation, boolean isEphemeral) {
-    CompletableFuture.runAsync(
+  public @NonNull CompletableFuture<Void> putTag(
+      @NonNull BlockLocation blockLocation, boolean isEphemeral) {
+    return CompletableFuture.runAsync(
         () -> {
           LocalDateTime localDateTime = LocalDateTime.now();
           Tag tag = Tag.of(blockLocation, isEphemeral, localDateTime);
@@ -62,8 +63,9 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
         });
   }
 
-  public void moveTags(@NonNull Set<BlockLocation> blockLocations, @NonNull Vector direction) {
-    CompletableFuture.runAsync(
+  public @NonNull CompletableFuture<Void> moveTags(
+      @NonNull Set<BlockLocation> blockLocations, @NonNull Vector direction) {
+    return CompletableFuture.runAsync(
         () -> {
           OldNewBlockLocationPairSet oldNewLocationPairs =
               new OldNewBlockLocationPairSet(
@@ -79,8 +81,8 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
         });
   }
 
-  public void removeTag(@NonNull BlockLocation blockLocation) {
-    CompletableFuture.runAsync(() -> tagRepository.delete(blockLocation));
+  public @NonNull CompletableFuture<Void> removeTag(@NonNull BlockLocation blockLocation) {
+    return CompletableFuture.runAsync(() -> tagRepository.delete(blockLocation));
   }
 
   public boolean isPlaceAndBreakExploit(

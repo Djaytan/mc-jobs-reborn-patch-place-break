@@ -28,6 +28,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.time.Duration;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import lombok.NonNull;
 
 /**
@@ -75,8 +76,10 @@ public interface PatchPlaceBreakApi {
    * @param blockLocation The block location where the tag must be put.
    * @param isEphemeral <code>true</code> if the tag must be ephemeral, <code>false</code>
    *     otherwise.
+   * @return The completable future object.
    */
-  void putTag(@NonNull BlockLocation blockLocation, boolean isEphemeral);
+  @NonNull
+  CompletableFuture<Void> putTag(@NonNull BlockLocation blockLocation, boolean isEphemeral);
 
   /**
    * Moves given tags according to the specified direction.
@@ -89,8 +92,11 @@ public interface PatchPlaceBreakApi {
    *
    * @param blockLocations The locations from where to move existing tags.
    * @param direction The direction where to move existing tags.
+   * @return The completable future object.
    */
-  void moveTags(@NonNull Set<BlockLocation> blockLocations, @NonNull Vector direction);
+  @NonNull
+  CompletableFuture<Void> moveTags(
+      @NonNull Set<BlockLocation> blockLocations, @NonNull Vector direction);
 
   /**
    * Removes existing tag from a specified location. This can be useful when the state of the block
@@ -99,8 +105,10 @@ public interface PatchPlaceBreakApi {
    * <p>The method is executed asynchronously for performances purposes.
    *
    * @param blockLocation The location where to remove tags if existing.
+   * @return The completable future object.
    */
-  void removeTag(@NonNull BlockLocation blockLocation);
+  @NonNull
+  CompletableFuture<Void> removeTag(@NonNull BlockLocation blockLocation);
 
   /**
    * Checks if the specified block action type at the given location is a place-and-break exploit or

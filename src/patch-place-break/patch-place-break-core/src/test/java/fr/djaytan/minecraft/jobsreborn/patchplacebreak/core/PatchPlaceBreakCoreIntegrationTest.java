@@ -30,8 +30,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResource
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -52,8 +50,9 @@ class PatchPlaceBreakCoreIntegrationTest {
   private Path dataFolder;
 
   @BeforeEach
+  @SneakyThrows
   void beforeEach() {
-    dataFolder = getTmpDataFolder();
+    dataFolder = Files.createTempDirectory("pbb-core-it");
   }
 
   @AfterEach
@@ -119,11 +118,5 @@ class PatchPlaceBreakCoreIntegrationTest {
     assertAll(
         () -> assertThat(patchPlaceBreakApi).isNotNull(),
         () -> assertThat(actualConfDataSourceFile).exists().hasContent(givenConfigFileContent));
-  }
-
-  @SneakyThrows
-  private @NonNull Path getTmpDataFolder() {
-    Path tmpDir = Paths.get(System.getProperty("java.io.tmpdir"));
-    return Files.createTempDirectory(tmpDir, "patch-place-break");
   }
 }
