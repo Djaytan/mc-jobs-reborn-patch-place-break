@@ -39,9 +39,7 @@
 
   <modules>
     <module>storage-api</module>
-    <module>storage-base-sql</module>
-    <module>storage-mysql</module>
-    <module>storage-sqlite</module>
+    <module>storage-sql</module>
   </modules>
 
   <properties>

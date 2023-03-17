@@ -555,7 +555,7 @@
             </goals>
             <configuration>
               <includes>
-                <include>**/*IT.java</include>
+                <include>**/*IntegrationTest.java</include>
               </includes>
             </configuration>
           </execution>
@@ -635,6 +635,9 @@
           <includes>
             <include>**/*Test.java</include>
           </includes>
+          <excludes>
+            <exclude>**/*IntegrationTest.java</exclude>
+          </excludes>
           <systemPropertyVariables>
             <!-- jboss-logging shall use SLF4J as logger provider -->
             <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
