@@ -20,51 +20,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.MysqlJdbcUrl;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite.SqliteJdbcUrl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
 import javax.inject.Inject;
-import javax.inject.Provider;
-import lombok.NonNull;
+import javax.inject.Singleton;
+import org.apache.commons.lang3.Validate;
 
-public class JdbcUrlProvider implements Provider<JdbcUrl> {
+/** Represents an initializer for a MySQL data source. */
+@Singleton
+public final class MysqlDataSourceInitializer implements DataSourceInitializer {
 
   private final DataSourceProperties dataSourceProperties;
-  private final MysqlJdbcUrl mysqlJdbcUrl;
-  private final SqliteJdbcUrl sqliteJdbcUrl;
 
   @Inject
-  public JdbcUrlProvider(
-      DataSourceProperties dataSourceProperties,
-      MysqlJdbcUrl mysqlJdbcUrl,
-      SqliteJdbcUrl sqliteJdbcUrl) {
+  public MysqlDataSourceInitializer(DataSourceProperties dataSourceProperties) {
     this.dataSourceProperties = dataSourceProperties;
-    this.mysqlJdbcUrl = mysqlJdbcUrl;
-    this.sqliteJdbcUrl = sqliteJdbcUrl;
   }
 
+  /** {@inheritDoc} */
   @Override
-  public @NonNull JdbcUrl get() {
-    DataSourceType dataSourceType = dataSourceProperties.getType();
-
-    switch (dataSourceType) {
-      case MYSQL:
-        {
-          return mysqlJdbcUrl;
-        }
-      case SQLITE:
-        {
-          return sqliteJdbcUrl;
-        }
-      default:
-        {
-          throw PatchPlaceBreakException.unsupportedDataSourceType(dataSourceType);
-        }
-    }
+  public void initialize() {
+    Validate.validState(
+        dataSourceProperties.getType() == DataSourceType.MYSQL,
+        "The data source type is expected to be 'MYSQL'.");
   }
 }

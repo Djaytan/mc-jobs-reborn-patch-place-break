@@ -20,51 +20,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsServerProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.MysqlJdbcUrl;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite.SqliteJdbcUrl;
 import javax.inject.Inject;
-import javax.inject.Provider;
+import javax.inject.Singleton;
 import lombok.NonNull;
 
-public class JdbcUrlProvider implements Provider<JdbcUrl> {
+@Singleton
+public final class MysqlJdbcUrl implements JdbcUrl {
+
+  private static final String MYSQL_JDBC_URL_TEMPLATE =
+      "jdbc:mysql://%s:%d/%s?useSSL=%s&serverTimezone=%s";
+  private static final String SERVER_TIME_ZONE = "UTC";
 
   private final DataSourceProperties dataSourceProperties;
-  private final MysqlJdbcUrl mysqlJdbcUrl;
-  private final SqliteJdbcUrl sqliteJdbcUrl;
 
   @Inject
-  public JdbcUrlProvider(
-      DataSourceProperties dataSourceProperties,
-      MysqlJdbcUrl mysqlJdbcUrl,
-      SqliteJdbcUrl sqliteJdbcUrl) {
+  public MysqlJdbcUrl(DataSourceProperties dataSourceProperties) {
     this.dataSourceProperties = dataSourceProperties;
-    this.mysqlJdbcUrl = mysqlJdbcUrl;
-    this.sqliteJdbcUrl = sqliteJdbcUrl;
   }
 
   @Override
-  public @NonNull JdbcUrl get() {
-    DataSourceType dataSourceType = dataSourceProperties.getType();
-
-    switch (dataSourceType) {
-      case MYSQL:
-        {
-          return mysqlJdbcUrl;
-        }
-      case SQLITE:
-        {
-          return sqliteJdbcUrl;
-        }
-      default:
-        {
-          throw PatchPlaceBreakException.unsupportedDataSourceType(dataSourceType);
-        }
-    }
+  public @NonNull String get() {
+    DbmsServerProperties dbmsServerProperties = dataSourceProperties.getDbmsServer();
+    String hostname = dbmsServerProperties.getHost().getHostname();
+    int port = dbmsServerProperties.getHost().getPort();
+    String database = dbmsServerProperties.getDatabase();
+    boolean isSslEnabled = dbmsServerProperties.getHost().isSslEnabled();
+    return String.format(
+        MYSQL_JDBC_URL_TEMPLATE, hostname, port, database, isSslEnabled, SERVER_TIME_ZONE);
   }
 }

@@ -20,51 +20,60 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.MysqlJdbcUrl;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite.SqliteJdbcUrl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlStorageException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import javax.inject.Inject;
-import javax.inject.Provider;
-import lombok.NonNull;
+import javax.inject.Named;
+import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 
-public class JdbcUrlProvider implements Provider<JdbcUrl> {
+@Slf4j
+@Singleton
+public final class SqliteDataSourceInitializer implements DataSourceInitializer {
 
   private final DataSourceProperties dataSourceProperties;
-  private final MysqlJdbcUrl mysqlJdbcUrl;
-  private final SqliteJdbcUrl sqliteJdbcUrl;
+  private final Path sqliteDatabaseFile;
 
   @Inject
-  public JdbcUrlProvider(
+  public SqliteDataSourceInitializer(
       DataSourceProperties dataSourceProperties,
-      MysqlJdbcUrl mysqlJdbcUrl,
-      SqliteJdbcUrl sqliteJdbcUrl) {
+      @Named("sqliteDatabaseFile") Path sqliteDatabaseFile) {
     this.dataSourceProperties = dataSourceProperties;
-    this.mysqlJdbcUrl = mysqlJdbcUrl;
-    this.sqliteJdbcUrl = sqliteJdbcUrl;
+    this.sqliteDatabaseFile = sqliteDatabaseFile;
   }
 
   @Override
-  public @NonNull JdbcUrl get() {
-    DataSourceType dataSourceType = dataSourceProperties.getType();
+  public void initialize() {
+    Validate.validState(
+        dataSourceProperties.getType() == DataSourceType.SQLITE,
+        "The data source type is expected to be 'SQLITE'.");
 
-    switch (dataSourceType) {
-      case MYSQL:
-        {
-          return mysqlJdbcUrl;
-        }
-      case SQLITE:
-        {
-          return sqliteJdbcUrl;
-        }
-      default:
-        {
-          throw PatchPlaceBreakException.unsupportedDataSourceType(dataSourceType);
-        }
+    createDatabaseIfNotExists();
+  }
+
+  private void createDatabaseIfNotExists() {
+    String sqliteDatabaseFileName = sqliteDatabaseFile.getFileName().toString();
+
+    if (Files.exists(sqliteDatabaseFile)) {
+      return;
+    }
+
+    log.atInfo().log("No SQLite database '{}' found. Creating it...", sqliteDatabaseFileName);
+
+    try {
+      Files.createFile(sqliteDatabaseFile);
+      log.atInfo().log(
+          "The SQLite database '{}' has been created successfully.", sqliteDatabaseFileName);
+    } catch (IOException e) {
+      throw SqlStorageException.databaseCreation(sqliteDatabaseFileName, e);
     }
   }
 }
