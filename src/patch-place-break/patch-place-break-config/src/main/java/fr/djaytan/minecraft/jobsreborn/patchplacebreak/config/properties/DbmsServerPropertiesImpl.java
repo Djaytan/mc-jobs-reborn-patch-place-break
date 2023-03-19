@@ -27,38 +27,43 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Value;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-@Getter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-public final class DbmsServerPropertiesImpl implements DbmsServerProperties, Properties {
+@Value
+public class DbmsServerPropertiesImpl implements DbmsServerProperties, Properties {
 
   @NotNull
   @Valid
   @Required
   @Comment("Host properties of the DBMS server")
-  private DbmsHostPropertiesImpl host = new DbmsHostPropertiesImpl();
+  DbmsHostPropertiesImpl host;
 
   @NotNull
   @Valid
   @Required
   @Comment("Credentials for authentication with the DBMS server")
-  private DbmsCredentialsPropertiesImpl credentials = new DbmsCredentialsPropertiesImpl();
+  DbmsCredentialsPropertiesImpl credentials;
 
   @NotBlank
   @Size(max = 128)
   @Required
   @Comment("The database to use on DBMS server\n" + "Value can't be empty or blank")
-  private String database = "database";
+  String database;
+
+  public DbmsServerPropertiesImpl() {
+    this.host = new DbmsHostPropertiesImpl();
+    this.credentials = new DbmsCredentialsPropertiesImpl();
+    this.database = "database";
+  }
+
+  public DbmsServerPropertiesImpl(
+      DbmsHostPropertiesImpl host, DbmsCredentialsPropertiesImpl credentials, String database) {
+    this.host = host;
+    this.credentials = credentials;
+    this.database = database;
+  }
 }

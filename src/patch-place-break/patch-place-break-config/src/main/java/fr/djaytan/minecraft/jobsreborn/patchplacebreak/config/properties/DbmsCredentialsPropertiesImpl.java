@@ -26,22 +26,18 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.Db
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.Value;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-@Getter
-@EqualsAndHashCode
+@Value
+@EqualsAndHashCode(exclude = "password")
 @ToString(exclude = "password")
-@NoArgsConstructor
-@AllArgsConstructor
-public final class DbmsCredentialsPropertiesImpl implements DbmsCredentialsProperties, Properties {
+public class DbmsCredentialsPropertiesImpl implements DbmsCredentialsProperties, Properties {
 
   @NotBlank
   @Size(max = 32)
@@ -49,11 +45,21 @@ public final class DbmsCredentialsPropertiesImpl implements DbmsCredentialsPrope
   @Comment(
       "Under behalf of which user to connect on the DBMS server\n"
           + "Value can't be empty or blank")
-  private String username = "username";
+  String username;
 
   @NotNull
   @Size(max = 128)
   @Required
   @Comment("Password of the user (optional but highly recommended)")
-  private String password = "password";
+  String password;
+
+  public DbmsCredentialsPropertiesImpl() {
+    this.username = "username";
+    this.password = "password";
+  }
+
+  public DbmsCredentialsPropertiesImpl(String username, String password) {
+    this.username = username;
+    this.password = password;
+  }
 }

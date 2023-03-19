@@ -112,6 +112,7 @@ public final class TestResourcesHelper {
       @NonNull Path relativeResourcePath, @NonNull ClassLoader classLoader)
       throws IOException, URISyntaxException {
     // /!\ Not retrieving absolute path from class loader can lead to wrong path depending on cases
+    // (i.e. when working directory of a library isn't the same as the one used by this class)
     URL url = IOUtils.resourceToURL(relativeResourcePath.toString(), classLoader);
     return Paths.get(url.toURI());
   }

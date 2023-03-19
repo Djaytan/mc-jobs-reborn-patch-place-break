@@ -45,7 +45,6 @@ import java.util.stream.Stream;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
@@ -79,10 +78,7 @@ class DbmsHostPropertiesImplTest {
   @Test
   @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashcode_shouldMetContracts() {
-    EqualsVerifier.forClass(DbmsHostPropertiesImpl.class)
-        .withRedefinedSuperclass()
-        .suppress(Warning.NONFINAL_FIELDS)
-        .verify();
+    EqualsVerifier.forClass(DbmsHostPropertiesImpl.class).verify();
   }
 
   @Test

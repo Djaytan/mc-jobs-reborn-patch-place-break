@@ -28,22 +28,14 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Value;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-@Getter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-public final class DataSourcePropertiesImpl implements DataSourceProperties, Properties {
+@Value
+public class DataSourcePropertiesImpl implements DataSourceProperties, Properties {
 
   @NotNull
   @Required
@@ -52,20 +44,20 @@ public final class DataSourcePropertiesImpl implements DataSourceProperties, Pro
           + "Available types:\n"
           + "- SQLITE: use a local file as database (easy & fast setup)\n"
           + "- MYSQL: use a MySQL database server (better performances)")
-  private DataSourceType type = DataSourceType.SQLITE;
+  DataSourceType type;
 
   @NotBlank
   @Size(max = 128)
   @Required
   @Comment("The table where data will be stored\n" + "Value can't be empty or blank")
-  private String table = "patch_place_break_tag";
+  String table;
 
   @NotNull
   @Valid
   @Required
   @Comment(
       "The DBMS server properties for connection establishment\n" + "Not applicable for SQLite")
-  private DbmsServerPropertiesImpl dbmsServer = new DbmsServerPropertiesImpl();
+  DbmsServerPropertiesImpl dbmsServer;
 
   @NotNull
   @Valid
@@ -74,5 +66,23 @@ public final class DataSourcePropertiesImpl implements DataSourceProperties, Pro
       "Connection pool properties\n"
           + "This is reserved for advanced usage only\n"
           + "Change these settings only if you know what you are doing")
-  private ConnectionPoolPropertiesImpl connectionPool = new ConnectionPoolPropertiesImpl();
+  ConnectionPoolPropertiesImpl connectionPool;
+
+  public DataSourcePropertiesImpl() {
+    this.type = DataSourceType.SQLITE;
+    this.table = "patch_place_break_tag";
+    this.dbmsServer = new DbmsServerPropertiesImpl();
+    this.connectionPool = new ConnectionPoolPropertiesImpl();
+  }
+
+  public DataSourcePropertiesImpl(
+      DataSourceType type,
+      String table,
+      DbmsServerPropertiesImpl dbmsServer,
+      ConnectionPoolPropertiesImpl connectionPool) {
+    this.type = type;
+    this.table = table;
+    this.dbmsServer = dbmsServer;
+    this.connectionPool = connectionPool;
+  }
 }

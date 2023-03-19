@@ -25,22 +25,14 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.ConnectionPoolProperties;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Value;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-@Getter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-public final class ConnectionPoolPropertiesImpl implements ConnectionPoolProperties, Properties {
+@Value
+public class ConnectionPoolPropertiesImpl implements ConnectionPoolProperties, Properties {
 
   @Max(600000)
   @Positive
@@ -51,7 +43,7 @@ public final class ConnectionPoolPropertiesImpl implements ConnectionPoolPropert
           + "from the DBMS server\n"
           + "Not applicable for SQLite\n"
           + "Accepted range values: [1-600000]")
-  private long connectionTimeout = 30000;
+  long connectionTimeout;
 
   @Max(100)
   @Positive
@@ -60,5 +52,15 @@ public final class ConnectionPoolPropertiesImpl implements ConnectionPoolPropert
       "The number of DBMS connections in the pool\n"
           + "Could be best determined by the executing environment\n"
           + "Accepted range values: [1-100]")
-  private int poolSize = 10;
+  int poolSize;
+
+  public ConnectionPoolPropertiesImpl() {
+    this.connectionTimeout = 30000;
+    this.poolSize = 10;
+  }
+
+  public ConnectionPoolPropertiesImpl(long connectionTimeout, int poolSize) {
+    this.connectionTimeout = connectionTimeout;
+    this.poolSize = poolSize;
+  }
 }

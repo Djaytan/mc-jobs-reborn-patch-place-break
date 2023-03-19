@@ -27,22 +27,14 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Value;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-@Getter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-public final class DbmsHostPropertiesImpl implements DbmsHostProperties, Properties {
+@Value
+public class DbmsHostPropertiesImpl implements DbmsHostProperties, Properties {
 
   /**
    * An hostname cannot exceed 255 characters as per the DNS standard specification.
@@ -56,7 +48,7 @@ public final class DbmsHostPropertiesImpl implements DbmsHostProperties, Propert
   @Required
   @Comment(
       "Hostname (an IP address (IPv4/IPv6) or a domain name)\n" + "Value can't be empty or blank")
-  private String hostname = "localhost";
+  String hostname;
 
   /**
    * A port cannot exceed 65535, which is the maximum value allowed by the Transport Control
@@ -68,11 +60,23 @@ public final class DbmsHostPropertiesImpl implements DbmsHostProperties, Propert
   @Positive
   @Required
   @Comment("Port\n" + "Accepted range values: [1-65535]")
-  private int port = 3306;
+  int port;
 
   @Required
   @Comment(
       "Whether an SSL/TLS communication must be established at connection time (more secure)\n"
           + "Only boolean values accepted (true|false)")
-  private boolean isSslEnabled = true;
+  boolean isSslEnabled;
+
+  public DbmsHostPropertiesImpl() {
+    this.hostname = "localhost";
+    this.port = 3306;
+    this.isSslEnabled = true;
+  }
+
+  public DbmsHostPropertiesImpl(String hostname, int port, boolean isSslEnabled) {
+    this.hostname = hostname;
+    this.port = port;
+    this.isSslEnabled = isSslEnabled;
+  }
 }

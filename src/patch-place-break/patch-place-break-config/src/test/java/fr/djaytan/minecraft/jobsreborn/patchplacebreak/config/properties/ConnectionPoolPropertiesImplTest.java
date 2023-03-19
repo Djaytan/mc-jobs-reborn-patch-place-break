@@ -45,7 +45,6 @@ import java.util.stream.Stream;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,10 +77,7 @@ class ConnectionPoolPropertiesImplTest {
   @Test
   @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashcode_shouldMetContracts() {
-    EqualsVerifier.forClass(ConnectionPoolPropertiesImpl.class)
-        .withRedefinedSuperclass()
-        .suppress(Warning.NONFINAL_FIELDS)
-        .verify();
+    EqualsVerifier.forClass(ConnectionPoolPropertiesImpl.class).verify();
   }
 
   @Test
