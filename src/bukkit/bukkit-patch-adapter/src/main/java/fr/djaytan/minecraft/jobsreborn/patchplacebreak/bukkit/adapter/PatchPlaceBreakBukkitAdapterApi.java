@@ -33,6 +33,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.LocationConverter;
 import java.util.Collection;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -49,20 +50,20 @@ import org.bukkit.block.BlockFace;
 public class PatchPlaceBreakBukkitAdapterApi {
 
   private final ActionTypeConverter actionTypeConverter;
+  private final BlockFaceConverter blockFaceConverter;
   private final LocationConverter locationConverter;
   private final PatchPlaceBreakApi patchPlaceBreakApi;
-  private final BlockFaceConverter blockFaceConverter;
 
   @Inject
   public PatchPlaceBreakBukkitAdapterApi(
       ActionTypeConverter actionTypeConverter,
+      BlockFaceConverter blockFaceConverter,
       LocationConverter locationConverter,
-      PatchPlaceBreakApi patchPlaceBreakApi,
-      BlockFaceConverter blockFaceConverter) {
+      PatchPlaceBreakApi patchPlaceBreakApi) {
     this.actionTypeConverter = actionTypeConverter;
+    this.blockFaceConverter = blockFaceConverter;
     this.locationConverter = locationConverter;
     this.patchPlaceBreakApi = patchPlaceBreakApi;
-    this.blockFaceConverter = blockFaceConverter;
   }
 
   /**
@@ -70,11 +71,12 @@ public class PatchPlaceBreakBukkitAdapterApi {
    *
    * @param block The block where to put tag.
    * @param isEphemeral Whether the tag to put must be an ephemeral one or not.
+   * @return The completable future object.
    * @see PatchPlaceBreakApi#putTag(BlockLocation, boolean)
    */
-  public void putTag(@NonNull Block block, boolean isEphemeral) {
+  public @NonNull CompletableFuture<Void> putTag(@NonNull Block block, boolean isEphemeral) {
     BlockLocation blockLocation = locationConverter.convert(block);
-    patchPlaceBreakApi.putTag(blockLocation, isEphemeral);
+    return patchPlaceBreakApi.putTag(blockLocation, isEphemeral);
   }
 
   /**
@@ -85,24 +87,27 @@ public class PatchPlaceBreakBukkitAdapterApi {
    *
    * @param blocks The list of blocks with potential tags to be moved.
    * @param blockFace The block face from which to infer the move direction.
+   * @return The completable future object.
    * @see PatchPlaceBreakApi#moveTags(Set, Vector)
    */
-  public void moveTags(@NonNull Collection<Block> blocks, @NonNull BlockFace blockFace) {
+  public @NonNull CompletableFuture<Void> moveTags(
+      @NonNull Collection<Block> blocks, @NonNull BlockFace blockFace) {
     Set<BlockLocation> blockLocations =
         blocks.stream().map(locationConverter::convert).collect(Collectors.toSet());
     Vector vector = blockFaceConverter.convert(blockFace);
-    patchPlaceBreakApi.moveTags(blockLocations, vector);
+    return patchPlaceBreakApi.moveTags(blockLocations, vector);
   }
 
   /**
    * Removes existing tag from the specified location.
    *
    * @param block The block from which to remove the tag if it exists.
+   * @return The completable future object.
    * @see PatchPlaceBreakApi#removeTag(BlockLocation)
    */
-  public void removeTag(@NonNull Block block) {
+  public @NonNull CompletableFuture<Void> removeTag(@NonNull Block block) {
     BlockLocation blockLocation = locationConverter.convert(block);
-    patchPlaceBreakApi.removeTag(blockLocation);
+    return patchPlaceBreakApi.removeTag(blockLocation);
   }
 
   /**

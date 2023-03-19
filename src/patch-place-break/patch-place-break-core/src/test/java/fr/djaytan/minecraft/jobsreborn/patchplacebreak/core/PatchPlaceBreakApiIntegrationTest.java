@@ -33,9 +33,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
@@ -89,8 +87,16 @@ class PatchPlaceBreakApiIntegrationTest {
   @Test
   @Order(2)
   @DisplayName("When checking exploit with existing tag")
-  void whenCheckingExploit_withExistingTag_shouldExists() {
-    assertTagExists(BlockLocation.of("world", 12, 45, -234));
+  void whenCheckingExploit_withExistingTag_shouldDetectExploit() {
+    // Given
+    BlockActionType blockActionType = BlockActionType.BREAK;
+    BlockLocation blockLocation = BlockLocation.of("world", 12, 45, -234);
+
+    // When
+    boolean isExploit = patchPlaceBreakApi.isPlaceAndBreakExploit(blockActionType, blockLocation);
+
+    // Then
+    assertThat(isExploit).isTrue();
   }
 
   @Test
@@ -100,7 +106,7 @@ class PatchPlaceBreakApiIntegrationTest {
     // Given
     Vector direction = Vector.of(1, 0, 0);
     BlockLocation blockLocation = BlockLocation.of("world", 12, 45, -234);
-    Set<BlockLocation> blockLocationSet = new HashSet<>(Collections.singletonList(blockLocation));
+    Set<BlockLocation> blockLocationSet = Collections.singleton(blockLocation);
 
     // When
     ThrowingCallable throwingCallable =
@@ -113,16 +119,28 @@ class PatchPlaceBreakApiIntegrationTest {
   @Test
   @Order(4)
   @DisplayName("When checking exploit with moved tag")
-  void whenCheckingExploit_withMovedTag_shouldExistsInNewLocationButNotInOldOne() {
+  void whenCheckingExploit_withMovedTag_shouldDetectExploitInNewLocationButNotInOldOne() {
+    // Given
+    BlockActionType blockActionType = BlockActionType.BREAK;
+    BlockLocation oldBlockLocation = BlockLocation.of("world", 12, 45, -234);
+    BlockLocation newBlockLocation = BlockLocation.of("world", 13, 45, -234);
+
+    // When
+    boolean isOnOldLocationAnExploit =
+        patchPlaceBreakApi.isPlaceAndBreakExploit(blockActionType, oldBlockLocation);
+    boolean isOnNewLocationAnExploit =
+        patchPlaceBreakApi.isPlaceAndBreakExploit(blockActionType, newBlockLocation);
+
+    // Then
     assertAll(
-        () -> assertTagDoesNotExists(BlockLocation.of("world", 12, 45, -234)),
-        () -> assertTagExists(BlockLocation.of("world", 13, 45, -234)));
+        () -> assertThat(isOnOldLocationAnExploit).isFalse(),
+        () -> assertThat(isOnNewLocationAnExploit).isTrue());
   }
 
   @Test
   @Order(5)
   @DisplayName("When removing tag")
-  void whenRemovingTag_shouldRemoveTagFromStorage() {
+  void whenRemovingTag_shouldNotThrow() {
     // Given
     BlockLocation blockLocation = BlockLocation.of("world", 13, 45, -234);
 
@@ -136,28 +154,15 @@ class PatchPlaceBreakApiIntegrationTest {
   @Test
   @Order(6)
   @DisplayName("When checking exploit without existing tag")
-  void whenCheckingExploit_withoutExistingTag_shouldNotExists() {
-    assertTagDoesNotExists(BlockLocation.of("world", 13, 45, -234));
-  }
-
-  private void assertTagExists(@NonNull BlockLocation blockLocation) {
-    assertTagExistence(blockLocation, true);
-  }
-
-  private void assertTagDoesNotExists(@NonNull BlockLocation blockLocation) {
-    assertTagExistence(blockLocation, false);
-  }
-
-  private void assertTagExistence(
-      @NonNull BlockLocation blockLocation, boolean expectedTagExistence) {
+  void whenCheckingExploit_withoutExistingTag_shouldNotDetectExploit() {
     // Given
     BlockActionType blockActionType = BlockActionType.BREAK;
+    BlockLocation blockLocation = BlockLocation.of("world", 13, 45, -234);
 
     // When
-    boolean actualTagExistence =
-        patchPlaceBreakApi.isPlaceAndBreakExploit(blockActionType, blockLocation);
+    boolean isExploit = patchPlaceBreakApi.isPlaceAndBreakExploit(blockActionType, blockLocation);
 
     // Then
-    assertThat(actualTagExistence).isEqualTo(expectedTagExistence);
+    assertThat(isExploit).isFalse();
   }
 }

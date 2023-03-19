@@ -70,8 +70,19 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>commons-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+      <artifactId>patch-place-break-core</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
@@ -93,6 +104,11 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
