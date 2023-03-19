@@ -33,7 +33,7 @@ public class UnsupportedClassException extends RuntimeException {
       "The class '%s' isn't supported for resource conversion.";
 
   public static @NonNull UnsupportedClassException unsupportedClass(@NonNull Class<?> clazz) {
-    String message = String.format(UNSUPPORTED_CLASS, clazz.getSimpleName());
+    String message = String.format(UNSUPPORTED_CLASS, clazz.getName());
     return new UnsupportedClassException(message);
   }
 }

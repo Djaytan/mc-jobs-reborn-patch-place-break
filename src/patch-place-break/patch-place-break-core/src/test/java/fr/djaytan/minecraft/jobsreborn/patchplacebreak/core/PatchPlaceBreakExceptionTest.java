@@ -22,8 +22,13 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import lombok.NonNull;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("java:S2187")
 class PatchPlaceBreakExceptionTest extends ExceptionBaseTest {
@@ -46,5 +51,19 @@ class PatchPlaceBreakExceptionTest extends ExceptionBaseTest {
   @Override
   protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
     return new PatchPlaceBreakException(message, cause);
+  }
+
+  @Test
+  @DisplayName("When instantiating unsupported data source type exception")
+  void whenInstantiatingUnsupportedDataSourceTypeException() {
+    // Given
+    DataSourceType dataSourceType = DataSourceType.MYSQL;
+
+    // When
+    PatchPlaceBreakException patchPlaceBreakException =
+        PatchPlaceBreakException.unsupportedDataSourceType(dataSourceType);
+
+    // Then
+    assertThat(patchPlaceBreakException).hasMessage("Unsupported data source type 'MYSQL'");
   }
 }

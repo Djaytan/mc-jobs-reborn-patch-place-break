@@ -22,6 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 
+import java.nio.file.Path;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.experimental.StandardException;
@@ -29,22 +30,27 @@ import lombok.experimental.StandardException;
 @StandardException(access = AccessLevel.PROTECTED)
 public class ConfigSerializationException extends RuntimeException {
 
-  private static final String FAIL_TO_SERIALIZE = "Fail to serialize";
-  private static final String FAIL_TO_DESERIALIZE = "Fail to deserialize";
+  private static final String INVALID_LOADER_CONFIGURATION =
+      "The loader configuration is invalid and thus prevent processing "
+          + "serializations and deserializations of config files";
+  private static final String FAIL_TO_SERIALIZE =
+      "Fail to serialize config properties of type '%s' from '%s' file";
+  private static final String FAIL_TO_DESERIALIZE =
+      "Fail to deserialize config properties of type '%s' from '%s' file";
 
-  public static @NonNull ConfigSerializationException failToSerialize() {
-    return new ConfigSerializationException(FAIL_TO_SERIALIZE);
+  public static @NonNull ConfigSerializationException serialization(
+      @NonNull Path destConfigFile, @NonNull Class<?> propertiesType, @NonNull Throwable cause) {
+    String message = String.format(FAIL_TO_SERIALIZE, propertiesType.getName(), destConfigFile);
+    return new ConfigSerializationException(message, cause);
   }
 
-  public static @NonNull ConfigSerializationException failToSerialize(@NonNull Throwable cause) {
-    return new ConfigSerializationException(FAIL_TO_SERIALIZE, cause);
+  public static @NonNull ConfigSerializationException deserialization(
+      @NonNull Path srcConfigFile, @NonNull Class<?> propertiesType, @NonNull Throwable cause) {
+    String message = String.format(FAIL_TO_DESERIALIZE, propertiesType.getName(), srcConfigFile);
+    return new ConfigSerializationException(message, cause);
   }
 
-  public static @NonNull ConfigSerializationException failToDeserialize() {
-    return new ConfigSerializationException(FAIL_TO_DESERIALIZE);
-  }
-
-  public static @NonNull ConfigSerializationException failToDeserialize(@NonNull Throwable cause) {
-    return new ConfigSerializationException(FAIL_TO_DESERIALIZE, cause);
+  public static @NonNull ConfigSerializationException invalidLoaderConfiguration() {
+    return new ConfigSerializationException(INVALID_LOADER_CONFIGURATION);
   }
 }

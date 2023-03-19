@@ -22,8 +22,13 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
 import lombok.NonNull;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("java:S2187")
 class BukkitAdapterExceptionTest extends ExceptionBaseTest {
@@ -46,5 +51,21 @@ class BukkitAdapterExceptionTest extends ExceptionBaseTest {
   @Override
   protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
     return new BukkitAdapterException(message, cause);
+  }
+
+  @Test
+  @DisplayName("When instantiating invalid job type exception")
+  void whenInstantiatingInvalidJobTypeException() {
+    // Given
+    ActionType invalidActionType = ActionType.CRAFT;
+
+    // When
+    BukkitAdapterException bukkitAdapterException =
+        BukkitAdapterException.invalidJobType(invalidActionType);
+
+    // Then
+    assertThat(bukkitAdapterException)
+        .hasMessage(
+            "Invalid job action type 'CRAFT' specified. Expecting one of the following: BREAK, TNTBREAK, PLACE");
   }
 }

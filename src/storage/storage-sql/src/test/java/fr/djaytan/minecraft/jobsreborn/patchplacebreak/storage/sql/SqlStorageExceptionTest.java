@@ -22,8 +22,13 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
+import java.io.IOException;
 import lombok.NonNull;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("java:S2187")
 class SqlStorageExceptionTest extends ExceptionBaseTest {
@@ -46,5 +51,52 @@ class SqlStorageExceptionTest extends ExceptionBaseTest {
   @Override
   protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
     return new SqlStorageException(message, cause);
+  }
+
+  @Test
+  @DisplayName("When instantiating connection pool not setup exception")
+  void whenInstantiatingConnectionPoolNotSetupException() {
+    // Given
+
+    // When
+    SqlStorageException sqlStorageException = SqlStorageException.connectionPoolNotSetup();
+
+    // Then
+    assertThat(sqlStorageException).hasMessage("The connection pool must be setup before using it");
+  }
+
+  @Test
+  @DisplayName("When instantiating database connection lifecycle management exception")
+  void whenInstantiatingDatabaseConnectionLifecycleManagementException() {
+    // Given
+    Throwable cause = new IOException();
+
+    // When
+    SqlStorageException sqlStorageException =
+        SqlStorageException.databaseConnectionLifecycleManagement(cause);
+
+    // Then
+    assertThat(sqlStorageException)
+        .hasCause(cause)
+        .hasMessage(
+            "Something went wrong when managing database connection lifecycle "
+                + "(establishment, releasing, ...)");
+  }
+
+  @Test
+  @DisplayName("When instantiating database creation exception")
+  void whenInstantiatingDatabaseCreationException() {
+    // Given
+    String databaseName = "patch_place_break";
+    Throwable cause = new IOException();
+
+    // When
+    SqlStorageException sqlStorageException =
+        SqlStorageException.databaseCreation(databaseName, cause);
+
+    // Then
+    assertThat(sqlStorageException)
+        .hasCause(cause)
+        .hasMessage("Unable to create the database 'patch_place_break'");
   }
 }

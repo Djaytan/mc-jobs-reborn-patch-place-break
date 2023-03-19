@@ -22,8 +22,16 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import lombok.NonNull;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("java:S2187")
 class ConfigSerializationExceptionTest extends ExceptionBaseTest {
@@ -46,5 +54,67 @@ class ConfigSerializationExceptionTest extends ExceptionBaseTest {
   @Override
   protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
     return new ConfigSerializationException(message, cause);
+  }
+
+  @Test
+  @DisplayName("When instantiating serialization exception")
+  void whenInstantiatingSerializationException() {
+    // Given
+    Class<?> propertiesType = DataSourceProperties.class;
+    Path destConfigFile = Paths.get("data/folder/dataSource.conf");
+    Throwable cause = new IOException();
+
+    // When
+    ConfigSerializationException configSerializationException =
+        ConfigSerializationException.serialization(destConfigFile, propertiesType, cause);
+
+    // Then
+    assertThat(configSerializationException)
+        .hasCause(cause)
+        .hasMessageMatching(
+            "Fail to serialize config properties of type "
+                + "'fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties'"
+                + " from '.*' file")
+        .hasMessageContaining(destConfigFile.toString())
+        .hasMessageContaining("dataSource.conf");
+  }
+
+  @Test
+  @DisplayName("When instantiating deserialization exception")
+  void whenInstantiatingDeserializationException() {
+    // Given
+    Class<?> propertiesType = DataSourceProperties.class;
+    Path srcConfigFile = Paths.get("data/folder/dataSource.conf");
+    Throwable cause = new IOException();
+
+    // When
+    ConfigSerializationException configSerializationException =
+        ConfigSerializationException.deserialization(srcConfigFile, propertiesType, cause);
+
+    // Then
+    assertThat(configSerializationException)
+        .hasCause(cause)
+        .hasMessageMatching(
+            "Fail to deserialize config properties of type "
+                + "'fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties'"
+                + " from '.*' file")
+        .hasMessageContaining(srcConfigFile.toString())
+        .hasMessageContaining("dataSource.conf");
+  }
+
+  @Test
+  @DisplayName("When instantiating invalid loader configuration exception")
+  void whenInstantiatingInvalidLoaderConfigurationException() {
+    // Given
+
+    // When
+    ConfigSerializationException configSerializationException =
+        ConfigSerializationException.invalidLoaderConfiguration();
+
+    // Then
+    assertThat(configSerializationException)
+        .hasMessage(
+            "The loader configuration is invalid and thus prevent processing "
+                + "serializations and deserializations of config files");
   }
 }

@@ -30,11 +30,11 @@ import lombok.experimental.StandardException;
 public class SqlStorageException extends RuntimeException {
 
   private static final String CONNECTION_POOL_NOT_SETUP =
-      "The connection pool must be setup before using it.";
+      "The connection pool must be setup before using it";
   private static final String DATABASE_CONNECTION_LIFECYCLE_MANAGEMENT =
       "Something went wrong when managing database connection lifecycle "
-          + "(establishment, releasing, ...).";
-  private static final String DATABASE_CREATION = "Unable to create the database '%s'.";
+          + "(establishment, releasing, ...)";
+  private static final String DATABASE_CREATION = "Unable to create the database '%s'";
 
   public static @NonNull SqlStorageException connectionPoolNotSetup() {
     return new SqlStorageException(CONNECTION_POOL_NOT_SETUP);

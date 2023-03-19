@@ -53,13 +53,13 @@ public final class ConfigSerializer {
           ConfigLoaderFactory.createLoader(destConfigFile);
 
       if (!loader.canSave()) {
-        throw ConfigSerializationException.failToSerialize();
+        throw ConfigSerializationException.invalidLoaderConfiguration();
       }
 
       ConfigurationNode configurationNode = loader.createNode(node -> node.set(properties));
       loader.save(configurationNode);
     } catch (IOException e) {
-      throw ConfigSerializationException.failToSerialize(e);
+      throw ConfigSerializationException.serialization(destConfigFile, properties.getClass(), e);
     }
   }
 
@@ -78,13 +78,13 @@ public final class ConfigSerializer {
       ConfigurationLoader<?> loader = ConfigLoaderFactory.createLoader(srcConfigFile);
 
       if (!loader.canLoad()) {
-        throw ConfigSerializationException.failToDeserialize();
+        throw ConfigSerializationException.invalidLoaderConfiguration();
       }
 
       ConfigurationNode rootNode = loader.load();
       return Optional.ofNullable(rootNode.get(propertiesType));
     } catch (IOException e) {
-      throw ConfigSerializationException.failToDeserialize(e);
+      throw ConfigSerializationException.deserialization(srcConfigFile, propertiesType, e);
     }
   }
 }

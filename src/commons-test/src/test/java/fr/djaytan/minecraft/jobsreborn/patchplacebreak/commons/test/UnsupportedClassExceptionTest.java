@@ -22,7 +22,11 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import lombok.NonNull;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("java:S2187")
 class UnsupportedClassExceptionTest extends ExceptionBaseTest {
@@ -45,5 +49,21 @@ class UnsupportedClassExceptionTest extends ExceptionBaseTest {
   @Override
   protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
     return new UnsupportedClassException(message, cause);
+  }
+
+  @Test
+  @DisplayName("When instantiating unsupported class exception")
+  void whenInstantiatingUnsupportedClassException() {
+    // Given
+    Class<Test> unsupportedClass = Test.class;
+
+    // When
+    UnsupportedClassException unsupportedClassException =
+        UnsupportedClassException.unsupportedClass(unsupportedClass);
+
+    // Then
+    assertThat(unsupportedClassException)
+        .hasMessage(
+            "The class 'org.junit.jupiter.api.Test' isn't supported for resource conversion.");
   }
 }
