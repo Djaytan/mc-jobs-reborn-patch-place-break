@@ -377,9 +377,24 @@
         </configuration>
         <executions>
           <execution>
+            <id>sort-pom</id>
             <goals>
-              <goal>${sortpom.goal}</goal>
+              <goal>sort</goal>
             </goals>
+            <phase>initialize</phase>
+            <configuration>
+              <skip>${sortpom.skipSort}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>pom-sorting-check</id>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+            <phase>validate</phase>
+            <configuration>
+              <skip>${sortpom.skipCheck}</skip>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -437,10 +452,24 @@
         <version>2.19</version>
         <executions>
           <execution>
+            <id>format-code</id>
             <goals>
-              <goal>${fmt.goal}</goal>
+              <goal>format</goal>
             </goals>
-            <phase>${fmt.phase}</phase>
+            <phase>process-sources</phase>
+            <configuration>
+              <skip>${fmt.skipFormat}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>code-formatting-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>validate</phase>
+            <configuration>
+              <skip>${fmt.skipCheck}</skip>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -490,7 +519,7 @@
           <execution>
             <id>analyse</id>
             <goals>
-              <goal>analyze</goal>
+              <goal>analyze-only</goal>
               <goal>analyze-dep-mgt</goal>
               <goal>analyze-duplicate</goal>
             </goals>
@@ -620,7 +649,7 @@
           <execution>
             <id>attach-sources</id>
             <goals>
-              <goal>jar</goal>
+              <goal>jar-no-fork</goal>
             </goals>
             <phase>verify</phase>
           </execution>
@@ -743,21 +772,23 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <fmt.goal>format</fmt.goal>
-        <fmt.phase>process-sources</fmt.phase>
+        <fmt.skipFormat>false</fmt.skipFormat>
+        <fmt.skipCheck>true</fmt.skipCheck>
         <license.skipFormat>false</license.skipFormat>
         <license.skipCheck>true</license.skipCheck>
-        <sortpom.goal>sort</sortpom.goal>
+        <sortpom.skipSort>false</sortpom.skipSort>
+        <sortpom.skipCheck>true</sortpom.skipCheck>
       </properties>
     </profile>
     <profile>
       <id>ci-cd</id>
       <properties>
-        <fmt.goal>check</fmt.goal>
-        <fmt.phase>validate</fmt.phase>
+        <fmt.skipFormat>true</fmt.skipFormat>
+        <fmt.skipCheck>false</fmt.skipCheck>
         <license.skipFormat>true</license.skipFormat>
         <license.skipCheck>false</license.skipCheck>
-        <sortpom.goal>verify</sortpom.goal>
+        <sortpom.skipSort>true</sortpom.skipSort>
+        <sortpom.skipCheck>false</sortpom.skipCheck>
       </properties>
     </profile>
   </profiles>

@@ -127,6 +127,20 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <executions>
+          <execution>
+            <!-- Prevent conflicts with already existing Jar file -->
+            <id>clean-uber-jar</id>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+            <phase>initialize</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <configuration>
           <ignoredUnusedDeclaredDependencies combine.children="append">
@@ -156,6 +170,7 @@
                 <exclude>META-INF/*.RSA</exclude>
                 <exclude>META-INF/MANIFEST*</exclude>
                 <exclude>META-INF/README.txt</exclude>
+                <exclude>META-INF/maven/**/*</exclude>
               </excludes>
             </filter>
           </filters>
