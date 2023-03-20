@@ -30,7 +30,8 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBas
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -38,22 +39,22 @@ import org.junit.jupiter.api.Test;
 class TagRepositoryExceptionTest extends ExceptionBaseTest {
 
   @Override
-  protected @NonNull Exception getException() {
+  protected @NotNull Exception getException() {
     return new TagRepositoryException();
   }
 
   @Override
-  protected @NonNull Exception getException(@NonNull String message) {
+  protected @NotNull Exception getException(@NotNull String message) {
     return new TagRepositoryException(message);
   }
 
   @Override
-  protected @NonNull Exception getException(Throwable cause) {
+  protected @NotNull Exception getException(@Nullable Throwable cause) {
     return new TagRepositoryException(cause);
   }
 
   @Override
-  protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
+  protected @NotNull Exception getException(@NotNull String message, @Nullable Throwable cause) {
     return new TagRepositoryException(message, cause);
   }
 

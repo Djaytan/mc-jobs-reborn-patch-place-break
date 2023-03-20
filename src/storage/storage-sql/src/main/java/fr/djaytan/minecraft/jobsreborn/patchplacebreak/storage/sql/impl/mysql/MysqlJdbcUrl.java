@@ -27,7 +27,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.Db
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 @Singleton
 public final class MysqlJdbcUrl implements JdbcUrl {
@@ -39,12 +39,12 @@ public final class MysqlJdbcUrl implements JdbcUrl {
   private final DataSourceProperties dataSourceProperties;
 
   @Inject
-  public MysqlJdbcUrl(DataSourceProperties dataSourceProperties) {
+  public MysqlJdbcUrl(@NotNull DataSourceProperties dataSourceProperties) {
     this.dataSourceProperties = dataSourceProperties;
   }
 
   @Override
-  public @NonNull String get() {
+  public @NotNull String get() {
     DbmsServerProperties dbmsServerProperties = dataSourceProperties.getDbmsServer();
     String hostname = dbmsServerProperties.getHost().getHostname();
     int port = dbmsServerProperties.getHost().getPort();

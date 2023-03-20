@@ -31,14 +31,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 final class PatchPlaceBreakModule extends AbstractModule {
 
   private final ClassLoader classLoader;
   private final Path dataFolder;
 
-  PatchPlaceBreakModule(@NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
+  PatchPlaceBreakModule(@NotNull ClassLoader classLoader, @NotNull Path dataFolder) {
     this.classLoader = classLoader;
     this.dataFolder = dataFolder;
   }
@@ -50,6 +50,7 @@ final class PatchPlaceBreakModule extends AbstractModule {
 
   @Provides
   @Singleton
+  @NotNull
   ClassLoader classLoader() {
     return classLoader;
   }
@@ -57,6 +58,7 @@ final class PatchPlaceBreakModule extends AbstractModule {
   @Provides
   @Named("dataFolder")
   @Singleton
+  @NotNull
   Path dataFolder() throws IOException {
     Files.createDirectories(dataFolder);
     return dataFolder;

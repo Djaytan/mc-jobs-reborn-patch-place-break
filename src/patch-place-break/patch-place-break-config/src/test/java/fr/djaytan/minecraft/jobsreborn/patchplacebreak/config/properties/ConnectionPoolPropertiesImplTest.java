@@ -42,10 +42,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -197,7 +197,7 @@ class ConnectionPoolPropertiesImplTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
             Arguments.of(Named.of("Highest allowed value", 600000)),
             Arguments.of(Named.of("Lowest allowed value", 1)));
@@ -230,7 +230,7 @@ class ConnectionPoolPropertiesImplTest {
                     constraintViolation.getPropertyPath().toString().equals("connectionTimeout"));
       }
 
-      private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
             Arguments.of(Named.of("Null value", 0)),
             Arguments.of(Named.of("Too high value", 600001)));
@@ -258,7 +258,7 @@ class ConnectionPoolPropertiesImplTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
             Arguments.of(Named.of("Highest allowed value", 100)),
             Arguments.of(Named.of("Lowest allowed value", 1)));
@@ -291,7 +291,7 @@ class ConnectionPoolPropertiesImplTest {
                     constraintViolation.getPropertyPath().toString().equals("poolSize"));
       }
 
-      private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
             Arguments.of(Named.of("Null value", 0)), Arguments.of(Named.of("Too high value", 101)));
       }
@@ -308,7 +308,7 @@ class ConnectionPoolPropertiesImplTest {
     @DisplayName("With valid values")
     @SneakyThrows
     void withValidValues_shouldMatchExpectedYamlContent(
-        @NonNull ConnectionPoolPropertiesImpl givenValue, @NonNull String expectedYamlFileName) {
+        @NotNull ConnectionPoolPropertiesImpl givenValue, @NotNull String expectedYamlFileName) {
       // Given
       Path imDestFile = imfs.getPath("test.conf");
 
@@ -323,7 +323,7 @@ class ConnectionPoolPropertiesImplTest {
       assertThat(actualYaml).containsIgnoringNewLines(expectedYaml);
     }
 
-    private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
+    private @NotNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
           Arguments.of(
               Named.of("With default values", new ConnectionPoolPropertiesImpl()),
@@ -343,7 +343,7 @@ class ConnectionPoolPropertiesImplTest {
     @MethodSource
     @DisplayName("With valid content")
     void withValidContent_shouldMatchExpectedValue(
-        @NonNull String confFileName, @NonNull ConnectionPoolPropertiesImpl expectedValue) {
+        @NotNull String confFileName, @NotNull ConnectionPoolPropertiesImpl expectedValue) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
@@ -359,7 +359,7 @@ class ConnectionPoolPropertiesImplTest {
           .isEqualTo(expectedValue);
     }
 
-    private @NonNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
+    private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
           Arguments.of(
               Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
@@ -375,7 +375,7 @@ class ConnectionPoolPropertiesImplTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With invalid content")
-    void withInvalidContent_shouldThrowException(@NonNull String confFileName) {
+    void withInvalidContent_shouldThrowException(@NotNull String confFileName) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
@@ -391,7 +391,7 @@ class ConnectionPoolPropertiesImplTest {
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
-    private @NonNull Stream<Arguments> withInvalidContent_shouldThrowException() {
+    private @NotNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
           Arguments.of(
               Named.of(

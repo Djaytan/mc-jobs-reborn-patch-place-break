@@ -22,7 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties;
 
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /** Represents the properties related to the data source to be used for storage. */
 public interface DataSourceProperties {
@@ -32,7 +32,7 @@ public interface DataSourceProperties {
    *
    * @return The data source type to be used for storage.
    */
-  @NonNull
+  @NotNull
   DataSourceType getType();
 
   /**
@@ -40,7 +40,7 @@ public interface DataSourceProperties {
    *
    * @return The table name to be used for storage.
    */
-  @NonNull
+  @NotNull
   String getTable();
 
   /**
@@ -49,7 +49,7 @@ public interface DataSourceProperties {
    *
    * @return The properties related to the DBMS server.
    */
-  @NonNull
+  @NotNull
   DbmsServerProperties getDbmsServer();
 
   /**
@@ -57,6 +57,6 @@ public interface DataSourceProperties {
    *
    * @return The properties related to the connection pool.
    */
-  @NonNull
+  @NotNull
   ConnectionPoolProperties getConnectionPool();
 }

@@ -29,7 +29,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.time.Duration;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This interface represents the API to apply place-and-break patch.
@@ -78,8 +78,8 @@ public interface PatchPlaceBreakApi {
    *     otherwise.
    * @return The completable future object.
    */
-  @NonNull
-  CompletableFuture<Void> putTag(@NonNull BlockLocation blockLocation, boolean isEphemeral);
+  @NotNull
+  CompletableFuture<Void> putTag(@NotNull BlockLocation blockLocation, boolean isEphemeral);
 
   /**
    * Moves given tags according to the specified direction.
@@ -94,9 +94,9 @@ public interface PatchPlaceBreakApi {
    * @param direction The direction where to move existing tags.
    * @return The completable future object.
    */
-  @NonNull
+  @NotNull
   CompletableFuture<Void> moveTags(
-      @NonNull Set<BlockLocation> blockLocations, @NonNull Vector direction);
+      @NotNull Set<BlockLocation> blockLocations, @NotNull Vector direction);
 
   /**
    * Removes existing tag from a specified location. This can be useful when the state of the block
@@ -107,8 +107,8 @@ public interface PatchPlaceBreakApi {
    * @param blockLocation The location where to remove tags if existing.
    * @return The completable future object.
    */
-  @NonNull
-  CompletableFuture<Void> removeTag(@NonNull BlockLocation blockLocation);
+  @NotNull
+  CompletableFuture<Void> removeTag(@NotNull BlockLocation blockLocation);
 
   /**
    * Checks if the specified block action type at the given location is a place-and-break exploit or
@@ -129,5 +129,5 @@ public interface PatchPlaceBreakApi {
    * @return <code>true</code> if it's a place-and-break exploit, <code>false</code> otherwise.
    */
   boolean isPlaceAndBreakExploit(
-      @NonNull BlockActionType blockActionType, @NonNull BlockLocation blockLocation);
+      @NotNull BlockActionType blockActionType, @NotNull BlockLocation blockLocation);
 }

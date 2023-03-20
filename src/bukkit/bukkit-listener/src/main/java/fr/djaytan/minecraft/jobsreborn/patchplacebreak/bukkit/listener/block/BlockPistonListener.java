@@ -26,7 +26,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
 import java.util.Collection;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
@@ -34,6 +33,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents a {@link org.bukkit.event.block.BlockPistonEvent} listener. More
@@ -50,7 +50,8 @@ public class BlockPistonListener implements Listener {
   private final PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
 
   @Inject
-  public BlockPistonListener(PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi) {
+  public BlockPistonListener(
+      @NotNull PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi) {
     this.patchPlaceBreakBukkitAdapterApi = patchPlaceBreakBukkitAdapterApi;
   }
 
@@ -64,7 +65,7 @@ public class BlockPistonListener implements Listener {
    * @param event The block piston extend event.
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockPistonExtend(@NonNull BlockPistonExtendEvent event) {
+  public void onBlockPistonExtend(@NotNull BlockPistonExtendEvent event) {
     BlockFace blockFace = event.getDirection();
     Collection<Block> blocks = event.getBlocks();
     patchPlaceBreakBukkitAdapterApi.moveTags(blocks, blockFace);
@@ -80,7 +81,7 @@ public class BlockPistonListener implements Listener {
    * @param event The block piston retract event.
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockPistonRetract(@NonNull BlockPistonRetractEvent event) {
+  public void onBlockPistonRetract(@NotNull BlockPistonRetractEvent event) {
     BlockFace blockFace = event.getDirection();
     Collection<Block> blocks = event.getBlocks();
     patchPlaceBreakBukkitAdapterApi.moveTags(blocks, blockFace);

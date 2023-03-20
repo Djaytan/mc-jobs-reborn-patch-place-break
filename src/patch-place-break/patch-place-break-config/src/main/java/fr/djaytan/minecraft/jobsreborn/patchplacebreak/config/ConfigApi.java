@@ -26,7 +26,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DataSou
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /** API permitting to retrieve config properties. */
 @Singleton
@@ -37,7 +37,7 @@ public final class ConfigApi {
   private final ConfigManager configManager;
 
   @Inject
-  public ConfigApi(ConfigManager configManager) {
+  public ConfigApi(@NotNull ConfigManager configManager) {
     this.configManager = configManager;
   }
 
@@ -46,7 +46,7 @@ public final class ConfigApi {
    *
    * @return The data source related properties.
    */
-  public @NonNull DataSourceProperties getDataSourceProperties() {
+  public @NotNull DataSourceProperties getDataSourceProperties() {
     configManager.createDefaultIfNotExists(
         DATA_SOURCE_CONFIG_FILE_NAME, new DataSourcePropertiesImpl());
     return configManager.readAndValidate(

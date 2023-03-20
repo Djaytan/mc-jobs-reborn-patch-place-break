@@ -27,6 +27,7 @@ import com.google.inject.Provides;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import javax.inject.Singleton;
+import org.jetbrains.annotations.NotNull;
 
 final class ConfigModule extends AbstractModule {
 
@@ -36,7 +37,7 @@ final class ConfigModule extends AbstractModule {
 
   @Provides
   @Singleton
-  static DataSourceProperties dataSourceProperties(ConfigApi configApi) {
+  static @NotNull DataSourceProperties dataSourceProperties(@NotNull ConfigApi configApi) {
     return configApi.getDataSourceProperties();
   }
 }

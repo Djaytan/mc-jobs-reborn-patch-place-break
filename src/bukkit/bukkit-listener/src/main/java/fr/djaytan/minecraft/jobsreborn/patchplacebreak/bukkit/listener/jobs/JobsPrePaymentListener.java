@@ -29,11 +29,11 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.BukkitPat
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlaceBreakVerifier;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents a {@link JobsPrePaymentEvent} listener.
@@ -49,8 +49,8 @@ public class JobsPrePaymentListener implements Listener {
 
   @Inject
   public JobsPrePaymentListener(
-      PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi,
-      PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
+      @NotNull PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi,
+      @NotNull PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
     this.patchPlaceBreakBukkitAdapterApi = patchPlaceBreakBukkitAdapterApi;
     this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;
   }
@@ -66,7 +66,7 @@ public class JobsPrePaymentListener implements Listener {
    * @param event The jobs pre-payment event.
    */
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void patchOnJobsPrePayment(@NonNull JobsPrePaymentEvent event) {
+  public void patchOnJobsPrePayment(@NotNull JobsPrePaymentEvent event) {
     if (patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(
         event.getActionInfo(), event.getBlock())) {
       event.setCancelled(true);
@@ -83,7 +83,7 @@ public class JobsPrePaymentListener implements Listener {
    * @param event The jobs pre-payment event.
    */
   @EventHandler(priority = EventPriority.MONITOR)
-  public void verifyPatchOnJobsPrePayment(@NonNull JobsPrePaymentEvent event) {
+  public void verifyPatchOnJobsPrePayment(@NotNull JobsPrePaymentEvent event) {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 

@@ -23,18 +23,18 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer;
 
 import javax.inject.Singleton;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 @Singleton
 public class BooleanIntegerSerializer implements IntegerSerializer<Boolean> {
 
   @Override
-  public @NonNull Integer serialize(@NonNull Boolean bool) {
+  public @NotNull Integer serialize(@NotNull Boolean bool) {
     return Boolean.TRUE.equals(bool) ? 1 : 0;
   }
 
   @Override
-  public @NonNull Boolean deserialize(@NonNull Integer integer) {
+  public @NotNull Boolean deserialize(@NotNull Integer integer) {
     return integer == 1;
   }
 }

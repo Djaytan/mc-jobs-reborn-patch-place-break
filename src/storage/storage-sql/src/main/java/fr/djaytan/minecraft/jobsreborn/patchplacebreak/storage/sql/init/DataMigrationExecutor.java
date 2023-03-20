@@ -28,9 +28,9 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.sql.DataSource;
-import lombok.NonNull;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.Location;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents the data migration executor.
@@ -53,7 +53,9 @@ public class DataMigrationExecutor {
 
   @Inject
   public DataMigrationExecutor(
-      ClassLoader classLoader, DataSourceProperties dataSourceProperties, Location location) {
+      @NotNull ClassLoader classLoader,
+      @NotNull DataSourceProperties dataSourceProperties,
+      @NotNull Location location) {
     this.classLoader = classLoader;
     this.dataSourceProperties = dataSourceProperties;
     this.location = location;
@@ -65,13 +67,13 @@ public class DataMigrationExecutor {
    *
    * @param dataSource The data source to be used when establishing connections at migration time.
    */
-  public void migrate(@NonNull DataSource dataSource) {
+  public void migrate(@NotNull DataSource dataSource) {
     Flyway flyway = prepare(dataSource);
     flyway.migrate();
     flyway.validate();
   }
 
-  private @NonNull Flyway prepare(@NonNull DataSource dataSource) {
+  private @NotNull Flyway prepare(@NotNull DataSource dataSource) {
     Map<String, String> placeholders = new HashMap<>();
     placeholders.put(PLACEHOLDER_PATCH_PLACE_BREAK_TABLE_NAME, dataSourceProperties.getTable());
 

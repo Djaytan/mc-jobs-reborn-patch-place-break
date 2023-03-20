@@ -37,6 +37,7 @@ import java.nio.file.Path;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import org.flywaydb.core.api.Location;
+import org.jetbrains.annotations.NotNull;
 
 final class StorageModule extends AbstractModule {
 
@@ -53,7 +54,7 @@ final class StorageModule extends AbstractModule {
 
   @Provides
   @Singleton
-  static Location location(DataSourceProperties dataSourceProperties) {
+  static @NotNull Location location(@NotNull DataSourceProperties dataSourceProperties) {
     String descriptor =
         String.format(
             DB_MIGRATION_DESCRIPTOR_FORMAT, dataSourceProperties.getType().name().toLowerCase());
@@ -63,7 +64,7 @@ final class StorageModule extends AbstractModule {
   @Provides
   @Named("sqliteDatabaseFile")
   @Singleton
-  static Path sqliteDatabaseFile(@Named("dataFolder") Path dataFolder) {
+  static @NotNull Path sqliteDatabaseFile(@NotNull @Named("dataFolder") Path dataFolder) {
     return dataFolder.resolve(SQLITE_DATABASE_FILE_NAME);
   }
 }

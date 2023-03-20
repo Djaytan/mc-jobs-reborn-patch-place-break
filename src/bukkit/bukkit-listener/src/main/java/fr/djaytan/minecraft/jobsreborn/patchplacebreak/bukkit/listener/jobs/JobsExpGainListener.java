@@ -29,11 +29,11 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.BukkitPat
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlaceBreakVerifier;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents a {@link JobsExpGainEvent} listener.
@@ -49,8 +49,8 @@ public class JobsExpGainListener implements Listener {
 
   @Inject
   public JobsExpGainListener(
-      PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi,
-      PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
+      @NotNull PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi,
+      @NotNull PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
     this.patchPlaceBreakBukkitAdapterApi = patchPlaceBreakBukkitAdapterApi;
     this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;
   }
@@ -65,7 +65,7 @@ public class JobsExpGainListener implements Listener {
    * @param event The jobs exp-gain event.
    */
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void patchOnJobsExpGain(@NonNull JobsExpGainEvent event) {
+  public void patchOnJobsExpGain(@NotNull JobsExpGainEvent event) {
     if (patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(
         event.getActionInfo(), event.getBlock())) {
       event.setCancelled(true);
@@ -82,7 +82,7 @@ public class JobsExpGainListener implements Listener {
    * @param event The jobs exp-gain event.
    */
   @EventHandler(priority = EventPriority.MONITOR)
-  public void verifyPatchOnJobsExpGain(@NonNull JobsExpGainEvent event) {
+  public void verifyPatchOnJobsExpGain(@NotNull JobsExpGainEvent event) {
     Block block = event.getBlock();
     ActionInfo actionInfo = event.getActionInfo();
 

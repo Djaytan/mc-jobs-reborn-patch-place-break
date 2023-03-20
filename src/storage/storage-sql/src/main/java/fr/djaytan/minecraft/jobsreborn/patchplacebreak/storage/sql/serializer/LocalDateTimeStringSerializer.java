@@ -25,7 +25,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.inject.Singleton;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 @Singleton
 public class LocalDateTimeStringSerializer implements StringSerializer<LocalDateTime> {
@@ -33,12 +33,12 @@ public class LocalDateTimeStringSerializer implements StringSerializer<LocalDate
   private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 
   @Override
-  public @NonNull String serialize(@NonNull LocalDateTime localDateTime) {
+  public @NotNull String serialize(@NotNull LocalDateTime localDateTime) {
     return localDateTime.format(formatter);
   }
 
   @Override
-  public @NonNull LocalDateTime deserialize(@NonNull String string) {
+  public @NotNull LocalDateTime deserialize(@NotNull String string) {
     return LocalDateTime.parse(string, formatter);
   }
 }

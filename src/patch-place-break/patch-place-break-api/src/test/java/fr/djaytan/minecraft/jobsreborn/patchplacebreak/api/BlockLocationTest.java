@@ -30,8 +30,8 @@ import com.jparams.verifier.tostring.ToStringVerifier;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.util.stream.Stream;
-import lombok.NonNull;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
@@ -74,7 +74,7 @@ class BlockLocationTest {
     @MethodSource
     @DisplayName("With copy constructor")
     void withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue(
-        @NonNull Vector givenDirection, @NonNull BlockLocation expectedValue) {
+        @NotNull Vector givenDirection, @NotNull BlockLocation expectedValue) {
       // Given
       String worldName = "world";
       int initX = 1;
@@ -91,7 +91,7 @@ class BlockLocationTest {
           () -> assertThat(movedBlockLocation).isEqualTo(expectedValue));
     }
 
-    private @NonNull Stream<Arguments>
+    private @NotNull Stream<Arguments>
         withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue() {
       return Stream.of(
           Arguments.of(

@@ -28,8 +28,8 @@ import jakarta.validation.Validator;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 @Singleton
 @Slf4j
@@ -39,7 +39,7 @@ public final class PropertiesValidator {
   private final Validator validator;
 
   @Inject
-  public PropertiesValidator(Validator validator) {
+  public PropertiesValidator(@NotNull Validator validator) {
     this.validator = validator;
   }
 
@@ -49,7 +49,7 @@ public final class PropertiesValidator {
    * @param properties The properties to validate.
    * @throws PropertiesValidationException If {@link ConstraintViolation}s are detected.
    */
-  public void validate(@NonNull Properties properties) {
+  public void validate(@NotNull Properties properties) {
     String propertiesTypeName = properties.getClass().getSimpleName();
     log.atInfo().log("Validating properties of type '{}'...", propertiesTypeName);
 

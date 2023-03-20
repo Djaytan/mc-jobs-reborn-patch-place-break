@@ -24,8 +24,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 
 import java.nio.file.Path;
 import lombok.AccessLevel;
-import lombok.NonNull;
 import lombok.experimental.StandardException;
+import org.jetbrains.annotations.NotNull;
 
 @StandardException(access = AccessLevel.PROTECTED)
 public class ConfigSerializationException extends RuntimeException {
@@ -38,19 +38,19 @@ public class ConfigSerializationException extends RuntimeException {
   private static final String FAIL_TO_DESERIALIZE =
       "Fail to deserialize config properties of type '%s' from '%s' file";
 
-  public static @NonNull ConfigSerializationException serialization(
-      @NonNull Path destConfigFile, @NonNull Class<?> propertiesType, @NonNull Throwable cause) {
+  public static @NotNull ConfigSerializationException serialization(
+      @NotNull Path destConfigFile, @NotNull Class<?> propertiesType, @NotNull Throwable cause) {
     String message = String.format(FAIL_TO_SERIALIZE, propertiesType.getName(), destConfigFile);
     return new ConfigSerializationException(message, cause);
   }
 
-  public static @NonNull ConfigSerializationException deserialization(
-      @NonNull Path srcConfigFile, @NonNull Class<?> propertiesType, @NonNull Throwable cause) {
+  public static @NotNull ConfigSerializationException deserialization(
+      @NotNull Path srcConfigFile, @NotNull Class<?> propertiesType, @NotNull Throwable cause) {
     String message = String.format(FAIL_TO_DESERIALIZE, propertiesType.getName(), srcConfigFile);
     return new ConfigSerializationException(message, cause);
   }
 
-  public static @NonNull ConfigSerializationException invalidLoaderConfiguration() {
+  public static @NotNull ConfigSerializationException invalidLoaderConfiguration() {
     return new ConfigSerializationException(INVALID_LOADER_CONFIGURATION);
   }
 }

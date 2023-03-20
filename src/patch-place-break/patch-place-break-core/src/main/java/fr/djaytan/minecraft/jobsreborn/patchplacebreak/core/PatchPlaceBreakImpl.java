@@ -38,8 +38,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 /** Implementation of {@link PatchPlaceBreakApi}. */
 @Singleton
@@ -49,12 +49,12 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   private final TagRepository tagRepository;
 
   @Inject
-  public PatchPlaceBreakImpl(TagRepository tagRepository) {
+  public PatchPlaceBreakImpl(@NotNull TagRepository tagRepository) {
     this.tagRepository = tagRepository;
   }
 
-  public @NonNull CompletableFuture<Void> putTag(
-      @NonNull BlockLocation blockLocation, boolean isEphemeral) {
+  public @NotNull CompletableFuture<Void> putTag(
+      @NotNull BlockLocation blockLocation, boolean isEphemeral) {
     return CompletableFuture.runAsync(
         () -> {
           LocalDateTime localDateTime = LocalDateTime.now();
@@ -63,8 +63,8 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
         });
   }
 
-  public @NonNull CompletableFuture<Void> moveTags(
-      @NonNull Set<BlockLocation> blockLocations, @NonNull Vector direction) {
+  public @NotNull CompletableFuture<Void> moveTags(
+      @NotNull Set<BlockLocation> blockLocations, @NotNull Vector direction) {
     return CompletableFuture.runAsync(
         () -> {
           OldNewBlockLocationPairSet oldNewLocationPairs =
@@ -81,12 +81,12 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
         });
   }
 
-  public @NonNull CompletableFuture<Void> removeTag(@NonNull BlockLocation blockLocation) {
+  public @NotNull CompletableFuture<Void> removeTag(@NotNull BlockLocation blockLocation) {
     return CompletableFuture.runAsync(() -> tagRepository.delete(blockLocation));
   }
 
   public boolean isPlaceAndBreakExploit(
-      @NonNull BlockActionType blockActionType, @NonNull BlockLocation blockLocation) {
+      @NotNull BlockActionType blockActionType, @NotNull BlockLocation blockLocation) {
     Optional<Tag> tag = tagRepository.findByLocation(blockLocation);
 
     if (!tag.isPresent()) {

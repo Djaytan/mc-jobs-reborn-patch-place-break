@@ -27,18 +27,18 @@ import com.google.inject.Injector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
 import java.nio.file.Path;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public final class PatchPlaceBreakFactory {
 
   private final Injector injector;
 
-  public PatchPlaceBreakFactory(@NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
+  public PatchPlaceBreakFactory(@NotNull ClassLoader classLoader, @NotNull Path dataFolder) {
     this.injector = createInjector(classLoader, dataFolder);
   }
 
-  private static @NonNull Injector createInjector(
-      @NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
+  private static @NotNull Injector createInjector(
+      @NotNull ClassLoader classLoader, @NotNull Path dataFolder) {
     return Guice.createInjector(
         new ConfigModule(),
         new PatchPlaceBreakModule(classLoader, dataFolder),
@@ -46,11 +46,11 @@ public final class PatchPlaceBreakFactory {
         new ValidationModule());
   }
 
-  public @NonNull PatchPlaceBreakApi patchPlaceBreakApi() {
+  public @NotNull PatchPlaceBreakApi patchPlaceBreakApi() {
     return injector.getInstance(PatchPlaceBreakApi.class);
   }
 
-  public @NonNull DataSourceManager dataSourceManager() {
+  public @NotNull DataSourceManager dataSourceManager() {
     return injector.getInstance(DataSourceManager.class);
   }
 }

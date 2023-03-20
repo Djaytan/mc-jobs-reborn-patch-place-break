@@ -30,7 +30,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.My
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite.SqliteJdbcUrl;
 import javax.inject.Inject;
 import javax.inject.Provider;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class JdbcUrlProvider implements Provider<JdbcUrl> {
 
@@ -40,16 +40,16 @@ public class JdbcUrlProvider implements Provider<JdbcUrl> {
 
   @Inject
   public JdbcUrlProvider(
-      DataSourceProperties dataSourceProperties,
-      MysqlJdbcUrl mysqlJdbcUrl,
-      SqliteJdbcUrl sqliteJdbcUrl) {
+      @NotNull DataSourceProperties dataSourceProperties,
+      @NotNull MysqlJdbcUrl mysqlJdbcUrl,
+      @NotNull SqliteJdbcUrl sqliteJdbcUrl) {
     this.dataSourceProperties = dataSourceProperties;
     this.mysqlJdbcUrl = mysqlJdbcUrl;
     this.sqliteJdbcUrl = sqliteJdbcUrl;
   }
 
   @Override
-  public @NonNull JdbcUrl get() {
+  public @NotNull JdbcUrl get() {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {

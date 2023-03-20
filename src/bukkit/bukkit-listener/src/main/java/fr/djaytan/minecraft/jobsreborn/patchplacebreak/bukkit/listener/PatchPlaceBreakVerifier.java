@@ -27,8 +27,8 @@ import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents the patch-place-break verifier for the Bukkit plugin.
@@ -51,8 +51,8 @@ public class PatchPlaceBreakVerifier {
 
   @Inject
   public PatchPlaceBreakVerifier(
-      Provider<ListenerRegister> listenerRegister,
-      PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi) {
+      @NotNull Provider<ListenerRegister> listenerRegister,
+      @NotNull PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi) {
     this.listenerRegister = listenerRegister;
     this.patchPlaceBreakBukkitAdapterApi = patchPlaceBreakBukkitAdapterApi;
   }
@@ -68,7 +68,7 @@ public class PatchPlaceBreakVerifier {
    *     patch.
    */
   public void checkAndAttemptFixListenersIfRequired(
-      @NonNull BukkitPatchEnvironmentState environmentState) {
+      @NotNull BukkitPatchEnvironmentState environmentState) {
     CompletableFuture.runAsync(
         () -> {
           if (!isPatchExpected(environmentState)) {
@@ -88,12 +88,12 @@ public class PatchPlaceBreakVerifier {
         });
   }
 
-  private boolean isPatchExpected(@NonNull BukkitPatchEnvironmentState environmentState) {
+  private boolean isPatchExpected(@NotNull BukkitPatchEnvironmentState environmentState) {
     return patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(
         environmentState.getJobActionInfo(), environmentState.getTargetedBlock());
   }
 
-  private boolean isPatchApplied(@NonNull BukkitPatchEnvironmentState environmentState) {
+  private boolean isPatchApplied(@NotNull BukkitPatchEnvironmentState environmentState) {
     return environmentState.isEventCancelled();
   }
 }

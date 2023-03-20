@@ -42,11 +42,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -185,7 +186,7 @@ class DbmsCredentialsPropertiesImplTest {
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With valid values")
-      void withValidValues_shouldNotGenerateConstraintViolations(@NonNull String validUsername) {
+      void withValidValues_shouldNotGenerateConstraintViolations(@NotNull String validUsername) {
         // Given
         DbmsCredentialsPropertiesImpl credentialsPropertiesImpl =
             new DbmsCredentialsPropertiesImpl(validUsername, "bar");
@@ -198,7 +199,7 @@ class DbmsCredentialsPropertiesImplTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
             Arguments.of(Named.of("Longest allowed value", StringUtils.repeat("s", 32))),
             Arguments.of(Named.of("Shortest allowed value", "s")));
@@ -207,7 +208,7 @@ class DbmsCredentialsPropertiesImplTest {
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With invalid values")
-      void withInvalidValues_shouldGenerateConstraintViolations(String invalidUsername) {
+      void withInvalidValues_shouldGenerateConstraintViolations(@Nullable String invalidUsername) {
         // Given
         DbmsCredentialsPropertiesImpl credentialsPropertiesImpl =
             new DbmsCredentialsPropertiesImpl(invalidUsername, "bar");
@@ -231,7 +232,7 @@ class DbmsCredentialsPropertiesImplTest {
                     constraintViolation.getPropertyPath().toString().equals("username"));
       }
 
-      private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
             Arguments.of(Named.of("Null value", null)),
             Arguments.of(Named.of("Empty value", "")),
@@ -248,7 +249,7 @@ class DbmsCredentialsPropertiesImplTest {
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With valid values")
-      void withValidValues_shouldNotGenerateConstraintViolations(@NonNull String validPassword) {
+      void withValidValues_shouldNotGenerateConstraintViolations(@NotNull String validPassword) {
         // Given
         DbmsCredentialsPropertiesImpl credentialsPropertiesImpl =
             new DbmsCredentialsPropertiesImpl("for", validPassword);
@@ -261,7 +262,7 @@ class DbmsCredentialsPropertiesImplTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
             Arguments.of(Named.of("Longest allowed value", StringUtils.repeat("s", 128))),
             Arguments.of(Named.of("Shortest allowed value", "")),
@@ -271,7 +272,7 @@ class DbmsCredentialsPropertiesImplTest {
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With invalid values")
-      void withInvalidValues_shouldGenerateConstraintViolations(String invalidPassword) {
+      void withInvalidValues_shouldGenerateConstraintViolations(@Nullable String invalidPassword) {
         // Given
         DbmsCredentialsPropertiesImpl credentialsPropertiesImpl =
             new DbmsCredentialsPropertiesImpl("foo", invalidPassword);
@@ -295,7 +296,7 @@ class DbmsCredentialsPropertiesImplTest {
                     constraintViolation.getPropertyPath().toString().equals("password"));
       }
 
-      private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
             Arguments.of(Named.of("Null value", null)),
             Arguments.of(Named.of("Too long value", StringUtils.repeat("s", 129))));
@@ -313,7 +314,7 @@ class DbmsCredentialsPropertiesImplTest {
     @DisplayName("With valid values")
     @SneakyThrows
     void withValidValues_shouldMatchExpectedYamlContent(
-        @NonNull DbmsCredentialsPropertiesImpl givenValue, @NonNull String expectedYamlFileName) {
+        @NotNull DbmsCredentialsPropertiesImpl givenValue, @NotNull String expectedYamlFileName) {
       // Given
       Path imDestFile = imfs.getPath("test.conf");
 
@@ -328,7 +329,7 @@ class DbmsCredentialsPropertiesImplTest {
       assertThat(actualYaml).containsIgnoringNewLines(expectedYaml);
     }
 
-    private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
+    private @NotNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
           Arguments.of(
               Named.of("With default values", new DbmsCredentialsPropertiesImpl()),
@@ -348,7 +349,7 @@ class DbmsCredentialsPropertiesImplTest {
     @MethodSource
     @DisplayName("With valid content")
     void withValidContent_shouldMatchExpectedValue(
-        @NonNull String confFileName, @NonNull DbmsCredentialsPropertiesImpl expectedValue) {
+        @NotNull String confFileName, @NotNull DbmsCredentialsPropertiesImpl expectedValue) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
@@ -364,7 +365,7 @@ class DbmsCredentialsPropertiesImplTest {
           .isEqualTo(expectedValue);
     }
 
-    private @NonNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
+    private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
           Arguments.of(
               Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
@@ -380,7 +381,7 @@ class DbmsCredentialsPropertiesImplTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With invalid content")
-    void withInvalidContent_shouldThrowException(@NonNull String confFileName) {
+    void withInvalidContent_shouldThrowException(@NotNull String confFileName) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
@@ -397,7 +398,7 @@ class DbmsCredentialsPropertiesImplTest {
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
-    private @NonNull Stream<Arguments> withInvalidContent_shouldThrowException() {
+    private @NotNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
           Arguments.of(
               Named.of(

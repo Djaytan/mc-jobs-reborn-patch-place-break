@@ -27,9 +27,9 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject.Jobs
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.slf4j.BukkitLoggerFactory;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
 import java.util.logging.Logger;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 /** This class represents a JobsReborn patch place-break plugin. */
 @SuppressWarnings("unused") // Instantiated by Bukkit's implementation (i.e. CraftBukkit)
@@ -59,7 +59,7 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
     getLogger().info("JobsReborn-PatchPlaceBreak successfully disabled.");
   }
 
-  private static void enableSlf4j(@NonNull Logger bukkitLogger) {
+  private static void enableSlf4j(@NotNull Logger bukkitLogger) {
     BukkitLoggerFactory.provideBukkitLogger(bukkitLogger);
   }
 }

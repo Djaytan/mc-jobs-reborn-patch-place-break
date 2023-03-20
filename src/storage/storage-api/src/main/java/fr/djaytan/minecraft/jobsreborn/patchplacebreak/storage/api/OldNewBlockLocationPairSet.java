@@ -29,8 +29,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lombok.NonNull;
 import lombok.Value;
+import org.jetbrains.annotations.NotNull;
 
 /** Represents a set of {@link OldNewBlockLocationPair}. */
 @Value
@@ -39,7 +39,7 @@ public class OldNewBlockLocationPairSet {
   Set<OldNewBlockLocationPair> oldNewBlockLocationPairs;
 
   public OldNewBlockLocationPairSet(
-      @NonNull Collection<OldNewBlockLocationPair> oldNewBlockLocationPairs) {
+      @NotNull Collection<OldNewBlockLocationPair> oldNewBlockLocationPairs) {
     this.oldNewBlockLocationPairs =
         Collections.unmodifiableSet(new HashSet<>(oldNewBlockLocationPairs));
   }
@@ -49,7 +49,7 @@ public class OldNewBlockLocationPairSet {
    *
    * @return A set containing flattened old and new locations.
    */
-  public @NonNull Set<BlockLocation> flattenBlockLocations() {
+  public @NotNull Set<BlockLocation> flattenBlockLocations() {
     return oldNewBlockLocationPairs.stream()
         .flatMap(
             oldNewBlockLocationPair ->

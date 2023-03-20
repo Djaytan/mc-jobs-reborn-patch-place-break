@@ -30,7 +30,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite.S
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
 import javax.inject.Inject;
 import javax.inject.Provider;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class DataSourceInitializerProvider implements Provider<DataSourceInitializer> {
 
@@ -40,16 +40,16 @@ public class DataSourceInitializerProvider implements Provider<DataSourceInitial
 
   @Inject
   public DataSourceInitializerProvider(
-      DataSourceProperties dataSourceProperties,
-      MysqlDataSourceInitializer mysqlDataSourceInitializer,
-      SqliteDataSourceInitializer sqliteDataSourceInitializer) {
+      @NotNull DataSourceProperties dataSourceProperties,
+      @NotNull MysqlDataSourceInitializer mysqlDataSourceInitializer,
+      @NotNull SqliteDataSourceInitializer sqliteDataSourceInitializer) {
     this.dataSourceProperties = dataSourceProperties;
     this.mysqlDataSourceInitializer = mysqlDataSourceInitializer;
     this.sqliteDataSourceInitializer = sqliteDataSourceInitializer;
   }
 
   @Override
-  public @NonNull DataSourceInitializer get() {
+  public @NotNull DataSourceInitializer get() {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {

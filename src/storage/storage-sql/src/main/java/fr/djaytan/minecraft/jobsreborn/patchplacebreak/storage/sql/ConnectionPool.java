@@ -33,8 +33,8 @@ import java.util.function.Function;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.sql.DataSource;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 @Singleton
@@ -45,7 +45,8 @@ public class ConnectionPool {
   private HikariDataSource hikariDataSource;
 
   @Inject
-  public ConnectionPool(DataSourceProperties dataSourceProperties, JdbcUrl jdbcUrl) {
+  public ConnectionPool(
+      @NotNull DataSourceProperties dataSourceProperties, @NotNull JdbcUrl jdbcUrl) {
     this.dataSourceProperties = dataSourceProperties;
     this.jdbcUrl = jdbcUrl;
   }
@@ -78,7 +79,7 @@ public class ConnectionPool {
     log.atInfo().log("Disconnected from the database '{}'.", hikariDataSource.getJdbcUrl());
   }
 
-  public void useConnection(@NonNull Consumer<Connection> consumer) {
+  public void useConnection(@NotNull Consumer<Connection> consumer) {
     if (hikariDataSource == null) {
       throw SqlStorageException.connectionPoolNotSetup();
     }
@@ -90,8 +91,8 @@ public class ConnectionPool {
     }
   }
 
-  public <T> @NonNull Optional<T> useConnection(
-      @NonNull Function<Connection, Optional<T>> function) {
+  public <T> @NotNull Optional<T> useConnection(
+      @NotNull Function<Connection, Optional<T>> function) {
     if (hikariDataSource == null) {
       throw SqlStorageException.connectionPoolNotSetup();
     }
@@ -103,7 +104,11 @@ public class ConnectionPool {
     }
   }
 
-  public DataSource getDataSource() {
+  public @NotNull DataSource getDataSource() {
+    if (hikariDataSource == null) {
+      throw SqlStorageException.connectionPoolNotSetup();
+    }
+
     return hikariDataSource;
   }
 }

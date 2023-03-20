@@ -23,9 +23,9 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
-import lombok.NonNull;
 import lombok.Value;
 import org.apache.commons.lang3.Validate;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a pair of two block locations, one which should be considered as the old one and the
@@ -38,11 +38,11 @@ import org.apache.commons.lang3.Validate;
 @Value
 public class OldNewBlockLocationPair {
 
-  @NonNull BlockLocation oldBlockLocation;
-  @NonNull BlockLocation newBlockLocation;
+  BlockLocation oldBlockLocation;
+  BlockLocation newBlockLocation;
 
   public OldNewBlockLocationPair(
-      @NonNull BlockLocation oldBlockLocation, @NonNull BlockLocation newBlockLocation) {
+      @NotNull BlockLocation oldBlockLocation, @NotNull BlockLocation newBlockLocation) {
     Validate.validState(
         !oldBlockLocation.equals(newBlockLocation),
         "The old and new location must not be the same");

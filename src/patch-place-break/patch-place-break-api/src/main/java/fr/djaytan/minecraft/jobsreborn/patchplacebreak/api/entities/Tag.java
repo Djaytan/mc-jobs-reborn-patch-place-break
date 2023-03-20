@@ -24,7 +24,6 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import java.time.LocalDateTime;
-import lombok.NonNull;
 import lombok.Value;
 import lombok.With;
 
@@ -51,7 +50,7 @@ import lombok.With;
 @Value(staticConstructor = "of")
 public class Tag {
 
-  @With @NonNull BlockLocation blockLocation;
+  @With BlockLocation blockLocation;
   boolean isEphemeral;
-  @NonNull LocalDateTime initLocalDateTime;
+  LocalDateTime initLocalDateTime;
 }

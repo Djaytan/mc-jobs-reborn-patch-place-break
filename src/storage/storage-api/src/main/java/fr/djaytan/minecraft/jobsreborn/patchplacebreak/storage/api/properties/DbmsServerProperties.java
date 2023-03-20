@@ -22,7 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties;
 
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents the properties related to the DBMS server.
@@ -37,7 +37,7 @@ public interface DbmsServerProperties {
    *
    * @return The DBMS server properties related to the host.
    */
-  @NonNull
+  @NotNull
   DbmsHostProperties getHost();
 
   /**
@@ -45,7 +45,7 @@ public interface DbmsServerProperties {
    *
    * @return The DBMS server properties related to the credentials.
    */
-  @NonNull
+  @NotNull
   DbmsCredentialsProperties getCredentials();
 
   /**
@@ -53,6 +53,6 @@ public interface DbmsServerProperties {
    *
    * @return The targeted database name when establishing connection with the DBMS server.
    */
-  @NonNull
+  @NotNull
   String getDatabase();
 }

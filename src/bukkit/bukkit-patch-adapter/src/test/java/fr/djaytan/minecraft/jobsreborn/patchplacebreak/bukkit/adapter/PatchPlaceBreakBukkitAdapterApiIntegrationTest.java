@@ -44,6 +44,7 @@ import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -90,7 +91,7 @@ class PatchPlaceBreakBukkitAdapterApiIntegrationTest {
   @Test
   @Order(1)
   @DisplayName("When putting tag")
-  void whenPuttingTag_shouldNotThrow(@Mock Block block, @Mock World world) {
+  void whenPuttingTag_shouldNotThrow(@Mock @NotNull Block block, @Mock @NotNull World world) {
     // Given
     given(world.getName()).willReturn("world");
     given(block.getWorld()).willReturn(world);
@@ -111,7 +112,9 @@ class PatchPlaceBreakBukkitAdapterApiIntegrationTest {
   @Order(2)
   @DisplayName("When checking exploit with existing tag")
   void whenCheckingExploit_withExistingTag_shouldDetectExploit(
-      @Mock ActionInfo actionInfo, @Mock Block block, @Mock World world) {
+      @Mock @NotNull ActionInfo actionInfo,
+      @Mock @NotNull Block block,
+      @Mock @NotNull World world) {
     // Given
     given(actionInfo.getType()).willReturn(ActionType.BREAK);
     given(world.getName()).willReturn("world");
@@ -130,7 +133,7 @@ class PatchPlaceBreakBukkitAdapterApiIntegrationTest {
   @Test
   @Order(3)
   @DisplayName("When moving tag")
-  void whenMovingTag_shouldNotThrow(@Mock Block block, @Mock World world) {
+  void whenMovingTag_shouldNotThrow(@Mock @NotNull Block block, @Mock @NotNull World world) {
     // Given
     BlockFace blockFace = BlockFace.EAST;
     given(world.getName()).willReturn("world");
@@ -152,7 +155,10 @@ class PatchPlaceBreakBukkitAdapterApiIntegrationTest {
   @Order(4)
   @DisplayName("When checking exploit with moved tag")
   void whenCheckingExploit_withMovedTag_shouldDetectExploitInNewLocationButNotInOldOne(
-      @Mock ActionInfo actionInfo, @Mock Block oldBlock, @Mock Block newBlock, @Mock World world) {
+      @Mock @NotNull ActionInfo actionInfo,
+      @Mock @NotNull Block oldBlock,
+      @Mock @NotNull Block newBlock,
+      @Mock @NotNull World world) {
     // Given
     given(actionInfo.getType()).willReturn(ActionType.BREAK);
     given(world.getName()).willReturn("world");
@@ -182,7 +188,7 @@ class PatchPlaceBreakBukkitAdapterApiIntegrationTest {
   @Test
   @Order(5)
   @DisplayName("When removing tag")
-  void whenRemovingTag_shouldNotThrow(@Mock Block block, @Mock World world) {
+  void whenRemovingTag_shouldNotThrow(@Mock @NotNull Block block, @Mock @NotNull World world) {
     // Given
     given(world.getName()).willReturn("world");
     given(block.getWorld()).willReturn(world);
@@ -202,7 +208,9 @@ class PatchPlaceBreakBukkitAdapterApiIntegrationTest {
   @Order(6)
   @DisplayName("When checking exploit without existing tag")
   void whenCheckingExploit_withoutExistingTag_shouldNotDetectExploit(
-      @Mock ActionInfo actionInfo, @Mock Block block, @Mock World world) {
+      @Mock @NotNull ActionInfo actionInfo,
+      @Mock @NotNull Block block,
+      @Mock @NotNull World world) {
     // Given
     given(actionInfo.getType()).willReturn(ActionType.BREAK);
     given(world.getName()).willReturn("world");

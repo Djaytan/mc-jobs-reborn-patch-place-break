@@ -25,8 +25,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 import jakarta.validation.ConstraintViolation;
 import java.util.Collection;
 import java.util.StringJoiner;
-import lombok.NonNull;
 import org.apache.commons.lang3.Validate;
+import org.jetbrains.annotations.NotNull;
 
 /** Formatter of a {@link ConstraintViolation} to improve readability. */
 final class ConstraintViolationFormatter {
@@ -44,8 +44,8 @@ final class ConstraintViolationFormatter {
    * @param constraintViolations The constraint violations to format.
    * @return The constraint violations formatted into a more readable text.
    */
-  static <T> @NonNull String format(
-      @NonNull Collection<ConstraintViolation<T>> constraintViolations) {
+  static <T> @NotNull String format(
+      @NotNull Collection<ConstraintViolation<T>> constraintViolations) {
     Validate.notEmpty(constraintViolations);
 
     StringJoiner stringJoiner = new StringJoiner(LINE_SEPARATOR);
@@ -57,7 +57,7 @@ final class ConstraintViolationFormatter {
     return stringJoiner.toString();
   }
 
-  private static <T> @NonNull String format(@NonNull ConstraintViolation<T> constraintViolation) {
+  private static <T> @NotNull String format(@NotNull ConstraintViolation<T> constraintViolation) {
     return String.format(
         FORMAT_TEMPLATE,
         constraintViolation.getPropertyPath(),

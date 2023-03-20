@@ -25,20 +25,22 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 public abstract class ExceptionBaseTest {
 
-  protected abstract @NonNull Exception getException();
+  protected abstract @NotNull Exception getException();
 
-  protected abstract @NonNull Exception getException(@NonNull String message);
+  protected abstract @NotNull Exception getException(@NotNull String message);
 
-  protected abstract @NonNull Exception getException(Throwable cause);
+  protected abstract @NotNull Exception getException(@Nullable Throwable cause);
 
-  protected abstract @NonNull Exception getException(@NonNull String message, Throwable cause);
+  protected abstract @NotNull Exception getException(
+      @NotNull String message, @Nullable Throwable cause);
 
   @Nested
   @DisplayName("When instantiating")

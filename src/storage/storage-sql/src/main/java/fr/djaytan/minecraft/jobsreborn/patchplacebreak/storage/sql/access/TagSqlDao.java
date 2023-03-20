@@ -35,8 +35,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 @Singleton
@@ -48,15 +48,15 @@ public class TagSqlDao {
 
   @Inject
   public TagSqlDao(
-      BooleanIntegerSerializer booleanIntegerSerializer,
-      DataSourceProperties dataSourceProperties,
-      LocalDateTimeStringSerializer localDateTimeStringSerializer) {
+      @NotNull BooleanIntegerSerializer booleanIntegerSerializer,
+      @NotNull DataSourceProperties dataSourceProperties,
+      @NotNull LocalDateTimeStringSerializer localDateTimeStringSerializer) {
     this.booleanIntegerSerializer = booleanIntegerSerializer;
     this.dataSourceProperties = dataSourceProperties;
     this.localDateTimeStringSerializer = localDateTimeStringSerializer;
   }
 
-  public void insert(@NonNull Connection connection, @NonNull Tag tag) throws SQLException {
+  public void insert(@NotNull Connection connection, @NotNull Tag tag) throws SQLException {
     String sql =
         String.format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?)", dataSourceProperties.getTable());
 
@@ -72,8 +72,8 @@ public class TagSqlDao {
     }
   }
 
-  public @NonNull Optional<Tag> findByLocation(
-      @NonNull Connection connection, @NonNull BlockLocation blockLocation) throws SQLException {
+  public @NotNull Optional<Tag> findByLocation(
+      @NotNull Connection connection, @NotNull BlockLocation blockLocation) throws SQLException {
     String sql =
         String.format(
             "SELECT * FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
@@ -92,7 +92,7 @@ public class TagSqlDao {
     }
   }
 
-  private @NonNull Optional<Tag> extractTag(@NonNull ResultSet resultSet) throws SQLException {
+  private @NotNull Optional<Tag> extractTag(@NotNull ResultSet resultSet) throws SQLException {
     if (resultSet.getFetchSize() > 1) {
       log.atWarn()
           .log(
@@ -118,7 +118,7 @@ public class TagSqlDao {
     return Optional.of(tag);
   }
 
-  public void delete(@NonNull Connection connection, @NonNull BlockLocation blockLocation)
+  public void delete(@NotNull Connection connection, @NotNull BlockLocation blockLocation)
       throws SQLException {
     String sqlDelete =
         String.format(

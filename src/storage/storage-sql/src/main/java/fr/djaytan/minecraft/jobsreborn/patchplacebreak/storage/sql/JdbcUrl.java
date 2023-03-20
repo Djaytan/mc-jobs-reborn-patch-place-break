@@ -22,7 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /** Represents a JDBC URL required to establish connexion with underlying data source. */
 public interface JdbcUrl {
@@ -32,6 +32,6 @@ public interface JdbcUrl {
    *
    * @return The JDBC URL of the underlying data source.
    */
-  @NonNull
+  @NotNull
   String get();
 }

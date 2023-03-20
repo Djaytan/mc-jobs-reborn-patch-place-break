@@ -29,10 +29,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A helper class for resources management with tests.
@@ -65,8 +65,8 @@ public final class TestResourcesHelper {
    * @return The class' resource as an absolute path.
    */
   @SneakyThrows
-  public static @NonNull Path getClassResourceAsAbsolutePath(
-      @NonNull Class<?> clazz, @NonNull String resourceName) {
+  public static @NotNull Path getClassResourceAsAbsolutePath(
+      @NotNull Class<?> clazz, @NotNull String resourceName) {
     Path relativeResourcePath = getClassResourceAsRelativePath(clazz, resourceName);
     return resourceToAbsolutePath(relativeResourcePath, clazz.getClassLoader());
   }
@@ -91,8 +91,8 @@ public final class TestResourcesHelper {
    * @return The class' resource as a string encoded with UTF_8 charset.
    */
   @SneakyThrows
-  public static @NonNull String getClassResourceAsString(
-      @NonNull Class<?> clazz, @NonNull String resourceName, boolean chopContent) {
+  public static @NotNull String getClassResourceAsString(
+      @NotNull Class<?> clazz, @NotNull String resourceName, boolean chopContent) {
     Path resourceRelativePath = getClassResourceAsRelativePath(clazz, resourceName);
     String resourceContent =
         IOUtils.resourceToString(
@@ -100,16 +100,16 @@ public final class TestResourcesHelper {
     return chopContent ? StringUtils.chop(resourceContent) : resourceContent;
   }
 
-  private static @NonNull Path getClassResourceAsRelativePath(
-      @NonNull Class<?> clazz, @NonNull String resourceName) {
+  private static @NotNull Path getClassResourceAsRelativePath(
+      @NotNull Class<?> clazz, @NotNull String resourceName) {
     ClassToFsPathConverter classToFsPathConverter =
         new ClassToFsPathConverter(FileSystems.getDefault());
     Path classResourcesFolder = classToFsPathConverter.convertClassToFsPath(clazz);
     return classResourcesFolder.resolve(resourceName);
   }
 
-  private static @NonNull Path resourceToAbsolutePath(
-      @NonNull Path relativeResourcePath, @NonNull ClassLoader classLoader)
+  private static @NotNull Path resourceToAbsolutePath(
+      @NotNull Path relativeResourcePath, @NotNull ClassLoader classLoader)
       throws IOException, URISyntaxException {
     // /!\ Not retrieving absolute path from class loader can lead to wrong path depending on cases
     // (i.e. when working directory of a library isn't the same as the one used by this class)

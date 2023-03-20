@@ -31,7 +31,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.Da
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsCredentialsProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsHostProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsServerProperties;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 import org.mockito.MockSettings;
 import org.mockito.Mockito;
 import org.mockito.quality.Strictness;
@@ -45,7 +45,7 @@ public final class DataSourcePropertiesMock {
     // Static class
   }
 
-  public static @NonNull DataSourceProperties get() {
+  public static @NotNull DataSourceProperties get() {
     ConnectionPoolProperties connectionPoolPropertiesMocked = connectionPoolPropertiesMocked();
     DbmsServerProperties dbmsServerPropertiesMocked = dbmsServerPropertiesMocked();
 
@@ -59,7 +59,7 @@ public final class DataSourcePropertiesMock {
     return dataSourcePropertiesMocked;
   }
 
-  private static @NonNull ConnectionPoolProperties connectionPoolPropertiesMocked() {
+  private static @NotNull ConnectionPoolProperties connectionPoolPropertiesMocked() {
     ConnectionPoolProperties connectionPoolPropertiesMocked =
         mock(ConnectionPoolProperties.class, MOCK_SETTINGS);
     given(connectionPoolPropertiesMocked.getConnectionTimeout()).willReturn(30000L);
@@ -67,7 +67,7 @@ public final class DataSourcePropertiesMock {
     return connectionPoolPropertiesMocked;
   }
 
-  private static @NonNull DbmsServerProperties dbmsServerPropertiesMocked() {
+  private static @NotNull DbmsServerProperties dbmsServerPropertiesMocked() {
     DbmsCredentialsProperties dbmsCredentialsPropertiesMocked = dbmsCredentialsProperties();
     DbmsHostProperties dbmsHostPropertiesMocked = dbmsHostPropertiesMocked();
 
@@ -79,7 +79,7 @@ public final class DataSourcePropertiesMock {
     return dbmsServerPropertiesMocked;
   }
 
-  private static @NonNull DbmsCredentialsProperties dbmsCredentialsProperties() {
+  private static @NotNull DbmsCredentialsProperties dbmsCredentialsProperties() {
     DbmsCredentialsProperties dbmsCredentialsPropertiesMocked =
         mock(DbmsCredentialsProperties.class, MOCK_SETTINGS);
     given(dbmsCredentialsPropertiesMocked.getUsername()).willReturn("root");
@@ -87,7 +87,7 @@ public final class DataSourcePropertiesMock {
     return dbmsCredentialsPropertiesMocked;
   }
 
-  private static @NonNull DbmsHostProperties dbmsHostPropertiesMocked() {
+  private static @NotNull DbmsHostProperties dbmsHostPropertiesMocked() {
     DbmsHostProperties dbmsHostPropertiesMocked = mock(DbmsHostProperties.class, MOCK_SETTINGS);
     given(dbmsHostPropertiesMocked.getHostname()).willReturn("localhost");
     given(dbmsHostPropertiesMocked.getPort()).willReturn(3306);

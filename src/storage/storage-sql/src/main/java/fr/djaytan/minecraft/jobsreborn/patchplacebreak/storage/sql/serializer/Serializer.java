@@ -22,13 +22,13 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer;
 
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public interface Serializer<T, U> {
 
-  @NonNull
-  U serialize(@NonNull T object);
+  @NotNull
+  U serialize(@NotNull T object);
 
-  @NonNull
-  T deserialize(@NonNull U object);
+  @NotNull
+  T deserialize(@NotNull U object);
 }

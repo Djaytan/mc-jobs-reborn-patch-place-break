@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 import javax.inject.Singleton;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.loader.ConfigurationLoader;
 
@@ -47,7 +47,7 @@ public final class ConfigSerializer {
    * @param properties The properties to serialize.
    * @throws ConfigSerializationException If something prevent the serialization.
    */
-  public void serialize(@NonNull Path destConfigFile, @NonNull Properties properties) {
+  public void serialize(@NotNull Path destConfigFile, @NotNull Properties properties) {
     try {
       ConfigurationLoader<? extends ConfigurationNode> loader =
           ConfigLoaderFactory.createLoader(destConfigFile);
@@ -72,8 +72,8 @@ public final class ConfigSerializer {
    * @param <T> The expected properties type to be obtained from deserialization.
    * @throws ConfigSerializationException If something prevent the deserialization.
    */
-  public <T extends Properties> @NonNull Optional<T> deserialize(
-      @NonNull Path srcConfigFile, @NonNull Class<T> propertiesType) {
+  public <T extends Properties> @NotNull Optional<T> deserialize(
+      @NotNull Path srcConfigFile, @NotNull Class<T> propertiesType) {
     try {
       ConfigurationLoader<?> loader = ConfigLoaderFactory.createLoader(srcConfigFile);
 

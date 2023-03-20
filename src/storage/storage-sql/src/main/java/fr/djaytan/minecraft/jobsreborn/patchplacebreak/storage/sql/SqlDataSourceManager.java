@@ -28,6 +28,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSour
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.sql.DataSource;
+import org.jetbrains.annotations.NotNull;
 
 @Singleton
 public class SqlDataSourceManager implements DataSourceManager {
@@ -38,9 +39,9 @@ public class SqlDataSourceManager implements DataSourceManager {
 
   @Inject
   public SqlDataSourceManager(
-      ConnectionPool connectionPool,
-      DataMigrationExecutor dataMigrationExecutor,
-      DataSourceInitializer dataSourceInitializer) {
+      @NotNull ConnectionPool connectionPool,
+      @NotNull DataMigrationExecutor dataMigrationExecutor,
+      @NotNull DataSourceInitializer dataSourceInitializer) {
     this.connectionPool = connectionPool;
     this.dataMigrationExecutor = dataMigrationExecutor;
     this.dataSourceInitializer = dataSourceInitializer;

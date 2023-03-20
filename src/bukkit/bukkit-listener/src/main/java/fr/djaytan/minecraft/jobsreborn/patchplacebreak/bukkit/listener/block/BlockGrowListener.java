@@ -25,12 +25,12 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockGrowEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents a {@link BlockGrowEvent} listener.
@@ -45,7 +45,8 @@ public class BlockGrowListener implements Listener {
   private final PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
 
   @Inject
-  public BlockGrowListener(PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi) {
+  public BlockGrowListener(
+      @NotNull PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi) {
     this.patchPlaceBreakBukkitAdapterApi = patchPlaceBreakBukkitAdapterApi;
   }
 
@@ -59,7 +60,7 @@ public class BlockGrowListener implements Listener {
    * @param event The block grow event.
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockGrow(@NonNull BlockGrowEvent event) {
+  public void onBlockGrow(@NotNull BlockGrowEvent event) {
     Block block = event.getBlock();
     patchPlaceBreakBukkitAdapterApi.removeTag(block);
   }

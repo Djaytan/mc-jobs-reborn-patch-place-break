@@ -24,7 +24,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -32,22 +33,22 @@ import org.junit.jupiter.api.Test;
 class UnsupportedClassExceptionTest extends ExceptionBaseTest {
 
   @Override
-  protected @NonNull Exception getException() {
+  protected @NotNull Exception getException() {
     return new UnsupportedClassException();
   }
 
   @Override
-  protected @NonNull Exception getException(@NonNull String message) {
+  protected @NotNull Exception getException(@NotNull String message) {
     return new UnsupportedClassException(message);
   }
 
   @Override
-  protected @NonNull Exception getException(Throwable cause) {
+  protected @NotNull Exception getException(@Nullable Throwable cause) {
     return new UnsupportedClassException(cause);
   }
 
   @Override
-  protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
+  protected @NotNull Exception getException(@NotNull String message, @Nullable Throwable cause) {
     return new UnsupportedClassException(message, cause);
   }
 

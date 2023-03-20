@@ -25,7 +25,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import java.util.Optional;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a {@link Tag} repository.
@@ -51,7 +51,7 @@ public interface TagRepository {
    * @param tag The tag to be put at the targeted location.
    * @throws TagRepositoryException If something prevents the tag to be put into the storage.
    */
-  void put(@NonNull Tag tag);
+  void put(@NotNull Tag tag);
 
   /**
    * Updates the locations of tags from old to new ones.
@@ -61,7 +61,7 @@ public interface TagRepository {
    *
    * @param oldNewLocationPairs The set of old-new location pairs
    */
-  void updateLocations(@NonNull OldNewBlockLocationPairSet oldNewLocationPairs);
+  void updateLocations(@NotNull OldNewBlockLocationPairSet oldNewLocationPairs);
 
   /**
    * Finds a tag from a {@link BlockLocation}.
@@ -70,8 +70,8 @@ public interface TagRepository {
    * @return The tag which match with the given location if exists.
    * @throws TagRepositoryException If something prevents the search to be done.
    */
-  @NonNull
-  Optional<Tag> findByLocation(@NonNull BlockLocation blockLocation);
+  @NotNull
+  Optional<Tag> findByLocation(@NotNull BlockLocation blockLocation);
 
   /**
    * Deletes a tag from its {@link BlockLocation}.
@@ -82,5 +82,5 @@ public interface TagRepository {
    * @throws TagRepositoryException If something prevents the tag to be deleted (except the case
    *     where it doesn't exist).
    */
-  void delete(@NonNull BlockLocation blockLocation);
+  void delete(@NotNull BlockLocation blockLocation);
 }

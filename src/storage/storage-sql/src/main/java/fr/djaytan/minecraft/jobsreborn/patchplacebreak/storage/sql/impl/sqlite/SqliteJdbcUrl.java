@@ -27,7 +27,7 @@ import java.nio.file.Path;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /** Represents the SQLite JDBC URL. */
 @Singleton
@@ -38,13 +38,13 @@ public final class SqliteJdbcUrl implements JdbcUrl {
   private final Path sqliteDatabaseFile;
 
   @Inject
-  public SqliteJdbcUrl(@Named("sqliteDatabaseFile") Path sqliteDatabaseFile) {
+  public SqliteJdbcUrl(@NotNull @Named("sqliteDatabaseFile") Path sqliteDatabaseFile) {
     this.sqliteDatabaseFile = sqliteDatabaseFile;
   }
 
   /** {@inheritDoc} */
   @Override
-  public @NonNull String get() {
+  public @NotNull String get() {
     return String.format(SQLITE_JDBC_URL_FORMAT, sqliteDatabaseFile);
   }
 }

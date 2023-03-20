@@ -22,7 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties;
 
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /** Represents the DBMS server properties related to credentials. */
 public interface DbmsCredentialsProperties {
@@ -32,7 +32,7 @@ public interface DbmsCredentialsProperties {
    *
    * @return The username to be used for authentication with the DBMS server.
    */
-  @NonNull
+  @NotNull
   String getUsername();
 
   /**
@@ -40,6 +40,6 @@ public interface DbmsCredentialsProperties {
    *
    * @return The password to be used for authentication with the DBMS server.
    */
-  @NonNull
+  @NotNull
   String getPassword();
 }

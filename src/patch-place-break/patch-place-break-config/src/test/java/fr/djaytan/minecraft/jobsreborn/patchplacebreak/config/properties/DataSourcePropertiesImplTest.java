@@ -43,11 +43,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -235,7 +236,7 @@ class DataSourcePropertiesImplTest {
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With valid values")
-      void withValidValues_shouldNotGenerateConstraintViolations(@NonNull String validTable) {
+      void withValidValues_shouldNotGenerateConstraintViolations(@NotNull String validTable) {
         // Given
         DataSourcePropertiesImpl dataSourcePropertiesImpl =
             new DataSourcePropertiesImpl(
@@ -255,7 +256,7 @@ class DataSourcePropertiesImplTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
             Arguments.of(Named.of("Longest allowed value", StringUtils.repeat("s", 128))),
             Arguments.of(Named.of("Shortest allowed value", "s")));
@@ -264,7 +265,7 @@ class DataSourcePropertiesImplTest {
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With invalid values")
-      void withInvalidValues_shouldGenerateConstraintViolations(String invalidTable) {
+      void withInvalidValues_shouldGenerateConstraintViolations(@Nullable String invalidTable) {
         // Given
         DataSourcePropertiesImpl dataSourcePropertiesImpl =
             new DataSourcePropertiesImpl(
@@ -295,7 +296,7 @@ class DataSourcePropertiesImplTest {
                     constraintViolation.getPropertyPath().toString().equals("table"));
       }
 
-      private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
             Arguments.of(Named.of("Null value", null)),
             Arguments.of(Named.of("Too long value", StringUtils.repeat("s", 129))),
@@ -315,7 +316,7 @@ class DataSourcePropertiesImplTest {
     @DisplayName("With valid values")
     @SneakyThrows
     void withValidValues_shouldMatchExpectedYamlContent(
-        @NonNull DataSourcePropertiesImpl givenValue, @NonNull String expectedYamlFileName) {
+        @NotNull DataSourcePropertiesImpl givenValue, @NotNull String expectedYamlFileName) {
       // Given
       Path imDestFile = imfs.getPath("test.conf");
 
@@ -330,7 +331,7 @@ class DataSourcePropertiesImplTest {
       assertThat(actualYaml).containsIgnoringNewLines(expectedYaml);
     }
 
-    private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
+    private @NotNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
           Arguments.of(
               Named.of("With default values", new DataSourcePropertiesImpl()),
@@ -359,7 +360,7 @@ class DataSourcePropertiesImplTest {
     @MethodSource
     @DisplayName("With valid content")
     void withValidContent_shouldMatchExpectedValue(
-        @NonNull String confFileName, @NonNull DataSourcePropertiesImpl expectedValue) {
+        @NotNull String confFileName, @NotNull DataSourcePropertiesImpl expectedValue) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
@@ -372,7 +373,7 @@ class DataSourcePropertiesImplTest {
       assertThat(optionalDataSourceValidatingProperties).isPresent().get().isEqualTo(expectedValue);
     }
 
-    private @NonNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
+    private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
           Arguments.of(
               Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
@@ -409,7 +410,7 @@ class DataSourcePropertiesImplTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With invalid content")
-    void withInvalidContent_shouldThrowException(@NonNull String confFileName) {
+    void withInvalidContent_shouldThrowException(@NotNull String confFileName) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
@@ -424,7 +425,7 @@ class DataSourcePropertiesImplTest {
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
-    private @NonNull Stream<Arguments> withInvalidContent_shouldThrowException() {
+    private @NotNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
           Arguments.of(
               Named.of("With missing 'type' field", "whenDeserializing_withMissingTypeField.conf")),

@@ -85,7 +85,7 @@ class OldNewBlockLocationPairSetTest {
             new OldNewBlockLocationPair(oldBlockLocation1, newBlockLocation1);
 
         Collection<OldNewBlockLocationPair> mutableOldNewBlockLocationPairs =
-            new ArrayList<>(Arrays.asList(oldNewBlockLocationPair1));
+            new ArrayList<>(Collections.singletonList(oldNewBlockLocationPair1));
 
         OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
             new OldNewBlockLocationPairSet(mutableOldNewBlockLocationPairs);
@@ -113,7 +113,7 @@ class OldNewBlockLocationPairSetTest {
             new OldNewBlockLocationPair(oldBlockLocation1, newBlockLocation1);
 
         Collection<OldNewBlockLocationPair> mutableOldNewBlockLocationPairs =
-            new ArrayList<>(Arrays.asList(oldNewBlockLocationPair1));
+            new ArrayList<>(Collections.singletonList(oldNewBlockLocationPair1));
 
         OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
             new OldNewBlockLocationPairSet(mutableOldNewBlockLocationPairs);

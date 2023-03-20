@@ -35,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 /** This class represents a register of listeners. */
 @Slf4j
@@ -54,15 +55,15 @@ public class ListenerRegister {
 
   @Inject
   public ListenerRegister(
-      JavaPlugin javaPlugin,
-      PluginManager pluginManager,
-      BlockBreakListener blockBreakListener,
-      BlockGrowListener blockGrowListener,
-      BlockPistonListener blockPistonListener,
-      BlockPlaceListener blockPlaceListener,
-      BlockSpreadListener blockSpreadListener,
-      JobsExpGainListener jobsExpGainListener,
-      JobsPrePaymentListener jobsPrePaymentListener) {
+      @NotNull JavaPlugin javaPlugin,
+      @NotNull PluginManager pluginManager,
+      @NotNull BlockBreakListener blockBreakListener,
+      @NotNull BlockGrowListener blockGrowListener,
+      @NotNull BlockPistonListener blockPistonListener,
+      @NotNull BlockPlaceListener blockPlaceListener,
+      @NotNull BlockSpreadListener blockSpreadListener,
+      @NotNull JobsExpGainListener jobsExpGainListener,
+      @NotNull JobsPrePaymentListener jobsPrePaymentListener) {
     this.javaPlugin = javaPlugin;
     this.pluginManager = pluginManager;
     this.blockBreakListener = blockBreakListener;

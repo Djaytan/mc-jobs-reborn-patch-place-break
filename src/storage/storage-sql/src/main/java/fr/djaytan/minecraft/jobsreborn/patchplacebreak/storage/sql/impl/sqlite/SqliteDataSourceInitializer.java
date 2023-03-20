@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 @Singleton
@@ -39,7 +40,8 @@ public final class SqliteDataSourceInitializer implements DataSourceInitializer 
   private final Path sqliteDatabaseFile;
 
   @Inject
-  public SqliteDataSourceInitializer(@Named("sqliteDatabaseFile") Path sqliteDatabaseFile) {
+  public SqliteDataSourceInitializer(
+      @NotNull @Named("sqliteDatabaseFile") Path sqliteDatabaseFile) {
     this.sqliteDatabaseFile = sqliteDatabaseFile;
   }
 

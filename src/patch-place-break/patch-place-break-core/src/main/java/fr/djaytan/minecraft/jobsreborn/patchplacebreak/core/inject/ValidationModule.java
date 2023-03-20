@@ -28,6 +28,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import javax.inject.Singleton;
+import org.jetbrains.annotations.NotNull;
 
 final class ValidationModule extends AbstractModule {
 
@@ -37,13 +38,13 @@ final class ValidationModule extends AbstractModule {
 
   @Provides
   @Singleton
-  static ValidatorFactory validatorFactory() {
+  static @NotNull ValidatorFactory validatorFactory() {
     return Validation.buildDefaultValidatorFactory();
   }
 
   @Provides
   @Singleton
-  static Validator validator(ValidatorFactory validatorFactory) {
+  static @NotNull Validator validator(@NotNull ValidatorFactory validatorFactory) {
     return validatorFactory.getValidator();
   }
 }

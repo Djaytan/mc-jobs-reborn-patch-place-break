@@ -37,9 +37,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Adapter of {@link PatchPlaceBreakApi} for Bukkit.
@@ -56,10 +57,10 @@ public class PatchPlaceBreakBukkitAdapterApi {
 
   @Inject
   public PatchPlaceBreakBukkitAdapterApi(
-      ActionTypeConverter actionTypeConverter,
-      BlockFaceConverter blockFaceConverter,
-      LocationConverter locationConverter,
-      PatchPlaceBreakApi patchPlaceBreakApi) {
+      @NotNull ActionTypeConverter actionTypeConverter,
+      @NotNull BlockFaceConverter blockFaceConverter,
+      @NotNull LocationConverter locationConverter,
+      @NotNull PatchPlaceBreakApi patchPlaceBreakApi) {
     this.actionTypeConverter = actionTypeConverter;
     this.blockFaceConverter = blockFaceConverter;
     this.locationConverter = locationConverter;
@@ -74,7 +75,7 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * @return The completable future object.
    * @see PatchPlaceBreakApi#putTag(BlockLocation, boolean)
    */
-  public @NonNull CompletableFuture<Void> putTag(@NonNull Block block, boolean isEphemeral) {
+  public @NotNull CompletableFuture<Void> putTag(@NotNull Block block, boolean isEphemeral) {
     BlockLocation blockLocation = locationConverter.convert(block);
     return patchPlaceBreakApi.putTag(blockLocation, isEphemeral);
   }
@@ -90,8 +91,8 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * @return The completable future object.
    * @see PatchPlaceBreakApi#moveTags(Set, Vector)
    */
-  public @NonNull CompletableFuture<Void> moveTags(
-      @NonNull Collection<Block> blocks, @NonNull BlockFace blockFace) {
+  public @NotNull CompletableFuture<Void> moveTags(
+      @NotNull Collection<Block> blocks, @NotNull BlockFace blockFace) {
     Set<BlockLocation> blockLocations =
         blocks.stream().map(locationConverter::convert).collect(Collectors.toSet());
     Vector vector = blockFaceConverter.convert(blockFace);
@@ -105,7 +106,7 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * @return The completable future object.
    * @see PatchPlaceBreakApi#removeTag(BlockLocation)
    */
-  public @NonNull CompletableFuture<Void> removeTag(@NonNull Block block) {
+  public @NotNull CompletableFuture<Void> removeTag(@NotNull Block block) {
     BlockLocation blockLocation = locationConverter.convert(block);
     return patchPlaceBreakApi.removeTag(blockLocation);
   }
@@ -119,7 +120,7 @@ public class PatchPlaceBreakBukkitAdapterApi {
    *     patch-and-break exploit or not.
    * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, BlockLocation)
    */
-  public boolean isPlaceAndBreakExploit(ActionInfo actionInfo, Block block) {
+  public boolean isPlaceAndBreakExploit(@Nullable ActionInfo actionInfo, @Nullable Block block) {
     if (actionInfo == null || block == null) {
       return false;
     }

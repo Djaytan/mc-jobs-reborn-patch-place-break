@@ -36,10 +36,10 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSour
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.flywaydb.core.api.Location;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,7 +56,7 @@ class SqlDataSourceManagerIntegrationTest {
   @DisplayName("When connecting to existing database")
   @SneakyThrows
   void whenConnectingToExistingDatabase_shouldNotThrow(
-      @NonNull SqlDataSourceManager sqlDataSourceManager) {
+      @NotNull SqlDataSourceManager sqlDataSourceManager) {
     // Given
 
     // When
@@ -69,12 +69,12 @@ class SqlDataSourceManagerIntegrationTest {
     sqlDataSourceManager.disconnect();
   }
 
-  private static @NonNull Stream<Arguments> whenConnectingToExistingDatabase_shouldNotThrow() {
+  private static @NotNull Stream<Arguments> whenConnectingToExistingDatabase_shouldNotThrow() {
     return Stream.of(forSqlite(), forMysql(), forMariadb());
   }
 
   @SneakyThrows
-  private static @NonNull Arguments forSqlite() {
+  private static @NotNull Arguments forSqlite() {
     DataSourceProperties dataSourcePropertiesMocked = DataSourcePropertiesMock.get();
     Path sqliteDatabaseFile = Files.createTempFile("ppb-datasourcemanager", "");
     JdbcUrl jdbcUrl = new SqliteJdbcUrl(sqliteDatabaseFile);
@@ -95,17 +95,17 @@ class SqlDataSourceManagerIntegrationTest {
                 connectionPool, dataMigrationExecutor, dataSourceInitializer)));
   }
 
-  private static @NonNull Arguments forMysql() {
+  private static @NotNull Arguments forMysql() {
     int dbmsPort = Integer.parseInt(System.getProperty("mysql.port"));
     return Arguments.of(Named.of("For MySQL", createDbmsSqlDataSourceManager(dbmsPort)));
   }
 
-  private static @NonNull Arguments forMariadb() {
+  private static @NotNull Arguments forMariadb() {
     int dbmsPort = Integer.parseInt(System.getProperty("mariadb.port"));
     return Arguments.of(Named.of("For MariaDB", createDbmsSqlDataSourceManager(dbmsPort)));
   }
 
-  private static @NonNull SqlDataSourceManager createDbmsSqlDataSourceManager(int dbmsPort) {
+  private static @NotNull SqlDataSourceManager createDbmsSqlDataSourceManager(int dbmsPort) {
     DataSourceProperties dataSourcePropertiesMocked = DataSourcePropertiesMock.get();
     DbmsHostProperties dbmsHostProperties = dataSourcePropertiesMocked.getDbmsServer().getHost();
     given(dbmsHostProperties.getPort()).willReturn(dbmsPort);

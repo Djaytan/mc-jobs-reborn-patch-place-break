@@ -23,8 +23,8 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
 import lombok.AccessLevel;
-import lombok.NonNull;
 import lombok.experimental.StandardException;
+import org.jetbrains.annotations.NotNull;
 
 @StandardException(access = AccessLevel.PROTECTED)
 public class SqlStorageException extends RuntimeException {
@@ -36,17 +36,17 @@ public class SqlStorageException extends RuntimeException {
           + "(establishment, releasing, ...)";
   private static final String DATABASE_CREATION = "Unable to create the database '%s'";
 
-  public static @NonNull SqlStorageException connectionPoolNotSetup() {
+  public static @NotNull SqlStorageException connectionPoolNotSetup() {
     return new SqlStorageException(CONNECTION_POOL_NOT_SETUP);
   }
 
-  public static @NonNull SqlStorageException databaseConnectionLifecycleManagement(
-      @NonNull Throwable cause) {
+  public static @NotNull SqlStorageException databaseConnectionLifecycleManagement(
+      @NotNull Throwable cause) {
     return new SqlStorageException(DATABASE_CONNECTION_LIFECYCLE_MANAGEMENT, cause);
   }
 
-  public static @NonNull SqlStorageException databaseCreation(
-      @NonNull String databaseName, @NonNull Throwable cause) {
+  public static @NotNull SqlStorageException databaseCreation(
+      @NotNull String databaseName, @NotNull Throwable cause) {
     String message = String.format(DATABASE_CREATION, databaseName);
     return new SqlStorageException(message, cause);
   }

@@ -29,29 +29,29 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredListener;
+import org.jetbrains.annotations.NotNull;
 
 /** Represents the Bukkit environment state under which the patch API as been executed. */
 @Getter
 @Builder
 public class BukkitPatchEnvironmentState {
 
-  @NonNull ActionInfo jobActionInfo;
-  @NonNull Block targetedBlock;
-  @NonNull OfflinePlayer involvedPlayer;
-  @NonNull Job triggeredJob;
-  @NonNull Event eventHandled;
+  ActionInfo jobActionInfo;
+  Block targetedBlock;
+  OfflinePlayer involvedPlayer;
+  Job triggeredJob;
+  Event eventHandled;
   boolean isEventCancelled;
-  @NonNull HandlerList eventHandlers;
+  HandlerList eventHandlers;
 
   @Override
-  public @NonNull String toString() {
+  public @NotNull String toString() {
     String eventHandlersToString = eventHandlersToString();
 
     return new ToStringBuilder(this)
@@ -66,7 +66,7 @@ public class BukkitPatchEnvironmentState {
         .toString();
   }
 
-  private @NonNull String eventHandlersToString() {
+  private @NotNull String eventHandlersToString() {
     Collection<String> registeredListenersToString =
         Arrays.stream(eventHandlers.getRegisteredListeners())
             .map(BukkitPatchEnvironmentState::registeredListenerToString)
@@ -78,8 +78,8 @@ public class BukkitPatchEnvironmentState {
         .toString();
   }
 
-  private static @NonNull String registeredListenerToString(
-      @NonNull RegisteredListener registeredListener) {
+  private static @NotNull String registeredListenerToString(
+      @NotNull RegisteredListener registeredListener) {
     String listenerClass = registeredListener.getListener().getClass().getName();
     String pluginName = registeredListener.getPlugin().getName();
     String eventPriority = registeredListener.getPriority().name();

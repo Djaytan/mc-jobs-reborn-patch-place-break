@@ -45,9 +45,9 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer.Bo
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer.LocalDateTimeStringSerializer;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import lombok.NonNull;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.flywaydb.core.api.Location;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -162,16 +162,16 @@ class TagRepositoryIntegrationTest {
     assertTagDoesNotExists(BlockLocation.of("world", 13, 45, -234));
   }
 
-  private void assertTagExists(@NonNull BlockLocation blockLocation) {
+  private void assertTagExists(@NotNull BlockLocation blockLocation) {
     assertTagExistence(blockLocation, true);
   }
 
-  private void assertTagDoesNotExists(@NonNull BlockLocation blockLocation) {
+  private void assertTagDoesNotExists(@NotNull BlockLocation blockLocation) {
     assertTagExistence(blockLocation, false);
   }
 
   private void assertTagExistence(
-      @NonNull BlockLocation blockLocation, boolean expectedTagExistence) {
+      @NotNull BlockLocation blockLocation, boolean expectedTagExistence) {
     // Given
 
     // When

@@ -36,7 +36,7 @@ import java.util.Optional;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 @Singleton
 public class SqlTagRepository implements TagRepository {
@@ -45,13 +45,13 @@ public class SqlTagRepository implements TagRepository {
   private final TagSqlDao tagSqlDao;
 
   @Inject
-  public SqlTagRepository(ConnectionPool connectionPool, TagSqlDao tagSqlDao) {
+  public SqlTagRepository(@NotNull ConnectionPool connectionPool, @NotNull TagSqlDao tagSqlDao) {
     this.connectionPool = connectionPool;
     this.tagSqlDao = tagSqlDao;
   }
 
   @Override
-  public void put(@NonNull Tag tag) {
+  public void put(@NotNull Tag tag) {
     connectionPool.useConnection(
         connection -> {
           try {
@@ -66,7 +66,7 @@ public class SqlTagRepository implements TagRepository {
   }
 
   @Override
-  public void updateLocations(@NonNull OldNewBlockLocationPairSet oldNewLocationPairs) {
+  public void updateLocations(@NotNull OldNewBlockLocationPairSet oldNewLocationPairs) {
     connectionPool.useConnection(
         connection -> {
           try {
@@ -81,8 +81,8 @@ public class SqlTagRepository implements TagRepository {
         });
   }
 
-  private @NonNull Set<Tag> prepareNewTags(
-      @NonNull Connection connection, @NonNull OldNewBlockLocationPairSet oldNewLocationPairs)
+  private @NotNull Set<Tag> prepareNewTags(
+      @NotNull Connection connection, @NotNull OldNewBlockLocationPairSet oldNewLocationPairs)
       throws SQLException {
     Set<Tag> newTags = new HashSet<>();
 
@@ -107,8 +107,8 @@ public class SqlTagRepository implements TagRepository {
   }
 
   private void cleanUpTags(
-      @NonNull Connection connection,
-      @NonNull OldNewBlockLocationPairSet oldNewBlockLocationPairSet)
+      @NotNull Connection connection,
+      @NotNull OldNewBlockLocationPairSet oldNewBlockLocationPairSet)
       throws SQLException {
     Set<BlockLocation> tagsToRemove = oldNewBlockLocationPairSet.flattenBlockLocations();
 
@@ -117,7 +117,7 @@ public class SqlTagRepository implements TagRepository {
     }
   }
 
-  private void putNewTags(@NonNull Connection connection, @NonNull Set<Tag> newTags)
+  private void putNewTags(@NotNull Connection connection, @NotNull Set<Tag> newTags)
       throws SQLException {
     for (Tag newTag : newTags) {
       tagSqlDao.insert(connection, newTag);
@@ -125,7 +125,7 @@ public class SqlTagRepository implements TagRepository {
   }
 
   @Override
-  public @NonNull Optional<Tag> findByLocation(@NonNull BlockLocation blockLocation) {
+  public @NotNull Optional<Tag> findByLocation(@NotNull BlockLocation blockLocation) {
     return connectionPool.useConnection(
         connection -> {
           try {
@@ -137,7 +137,7 @@ public class SqlTagRepository implements TagRepository {
   }
 
   @Override
-  public void delete(@NonNull BlockLocation blockLocation) {
+  public void delete(@NotNull BlockLocation blockLocation) {
     connectionPool.useConnection(
         connection -> {
           try {

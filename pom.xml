@@ -263,6 +263,12 @@
         <version>3.41.0.0</version>
       </dependency>
       <dependency>
+        <groupId>org.jetbrains</groupId>
+        <artifactId>annotations</artifactId>
+        <version>24.0.1</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${version.lombok}</version>
@@ -477,6 +483,7 @@
               org.slf4j:slf4j-nop
               <!-- Required for deactivating logs during tests execution -->
             </ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>org.projectlombok:lombok</ignoredUnusedDeclaredDependency>
           </ignoredUnusedDeclaredDependencies>
         </configuration>
         <executions>

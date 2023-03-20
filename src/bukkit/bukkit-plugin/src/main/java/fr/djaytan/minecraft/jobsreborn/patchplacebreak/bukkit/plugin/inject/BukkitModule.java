@@ -29,40 +29,44 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 final class BukkitModule extends AbstractModule {
 
   private final JavaPlugin javaPlugin;
 
-  BukkitModule(@NonNull JavaPlugin javaPlugin) {
+  BukkitModule(@NotNull JavaPlugin javaPlugin) {
     this.javaPlugin = javaPlugin;
   }
 
   @Provides
   @Singleton
+  @NotNull
   JavaPlugin javaPlugin() {
     return javaPlugin;
   }
 
   @Provides
   @Singleton
+  @NotNull
   Server server() {
     return javaPlugin.getServer();
   }
 
   @Provides
   @Singleton
-  PluginManager pluginManager(Server server) {
+  @NotNull
+  PluginManager pluginManager(@NotNull Server server) {
     return server.getPluginManager();
   }
 
   @Provides
   @Named("dataFolder")
   @Singleton
+  @NotNull
   Path dataFolder() throws IOException {
     Path dataFolder = javaPlugin.getDataFolder().toPath();
     Files.createDirectories(dataFolder);
@@ -71,6 +75,7 @@ final class BukkitModule extends AbstractModule {
 
   @Provides
   @Singleton
+  @NotNull
   ClassLoader classLoader() {
     return javaPlugin.getClass().getClassLoader();
   }

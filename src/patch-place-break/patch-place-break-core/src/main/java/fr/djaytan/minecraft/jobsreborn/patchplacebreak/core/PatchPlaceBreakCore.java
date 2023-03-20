@@ -27,7 +27,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.PatchPlaceBre
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
 import java.nio.file.Path;
 import javax.inject.Singleton;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents the patch place-break enabler for any consumer. Its role is to manage the
@@ -47,8 +47,8 @@ public class PatchPlaceBreakCore {
 
   private DataSourceManager dataSourceManager;
 
-  public @NonNull PatchPlaceBreakApi enable(
-      @NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
+  public @NotNull PatchPlaceBreakApi enable(
+      @NotNull ClassLoader classLoader, @NotNull Path dataFolder) {
     setupSlf4j();
     PatchPlaceBreakFactory factory = new PatchPlaceBreakFactory(classLoader, dataFolder);
     dataSourceManager = factory.dataSourceManager();

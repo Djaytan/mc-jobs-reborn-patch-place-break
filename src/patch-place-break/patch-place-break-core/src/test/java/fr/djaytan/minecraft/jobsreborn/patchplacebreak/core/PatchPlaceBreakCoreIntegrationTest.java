@@ -32,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -93,7 +94,7 @@ class PatchPlaceBreakCoreIntegrationTest {
   @ValueSource(strings = {"mysql", "mariadb"})
   @DisplayName("When enabling with custom setup")
   @SneakyThrows
-  void whenEnabling_withCustomSetup(String dbmsType) {
+  void whenEnabling_withCustomSetup(@NotNull String dbmsType) {
     // Given
     int dbmsPort = Integer.parseInt(System.getProperty(String.format("%s.port", dbmsType)));
     String givenConfigFileContent =
