@@ -27,7 +27,7 @@ import com.gamingmesh.jobs.container.Job;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.bukkit.OfflinePlayer;
@@ -39,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
 
 /** Represents the Bukkit environment state under which the patch API as been executed. */
 @Getter
-@Builder
+@AllArgsConstructor
 public class BukkitPatchEnvironmentState {
 
   ActionInfo jobActionInfo;

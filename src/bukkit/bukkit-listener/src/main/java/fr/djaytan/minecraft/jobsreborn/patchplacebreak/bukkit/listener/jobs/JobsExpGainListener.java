@@ -91,15 +91,14 @@ public class JobsExpGainListener implements Listener {
     }
 
     BukkitPatchEnvironmentState environmentState =
-        BukkitPatchEnvironmentState.builder()
-            .jobActionInfo(actionInfo)
-            .targetedBlock(block)
-            .involvedPlayer(event.getPlayer())
-            .triggeredJob(event.getJob())
-            .eventHandled(event)
-            .isEventCancelled(event.isCancelled())
-            .eventHandlers(event.getHandlers())
-            .build();
+        new BukkitPatchEnvironmentState(
+            actionInfo,
+            block,
+            event.getPlayer(),
+            event.getJob(),
+            event,
+            event.isCancelled(),
+            event.getHandlers());
 
     patchPlaceBreakVerifier.checkAndAttemptFixListenersIfRequired(environmentState);
   }
