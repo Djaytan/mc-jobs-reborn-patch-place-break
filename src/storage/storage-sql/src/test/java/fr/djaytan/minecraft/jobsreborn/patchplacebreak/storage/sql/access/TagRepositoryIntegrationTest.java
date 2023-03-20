@@ -24,6 +24,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.access;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
@@ -45,9 +46,9 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer.Bo
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer.LocalDateTimeStringSerializer;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Optional;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.flywaydb.core.api.Location;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -110,7 +111,14 @@ class TagRepositoryIntegrationTest {
   @Order(2)
   @DisplayName("When checking exploit with existing tag")
   void whenCheckingExploit_withExistingTag_shouldExists() {
-    assertTagExists(BlockLocation.of("world", 12, 45, -234));
+    // Given
+    BlockLocation blockLocation = BlockLocation.of("world", 12, 45, -234);
+
+    // When
+    Optional<Tag> tag = tagRepository.findByLocation(blockLocation);
+
+    // Then
+    assertThat(tag).isPresent();
   }
 
   @Test
@@ -137,8 +145,17 @@ class TagRepositoryIntegrationTest {
   @Order(4)
   @DisplayName("When checking exploit with moved tag")
   void whenCheckingExploit_withMovedTag_shouldExistsInNewLocationButNotInOldOne() {
-    assertTagDoesNotExists(BlockLocation.of("world", 12, 45, -234));
-    assertTagExists(BlockLocation.of("world", 13, 45, -234));
+    // Given
+    BlockLocation oldBlockLocation = BlockLocation.of("world", 12, 45, -234);
+    BlockLocation newBlockLocation = BlockLocation.of("world", 13, 45, -234);
+
+    // When
+    Optional<Tag> tagOldLocation = tagRepository.findByLocation(oldBlockLocation);
+    Optional<Tag> tagNewLocation = tagRepository.findByLocation(newBlockLocation);
+
+    // Then
+    assertAll(
+        () -> assertThat(tagOldLocation).isEmpty(), () -> assertThat(tagNewLocation).isPresent());
   }
 
   @Test
@@ -159,25 +176,13 @@ class TagRepositoryIntegrationTest {
   @Order(6)
   @DisplayName("When checking exploit without existing tag")
   void whenCheckingExploit_withoutExistingTag_shouldNotExists() {
-    assertTagDoesNotExists(BlockLocation.of("world", 13, 45, -234));
-  }
-
-  private void assertTagExists(@NotNull BlockLocation blockLocation) {
-    assertTagExistence(blockLocation, true);
-  }
-
-  private void assertTagDoesNotExists(@NotNull BlockLocation blockLocation) {
-    assertTagExistence(blockLocation, false);
-  }
-
-  private void assertTagExistence(
-      @NotNull BlockLocation blockLocation, boolean expectedTagExistence) {
     // Given
+    BlockLocation blockLocation = BlockLocation.of("world", 13, 45, -234);
 
     // When
-    boolean actualTagExistence = tagRepository.findByLocation(blockLocation).isPresent();
+    Optional<Tag> tag = tagRepository.findByLocation(blockLocation);
 
     // Then
-    assertThat(actualTagExistence).isEqualTo(expectedTagExistence);
+    assertThat(tag).isEmpty();
   }
 }
