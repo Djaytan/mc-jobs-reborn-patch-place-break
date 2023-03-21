@@ -25,6 +25,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -52,7 +54,6 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -258,8 +259,8 @@ class DataSourcePropertiesImplTest {
 
       private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Longest allowed value", StringUtils.repeat("s", 128))),
-            Arguments.of(Named.of("Shortest allowed value", "s")));
+            arguments(named("Longest allowed value", StringUtils.repeat("s", 128))),
+            arguments(named("Shortest allowed value", "s")));
       }
 
       @ParameterizedTest(name = "{index} - {0}")
@@ -298,10 +299,10 @@ class DataSourcePropertiesImplTest {
 
       private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Null value", null)),
-            Arguments.of(Named.of("Too long value", StringUtils.repeat("s", 129))),
-            Arguments.of(Named.of("Empty and too short value", "")),
-            Arguments.of(Named.of("Blank value", " ")));
+            arguments(named("Null value", null)),
+            arguments(named("Too long value", StringUtils.repeat("s", 129))),
+            arguments(named("Empty and too short value", "")),
+            arguments(named("Blank value", " ")));
       }
     }
   }
@@ -333,11 +334,11 @@ class DataSourcePropertiesImplTest {
 
     private @NotNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
-          Arguments.of(
-              Named.of("With default values", new DataSourcePropertiesImpl()),
+          arguments(
+              named("With default values", new DataSourcePropertiesImpl()),
               "whenSerializing_withDefaultValues.conf"),
-          Arguments.of(
-              Named.of(
+          arguments(
+              named(
                   "With custom values",
                   new DataSourcePropertiesImpl(
                       DataSourceType.MYSQL,
@@ -375,8 +376,8 @@ class DataSourcePropertiesImplTest {
 
     private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
-          Arguments.of(
-              Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
+          arguments(
+              named("With valid values", "whenDeserializing_withValidValues.conf"),
               new DataSourcePropertiesImpl(
                   DataSourceType.MYSQL,
                   "patch_place_break",
@@ -385,8 +386,8 @@ class DataSourcePropertiesImplTest {
                       new DbmsCredentialsPropertiesImpl("foo", "bar"),
                       "patch_database"),
                   new ConnectionPoolPropertiesImpl(60000, 10))),
-          Arguments.of(
-              Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
+          arguments(
+              named("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
               new DataSourcePropertiesImpl(
                   DataSourceType.MYSQL,
                   "patch_place_break",
@@ -395,8 +396,8 @@ class DataSourcePropertiesImplTest {
                       new DbmsCredentialsPropertiesImpl("foo", "bar"),
                       "patch_database"),
                   new ConnectionPoolPropertiesImpl(60000, 10))),
-          Arguments.of(
-              Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
+          arguments(
+              named("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
               new DataSourcePropertiesImpl(
                   DataSourceType.MYSQL,
                   "patch_place_break",
@@ -427,17 +428,16 @@ class DataSourcePropertiesImplTest {
 
     private @NotNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
-          Arguments.of(
-              Named.of("With missing 'type' field", "whenDeserializing_withMissingTypeField.conf")),
-          Arguments.of(
-              Named.of(
-                  "With missing 'table' field", "whenDeserializing_withMissingTableField.conf")),
-          Arguments.of(
-              Named.of(
+          arguments(
+              named("With missing 'type' field", "whenDeserializing_withMissingTypeField.conf")),
+          arguments(
+              named("With missing 'table' field", "whenDeserializing_withMissingTableField.conf")),
+          arguments(
+              named(
                   "With missing 'dbmsServer' field",
                   "whenDeserializing_withMissingDbmsServerField.conf")),
-          Arguments.of(
-              Named.of(
+          arguments(
+              named(
                   "With missing 'connectionPool' field",
                   "whenDeserializing_withMissingConnectionPoolField.conf")));
     }

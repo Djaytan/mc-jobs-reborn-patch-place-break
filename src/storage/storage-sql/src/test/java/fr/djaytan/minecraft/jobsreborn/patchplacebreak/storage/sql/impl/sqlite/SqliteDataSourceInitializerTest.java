@@ -63,7 +63,6 @@ class SqliteDataSourceInitializerTest {
   void whenInitializing_withExistingDatabaseFile() {
     // Given
     String dummyContent = "A dummy content";
-    Files.createFile(dummyFile);
     Files.write(dummyFile, dummyContent.getBytes(StandardCharsets.UTF_8));
 
     // When

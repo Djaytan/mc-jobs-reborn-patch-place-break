@@ -29,17 +29,22 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakImpl;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Clock;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 final class PatchPlaceBreakModule extends AbstractModule {
 
   private final ClassLoader classLoader;
+  private final Clock clock;
   private final Path dataFolder;
 
-  PatchPlaceBreakModule(@NotNull ClassLoader classLoader, @NotNull Path dataFolder) {
+  PatchPlaceBreakModule(
+      @NotNull ClassLoader classLoader, @Nullable Clock clock, @NotNull Path dataFolder) {
     this.classLoader = classLoader;
+    this.clock = clock;
     this.dataFolder = dataFolder;
   }
 
@@ -53,6 +58,13 @@ final class PatchPlaceBreakModule extends AbstractModule {
   @NotNull
   ClassLoader classLoader() {
     return classLoader;
+  }
+
+  @Provides
+  @Singleton
+  @NotNull
+  Clock provideClock() {
+    return clock == null ? Clock.systemUTC() : clock;
   }
 
   @Provides

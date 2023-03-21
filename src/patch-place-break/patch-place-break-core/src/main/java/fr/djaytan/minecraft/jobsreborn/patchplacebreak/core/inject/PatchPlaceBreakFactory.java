@@ -27,21 +27,24 @@ import com.google.inject.Injector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
 import java.nio.file.Path;
+import java.time.Clock;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class PatchPlaceBreakFactory {
 
   private final Injector injector;
 
-  public PatchPlaceBreakFactory(@NotNull ClassLoader classLoader, @NotNull Path dataFolder) {
-    this.injector = createInjector(classLoader, dataFolder);
+  public PatchPlaceBreakFactory(
+      @NotNull ClassLoader classLoader, @Nullable Clock clock, @NotNull Path dataFolder) {
+    this.injector = createInjector(classLoader, clock, dataFolder);
   }
 
   private static @NotNull Injector createInjector(
-      @NotNull ClassLoader classLoader, @NotNull Path dataFolder) {
+      @NotNull ClassLoader classLoader, @Nullable Clock clock, @NotNull Path dataFolder) {
     return Guice.createInjector(
         new ConfigModule(),
-        new PatchPlaceBreakModule(classLoader, dataFolder),
+        new PatchPlaceBreakModule(classLoader, clock, dataFolder),
         new StorageModule(),
         new ValidationModule());
   }

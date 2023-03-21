@@ -30,6 +30,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPair;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -46,10 +47,12 @@ import org.jetbrains.annotations.NotNull;
 @Slf4j
 public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
 
+  private final Clock clock;
   private final TagRepository tagRepository;
 
   @Inject
-  public PatchPlaceBreakImpl(@NotNull TagRepository tagRepository) {
+  public PatchPlaceBreakImpl(@NotNull Clock clock, @NotNull TagRepository tagRepository) {
+    this.clock = clock;
     this.tagRepository = tagRepository;
   }
 
@@ -57,7 +60,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
       @NotNull BlockLocation blockLocation, boolean isEphemeral) {
     return CompletableFuture.runAsync(
         () -> {
-          LocalDateTime localDateTime = LocalDateTime.now();
+          LocalDateTime localDateTime = LocalDateTime.now(clock);
           Tag tag = Tag.of(blockLocation, isEphemeral, localDateTime);
           tagRepository.put(tag);
         });
@@ -97,7 +100,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
       return true;
     }
 
-    LocalDateTime localDateTime = LocalDateTime.now();
+    LocalDateTime localDateTime = LocalDateTime.now(clock);
     Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
 
     return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();

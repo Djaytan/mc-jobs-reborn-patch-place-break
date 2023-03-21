@@ -25,6 +25,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -51,7 +53,6 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -206,15 +207,13 @@ class DbmsHostPropertiesImplTest {
        */
       private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Nominal IPv4 address", "92.0.2.146")),
-            Arguments.of(
-                Named.of("Nominal IPv6 address", "2001:db8:3333:4444:5555:6666:7777:8888")),
-            Arguments.of(Named.of("Domain name address", "my.example.com")),
-            Arguments.of(Named.of("Longest valid value", StringUtils.repeat("s", 255))),
-            Arguments.of(Named.of("Shortest valid value", "s")),
-            Arguments.of(Named.of("Invalid IPv4 address", "-1.-1.-1.-1")),
-            Arguments.of(
-                Named.of("Invalid IPv6 address", "ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ")));
+            arguments(named("Nominal IPv4 address", "92.0.2.146")),
+            arguments(named("Nominal IPv6 address", "2001:db8:3333:4444:5555:6666:7777:8888")),
+            arguments(named("Domain name address", "my.example.com")),
+            arguments(named("Longest valid value", StringUtils.repeat("s", 255))),
+            arguments(named("Shortest valid value", "s")),
+            arguments(named("Invalid IPv4 address", "-1.-1.-1.-1")),
+            arguments(named("Invalid IPv6 address", "ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ:ZZZZ")));
       }
 
       @ParameterizedTest(name = "{index} - {0}")
@@ -246,10 +245,10 @@ class DbmsHostPropertiesImplTest {
 
       private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Null value", null)),
-            Arguments.of(Named.of("Empty value", "")),
-            Arguments.of(Named.of("Blank value", " ")),
-            Arguments.of(Named.of("Too long value", StringUtils.repeat("s", 256))));
+            arguments(named("Null value", null)),
+            arguments(named("Empty value", "")),
+            arguments(named("Blank value", " ")),
+            arguments(named("Too long value", StringUtils.repeat("s", 256))));
       }
     }
 
@@ -276,8 +275,8 @@ class DbmsHostPropertiesImplTest {
 
       private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Highest possible value", 65535)),
-            Arguments.of(Named.of("Lowest possible value", 1)));
+            arguments(named("Highest possible value", 65535)),
+            arguments(named("Lowest possible value", 1)));
       }
 
       @ParameterizedTest(name = "{index} - {0}")
@@ -309,9 +308,9 @@ class DbmsHostPropertiesImplTest {
 
       private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Port n°0", 0)),
-            Arguments.of(Named.of("Too high port", 65536)),
-            Arguments.of(Named.of("Too low port", -1)));
+            arguments(named("Port n°0", 0)),
+            arguments(named("Too high port", 65536)),
+            arguments(named("Too low port", -1)));
       }
     }
   }
@@ -343,11 +342,11 @@ class DbmsHostPropertiesImplTest {
 
     private @NotNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
-          Arguments.of(
-              Named.of("With default values", new DbmsHostPropertiesImpl()),
+          arguments(
+              named("With default values", new DbmsHostPropertiesImpl()),
               "whenSerializing_withDefaultValues.conf"),
-          Arguments.of(
-              Named.of("With custom values", new DbmsHostPropertiesImpl("example.com", 1234, true)),
+          arguments(
+              named("With custom values", new DbmsHostPropertiesImpl("example.com", 1234, true)),
               "whenSerializing_withCustomValues.conf"));
     }
   }
@@ -376,14 +375,14 @@ class DbmsHostPropertiesImplTest {
 
     private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
-          Arguments.of(
-              Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
+          arguments(
+              named("With valid values", "whenDeserializing_withValidValues.conf"),
               new DbmsHostPropertiesImpl("example.com", 1234, true)),
-          Arguments.of(
-              Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
+          arguments(
+              named("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
               new DbmsHostPropertiesImpl("example.com", 1234, true)),
-          Arguments.of(
-              Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
+          arguments(
+              named("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
               new DbmsHostPropertiesImpl("example.com", 1234, true)));
     }
 
@@ -407,14 +406,14 @@ class DbmsHostPropertiesImplTest {
 
     private @NotNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
-          Arguments.of(
-              Named.of(
+          arguments(
+              named(
                   "With missing 'hostname' field",
                   "whenDeserializing_withMissingHostnameField.conf")),
-          Arguments.of(
-              Named.of("With missing 'port' field", "whenDeserializing_withMissingPortField.conf")),
-          Arguments.of(
-              Named.of(
+          arguments(
+              named("With missing 'port' field", "whenDeserializing_withMissingPortField.conf")),
+          arguments(
+              named(
                   "With missing 'isSslEnabled' field",
                   "whenDeserializing_withMissingIsSslEnabledField.conf")));
     }

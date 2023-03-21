@@ -24,6 +24,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
@@ -33,7 +35,6 @@ import java.util.stream.Stream;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -94,14 +95,14 @@ class BlockLocationTest {
     private @NotNull Stream<Arguments>
         withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue() {
       return Stream.of(
-          Arguments.of(
-              Named.of("With nominal values", Vector.of(5, 0, -452)),
+          arguments(
+              named("With nominal values", Vector.of(5, 0, -452)),
               BlockLocation.of("world", 6, -45, -453)),
-          Arguments.of(
-              Named.of("On overflow", Vector.of(Integer.MAX_VALUE, 1, -1)),
+          arguments(
+              named("On overflow", Vector.of(Integer.MAX_VALUE, 1, -1)),
               BlockLocation.of("world", Integer.MIN_VALUE, -44, -2)),
-          Arguments.of(
-              Named.of("On underflow", Vector.of(10, -50, Integer.MIN_VALUE)),
+          arguments(
+              named("On underflow", Vector.of(10, -50, Integer.MIN_VALUE)),
               BlockLocation.of("world", 11, -95, Integer.MAX_VALUE)));
     }
   }
