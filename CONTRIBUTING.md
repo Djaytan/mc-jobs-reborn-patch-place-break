@@ -76,4 +76,5 @@ If you are using IntelliJ IDEA, you can install the
 [google-java-format plugin](https://plugins.jetbrains.com/plugin/8527-google-java-format) which will
 replace the default IDE code formatting behavior.
 
-Take care to well follow [these instructions](https://github.com/google/google-java-format/blob/master/README.md#intellij-jre-config).
+Take care to well
+follow [these instructions](https://github.com/google/google-java-format/blob/master/README.md#intellij-jre-config).
