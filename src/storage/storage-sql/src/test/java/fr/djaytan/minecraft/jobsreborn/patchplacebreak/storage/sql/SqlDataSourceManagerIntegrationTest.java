@@ -23,6 +23,8 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.BDDMockito.given;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
@@ -41,7 +43,6 @@ import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.flywaydb.core.api.Location;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -88,8 +89,8 @@ class SqlDataSourceManagerIntegrationTest {
     DataSourceInitializer dataSourceInitializer =
         new SqliteDataSourceInitializer(sqliteDatabaseFile);
 
-    return Arguments.of(
-        Named.of(
+    return arguments(
+        named(
             "For SQLite",
             new SqlDataSourceManager(
                 connectionPool, dataMigrationExecutor, dataSourceInitializer)));
@@ -97,12 +98,12 @@ class SqlDataSourceManagerIntegrationTest {
 
   private static @NotNull Arguments forMysql() {
     int dbmsPort = Integer.parseInt(System.getProperty("mysql.port"));
-    return Arguments.of(Named.of("For MySQL", createDbmsSqlDataSourceManager(dbmsPort)));
+    return arguments(named("For MySQL", createDbmsSqlDataSourceManager(dbmsPort)));
   }
 
   private static @NotNull Arguments forMariadb() {
     int dbmsPort = Integer.parseInt(System.getProperty("mariadb.port"));
-    return Arguments.of(Named.of("For MariaDB", createDbmsSqlDataSourceManager(dbmsPort)));
+    return arguments(named("For MariaDB", createDbmsSqlDataSourceManager(dbmsPort)));
   }
 
   private static @NotNull SqlDataSourceManager createDbmsSqlDataSourceManager(int dbmsPort) {

@@ -25,6 +25,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -49,7 +51,6 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -199,8 +200,8 @@ class ConnectionPoolPropertiesImplTest {
 
       private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Highest allowed value", 600000)),
-            Arguments.of(Named.of("Lowest allowed value", 1)));
+            arguments(named("Highest allowed value", 600000)),
+            arguments(named("Lowest allowed value", 1)));
       }
 
       @ParameterizedTest(name = "{index} - {0}")
@@ -232,8 +233,7 @@ class ConnectionPoolPropertiesImplTest {
 
       private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Null value", 0)),
-            Arguments.of(Named.of("Too high value", 600001)));
+            arguments(named("Null value", 0)), arguments(named("Too high value", 600001)));
       }
     }
 
@@ -260,8 +260,8 @@ class ConnectionPoolPropertiesImplTest {
 
       private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Highest allowed value", 100)),
-            Arguments.of(Named.of("Lowest allowed value", 1)));
+            arguments(named("Highest allowed value", 100)),
+            arguments(named("Lowest allowed value", 1)));
       }
 
       @ParameterizedTest(name = "{index} - {0}")
@@ -293,7 +293,7 @@ class ConnectionPoolPropertiesImplTest {
 
       private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Null value", 0)), Arguments.of(Named.of("Too high value", 101)));
+            arguments(named("Null value", 0)), arguments(named("Too high value", 101)));
       }
     }
   }
@@ -325,11 +325,11 @@ class ConnectionPoolPropertiesImplTest {
 
     private @NotNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
-          Arguments.of(
-              Named.of("With default values", new ConnectionPoolPropertiesImpl()),
+          arguments(
+              named("With default values", new ConnectionPoolPropertiesImpl()),
               "whenSerializing_withDefaultValues.conf"),
-          Arguments.of(
-              Named.of("With custom values", new ConnectionPoolPropertiesImpl(30000, 5)),
+          arguments(
+              named("With custom values", new ConnectionPoolPropertiesImpl(30000, 5)),
               "whenSerializing_withCustomValues.conf"));
     }
   }
@@ -361,14 +361,14 @@ class ConnectionPoolPropertiesImplTest {
 
     private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
-          Arguments.of(
-              Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
+          arguments(
+              named("With valid values", "whenDeserializing_withValidValues.conf"),
               new ConnectionPoolPropertiesImpl(60000, 10)),
-          Arguments.of(
-              Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
+          arguments(
+              named("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
               new ConnectionPoolPropertiesImpl(60000, 10)),
-          Arguments.of(
-              Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
+          arguments(
+              named("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
               new ConnectionPoolPropertiesImpl(60000, 10)));
     }
 
@@ -393,12 +393,12 @@ class ConnectionPoolPropertiesImplTest {
 
     private @NotNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
-          Arguments.of(
-              Named.of(
+          arguments(
+              named(
                   "With missing 'connectionTimeout' field",
                   "whenDeserializing_withMissingConnectionTimeoutField.conf")),
-          Arguments.of(
-              Named.of(
+          arguments(
+              named(
                   "With missing 'poolSize' field",
                   "whenDeserializing_withMissingPoolSizeField.conf")));
     }

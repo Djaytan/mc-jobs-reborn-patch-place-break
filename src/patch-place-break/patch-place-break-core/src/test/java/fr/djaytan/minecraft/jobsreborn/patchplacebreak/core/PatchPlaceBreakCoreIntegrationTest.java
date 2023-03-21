@@ -31,12 +31,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import lombok.SneakyThrows;
-import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -45,22 +44,13 @@ class PatchPlaceBreakCoreIntegrationTest {
   private static final String CONFIG_DATA_SOURCE_FILE_NAME = "dataSource.conf";
   private static final String SQLITE_DATABASE_FILE_NAME = "sqlite-data.db";
 
-  /** Class to test */
+  @TempDir private Path dataFolder;
   private final PatchPlaceBreakCore patchPlaceBreakCore = new PatchPlaceBreakCore();
-
-  private Path dataFolder;
-
-  @BeforeEach
-  @SneakyThrows
-  void beforeEach() {
-    dataFolder = Files.createTempDirectory("ppb-core-it");
-  }
 
   @AfterEach
   @SneakyThrows
   void afterEach() {
     patchPlaceBreakCore.disable();
-    FileUtils.deleteDirectory(dataFolder.toFile());
   }
 
   @Test
@@ -105,7 +95,6 @@ class PatchPlaceBreakCoreIntegrationTest {
                 false),
             dbmsPort);
     Path configFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
-    Files.createFile(configFile);
     Files.write(configFile, givenConfigFileContent.getBytes(StandardCharsets.UTF_8));
 
     ClassLoader classLoader = PatchPlaceBreakCore.class.getClassLoader();
