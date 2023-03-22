@@ -22,9 +22,31 @@ this [GitHub repository](https://github.com/firstcontributions/first-contributio
 
 ## Getting Started
 
-Actually, there isn't documentation which will permit you to navigate in our codebase with
-confidence. Fortunately, one will be added soon:
-https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/46
+These instructions will get you a copy of the project up and running on your local machine for
+development and testing purposes.
+
+### Prerequisites
+
+Working on this project requires the following dependencies installed on your local environment:
+
+* JDK 11 ([Download Link](https://adoptium.net/en-GB/temurin/releases/?version=11))
+* Maven
+  3.6+ ([Download Link](https://maven.apache.org/download.cgi) | [Install Guide](https://maven.apache.org/install.html))
+
+### Installing
+
+We suppose you know how to install a Minecraft server.
+
+To build the project and run unit and integration tests, you can simply build the project by typing
+this command at the root project:
+
+    $ mvn clean install
+
+You will find the packaged JAR file of the Bukkit plugin at `bukkit/bukkit-plugin/target`.
+If you want to test it, copy it into your local Spigot server by taking care that the server
+version is compatible with the plugin.
+
+### Documentation & Help
 
 If you want to work on Bukkit related aspects, you will find the API JavaDoc
 [here](https://hub.spigotmc.org/javadocs/spigot/).

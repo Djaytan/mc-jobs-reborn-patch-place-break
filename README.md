@@ -99,33 +99,6 @@ PlaceAndBreak:
   SilkTouchProtection: false
 ```
 
-## Getting Started (as contributor)
-
-These instructions will get you a copy of the project up and running on your local machine for
-development and testing purposes. See deployment for notes on how to deploy the project on
-a live system.
-
-### Prerequisites
-
-Working on this project requires the following dependencies installed on your local environment:
-
-* JDK 11 ([Download Link](https://adoptium.net/en-GB/temurin/releases/?version=11))
-* Maven
-  3.6+ ([Download Link](https://maven.apache.org/download.cgi) | [Install Guide](https://maven.apache.org/install.html))
-
-### Installing
-
-Currently, we suppose you know how to install a Minecraft server. However, we plan to automate it:
-https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/39
-
-To retrieve the plugin, you can simply build the project by typing this command at the root project:
-
-    $ mvn clean package
-
-You will find the packaged JAR file of the Bukkit plugin at `bukkit/bukkit-plugin/target`.
-If you want to test it, copy it into your local Spigot server by taking care that the server
-version is compatible with the plugin.
-
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on ways to help us.
