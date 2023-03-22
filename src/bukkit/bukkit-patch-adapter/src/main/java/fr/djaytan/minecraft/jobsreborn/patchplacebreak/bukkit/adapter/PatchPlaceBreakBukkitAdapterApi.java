@@ -23,7 +23,6 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
 import com.gamingmesh.jobs.container.ActionInfo;
-import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
@@ -125,13 +124,7 @@ public class PatchPlaceBreakBukkitAdapterApi {
       return false;
     }
 
-    ActionType actionType = actionInfo.getType();
-
-    if (actionType == null) {
-      return false;
-    }
-
-    BlockActionType patchActionType = actionTypeConverter.convert(actionType);
+    BlockActionType patchActionType = actionTypeConverter.convert(actionInfo.getType());
     BlockLocation blockLocation = locationConverter.convert(block);
     return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, blockLocation);
   }

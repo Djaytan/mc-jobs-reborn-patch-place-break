@@ -38,11 +38,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.commons.util.Preconditions;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 class SqlTagRepositoryIntegrationTest {
 
   private BlockLocation randomBlockLocation;
@@ -114,8 +111,8 @@ class SqlTagRepositoryIntegrationTest {
   }
 
   @Test
-  @DisplayName("When updating tag")
-  void whenUpdatingTag_shouldExistInNewLocationButNotInOldOne() {
+  @DisplayName("When updating existing tag")
+  void whenUpdatingExistingTag_shouldExistInNewLocationButNotInOldOne() {
     // Given
     BlockLocation oldLocation = randomBlockLocation;
     Tag oldTag = Tag.of(oldLocation, true, LocalDateTime.now());
@@ -146,6 +143,40 @@ class SqlTagRepositoryIntegrationTest {
 
     assertAll(
         () -> assertThat(tagOldLocation).isEmpty(), () -> assertThat(tagNewLocation).isPresent());
+  }
+
+  @Test
+  @DisplayName("When updating non-existing tag")
+  void whenUpdatingNonExistingTag_shouldExistInNewLocationButNotInOldOne() {
+    // Given
+    BlockLocation oldLocation = randomBlockLocation;
+    BlockLocation newLocation =
+        BlockLocation.of(
+            oldLocation.getWorldName(),
+            oldLocation.getX() + 1,
+            oldLocation.getY(),
+            oldLocation.getZ());
+
+    Preconditions.condition(
+        !sqlTagRepository.findByLocation(oldLocation).isPresent(),
+        String.format("No tag must exist at the following location: %s", oldLocation));
+    Preconditions.condition(
+        !sqlTagRepository.findByLocation(newLocation).isPresent(),
+        String.format("No tag must exist at the following location: %s", newLocation));
+
+    OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
+        new OldNewBlockLocationPairSet(
+            Collections.singletonList(new OldNewBlockLocationPair(oldLocation, newLocation)));
+
+    // When
+    sqlTagRepository.updateLocations(oldNewBlockLocationPairSet);
+
+    // Then
+    Optional<Tag> tagOldLocation = sqlTagRepository.findByLocation(oldLocation);
+    Optional<Tag> tagNewLocation = sqlTagRepository.findByLocation(newLocation);
+
+    assertAll(
+        () -> assertThat(tagOldLocation).isEmpty(), () -> assertThat(tagNewLocation).isEmpty());
   }
 
   @Test

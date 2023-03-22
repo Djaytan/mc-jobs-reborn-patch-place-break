@@ -57,6 +57,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
+import org.mockito.Mock.Strictness;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.threeten.extra.MutableClock;
 
@@ -68,9 +69,14 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
   private PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
   @TempDir protected Path dataFolder;
 
-  @Mock private ActionInfo sampleActionInfoMocked;
-  @Mock private Block randomBlockMocked;
-  @Mock private World worldMocked;
+  @Mock(strictness = Strictness.LENIENT)
+  private ActionInfo sampleActionInfoMocked;
+
+  @Mock(strictness = Strictness.LENIENT)
+  private Block randomBlockMocked;
+
+  @Mock(strictness = Strictness.LENIENT)
+  private World worldMocked;
 
   @BeforeEach
   @SneakyThrows
@@ -84,6 +90,42 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
   @SneakyThrows
   void afterEach() {
     patchPlaceBreakCore.disable();
+  }
+
+  /**
+   * If the action is not specified then we consider that no particular action has been performed on
+   * the targeted block. Hence, we consider the action is not an exploit one.
+   */
+  @Test
+  @DisplayName("When checking exploit while 'actionInfo' is null")
+  void whenCheckingExploitWhileActionInfoIsNull_shouldNotDetectExploit() {
+    // Given
+    ActionInfo actionInfo = null;
+
+    // When
+    boolean isExploit =
+        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
+
+    // Then
+    assertThat(isExploit).isFalse();
+  }
+
+  /**
+   * If the block is not specified then we consider that no particular block is targeted by the
+   * given action. Hence, we consider the action is not an exploit one.
+   */
+  @Test
+  @DisplayName("When checking exploit while 'block' is null")
+  void whenCheckingExploitWhileBlockIsNull_shouldNotDetectExploit() {
+    // Given
+    Block block = null;
+
+    // When
+    boolean isExploit =
+        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(sampleActionInfoMocked, block);
+
+    // Then
+    assertThat(isExploit).isFalse();
   }
 
   @Test

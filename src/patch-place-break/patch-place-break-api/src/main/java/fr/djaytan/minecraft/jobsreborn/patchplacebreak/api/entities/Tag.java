@@ -25,7 +25,6 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import java.time.LocalDateTime;
 import lombok.Value;
-import lombok.With;
 
 /**
  * This class represents a place-and-break tag for the patch. The purpose of this tag is to be
@@ -50,7 +49,7 @@ import lombok.With;
 @Value(staticConstructor = "of")
 public class Tag {
 
-  @With BlockLocation blockLocation;
+  BlockLocation blockLocation;
   boolean isEphemeral;
   LocalDateTime initLocalDateTime;
 }

@@ -37,8 +37,8 @@ import org.junit.jupiter.api.Test;
 class TagTest {
 
   @Test
-  @DisplayName("Constructor - Successful nominal case")
-  void shouldSuccessWhenCreatingWithNominalValues() {
+  @DisplayName("When instantiating with nominal values")
+  void whenInstantiatingWithNominalValues() {
     // Given
     String worldName = "world";
     int x = 52;
@@ -61,14 +61,14 @@ class TagTest {
   }
 
   @Test
-  @DisplayName("equals() & hashCode() - Verifications")
-  void equalsAndHashcodeContractVerification() {
+  @DisplayName("When calling equals() & hashCode()")
+  void whenCallingEqualsAndHashcode_shouldMetContracts() {
     EqualsVerifier.forClass(Tag.class).verify();
   }
 
   @Test
-  @DisplayName("toString() - Verifications")
-  void toStringContractVerification() {
+  @DisplayName("When calling toString()")
+  void whenCallingToString_shouldMetContracts() {
     ToStringVerifier.forClass(Tag.class).withClassName(NameStyle.SIMPLE_NAME).verify();
   }
 }
