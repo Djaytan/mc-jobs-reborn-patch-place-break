@@ -41,7 +41,6 @@
     <module>bukkit-listener</module>
     <module>bukkit-patch-adapter</module>
     <module>bukkit-plugin</module>
-    <module>bukkit-slf4j</module>
   </modules>
 
   <properties>
@@ -50,6 +49,11 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>com.github.Djaytan</groupId>
+        <artifactId>bukkit-slf4j</artifactId>
+        <version>v1.0.4</version>
+      </dependency>
       <dependency>
         <groupId>org.bstats</groupId>
         <artifactId>bstats-bukkit</artifactId>

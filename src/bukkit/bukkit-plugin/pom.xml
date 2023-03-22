@@ -46,17 +46,16 @@
 
   <dependencies>
     <dependency>
+      <groupId>com.github.Djaytan</groupId>
+      <artifactId>bukkit-slf4j</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>bukkit-listener</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>bukkit-slf4j</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
