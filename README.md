@@ -110,14 +110,6 @@ Take care to always follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the
 [tags on this repository](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/tags).
 
-## Authors
-
-* [Djaytan](https://github.com/Djaytan) - *Initial work*
-
-See also the list of
-[contributors](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/graphs/contributors)
-who participated in this project.
-
 ## Licence
 
 This project is under the [MIT](https://opensource.org/licenses/MIT) license.
