@@ -50,7 +50,7 @@ final class PatchPlaceBreakModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(PatchPlaceBreakApi.class).to(PatchPlaceBreakImpl.class);
+    bind(PatchPlaceBreakApi.class).to(PatchPlaceBreakImpl.class).in(Singleton.class);
   }
 
   @Provides

@@ -45,14 +45,14 @@ public final class DataSourcePropertiesMock {
     // Static class
   }
 
-  public static @NotNull DataSourceProperties get() {
+  public static @NotNull DataSourceProperties get(@NotNull DataSourceType dataSourceType) {
     ConnectionPoolProperties connectionPoolPropertiesMocked = connectionPoolPropertiesMocked();
     DbmsServerProperties dbmsServerPropertiesMocked = dbmsServerPropertiesMocked();
 
     DataSourceProperties dataSourcePropertiesMocked =
         mock(DataSourceProperties.class, MOCK_SETTINGS);
     given(dataSourcePropertiesMocked.getTable()).willReturn("patch_place_break_tag");
-    given(dataSourcePropertiesMocked.getType()).willReturn(DataSourceType.SQLITE);
+    given(dataSourcePropertiesMocked.getType()).willReturn(dataSourceType);
     given(dataSourcePropertiesMocked.getConnectionPool())
         .willReturn(connectionPoolPropertiesMocked);
     given(dataSourcePropertiesMocked.getDbmsServer()).willReturn(dbmsServerPropertiesMocked);

@@ -23,11 +23,8 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataMigrationExecutor;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.sql.DataSource;
 import org.jetbrains.annotations.NotNull;
 
 @Singleton
@@ -35,30 +32,22 @@ public class SqlDataSourceManager implements DataSourceManager {
 
   private final ConnectionPool connectionPool;
   private final DataMigrationExecutor dataMigrationExecutor;
-  private final DataSourceInitializer dataSourceInitializer;
 
   @Inject
   public SqlDataSourceManager(
       @NotNull ConnectionPool connectionPool,
-      @NotNull DataMigrationExecutor dataMigrationExecutor,
-      @NotNull DataSourceInitializer dataSourceInitializer) {
+      @NotNull DataMigrationExecutor dataMigrationExecutor) {
     this.connectionPool = connectionPool;
     this.dataMigrationExecutor = dataMigrationExecutor;
-    this.dataSourceInitializer = dataSourceInitializer;
   }
 
   @Override
   public void connect() {
-    dataSourceInitializer.initialize();
-
-    connectionPool.enable();
-    DataSource dataSource = connectionPool.getDataSource();
-
-    dataMigrationExecutor.migrate(dataSource);
+    dataMigrationExecutor.migrate();
   }
 
   @Override
   public void disconnect() {
-    connectionPool.disable();
+    connectionPool.close();
   }
 }

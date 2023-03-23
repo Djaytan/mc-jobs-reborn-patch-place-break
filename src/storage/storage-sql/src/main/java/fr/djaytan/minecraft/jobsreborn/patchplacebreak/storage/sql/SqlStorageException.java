@@ -22,6 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import lombok.AccessLevel;
 import lombok.experimental.StandardException;
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +36,7 @@ public class SqlStorageException extends RuntimeException {
       "Something went wrong when managing database connection lifecycle "
           + "(establishment, releasing, ...)";
   private static final String DATABASE_CREATION = "Unable to create the database '%s'";
+  private static final String UNSUPPORTED_DATA_SOURCE_TYPE = "Unsupported data source type '%s'";
 
   public static @NotNull SqlStorageException connectionPoolNotSetup() {
     return new SqlStorageException(CONNECTION_POOL_NOT_SETUP);
@@ -49,5 +51,12 @@ public class SqlStorageException extends RuntimeException {
       @NotNull String databaseName, @NotNull Throwable cause) {
     String message = String.format(DATABASE_CREATION, databaseName);
     return new SqlStorageException(message, cause);
+  }
+
+  public static @NotNull SqlStorageException unsupportedDataSourceType(
+      @NotNull DataSourceType dataSourceType) {
+    String message = String.format(UNSUPPORTED_DATA_SOURCE_TYPE, dataSourceType.name());
+    UnsupportedOperationException e = new UnsupportedOperationException(message);
+    return new SqlStorageException(e);
   }
 }

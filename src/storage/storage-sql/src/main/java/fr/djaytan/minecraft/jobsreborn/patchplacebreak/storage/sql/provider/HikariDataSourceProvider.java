@@ -20,51 +20,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakException;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.MysqlJdbcUrl;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite.SqliteJdbcUrl;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
-public class JdbcUrlProvider implements Provider<JdbcUrl> {
+@Singleton
+@Slf4j
+public class HikariDataSourceProvider implements Provider<HikariDataSource> {
 
   private final DataSourceProperties dataSourceProperties;
-  private final MysqlJdbcUrl mysqlJdbcUrl;
-  private final SqliteJdbcUrl sqliteJdbcUrl;
+  private final JdbcUrl jdbcUrl;
 
   @Inject
-  public JdbcUrlProvider(
-      @NotNull DataSourceProperties dataSourceProperties,
-      @NotNull MysqlJdbcUrl mysqlJdbcUrl,
-      @NotNull SqliteJdbcUrl sqliteJdbcUrl) {
+  public HikariDataSourceProvider(
+      @NotNull DataSourceProperties dataSourceProperties, @NotNull JdbcUrl jdbcUrl) {
     this.dataSourceProperties = dataSourceProperties;
-    this.mysqlJdbcUrl = mysqlJdbcUrl;
-    this.sqliteJdbcUrl = sqliteJdbcUrl;
+    this.jdbcUrl = jdbcUrl;
   }
 
-  @Override
-  public @NotNull JdbcUrl get() {
-    DataSourceType dataSourceType = dataSourceProperties.getType();
+  public @NotNull HikariDataSource get() {
+    log.atInfo().log("Connecting to database '{}'...", jdbcUrl.get());
+    HikariDataSource hikariDataSource = new HikariDataSource(createHikariConfig());
+    log.atInfo().log("Connected to the database successfully.");
+    return hikariDataSource;
+  }
 
-    switch (dataSourceType) {
-      case MYSQL:
-        {
-          return mysqlJdbcUrl;
-        }
-      case SQLITE:
-        {
-          return sqliteJdbcUrl;
-        }
-      default:
-        {
-          throw PatchPlaceBreakException.unsupportedDataSourceType(dataSourceType);
-        }
-    }
+  private @NotNull HikariConfig createHikariConfig() {
+    HikariConfig hikariConfig = new HikariConfig();
+    hikariConfig.setJdbcUrl(jdbcUrl.get());
+    hikariConfig.setConnectionTimeout(
+        dataSourceProperties.getConnectionPool().getConnectionTimeout());
+    hikariConfig.setMaximumPoolSize(dataSourceProperties.getConnectionPool().getPoolSize());
+    hikariConfig.setUsername(dataSourceProperties.getDbmsServer().getCredentials().getUsername());
+    hikariConfig.setPassword(dataSourceProperties.getDbmsServer().getCredentials().getPassword());
+    return hikariConfig;
   }
 }

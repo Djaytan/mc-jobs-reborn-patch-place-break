@@ -27,21 +27,22 @@ import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.BDDMockito.given;
 
+import com.zaxxer.hikari.HikariDataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsHostProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.MysqlDataSourceInitializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.MysqlJdbcUrl;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite.SqliteDataSourceInitializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite.SqliteJdbcUrl;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataMigrationExecutor;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider.FlywayProvider;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider.HikariDataSourceProvider;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.flywaydb.core.api.Location;
+import org.flywaydb.core.Flyway;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -52,6 +53,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class SqlDataSourceManagerIntegrationTest {
 
+  private SqlDataSourceManager sqlDataSourceManager;
+
+  @AfterEach
+  void afterEach() {
+    sqlDataSourceManager.disconnect();
+  }
+
   @ParameterizedTest
   @MethodSource
   @DisplayName("When connecting to existing database")
@@ -59,15 +67,13 @@ class SqlDataSourceManagerIntegrationTest {
   void whenConnectingToExistingDatabase_shouldNotThrow(
       @NotNull SqlDataSourceManager sqlDataSourceManager) {
     // Given
+    this.sqlDataSourceManager = sqlDataSourceManager;
 
     // When
     ThrowingCallable throwingCallable = sqlDataSourceManager::connect;
 
     // Then
     assertThatCode(throwingCallable).doesNotThrowAnyException();
-
-    // Clean-up
-    sqlDataSourceManager.disconnect();
   }
 
   private static @NotNull Stream<Arguments> whenConnectingToExistingDatabase_shouldNotThrow() {
@@ -76,24 +82,24 @@ class SqlDataSourceManagerIntegrationTest {
 
   @SneakyThrows
   private static @NotNull Arguments forSqlite() {
-    DataSourceProperties dataSourcePropertiesMocked = DataSourcePropertiesMock.get();
+    DataSourceProperties dataSourcePropertiesMocked =
+        DataSourcePropertiesMock.get(DataSourceType.SQLITE);
     Path sqliteDatabaseFile = Files.createTempFile("ppb-datasourcemanager", "");
     JdbcUrl jdbcUrl = new SqliteJdbcUrl(sqliteDatabaseFile);
-    ConnectionPool connectionPool = new ConnectionPool(dataSourcePropertiesMocked, jdbcUrl);
+
+    HikariDataSourceProvider hikariDataSourceProvider =
+        new HikariDataSourceProvider(dataSourcePropertiesMocked, jdbcUrl);
+    HikariDataSource hikariDataSource = hikariDataSourceProvider.get();
+    ConnectionPool connectionPool = new ConnectionPool(hikariDataSource);
 
     ClassLoader classLoader = SqlDataSourceManager.class.getClassLoader();
-    Location location = new Location("/db/migration/sqlite");
-    DataMigrationExecutor dataMigrationExecutor =
-        new DataMigrationExecutor(classLoader, dataSourcePropertiesMocked, location);
-
-    DataSourceInitializer dataSourceInitializer =
-        new SqliteDataSourceInitializer(sqliteDatabaseFile);
+    FlywayProvider flywayProvider =
+        new FlywayProvider(classLoader, hikariDataSource, dataSourcePropertiesMocked);
+    Flyway flyway = flywayProvider.get();
+    DataMigrationExecutor dataMigrationExecutor = new DataMigrationExecutor(flyway);
 
     return arguments(
-        named(
-            "For SQLite",
-            new SqlDataSourceManager(
-                connectionPool, dataMigrationExecutor, dataSourceInitializer)));
+        named("For SQLite", new SqlDataSourceManager(connectionPool, dataMigrationExecutor)));
   }
 
   private static @NotNull Arguments forMysql() {
@@ -107,20 +113,23 @@ class SqlDataSourceManagerIntegrationTest {
   }
 
   private static @NotNull SqlDataSourceManager createDbmsSqlDataSourceManager(int dbmsPort) {
-    DataSourceProperties dataSourcePropertiesMocked = DataSourcePropertiesMock.get();
+    DataSourceProperties dataSourcePropertiesMocked =
+        DataSourcePropertiesMock.get(DataSourceType.MYSQL);
     DbmsHostProperties dbmsHostProperties = dataSourcePropertiesMocked.getDbmsServer().getHost();
     given(dbmsHostProperties.getPort()).willReturn(dbmsPort);
 
     JdbcUrl jdbcUrl = new MysqlJdbcUrl(dataSourcePropertiesMocked);
-    ConnectionPool connectionPool = new ConnectionPool(dataSourcePropertiesMocked, jdbcUrl);
+    HikariDataSourceProvider hikariDataSourceProvider =
+        new HikariDataSourceProvider(dataSourcePropertiesMocked, jdbcUrl);
+    HikariDataSource hikariDataSource = hikariDataSourceProvider.get();
+    ConnectionPool connectionPool = new ConnectionPool(hikariDataSource);
 
     ClassLoader classLoader = SqlDataSourceManager.class.getClassLoader();
-    Location location = new Location("/db/migration/mysql");
-    DataMigrationExecutor dataMigrationExecutor =
-        new DataMigrationExecutor(classLoader, dataSourcePropertiesMocked, location);
+    FlywayProvider flywayProvider =
+        new FlywayProvider(classLoader, hikariDataSource, dataSourcePropertiesMocked);
+    Flyway flyway = flywayProvider.get();
+    DataMigrationExecutor dataMigrationExecutor = new DataMigrationExecutor(flyway);
 
-    DataSourceInitializer dataSourceInitializer = new MysqlDataSourceInitializer();
-
-    return new SqlDataSourceManager(connectionPool, dataMigrationExecutor, dataSourceInitializer);
+    return new SqlDataSourceManager(connectionPool, dataMigrationExecutor);
   }
 }

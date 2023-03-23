@@ -22,9 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
-import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -32,58 +30,35 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents the connection pool used by the program to manage all connections with DBMS server.
+ *
+ * <p>To use it, {@link #useConnection(Consumer)} and {@link #useConnection(Function)} methods can
+ * be used to execute requests and queries.
+ *
+ * <p>When stopping the program, the method {@link #close()} must be called to cleanly stop the
+ * connection pool by releasing all remaining opened connections and related resources.
+ */
 @Slf4j
 @Singleton
-public class ConnectionPool {
+public class ConnectionPool implements AutoCloseable {
 
-  private final DataSourceProperties dataSourceProperties;
-  private final JdbcUrl jdbcUrl;
-  private HikariDataSource hikariDataSource;
+  private final HikariDataSource hikariDataSource;
 
   @Inject
-  public ConnectionPool(
-      @NotNull DataSourceProperties dataSourceProperties, @NotNull JdbcUrl jdbcUrl) {
-    this.dataSourceProperties = dataSourceProperties;
-    this.jdbcUrl = jdbcUrl;
+  public ConnectionPool(@NotNull HikariDataSource hikariDataSource) {
+    this.hikariDataSource = hikariDataSource;
   }
 
-  public void enable() {
-    log.atInfo().log("Connecting to database '{}'...", jdbcUrl.get());
-
-    HikariConfig hikariConfig = new HikariConfig();
-    hikariConfig.setJdbcUrl(jdbcUrl.get());
-    hikariConfig.setConnectionTimeout(
-        dataSourceProperties.getConnectionPool().getConnectionTimeout());
-    hikariConfig.setMaximumPoolSize(dataSourceProperties.getConnectionPool().getPoolSize());
-    hikariConfig.setUsername(dataSourceProperties.getDbmsServer().getCredentials().getUsername());
-    hikariConfig.setPassword(dataSourceProperties.getDbmsServer().getCredentials().getPassword());
-    hikariDataSource = new HikariDataSource(hikariConfig);
-
-    log.atInfo().log("Connected to the database successfully.");
-  }
-
-  public void disable() {
-    if (hikariDataSource == null) {
-      log.atWarn().log("Database disconnection impossible: no existing connection.");
-      return;
-    }
-    if (hikariDataSource.isClosed()) {
-      log.atWarn().log("Database disconnection impossible: connection already closed.");
-      return;
-    }
-    hikariDataSource.close();
-    log.atInfo().log("Disconnected from the database '{}'.", hikariDataSource.getJdbcUrl());
-  }
-
+  /**
+   * Uses connection for executing request.
+   *
+   * @param consumer The callback to execute request.
+   */
   public void useConnection(@NotNull Consumer<Connection> consumer) {
-    if (hikariDataSource == null) {
-      throw SqlStorageException.connectionPoolNotSetup();
-    }
-
     try (Connection connection = hikariDataSource.getConnection()) {
       consumer.accept(connection);
     } catch (SQLException e) {
@@ -91,12 +66,15 @@ public class ConnectionPool {
     }
   }
 
+  /**
+   * Uses connection for executing query.
+   *
+   * @param function The callback to execute query.
+   * @return The value obtained after executing the query.
+   * @param <T> The type of the value to be retrieved.
+   */
   public <T> @NotNull Optional<T> useConnection(
       @NotNull Function<Connection, Optional<T>> function) {
-    if (hikariDataSource == null) {
-      throw SqlStorageException.connectionPoolNotSetup();
-    }
-
     try (Connection connection = hikariDataSource.getConnection()) {
       return function.apply(connection);
     } catch (SQLException e) {
@@ -104,11 +82,13 @@ public class ConnectionPool {
     }
   }
 
-  public @NotNull DataSource getDataSource() {
-    if (hikariDataSource == null) {
-      throw SqlStorageException.connectionPoolNotSetup();
-    }
-
-    return hikariDataSource;
+  /**
+   * Disables the connection pool by releasing all the currently opened connections and related
+   * resources.
+   */
+  @Override
+  public void close() {
+    hikariDataSource.close();
+    log.atInfo().log("Disconnected from the database '{}'", hikariDataSource.getJdbcUrl());
   }
 }

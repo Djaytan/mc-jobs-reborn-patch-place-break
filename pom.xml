@@ -326,8 +326,6 @@
             <execution>
               <id>start</id>
               <goals>
-                <!-- Stopping containers before to release resources and then prevent issues -->
-                <goal>stop</goal>
                 <goal>start</goal>
               </goals>
               <phase>pre-integration-test</phase>

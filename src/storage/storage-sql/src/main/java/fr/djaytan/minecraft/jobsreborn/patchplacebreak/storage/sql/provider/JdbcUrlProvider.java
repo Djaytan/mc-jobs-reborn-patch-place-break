@@ -20,50 +20,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.MysqlDataSourceInitializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite.SqliteDataSourceInitializer;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlStorageException;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.MysqlJdbcUrl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite.SqliteJdbcUrl;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import org.jetbrains.annotations.NotNull;
 
-public class DataSourceInitializerProvider implements Provider<DataSourceInitializer> {
+public class JdbcUrlProvider implements Provider<JdbcUrl> {
 
   private final DataSourceProperties dataSourceProperties;
-  private final MysqlDataSourceInitializer mysqlDataSourceInitializer;
-  private final SqliteDataSourceInitializer sqliteDataSourceInitializer;
+  private final MysqlJdbcUrl mysqlJdbcUrl;
+  private final SqliteJdbcUrl sqliteJdbcUrl;
 
   @Inject
-  public DataSourceInitializerProvider(
+  public JdbcUrlProvider(
       @NotNull DataSourceProperties dataSourceProperties,
-      @NotNull MysqlDataSourceInitializer mysqlDataSourceInitializer,
-      @NotNull SqliteDataSourceInitializer sqliteDataSourceInitializer) {
+      @NotNull MysqlJdbcUrl mysqlJdbcUrl,
+      @NotNull SqliteJdbcUrl sqliteJdbcUrl) {
     this.dataSourceProperties = dataSourceProperties;
-    this.mysqlDataSourceInitializer = mysqlDataSourceInitializer;
-    this.sqliteDataSourceInitializer = sqliteDataSourceInitializer;
+    this.mysqlJdbcUrl = mysqlJdbcUrl;
+    this.sqliteJdbcUrl = sqliteJdbcUrl;
   }
 
   @Override
-  public @NotNull DataSourceInitializer get() {
+  public @NotNull JdbcUrl get() {
     DataSourceType dataSourceType = dataSourceProperties.getType();
 
     switch (dataSourceType) {
       case MYSQL:
         {
-          return mysqlDataSourceInitializer;
+          return mysqlJdbcUrl;
         }
       case SQLITE:
         {
-          return sqliteDataSourceInitializer;
+          return sqliteJdbcUrl;
         }
       default:
         {
-          throw PatchPlaceBreakException.unsupportedDataSourceType(dataSourceType);
+          throw SqlStorageException.unsupportedDataSourceType(dataSourceType);
         }
     }
   }

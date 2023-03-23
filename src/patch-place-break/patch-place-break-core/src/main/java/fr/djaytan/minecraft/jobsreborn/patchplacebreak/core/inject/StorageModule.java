@@ -24,41 +24,39 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.DataSourceInitializerProvider;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.provider.JdbcUrlProvider;
+import com.zaxxer.hikari.HikariDataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlDataSourceManager;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.access.SqlTagRepository;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider.FlywayProvider;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider.HikariDataSourceProvider;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider.JdbcUrlProvider;
 import java.nio.file.Path;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import org.flywaydb.core.api.Location;
+import javax.sql.DataSource;
+import org.flywaydb.core.Flyway;
 import org.jetbrains.annotations.NotNull;
 
 final class StorageModule extends AbstractModule {
 
-  private static final String DB_MIGRATION_DESCRIPTOR_FORMAT = "/db/migration/%s";
   private static final String SQLITE_DATABASE_FILE_NAME = "sqlite-data.db";
 
   @Override
   protected void configure() {
-    bind(DataSourceInitializer.class).toProvider(DataSourceInitializerProvider.class);
-    bind(DataSourceManager.class).to(SqlDataSourceManager.class);
-    bind(JdbcUrl.class).toProvider(JdbcUrlProvider.class);
-    bind(TagRepository.class).to(SqlTagRepository.class);
+    bind(DataSourceManager.class).to(SqlDataSourceManager.class).in(Singleton.class);
+    bind(Flyway.class).toProvider(FlywayProvider.class).in(Singleton.class);
+    bind(HikariDataSource.class).toProvider(HikariDataSourceProvider.class).in(Singleton.class);
+    bind(JdbcUrl.class).toProvider(JdbcUrlProvider.class).in(Singleton.class);
+    bind(TagRepository.class).to(SqlTagRepository.class).in(Singleton.class);
   }
 
   @Provides
   @Singleton
-  static @NotNull Location location(@NotNull DataSourceProperties dataSourceProperties) {
-    String descriptor =
-        String.format(
-            DB_MIGRATION_DESCRIPTOR_FORMAT, dataSourceProperties.getType().name().toLowerCase());
-    return new Location(descriptor);
+  static @NotNull DataSource dataSource(@NotNull HikariDataSource hikariDataSource) {
+    return hikariDataSource;
   }
 
   @Provides

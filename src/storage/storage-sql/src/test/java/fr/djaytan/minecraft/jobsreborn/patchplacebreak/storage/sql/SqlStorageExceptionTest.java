@@ -25,6 +25,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import java.io.IOException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -99,5 +100,19 @@ class SqlStorageExceptionTest extends ExceptionBaseTest {
     assertThat(sqlStorageException)
         .hasCause(cause)
         .hasMessage("Unable to create the database 'patch_place_break'");
+  }
+
+  @Test
+  @DisplayName("When instantiating unsupported data source type exception")
+  void whenInstantiatingUnsupportedDataSourceTypeException() {
+    // Given
+    DataSourceType dataSourceType = DataSourceType.MYSQL;
+
+    // When
+    SqlStorageException sqlStorageException =
+        SqlStorageException.unsupportedDataSourceType(dataSourceType);
+
+    // Then
+    assertThat(sqlStorageException).hasMessage("Unsupported data source type 'MYSQL'");
   }
 }

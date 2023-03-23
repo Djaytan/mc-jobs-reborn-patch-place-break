@@ -22,23 +22,13 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.experimental.FieldDefaults;
-
 /**
  * Represents the data source type to be used as solution for storing and retrieving {@link
  * fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag}s.
  */
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@Getter
 public enum DataSourceType {
   /** The MySQL data source type which is compatible with MariaDB as well. */
-  MYSQL(true),
+  MYSQL,
   /** The SQLite data source type. */
-  SQLITE(false);
-
-  boolean areCredentialsRequired;
+  SQLITE
 }

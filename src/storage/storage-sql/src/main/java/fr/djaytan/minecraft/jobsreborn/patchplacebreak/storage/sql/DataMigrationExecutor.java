@@ -20,22 +20,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import lombok.AccessLevel;
-import lombok.experimental.StandardException;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import org.flywaydb.core.Flyway;
 import org.jetbrains.annotations.NotNull;
 
-@StandardException(access = AccessLevel.PROTECTED)
-public class PatchPlaceBreakException extends RuntimeException {
+/**
+ * Represents the data migration executor.
+ *
+ * <p>It is in charge of performing data migrations with {@link #migrate()} method.
+ */
+@Singleton
+public class DataMigrationExecutor {
 
-  private static final String UNSUPPORTED_DATA_SOURCE_TYPE = "Unsupported data source type '%s'";
+  private final Flyway flyway;
 
-  public static @NotNull PatchPlaceBreakException unsupportedDataSourceType(
-      @NotNull DataSourceType dataSourceType) {
-    String message = String.format(UNSUPPORTED_DATA_SOURCE_TYPE, dataSourceType.name());
-    UnsupportedOperationException e = new UnsupportedOperationException(message);
-    return new PatchPlaceBreakException(e);
+  @Inject
+  public DataMigrationExecutor(@NotNull Flyway flyway) {
+    this.flyway = flyway;
+  }
+
+  /**
+   * Performs migrations into the currently in-used data source. Once done, validates that
+   * migrations have been well-performed and are up-to-date.
+   */
+  public void migrate() {
+    flyway.migrate();
+    flyway.validate();
   }
 }

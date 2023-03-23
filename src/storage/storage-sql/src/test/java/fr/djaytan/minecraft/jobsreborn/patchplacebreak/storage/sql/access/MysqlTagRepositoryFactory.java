@@ -24,20 +24,23 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.access;
 
 import static org.mockito.BDDMockito.given;
 
+import com.zaxxer.hikari.HikariDataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.ConnectionPool;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.DataMigrationExecutor;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.DataSourcePropertiesMock;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlDataSourceManager;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.MysqlDataSourceInitializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.MysqlJdbcUrl;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataMigrationExecutor;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init.DataSourceInitializer;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider.FlywayProvider;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider.HikariDataSourceProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer.BooleanIntegerSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer.LocalDateTimeStringSerializer;
+import javax.sql.DataSource;
 import org.apache.commons.lang3.Validate;
-import org.flywaydb.core.api.Location;
+import org.flywaydb.core.Flyway;
 import org.jetbrains.annotations.NotNull;
 
 final class MysqlTagRepositoryFactory implements AutoCloseable {
@@ -48,13 +51,15 @@ final class MysqlTagRepositoryFactory implements AutoCloseable {
   SqlTagRepository create() {
     Validate.validState(dataSourceManager == null, "Creation already requested.");
 
-    DataSourceProperties dataSourceProperties = createDataSourceProperties();
-    ConnectionPool connectionPool = createConnectionPool(dataSourceProperties);
+    DataSourceProperties mysqlDataSourcePropertiesMock = createMysqlDataSourcePropertiesMock();
+    HikariDataSource hikariDataSource = createHikariDataSource(mysqlDataSourcePropertiesMock);
+    ConnectionPool connectionPool = new ConnectionPool(hikariDataSource);
 
-    dataSourceManager = createDataSourceManager(connectionPool, dataSourceProperties);
+    dataSourceManager =
+        createDataSourceManager(connectionPool, hikariDataSource, mysqlDataSourcePropertiesMock);
     dataSourceManager.connect();
 
-    TagSqlDao tagSqlDao = createTagSqlDao(dataSourceProperties);
+    TagSqlDao tagSqlDao = createTagSqlDao(mysqlDataSourcePropertiesMock);
     return new SqlTagRepository(connectionPool, tagSqlDao);
   }
 
@@ -63,31 +68,38 @@ final class MysqlTagRepositoryFactory implements AutoCloseable {
     dataSourceManager.disconnect();
   }
 
-  private static @NotNull DataSourceProperties createDataSourceProperties() {
-    DataSourceProperties dataSourcePropertiesMock = DataSourcePropertiesMock.get();
+  private static @NotNull DataSourceProperties createMysqlDataSourcePropertiesMock() {
+    DataSourceProperties dataSourcePropertiesMock =
+        DataSourcePropertiesMock.get(DataSourceType.MYSQL);
     int dbmsPort = Integer.parseInt(System.getProperty("mysql.port"));
     given(dataSourcePropertiesMock.getDbmsServer().getHost().getPort()).willReturn(dbmsPort);
     return dataSourcePropertiesMock;
   }
 
-  private static @NotNull ConnectionPool createConnectionPool(
+  private static @NotNull HikariDataSource createHikariDataSource(
       @NotNull DataSourceProperties dataSourceProperties) {
     JdbcUrl jdbcUrl = new MysqlJdbcUrl(dataSourceProperties);
-    return new ConnectionPool(dataSourceProperties, jdbcUrl);
+    HikariDataSourceProvider hikariDataSourceProvider =
+        new HikariDataSourceProvider(dataSourceProperties, jdbcUrl);
+    return hikariDataSourceProvider.get();
   }
 
   private static @NotNull DataSourceManager createDataSourceManager(
-      @NotNull ConnectionPool connectionPool, @NotNull DataSourceProperties dataSourceProperties) {
-    DataMigrationExecutor dataMigrationExecutor = createDataMigrationExecutor(dataSourceProperties);
-    DataSourceInitializer dataSourceInitializer = new MysqlDataSourceInitializer();
-    return new SqlDataSourceManager(connectionPool, dataMigrationExecutor, dataSourceInitializer);
+      @NotNull ConnectionPool connectionPool,
+      @NotNull DataSource dataSource,
+      @NotNull DataSourceProperties dataSourceProperties) {
+    DataMigrationExecutor dataMigrationExecutor =
+        createDataMigrationExecutor(dataSource, dataSourceProperties);
+    return new SqlDataSourceManager(connectionPool, dataMigrationExecutor);
   }
 
   private static @NotNull DataMigrationExecutor createDataMigrationExecutor(
-      @NotNull DataSourceProperties dataSourceProperties) {
+      @NotNull DataSource dataSource, @NotNull DataSourceProperties dataSourceProperties) {
     ClassLoader classLoader = DataMigrationExecutor.class.getClassLoader();
-    Location location = new Location("/db/migration/mysql");
-    return new DataMigrationExecutor(classLoader, dataSourceProperties, location);
+    FlywayProvider flywayProvider =
+        new FlywayProvider(classLoader, dataSource, dataSourceProperties);
+    Flyway flyway = flywayProvider.get();
+    return new DataMigrationExecutor(flyway);
   }
 
   private static @NotNull TagSqlDao createTagSqlDao(
