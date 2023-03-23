@@ -43,7 +43,7 @@ class VectorTest {
     int modZ = 999;
 
     // When
-    Vector vector = Vector.of(modX, modY, modZ);
+    Vector vector = new Vector(modX, modY, modZ);
 
     // Then
     assertAll(

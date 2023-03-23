@@ -72,7 +72,7 @@ class BlockLocationConverterTest {
       BlockLocation blockLocation = locationConverter.convert(block);
 
       // Then
-      assertThat(blockLocation).isEqualTo(BlockLocation.of(worldName, x, y, z));
+      assertThat(blockLocation).isEqualTo(new BlockLocation(worldName, x, y, z));
     }
 
     @Test

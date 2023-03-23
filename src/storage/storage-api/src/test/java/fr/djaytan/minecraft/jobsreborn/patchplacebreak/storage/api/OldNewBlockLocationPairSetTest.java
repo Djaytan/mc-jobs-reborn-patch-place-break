@@ -49,13 +49,13 @@ class OldNewBlockLocationPairSetTest {
     @DisplayName("With nominal values")
     void withNominalValues_shouldSuccess() {
       // Given
-      BlockLocation oldBlockLocation1 = BlockLocation.of("world", 12, 64, -35);
-      BlockLocation newBlockLocation1 = BlockLocation.of("world", 12, 64, -36);
+      BlockLocation oldBlockLocation1 = new BlockLocation("world", 12, 64, -35);
+      BlockLocation newBlockLocation1 = new BlockLocation("world", 12, 64, -36);
       OldNewBlockLocationPair oldNewBlockLocationPair1 =
           new OldNewBlockLocationPair(oldBlockLocation1, newBlockLocation1);
 
-      BlockLocation oldBlockLocation2 = BlockLocation.of("world", 562, 30, -55);
-      BlockLocation newBlockLocation2 = BlockLocation.of("world", 563, 30, -55);
+      BlockLocation oldBlockLocation2 = new BlockLocation("world", 562, 30, -55);
+      BlockLocation newBlockLocation2 = new BlockLocation("world", 563, 30, -55);
       OldNewBlockLocationPair oldNewBlockLocationPair2 =
           new OldNewBlockLocationPair(oldBlockLocation2, newBlockLocation2);
 
@@ -79,8 +79,8 @@ class OldNewBlockLocationPairSetTest {
       @DisplayName("And by modifying initial reference")
       void andByModifyingInitialReference_shouldRemainsImmutable() {
         // Given
-        BlockLocation oldBlockLocation1 = BlockLocation.of("world", 12, 64, -35);
-        BlockLocation newBlockLocation1 = BlockLocation.of("world", 12, 64, -36);
+        BlockLocation oldBlockLocation1 = new BlockLocation("world", 12, 64, -35);
+        BlockLocation newBlockLocation1 = new BlockLocation("world", 12, 64, -36);
         OldNewBlockLocationPair oldNewBlockLocationPair1 =
             new OldNewBlockLocationPair(oldBlockLocation1, newBlockLocation1);
 
@@ -91,8 +91,8 @@ class OldNewBlockLocationPairSetTest {
             new OldNewBlockLocationPairSet(mutableOldNewBlockLocationPairs);
 
         // When
-        BlockLocation oldBlockLocation2 = BlockLocation.of("world", 562, 30, -55);
-        BlockLocation newBlockLocation2 = BlockLocation.of("world", 563, 30, -55);
+        BlockLocation oldBlockLocation2 = new BlockLocation("world", 562, 30, -55);
+        BlockLocation newBlockLocation2 = new BlockLocation("world", 563, 30, -55);
         OldNewBlockLocationPair oldNewBlockLocationPair2 =
             new OldNewBlockLocationPair(oldBlockLocation2, newBlockLocation2);
 
@@ -107,8 +107,8 @@ class OldNewBlockLocationPairSetTest {
       @DisplayName("And by modifying reference returned by getter")
       void andByModifyingReferenceReturnedByGetter_shouldRemainsImmutable() {
         // Given
-        BlockLocation oldBlockLocation1 = BlockLocation.of("world", 12, 64, -35);
-        BlockLocation newBlockLocation1 = BlockLocation.of("world", 12, 64, -36);
+        BlockLocation oldBlockLocation1 = new BlockLocation("world", 12, 64, -35);
+        BlockLocation newBlockLocation1 = new BlockLocation("world", 12, 64, -36);
         OldNewBlockLocationPair oldNewBlockLocationPair1 =
             new OldNewBlockLocationPair(oldBlockLocation1, newBlockLocation1);
 
@@ -119,8 +119,8 @@ class OldNewBlockLocationPairSetTest {
             new OldNewBlockLocationPairSet(mutableOldNewBlockLocationPairs);
 
         // When
-        BlockLocation oldBlockLocation2 = BlockLocation.of("world", 562, 30, -55);
-        BlockLocation newBlockLocation2 = BlockLocation.of("world", 563, 30, -55);
+        BlockLocation oldBlockLocation2 = new BlockLocation("world", 562, 30, -55);
+        BlockLocation newBlockLocation2 = new BlockLocation("world", 563, 30, -55);
         OldNewBlockLocationPair oldNewBlockLocationPair2 =
             new OldNewBlockLocationPair(oldBlockLocation2, newBlockLocation2);
 
@@ -145,13 +145,13 @@ class OldNewBlockLocationPairSetTest {
     @DisplayName("With nominal values")
     void withNominalValues_shouldSuccess() {
       // Given
-      BlockLocation oldBlockLocation1 = BlockLocation.of("world", 12, 64, -35);
-      BlockLocation newBlockLocation1 = BlockLocation.of("world", 12, 64, -36);
+      BlockLocation oldBlockLocation1 = new BlockLocation("world", 12, 64, -35);
+      BlockLocation newBlockLocation1 = new BlockLocation("world", 12, 64, -36);
       OldNewBlockLocationPair oldNewBlockLocationPair1 =
           new OldNewBlockLocationPair(oldBlockLocation1, newBlockLocation1);
 
-      BlockLocation oldBlockLocation2 = BlockLocation.of("world", 562, 30, -55);
-      BlockLocation newBlockLocation2 = BlockLocation.of("world", 563, 30, -55);
+      BlockLocation oldBlockLocation2 = new BlockLocation("world", 562, 30, -55);
+      BlockLocation newBlockLocation2 = new BlockLocation("world", 563, 30, -55);
       OldNewBlockLocationPair oldNewBlockLocationPair2 =
           new OldNewBlockLocationPair(oldBlockLocation2, newBlockLocation2);
 
@@ -175,12 +175,12 @@ class OldNewBlockLocationPairSetTest {
     @DisplayName("With duplicated locations")
     void withDuplicatedLocations_shouldSuccessWithoutDuplications() {
       // Given
-      BlockLocation oldBlockLocation1 = BlockLocation.of("world", 12, 64, -35);
-      BlockLocation newBlockLocation1 = BlockLocation.of("world", 12, 64, -36);
+      BlockLocation oldBlockLocation1 = new BlockLocation("world", 12, 64, -35);
+      BlockLocation newBlockLocation1 = new BlockLocation("world", 12, 64, -36);
       OldNewBlockLocationPair oldNewBlockLocationPair1 =
           new OldNewBlockLocationPair(oldBlockLocation1, newBlockLocation1);
 
-      BlockLocation oldBlockLocation2 = BlockLocation.of("world", 562, 30, -55);
+      BlockLocation oldBlockLocation2 = new BlockLocation("world", 562, 30, -55);
       OldNewBlockLocationPair oldNewBlockLocationPair2 =
           new OldNewBlockLocationPair(oldBlockLocation2, newBlockLocation1);
 

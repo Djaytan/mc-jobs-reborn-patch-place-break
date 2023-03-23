@@ -49,6 +49,6 @@ public class LocationConverter implements UnidirectionalConverter<Block, BlockLo
     int x = block.getX();
     int y = block.getY();
     int z = block.getZ();
-    return BlockLocation.of(worldName, x, y, z);
+    return new BlockLocation(worldName, x, y, z);
   }
 }

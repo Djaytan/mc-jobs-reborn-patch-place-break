@@ -44,13 +44,13 @@ class TagTest {
     int x = 52;
     int y = 68;
     int z = 1254;
-    BlockLocation blockLocation = BlockLocation.of(worldName, x, y, z);
+    BlockLocation blockLocation = new BlockLocation(worldName, x, y, z);
 
     boolean isEphemeral = true;
     LocalDateTime localDateTime = LocalDateTime.now();
 
     // When
-    Tag tag = Tag.of(blockLocation, isEphemeral, localDateTime);
+    Tag tag = new Tag(blockLocation, isEphemeral, localDateTime);
 
     // Then
     assertAll(

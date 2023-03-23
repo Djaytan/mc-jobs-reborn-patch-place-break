@@ -62,7 +62,7 @@ class TagRepositoryExceptionTest extends ExceptionBaseTest {
   @DisplayName("When instantiating put tag exception")
   void whenInstantiatingPutTagException() {
     // Given
-    Tag tag = Tag.of(BlockLocation.of("world", 123, 54, -762), false, LocalDateTime.now());
+    Tag tag = new Tag(new BlockLocation("world", 123, 54, -762), false, LocalDateTime.now());
     Throwable cause = new IOException();
 
     // When
@@ -79,8 +79,8 @@ class TagRepositoryExceptionTest extends ExceptionBaseTest {
   @DisplayName("When instantiating update tag exception")
   void whenInstantiatingUpdateTagException() {
     // Given
-    BlockLocation oldBlockLocation = BlockLocation.of("world", 123, 54, -762);
-    BlockLocation newBlockLocation = BlockLocation.of("world", 124, 54, -762);
+    BlockLocation oldBlockLocation = new BlockLocation("world", 123, 54, -762);
+    BlockLocation newBlockLocation = new BlockLocation("world", 124, 54, -762);
     OldNewBlockLocationPair oldNewBlockLocationPair =
         new OldNewBlockLocationPair(oldBlockLocation, newBlockLocation);
     OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
@@ -104,7 +104,7 @@ class TagRepositoryExceptionTest extends ExceptionBaseTest {
   @DisplayName("When instantiating fetch tag exception")
   void whenInstantiatingFetchTagException() {
     // Given
-    BlockLocation blockLocation = BlockLocation.of("world", 123, 54, -762);
+    BlockLocation blockLocation = new BlockLocation("world", 123, 54, -762);
     Throwable cause = new IOException();
 
     // When
@@ -122,7 +122,7 @@ class TagRepositoryExceptionTest extends ExceptionBaseTest {
   @DisplayName("When instantiating delete tag exception")
   void whenInstantiatingDeleteTagException() {
     // Given
-    BlockLocation blockLocation = BlockLocation.of("world", 123, 54, -762);
+    BlockLocation blockLocation = new BlockLocation("world", 123, 54, -762);
     Throwable cause = new IOException();
 
     // When

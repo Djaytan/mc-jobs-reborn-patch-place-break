@@ -108,13 +108,13 @@ public class TagSqlDao {
     int x = resultSet.getInt("location_x");
     int y = resultSet.getInt("location_y");
     int z = resultSet.getInt("location_z");
-    BlockLocation blockLocation = BlockLocation.of(worldName, x, y, z);
+    BlockLocation blockLocation = new BlockLocation(worldName, x, y, z);
 
     boolean isEphemeral = booleanIntegerSerializer.deserialize(resultSet.getInt("is_ephemeral"));
     LocalDateTime initLocalDateTime =
         localDateTimeStringSerializer.deserialize(resultSet.getString("init_timestamp"));
 
-    Tag tag = Tag.of(blockLocation, isEphemeral, initLocalDateTime);
+    Tag tag = new Tag(blockLocation, isEphemeral, initLocalDateTime);
     return Optional.of(tag);
   }
 

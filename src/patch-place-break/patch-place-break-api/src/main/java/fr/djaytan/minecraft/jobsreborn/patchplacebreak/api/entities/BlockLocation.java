@@ -26,7 +26,7 @@ import lombok.Value;
 import org.jetbrains.annotations.NotNull;
 
 /** An immutable and thread-safe block location. */
-@Value(staticConstructor = "of")
+@Value
 public class BlockLocation {
 
   String worldName;
@@ -46,6 +46,6 @@ public class BlockLocation {
     int newX = blockLocation.getX() + direction.getModX();
     int newY = blockLocation.getY() + direction.getModY();
     int newZ = blockLocation.getZ() + direction.getModZ();
-    return BlockLocation.of(blockLocation.getWorldName(), newX, newY, newZ);
+    return new BlockLocation(blockLocation.getWorldName(), newX, newY, newZ);
   }
 }

@@ -61,7 +61,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
     return CompletableFuture.runAsync(
         () -> {
           LocalDateTime localDateTime = LocalDateTime.now(clock);
-          Tag tag = Tag.of(blockLocation, isEphemeral, localDateTime);
+          Tag tag = new Tag(blockLocation, isEphemeral, localDateTime);
           tagRepository.put(tag);
         });
   }

@@ -35,6 +35,6 @@ public class BlockFaceConverter implements UnidirectionalConverter<BlockFace, Ve
     int modX = blockFace.getModX();
     int modY = blockFace.getModY();
     int modZ = blockFace.getModZ();
-    return Vector.of(modX, modY, modZ);
+    return new Vector(modX, modY, modZ);
   }
 }

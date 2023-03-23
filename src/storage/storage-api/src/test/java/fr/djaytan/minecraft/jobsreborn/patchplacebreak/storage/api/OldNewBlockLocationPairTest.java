@@ -45,8 +45,8 @@ class OldNewBlockLocationPairTest {
     @DisplayName("With nominal values")
     void withNominalValues_shouldSuccess() {
       // Given
-      BlockLocation oldBlockLocation = BlockLocation.of("world", 12, 64, -35);
-      BlockLocation newBlockLocation = BlockLocation.of("world", 12, 64, -36);
+      BlockLocation oldBlockLocation = new BlockLocation("world", 12, 64, -35);
+      BlockLocation newBlockLocation = new BlockLocation("world", 12, 64, -36);
 
       // When
       OldNewBlockLocationPair oldNewBlockLocationPair =
@@ -65,8 +65,8 @@ class OldNewBlockLocationPairTest {
     @DisplayName("With same locations")
     void withSameLocations_shouldThrowException() {
       // Given
-      BlockLocation oldBlockLocation = BlockLocation.of("world", 12, 64, -35);
-      BlockLocation newBlockLocation = BlockLocation.of("world", 12, 64, -35);
+      BlockLocation oldBlockLocation = new BlockLocation("world", 12, 64, -35);
+      BlockLocation newBlockLocation = new BlockLocation("world", 12, 64, -35);
 
       // When
       ThrowingCallable throwingCallable =

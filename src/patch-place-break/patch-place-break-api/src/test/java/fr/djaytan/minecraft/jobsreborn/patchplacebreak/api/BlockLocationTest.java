@@ -60,7 +60,7 @@ class BlockLocationTest {
       int z = 4872;
 
       // When
-      BlockLocation blockLocation = BlockLocation.of(worldName, x, y, z);
+      BlockLocation blockLocation = new BlockLocation(worldName, x, y, z);
 
       // Then
       assertAll(
@@ -81,7 +81,7 @@ class BlockLocationTest {
       int initX = 1;
       int initY = -45;
       int initZ = -1;
-      BlockLocation blockLocation = BlockLocation.of(worldName, initX, initY, initZ);
+      BlockLocation blockLocation = new BlockLocation(worldName, initX, initY, initZ);
 
       // When
       BlockLocation movedBlockLocation = BlockLocation.from(blockLocation, givenDirection);
@@ -96,14 +96,14 @@ class BlockLocationTest {
         withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue() {
       return Stream.of(
           arguments(
-              named("With nominal values", Vector.of(5, 0, -452)),
-              BlockLocation.of("world", 6, -45, -453)),
+              named("With nominal values", new Vector(5, 0, -452)),
+              new BlockLocation("world", 6, -45, -453)),
           arguments(
-              named("On overflow", Vector.of(Integer.MAX_VALUE, 1, -1)),
-              BlockLocation.of("world", Integer.MIN_VALUE, -44, -2)),
+              named("On overflow", new Vector(Integer.MAX_VALUE, 1, -1)),
+              new BlockLocation("world", Integer.MIN_VALUE, -44, -2)),
           arguments(
-              named("On underflow", Vector.of(10, -50, Integer.MIN_VALUE)),
-              BlockLocation.of("world", 11, -95, Integer.MAX_VALUE)));
+              named("On underflow", new Vector(10, -50, Integer.MIN_VALUE)),
+              new BlockLocation("world", 11, -95, Integer.MAX_VALUE)));
     }
   }
 

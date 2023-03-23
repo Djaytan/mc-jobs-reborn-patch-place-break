@@ -129,7 +129,7 @@ abstract class BasePatchPlaceBreakApiIntegrationTest {
     BlockLocation oldBlockLocation = randomBlockLocation;
     patchPlaceBreakApi.putTag(oldBlockLocation, true).join();
 
-    Vector direction = Vector.of(1, 0, 0);
+    Vector direction = new Vector(1, 0, 0);
     Set<BlockLocation> blocks = Collections.singleton(oldBlockLocation);
 
     // When
@@ -137,7 +137,7 @@ abstract class BasePatchPlaceBreakApiIntegrationTest {
 
     // Then
     BlockLocation newBlockLocation =
-        BlockLocation.of(
+        new BlockLocation(
             "world", oldBlockLocation.getX() + 1, oldBlockLocation.getY(), oldBlockLocation.getZ());
 
     boolean isOnOldBlockAnExploit =
@@ -179,6 +179,6 @@ abstract class BasePatchPlaceBreakApiIntegrationTest {
     int randY = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();
     int randZ = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();
 
-    return BlockLocation.of("world", randX, randY, randZ);
+    return new BlockLocation("world", randX, randY, randZ);
   }
 }

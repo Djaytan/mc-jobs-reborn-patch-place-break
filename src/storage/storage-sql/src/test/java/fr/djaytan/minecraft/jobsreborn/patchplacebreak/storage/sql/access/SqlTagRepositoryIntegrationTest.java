@@ -78,7 +78,7 @@ class SqlTagRepositoryIntegrationTest {
         !sqlTagRepository.findByLocation(randomBlockLocation).isPresent(),
         String.format("No tag must exist at the following location: %s", randomBlockLocation));
 
-    Tag tag = Tag.of(randomBlockLocation, true, LocalDateTime.now());
+    Tag tag = new Tag(randomBlockLocation, true, LocalDateTime.now());
 
     // When
     sqlTagRepository.put(tag);
@@ -94,12 +94,12 @@ class SqlTagRepositoryIntegrationTest {
   void whenPuttingTagWhenOneAlreadyExist_shouldOverrideIt() {
     // Given
     LocalDateTime firstDateTime = LocalDateTime.now();
-    Tag alreadyExistingTag = Tag.of(randomBlockLocation, true, firstDateTime);
+    Tag alreadyExistingTag = new Tag(randomBlockLocation, true, firstDateTime);
 
     sqlTagRepository.put(alreadyExistingTag);
 
     LocalDateTime secondDateTime = firstDateTime.plusSeconds(1);
-    Tag overrideTag = Tag.of(randomBlockLocation, true, secondDateTime);
+    Tag overrideTag = new Tag(randomBlockLocation, true, secondDateTime);
 
     // When
     sqlTagRepository.put(overrideTag);
@@ -115,10 +115,10 @@ class SqlTagRepositoryIntegrationTest {
   void whenUpdatingExistingTag_shouldExistInNewLocationButNotInOldOne() {
     // Given
     BlockLocation oldLocation = randomBlockLocation;
-    Tag oldTag = Tag.of(oldLocation, true, LocalDateTime.now());
+    Tag oldTag = new Tag(oldLocation, true, LocalDateTime.now());
 
     BlockLocation newLocation =
-        BlockLocation.of(
+        new BlockLocation(
             oldLocation.getWorldName(),
             oldLocation.getX() + 1,
             oldLocation.getY(),
@@ -151,7 +151,7 @@ class SqlTagRepositoryIntegrationTest {
     // Given
     BlockLocation oldLocation = randomBlockLocation;
     BlockLocation newLocation =
-        BlockLocation.of(
+        new BlockLocation(
             oldLocation.getWorldName(),
             oldLocation.getX() + 1,
             oldLocation.getY(),
@@ -183,7 +183,7 @@ class SqlTagRepositoryIntegrationTest {
   @DisplayName("When removing tag")
   void whenRemovingTag_shouldThenNotExistAnymore() {
     // Given
-    Tag alreadyExistingTag = Tag.of(randomBlockLocation, true, LocalDateTime.now());
+    Tag alreadyExistingTag = new Tag(randomBlockLocation, true, LocalDateTime.now());
     sqlTagRepository.put(alreadyExistingTag);
 
     // When
@@ -204,6 +204,6 @@ class SqlTagRepositoryIntegrationTest {
     int randY = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();
     int randZ = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();
 
-    return BlockLocation.of("world", randX, randY, randZ);
+    return new BlockLocation("world", randX, randY, randZ);
   }
 }

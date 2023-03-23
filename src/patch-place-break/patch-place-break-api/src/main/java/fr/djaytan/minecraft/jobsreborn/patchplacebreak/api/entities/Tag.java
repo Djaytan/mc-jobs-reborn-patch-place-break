@@ -46,7 +46,7 @@ import lombok.Value;
  *
  * This class is thread-safe and immutable.
  */
-@Value(staticConstructor = "of")
+@Value
 public class Tag {
 
   BlockLocation blockLocation;
