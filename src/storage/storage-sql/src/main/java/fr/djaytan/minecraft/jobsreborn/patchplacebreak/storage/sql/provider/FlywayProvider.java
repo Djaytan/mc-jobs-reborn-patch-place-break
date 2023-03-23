@@ -20,60 +20,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.init;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.Location;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Represents the data migration executor.
- *
- * <p>It is in charge of performing data migrations with {@link #migrate(DataSource)} method.
- *
- * <p>Interactions with this class are expected only after having established connections with the
- * data source (i.e. after having enabled the connection pool).
- */
 @Singleton
-public class DataMigrationExecutor {
+public final class FlywayProvider implements Provider<Flyway> {
 
+  private static final String DB_MIGRATION_DESCRIPTOR_FORMAT = "/db/migration/%s";
   private static final String MIGRATION_HISTORY_TABLE_NAME =
       "patch_place_break_flyway_schema_history";
   private static final String PLACEHOLDER_PATCH_PLACE_BREAK_TABLE_NAME = "patchPlaceBreakTableName";
 
   private final ClassLoader classLoader;
+  private final DataSource dataSource;
   private final DataSourceProperties dataSourceProperties;
-  private final Location location;
 
   @Inject
-  public DataMigrationExecutor(
+  public FlywayProvider(
       @NotNull ClassLoader classLoader,
-      @NotNull DataSourceProperties dataSourceProperties,
-      @NotNull Location location) {
+      @NotNull DataSource dataSource,
+      @NotNull DataSourceProperties dataSourceProperties) {
     this.classLoader = classLoader;
+    this.dataSource = dataSource;
     this.dataSourceProperties = dataSourceProperties;
-    this.location = location;
   }
 
-  /**
-   * Performs migrations into the currently in-used data source. Once done, validates that
-   * migrations have been well-performed and are up-to-date.
-   *
-   * @param dataSource The data source to be used when establishing connections at migration time.
-   */
-  public void migrate(@NotNull DataSource dataSource) {
-    Flyway flyway = prepare(dataSource);
-    flyway.migrate();
-    flyway.validate();
-  }
-
-  private @NotNull Flyway prepare(@NotNull DataSource dataSource) {
+  public @NotNull Flyway get() {
     Map<String, String> placeholders = new HashMap<>();
     placeholders.put(PLACEHOLDER_PATCH_PLACE_BREAK_TABLE_NAME, dataSourceProperties.getTable());
 
@@ -81,12 +63,19 @@ public class DataMigrationExecutor {
         .baselineOnMigrate(true)
         .dataSource(dataSource)
         .failOnMissingLocations(true)
-        .locations(location)
+        .locations(getLocation())
         .loggers("slf4j")
         .placeholders(placeholders)
         .table(MIGRATION_HISTORY_TABLE_NAME)
         .validateOnMigrate(false)
         .validateMigrationNaming(true)
         .load();
+  }
+
+  private @NotNull Location getLocation() {
+    String descriptor =
+        String.format(
+            DB_MIGRATION_DESCRIPTOR_FORMAT, dataSourceProperties.getType().name().toLowerCase());
+    return new Location(descriptor);
   }
 }
