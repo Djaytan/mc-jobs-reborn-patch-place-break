@@ -48,7 +48,7 @@
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>storage-api</artifactId>
+      <artifactId>patch-place-break-storage</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
