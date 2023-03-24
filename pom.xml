@@ -48,7 +48,6 @@
     <module>src/bukkit</module>
     <module>src/commons-test</module>
     <module>src/patch-place-break</module>
-    <module>src/storage</module>
   </modules>
 
   <scm>
