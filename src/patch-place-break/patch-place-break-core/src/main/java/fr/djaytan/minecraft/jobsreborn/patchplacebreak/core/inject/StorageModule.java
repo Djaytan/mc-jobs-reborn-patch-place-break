@@ -47,10 +47,26 @@ final class StorageModule extends AbstractModule {
   @Override
   protected void configure() {
     bind(DataSourceManager.class).to(SqlDataSourceManager.class).in(Singleton.class);
-    bind(Flyway.class).toProvider(FlywayProvider.class).in(Singleton.class);
-    bind(HikariDataSource.class).toProvider(HikariDataSourceProvider.class).in(Singleton.class);
-    bind(JdbcUrl.class).toProvider(JdbcUrlProvider.class).in(Singleton.class);
     bind(TagRepository.class).to(SqlTagRepository.class).in(Singleton.class);
+  }
+
+  @Provides
+  @Singleton
+  static @NotNull Flyway flyway(@NotNull FlywayProvider flywayProvider) {
+    return flywayProvider.get();
+  }
+
+  @Provides
+  @Singleton
+  static @NotNull HikariDataSource hikariDataSource(
+      @NotNull HikariDataSourceProvider hikariDataSourceProvider) {
+    return hikariDataSourceProvider.get();
+  }
+
+  @Provides
+  @Singleton
+  static @NotNull JdbcUrl jdbcUrl(@NotNull JdbcUrlProvider jdbcUrlProvider) {
+    return jdbcUrlProvider.get();
   }
 
   @Provides
