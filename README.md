@@ -106,6 +106,26 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on ways to help us.
 
 Take care to always follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
+## Built With
+
+* Java 8
+* [Maven](https://maven.apache.org/)
+* [Guice](https://github.com/google/guice)
+* [HikariCP](https://github.com/brettwooldridge/HikariCP)
+* [Flyway](https://github.com/flyway/flyway)
+* [Jakarta Beans Validator](https://beanvalidation.org/)
+  (with [Hibernate Validator](https://github.com/hibernate/hibernate-validator) as implementation)
+* [Configurate](https://github.com/SpongePowered/Configurate)
+* [Lombok](https://projectlombok.org/)
+
+Specifically for the tests:
+
+* [JUnit 5](https://junit.org/junit5/)
+* [Mockito](https://site.mockito.org/)
+* [AssertJ](https://github.com/assertj/assertj)
+* [EqualsVerifier](https://jqno.nl/equalsverifier/) & [ToStringVerifier](https://github.com/jparams/to-string-verifier)
+* [Jimfs](https://github.com/google/jimfs)
+
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the
