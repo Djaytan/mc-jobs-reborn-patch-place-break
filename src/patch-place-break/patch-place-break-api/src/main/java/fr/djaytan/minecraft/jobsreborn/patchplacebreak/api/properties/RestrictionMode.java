@@ -20,33 +20,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictedBlocksProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictionMode;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import java.util.HashSet;
-import javax.inject.Singleton;
-import org.jetbrains.annotations.NotNull;
-
-final class ConfigModule extends AbstractModule {
-
-  ConfigModule() {
-    // Instantiated for Guice
-  }
-
-  @Provides
-  @Singleton
-  static @NotNull DataSourceProperties dataSourceProperties(@NotNull ConfigApi configApi) {
-    return configApi.getDataSourceProperties();
-  }
-
-  @Provides
-  @Singleton
-  static @NotNull RestrictedBlocksProperties provideRestrictedBlocksProperties() {
-    return new RestrictedBlocksProperties(new HashSet<>(), RestrictionMode.DISABLED);
-  }
+/**
+ * Represents the restriction modes permitting to know whether a block type should be ignored by the
+ * tag handling mechanism or not. This allows performances improvements when this is an issue (e.g.
+ * the Tree Feller skill from McMMO plugin cutting hundreds of logs at a time leading to a server
+ * freeze).
+ */
+public enum RestrictionMode {
+  /** Only listed blocks are marked as restricted. */
+  BLACKLIST,
+  /** All blocks are marked as restricted except the listed ones. */
+  WHITELIST,
+  /** No restriction apply. */
+  DISABLED
 }

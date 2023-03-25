@@ -23,10 +23,12 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Block;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictedBlocksProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPair;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
@@ -47,50 +49,78 @@ import org.jetbrains.annotations.NotNull;
 @Slf4j
 public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
 
+  private final BlocksFilter blocksFilter;
   private final Clock clock;
+  private final RestrictedBlocksProperties restrictedBlocksProperties;
   private final TagRepository tagRepository;
 
   @Inject
-  public PatchPlaceBreakImpl(@NotNull Clock clock, @NotNull TagRepository tagRepository) {
+  public PatchPlaceBreakImpl(
+      @NotNull BlocksFilter blocksFilter,
+      @NotNull Clock clock,
+      @NotNull RestrictedBlocksProperties restrictedBlocksProperties,
+      @NotNull TagRepository tagRepository) {
+    this.blocksFilter = blocksFilter;
     this.clock = clock;
+    this.restrictedBlocksProperties = restrictedBlocksProperties;
     this.tagRepository = tagRepository;
   }
 
-  public @NotNull CompletableFuture<Void> putTag(
-      @NotNull BlockLocation blockLocation, boolean isEphemeral) {
+  public @NotNull CompletableFuture<Void> putTag(@NotNull Block block, boolean isEphemeral) {
     return CompletableFuture.runAsync(
         () -> {
+          if (restrictedBlocksProperties.isRestricted(block.getMaterial())) {
+            return;
+          }
+
           LocalDateTime localDateTime = LocalDateTime.now(clock);
-          Tag tag = new Tag(blockLocation, isEphemeral, localDateTime);
+          Tag tag = new Tag(block.getBlockLocation(), isEphemeral, localDateTime);
           tagRepository.put(tag);
         });
   }
 
   public @NotNull CompletableFuture<Void> moveTags(
-      @NotNull Set<BlockLocation> blockLocations, @NotNull Vector direction) {
+      @NotNull Set<Block> blocks, @NotNull Vector direction) {
     return CompletableFuture.runAsync(
         () -> {
+          Set<Block> filteredBlocks = blocksFilter.filter(blocks);
+
+          if (filteredBlocks.isEmpty()) {
+            return;
+          }
+
           OldNewBlockLocationPairSet oldNewLocationPairs =
               new OldNewBlockLocationPairSet(
-                  blockLocations.stream()
+                  filteredBlocks.stream()
                       .map(
-                          oldBlockLocation ->
+                          oldBlock ->
                               new OldNewBlockLocationPair(
-                                  oldBlockLocation,
-                                  BlockLocation.from(oldBlockLocation, direction)))
+                                  oldBlock.getBlockLocation(),
+                                  BlockLocation.from(oldBlock.getBlockLocation(), direction)))
                       .collect(Collectors.toSet()));
 
           tagRepository.updateLocations(oldNewLocationPairs);
         });
   }
 
-  public @NotNull CompletableFuture<Void> removeTag(@NotNull BlockLocation blockLocation) {
-    return CompletableFuture.runAsync(() -> tagRepository.delete(blockLocation));
+  public @NotNull CompletableFuture<Void> removeTag(@NotNull Block block) {
+    return CompletableFuture.runAsync(
+        () -> {
+          if (restrictedBlocksProperties.isRestricted(block.getMaterial())) {
+            return;
+          }
+
+          tagRepository.delete(block.getBlockLocation());
+        });
   }
 
   public boolean isPlaceAndBreakExploit(
-      @NotNull BlockActionType blockActionType, @NotNull BlockLocation blockLocation) {
-    Optional<Tag> tag = tagRepository.findByLocation(blockLocation);
+      @NotNull BlockActionType blockActionType, @NotNull Block block) {
+    if (restrictedBlocksProperties.isRestricted(block.getMaterial())) {
+      return false;
+    }
+
+    Optional<Tag> tag = tagRepository.findByLocation(block.getBlockLocation());
 
     if (!tag.isPresent()) {
       return false;

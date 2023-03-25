@@ -43,6 +43,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomUtils;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -204,6 +205,7 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
     when(newBlock.getX()).thenReturn(oldX + 1);
     when(newBlock.getY()).thenReturn(oldY);
     when(newBlock.getZ()).thenReturn(oldZ);
+    when(newBlock.getType()).thenReturn(Material.STONE);
 
     boolean isOnOldBlockAnExploit =
         patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(sampleActionInfoMocked, oldBlock);
@@ -267,5 +269,6 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
     when(blockMocked.getX()).thenReturn(randX);
     when(blockMocked.getY()).thenReturn(randY);
     when(blockMocked.getZ()).thenReturn(randZ);
+    when(blockMocked.getType()).thenReturn(Material.STONE);
   }
 }

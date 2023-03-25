@@ -20,33 +20,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Block;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictedBlocksProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictionMode;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
-final class ConfigModule extends AbstractModule {
+/**
+ * Represents the blocks filter based on the corresponding properties.
+ *
+ * @see RestrictedBlocksProperties
+ */
+@Singleton
+public final class BlocksFilter {
 
-  ConfigModule() {
-    // Instantiated for Guice
+  private final RestrictedBlocksProperties restrictedBlocksProperties;
+
+  @Inject
+  public BlocksFilter(@NotNull RestrictedBlocksProperties restrictedBlocksProperties) {
+    this.restrictedBlocksProperties = restrictedBlocksProperties;
   }
 
-  @Provides
-  @Singleton
-  static @NotNull DataSourceProperties dataSourceProperties(@NotNull ConfigApi configApi) {
-    return configApi.getDataSourceProperties();
-  }
-
-  @Provides
-  @Singleton
-  static @NotNull RestrictedBlocksProperties provideRestrictedBlocksProperties() {
-    return new RestrictedBlocksProperties(new HashSet<>(), RestrictionMode.DISABLED);
+  /**
+   * Filters the given blocks based on their material by removing any blocks having ones marked as
+   * restricted. Filters the given blocks based on their material depending on the current {@link
+   * fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictionMode} which apply.
+   *
+   * @param blocks The blocks to filter.
+   * @return The filtered blocks according the currently applicable restriction mode.
+   */
+  public @NotNull Set<Block> filter(@NotNull Collection<Block> blocks) {
+    return blocks.stream()
+        .filter(block -> !restrictedBlocksProperties.isRestricted(block.getMaterial()))
+        .collect(Collectors.toSet());
   }
 }
