@@ -29,15 +29,17 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
 import java.nio.file.Path;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import org.jetbrains.annotations.NotNull;
 
 final class JobsRebornPatchPlaceBreakModule extends AbstractModule {
 
   @Provides
   @Singleton
+  @NotNull
   PatchPlaceBreakApi patchPlaceBreakApi(
-      ClassLoader classLoader,
-      @Named("dataFolder") Path dataFolder,
-      PatchPlaceBreakCore patchPlaceBreakCore) {
+      @NotNull ClassLoader classLoader,
+      @NotNull @Named("dataFolder") Path dataFolder,
+      @NotNull PatchPlaceBreakCore patchPlaceBreakCore) {
     return patchPlaceBreakCore.enable(classLoader, dataFolder);
   }
 }

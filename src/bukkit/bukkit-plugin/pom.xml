@@ -28,7 +28,7 @@
   <parent>
     <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
     <artifactId>bukkit</artifactId>
-    <version>2.1.38-SNAPSHOT</version>
+    <version>2.1.67-SNAPSHOT</version>
   </parent>
 
   <artifactId>bukkit-plugin</artifactId>
@@ -46,32 +46,32 @@
 
   <dependencies>
     <dependency>
+      <groupId>com.github.Djaytan</groupId>
+      <artifactId>bukkit-slf4j</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>bukkit-listener</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>bukkit-slf4j</artifactId>
-      <version>${project.version}</version>
+      <artifactId>bukkit-patch-adapter</artifactId>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-api</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-core</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
     </dependency>
     <dependency>
       <groupId>org.bstats</groupId>
@@ -82,9 +82,19 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.github.Zrips</groupId>
+      <artifactId>Jobs</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>com.mysql</groupId>
       <artifactId>mysql-connector-j</artifactId>
       <!-- Provided by CraftBukkit at runtime -->
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -120,16 +130,7 @@
       </resource>
     </resources>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <configuration>
-          <ignoredUnusedDeclaredDependencies combine.children="append">
-            <ignoredUnusedDeclaredDependency>com.mysql:mysql-connector-j</ignoredUnusedDeclaredDependency>
-            <ignoredUnusedDeclaredDependency>org.xerial:sqlite-jdbc</ignoredUnusedDeclaredDependency>
-          </ignoredUnusedDeclaredDependencies>
-        </configuration>
-      </plugin>
+      <?SORTPOM IGNORE?>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -151,6 +152,7 @@
                 <exclude>META-INF/*.RSA</exclude>
                 <exclude>META-INF/MANIFEST*</exclude>
                 <exclude>META-INF/README.txt</exclude>
+                <exclude>META-INF/maven/**/*</exclude>
               </excludes>
             </filter>
           </filters>
@@ -238,6 +240,88 @@
             <phase>package</phase>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.github.wvengen</groupId>
+        <artifactId>proguard-maven-plugin</artifactId>
+        <version>2.6.0</version>
+        <configuration>
+          <attach>true</attach>
+          <includeDependency>true</includeDependency>
+          <exclusions>
+            <exclusion>
+              <groupId>com.github.Djaytan</groupId>
+              <artifactId>bukkit-slf4j</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+              <artifactId>*</artifactId>
+            </exclusion>
+          </exclusions>
+          <libs>
+            <lib>${java.home}/jmods</lib>
+          </libs>
+          <options>
+            <option>-allowaccessmodification</option>
+            <option>-dontnote</option>
+            <option>-dontwarn</option>
+            <option>-keep,allowoptimization class !fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.** { *; }</option>
+            <option>-keep,allowoptimization class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.com.google.inject.** { *; }</option>
+            <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.jee.jakarta.validation.** { *; }</option>
+            <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.org.hibernate.validator.** { *; }</option>
+            <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.org.slf4j.** { *; }</option>
+            <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.org.flywaydb.** { *; }</option>
+            <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.com.zaxxer.hikari.HikariDataSource { *; }</option>
+            <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.org.aopalliance.intercept.MethodInterceptor { *; }</option>
+            <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.org.spongepowered.configurate.ConfigurationNode { *; }</option>
+            <option>-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod</option>
+            <option>-optimizationpasses 3</option>
+          </options>
+          <!-- Obfuscation forbidden by SpigotMC and Hangar when publishing plugin there -->
+          <obfuscate>false</obfuscate>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.20.0</version>
+            <scope>runtime</scope>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>run-proguard</id>
+            <goals>
+              <goal>proguard</goal>
+            </goals>
+            <phase>package</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <?SORTPOM RESUME?>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <executions>
+          <execution>
+            <!-- Prevent conflicts with already existing Jar file -->
+            <id>clean-uber-jar</id>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+            <phase>initialize</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <configuration>
+          <ignoredUnusedDeclaredDependencies combine.children="append">
+            <ignoredUnusedDeclaredDependency>com.mysql:mysql-connector-j</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>org.xerial:sqlite-jdbc</ignoredUnusedDeclaredDependency>
+          </ignoredUnusedDeclaredDependencies>
+        </configuration>
       </plugin>
     </plugins>
   </build>

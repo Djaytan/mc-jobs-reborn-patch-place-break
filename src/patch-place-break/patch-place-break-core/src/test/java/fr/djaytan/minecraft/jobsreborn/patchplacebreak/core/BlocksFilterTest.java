@@ -37,7 +37,7 @@ import org.junit.jupiter.api.Test;
 class BlocksFilterTest {
 
   private final RestrictedBlocksProperties restrictedBlocksProperties =
-      RestrictedBlocksProperties.of(
+      new RestrictedBlocksProperties(
           new HashSet<>(Arrays.asList("STONE", "DIRT")), RestrictionMode.BLACKLIST);
   private final BlocksFilter blocksFilter = new BlocksFilter(restrictedBlocksProperties);
 
@@ -45,10 +45,10 @@ class BlocksFilterTest {
   @DisplayName("Filter with nominal values")
   void filterWithNominalValues() {
     // Given
-    Block firstBlock = Block.of(BlockLocation.of("world", 0, 0, 0), "STONE");
-    Block secondBlock = Block.of(BlockLocation.of("world", 1, 0, 0), "DIRT");
-    Block thirdBlock = Block.of(BlockLocation.of("world", 0, 1, 0), "WOOD");
-    Block fourthBlock = Block.of(BlockLocation.of("world", 0, 0, 1), "BEACON");
+    Block firstBlock = new Block(new BlockLocation("world", 0, 0, 0), "STONE");
+    Block secondBlock = new Block(new BlockLocation("world", 1, 0, 0), "DIRT");
+    Block thirdBlock = new Block(new BlockLocation("world", 0, 1, 0), "WOOD");
+    Block fourthBlock = new Block(new BlockLocation("world", 0, 0, 1), "BEACON");
     Set<Block> blocks =
         new HashSet<>(Arrays.asList(firstBlock, secondBlock, thirdBlock, fourthBlock));
 

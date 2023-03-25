@@ -25,10 +25,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.NonNull;
 import lombok.Value;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents the properties related to block restrictions when handling tags.
@@ -37,16 +35,15 @@ import lombok.Value;
  * {@link #isRestricted(String)} method.
  */
 @Value
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RestrictedBlocksProperties {
 
-  @NonNull Set<String> materials;
-  @NonNull RestrictionMode mode;
+  Set<String> materials;
+  RestrictionMode restrictionMode;
 
-  public static @NonNull RestrictedBlocksProperties of(
-      @NonNull Set<String> materials, @NonNull RestrictionMode mode) {
-    return new RestrictedBlocksProperties(
-        Collections.unmodifiableSet(new HashSet<>(materials)), mode);
+  public RestrictedBlocksProperties(
+      @NotNull Set<String> materials, @NotNull RestrictionMode restrictionMode) {
+    this.materials = Collections.unmodifiableSet(new HashSet<>(materials));
+    this.restrictionMode = restrictionMode;
   }
 
   /**
@@ -55,8 +52,8 @@ public class RestrictedBlocksProperties {
    * @param material The material name to check.
    * @return true if the material is restricted, false otherwise.
    */
-  public boolean isRestricted(@NonNull String material) {
-    switch (mode) {
+  public boolean isRestricted(@NotNull String material) {
+    switch (restrictionMode) {
       case BLACKLIST:
         return materials.contains(material);
       case WHITELIST:
@@ -64,7 +61,8 @@ public class RestrictedBlocksProperties {
       case DISABLED:
         return false;
       default:
-        throw new IllegalStateException(String.format("Mode %s is not supported.", mode));
+        throw new IllegalStateException(
+            String.format("Restriction mode %s is not supported.", restrictionMode));
     }
   }
 }

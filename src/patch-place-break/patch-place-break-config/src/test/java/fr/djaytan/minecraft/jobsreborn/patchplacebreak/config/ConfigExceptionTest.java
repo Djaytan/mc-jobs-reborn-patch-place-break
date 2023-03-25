@@ -23,28 +23,29 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("java:S2187")
 class ConfigExceptionTest extends ExceptionBaseTest {
 
   @Override
-  protected @NonNull Exception getException() {
+  protected @NotNull Exception getException() {
     return new ConfigException();
   }
 
   @Override
-  protected @NonNull Exception getException(@NonNull String message) {
+  protected @NotNull Exception getException(@NotNull String message) {
     return new ConfigException(message);
   }
 
   @Override
-  protected @NonNull Exception getException(Throwable cause) {
+  protected @NotNull Exception getException(@Nullable Throwable cause) {
     return new ConfigException(cause);
   }
 
   @Override
-  protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
+  protected @NotNull Exception getException(@NotNull String message, @Nullable Throwable cause) {
     return new ConfigException(message, cause);
   }
 }

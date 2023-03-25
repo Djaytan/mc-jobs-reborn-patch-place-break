@@ -35,15 +35,15 @@ import org.junit.jupiter.api.Test;
 class VectorTest {
 
   @Test
-  @DisplayName("Constructor - Successful nominal case")
-  void shouldSuccessWhenCreatingWithNominalValues() {
+  @DisplayName("When instantiating with nominal values")
+  void whenInstantiatingWithNominalValues() {
     // Given
     int modX = 152;
     int modY = -2;
     int modZ = 999;
 
     // When
-    Vector vector = Vector.of(modX, modY, modZ);
+    Vector vector = new Vector(modX, modY, modZ);
 
     // Then
     assertAll(
@@ -54,14 +54,14 @@ class VectorTest {
   }
 
   @Test
-  @DisplayName("equals() & hashCode() - Verifications")
-  void equalsAndHashcodeContractVerification() {
+  @DisplayName("When calling equals() & hashCode()")
+  void whenCallingEqualsAndHashcode_shouldMetContracts() {
     EqualsVerifier.forClass(Vector.class).verify();
   }
 
   @Test
-  @DisplayName("toString() - Verifications")
-  void toStringContractVerification() {
+  @DisplayName("When calling toString()")
+  void whenCallingToString_shouldMetContracts() {
     ToStringVerifier.forClass(Vector.class).withClassName(NameStyle.SIMPLE_NAME).verify();
   }
 }

@@ -29,6 +29,7 @@ import static org.mockito.BDDMockito.given;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -54,7 +55,7 @@ class BlockLocationConverterTest {
 
     @Test
     @DisplayName("From nominal block")
-    void fromNominalBlock(@Mock Block block, @Mock World world) {
+    void fromNominalBlock(@Mock @NotNull Block block, @Mock @NotNull World world) {
       // Given
       String worldName = "world";
       given(world.getName()).willReturn(worldName);
@@ -71,12 +72,12 @@ class BlockLocationConverterTest {
       BlockLocation blockLocation = locationConverter.convert(block);
 
       // Then
-      assertThat(blockLocation).isEqualTo(BlockLocation.of(worldName, x, y, z));
+      assertThat(blockLocation).isEqualTo(new BlockLocation(worldName, x, y, z));
     }
 
     @Test
     @DisplayName("From block without world value")
-    void fromLocationWithoutWorldValue(@Mock Block block) {
+    void fromLocationWithoutWorldValue(@Mock @NotNull Block block) {
       // Given
 
       // When

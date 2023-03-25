@@ -22,12 +22,10 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin;
 
+import com.djaytan.bukkit.slf4j.BukkitLoggerFactory;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.ListenerRegister;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject.JobsRebornPatchPlaceBreakFactory;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.slf4j.BukkitLoggerFactory;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
-import java.util.logging.Logger;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -40,7 +38,7 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
   @Override
   @SneakyThrows
   public void onEnable() {
-    enableSlf4j(getLogger());
+    BukkitLoggerFactory.provideBukkitLogger(getLogger());
 
     JobsRebornPatchPlaceBreakFactory factory = new JobsRebornPatchPlaceBreakFactory(this);
     ListenerRegister listenerRegister = factory.listenerRegister();
@@ -57,9 +55,5 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
   public void onDisable() {
     patchPlaceBreakCore.disable();
     getLogger().info("JobsReborn-PatchPlaceBreak successfully disabled.");
-  }
-
-  private static void enableSlf4j(@NonNull Logger bukkitLogger) {
-    BukkitLoggerFactory.provideBukkitLogger(bukkitLogger);
   }
 }

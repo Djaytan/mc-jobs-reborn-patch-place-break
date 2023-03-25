@@ -29,6 +29,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Value;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
@@ -76,10 +77,10 @@ public class DataSourcePropertiesImpl implements DataSourceProperties, Propertie
   }
 
   public DataSourcePropertiesImpl(
-      DataSourceType type,
-      String table,
-      DbmsServerPropertiesImpl dbmsServer,
-      ConnectionPoolPropertiesImpl connectionPool) {
+      @Nullable DataSourceType type,
+      @Nullable String table,
+      @Nullable DbmsServerPropertiesImpl dbmsServer,
+      @Nullable ConnectionPoolPropertiesImpl connectionPool) {
     this.type = type;
     this.table = table;
     this.dbmsServer = dbmsServer;

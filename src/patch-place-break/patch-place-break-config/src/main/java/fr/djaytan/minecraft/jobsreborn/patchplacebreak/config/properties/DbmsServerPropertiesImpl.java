@@ -28,6 +28,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Value;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
@@ -61,7 +62,9 @@ public class DbmsServerPropertiesImpl implements DbmsServerProperties, Propertie
   }
 
   public DbmsServerPropertiesImpl(
-      DbmsHostPropertiesImpl host, DbmsCredentialsPropertiesImpl credentials, String database) {
+      @Nullable DbmsHostPropertiesImpl host,
+      @Nullable DbmsCredentialsPropertiesImpl credentials,
+      @Nullable String database) {
     this.host = host;
     this.credentials = credentials;
     this.database = database;

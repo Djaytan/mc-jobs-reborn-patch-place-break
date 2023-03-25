@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -64,8 +65,8 @@ class ConstraintViolationFormatterTest {
     @Test
     @DisplayName("With one constraint violation")
     void withOneConstraintViolation_shouldMatchExpectations(
-        @Mock ConstraintViolation<Object> constraintViolationMocked,
-        @Mock Path propertyPathMocked) {
+        @Mock @NotNull ConstraintViolation<Object> constraintViolationMocked,
+        @Mock @NotNull Path propertyPathMocked) {
       // Given
       given(propertyPathMocked.toString()).willReturn("theImpactedProperty");
       given(constraintViolationMocked.getPropertyPath()).willReturn(propertyPathMocked);
@@ -88,10 +89,10 @@ class ConstraintViolationFormatterTest {
     @Test
     @DisplayName("With several constraint violations")
     void withSeveralConstraintViolations_shouldMatchExpectations(
-        @Mock ConstraintViolation<Object> constraintViolationMocked1,
-        @Mock Path propertyPathMocked1,
-        @Mock ConstraintViolation<Object> constraintViolationMocked2,
-        @Mock Path propertyPathMocked2) {
+        @Mock @NotNull ConstraintViolation<Object> constraintViolationMocked1,
+        @Mock @NotNull Path propertyPathMocked1,
+        @Mock @NotNull ConstraintViolation<Object> constraintViolationMocked2,
+        @Mock @NotNull Path propertyPathMocked2) {
       // Given
       given(propertyPathMocked1.toString()).willReturn("theImpactedProperty1");
       given(constraintViolationMocked1.getPropertyPath()).willReturn(propertyPathMocked1);

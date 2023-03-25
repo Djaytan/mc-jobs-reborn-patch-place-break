@@ -25,6 +25,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -42,15 +44,15 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -209,7 +211,7 @@ class DbmsServerPropertiesImplTest {
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With valid values")
-      void withValidValues_shouldNotGenerateConstraintViolations(@NonNull String validDatabase) {
+      void withValidValues_shouldNotGenerateConstraintViolations(@NotNull String validDatabase) {
         // Given
         DbmsServerPropertiesImpl dbmsServerPropertiesImpl =
             new DbmsServerPropertiesImpl(
@@ -225,16 +227,16 @@ class DbmsServerPropertiesImplTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      private @NonNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Longest allowed value", StringUtils.repeat("s", 128))),
-            Arguments.of(Named.of("Shortest allowed value", "s")));
+            arguments(named("Longest allowed value", StringUtils.repeat("s", 128))),
+            arguments(named("Shortest allowed value", "s")));
       }
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
       @DisplayName("With invalid values")
-      void withInvalidValues_shouldGenerateConstraintViolations(String invalidDatabase) {
+      void withInvalidValues_shouldGenerateConstraintViolations(@Nullable String invalidDatabase) {
         // Given
         DbmsServerPropertiesImpl dbmsServerPropertiesImpl =
             new DbmsServerPropertiesImpl(
@@ -261,12 +263,12 @@ class DbmsServerPropertiesImplTest {
                     constraintViolation.getPropertyPath().toString().equals("database"));
       }
 
-      private @NonNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
-            Arguments.of(Named.of("Null value", null)),
-            Arguments.of(Named.of("Too long value", StringUtils.repeat("s", 129))),
-            Arguments.of(Named.of("Empty and too short value", "")),
-            Arguments.of(Named.of("Blank value", " ")));
+            arguments(named("Null value", null)),
+            arguments(named("Too long value", StringUtils.repeat("s", 129))),
+            arguments(named("Empty and too short value", "")),
+            arguments(named("Blank value", " ")));
       }
     }
   }
@@ -281,7 +283,7 @@ class DbmsServerPropertiesImplTest {
     @DisplayName("With valid values")
     @SneakyThrows
     void withValidValues_shouldMatchExpectedYamlContent(
-        @NonNull DbmsServerPropertiesImpl givenValue, @NonNull String expectedYamlFileName) {
+        @NotNull DbmsServerPropertiesImpl givenValue, @NotNull String expectedYamlFileName) {
       // Given
       Path imDestFile = imfs.getPath("test.conf");
 
@@ -296,13 +298,13 @@ class DbmsServerPropertiesImplTest {
       assertThat(actualYaml).containsIgnoringNewLines(expectedYaml);
     }
 
-    private @NonNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
+    private @NotNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
-          Arguments.of(
-              Named.of("With default values", new DbmsServerPropertiesImpl()),
+          arguments(
+              named("With default values", new DbmsServerPropertiesImpl()),
               "whenSerializing_withDefaultValues.conf"),
-          Arguments.of(
-              Named.of(
+          arguments(
+              named(
                   "With custom values",
                   new DbmsServerPropertiesImpl(
                       new DbmsHostPropertiesImpl("example.com", 1234, true),
@@ -321,7 +323,7 @@ class DbmsServerPropertiesImplTest {
     @MethodSource
     @DisplayName("With valid content")
     void withValidContent_shouldMatchExpectedValue(
-        @NonNull String confFileName, @NonNull DbmsServerPropertiesImpl expectedValue) {
+        @NotNull String confFileName, @NotNull DbmsServerPropertiesImpl expectedValue) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
@@ -334,22 +336,22 @@ class DbmsServerPropertiesImplTest {
       assertThat(optionalDbmsServerValidatingProperties).isPresent().get().isEqualTo(expectedValue);
     }
 
-    private @NonNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
+    private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
-          Arguments.of(
-              Named.of("With valid values", "whenDeserializing_withValidValues.conf"),
+          arguments(
+              named("With valid values", "whenDeserializing_withValidValues.conf"),
               new DbmsServerPropertiesImpl(
                   new DbmsHostPropertiesImpl("example.com", 1234, true),
                   new DbmsCredentialsPropertiesImpl("foo", "bar"),
                   "patch_database")),
-          Arguments.of(
-              Named.of("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
+          arguments(
+              named("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
               new DbmsServerPropertiesImpl(
                   new DbmsHostPropertiesImpl("example.com", 1234, true),
                   new DbmsCredentialsPropertiesImpl("foo", "bar"),
                   "patch_database")),
-          Arguments.of(
-              Named.of("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
+          arguments(
+              named("With 'isValidated' field", "whenDeserializing_withIsValidatedField.conf"),
               new DbmsServerPropertiesImpl(
                   new DbmsHostPropertiesImpl("example.com", 1234, true),
                   new DbmsCredentialsPropertiesImpl("foo", "bar"),
@@ -359,7 +361,7 @@ class DbmsServerPropertiesImplTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With invalid content")
-    void withInvalidContent_shouldThrowException(@NonNull String confFileName) {
+    void withInvalidContent_shouldThrowException(@NotNull String confFileName) {
       // Given
       Path confFile =
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
@@ -374,16 +376,16 @@ class DbmsServerPropertiesImplTest {
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
-    private @NonNull Stream<Arguments> withInvalidContent_shouldThrowException() {
+    private @NotNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
-          Arguments.of(
-              Named.of("With missing 'host' field", "whenDeserializing_withMissingHostField.conf")),
-          Arguments.of(
-              Named.of(
+          arguments(
+              named("With missing 'host' field", "whenDeserializing_withMissingHostField.conf")),
+          arguments(
+              named(
                   "With missing 'credentials' field",
                   "whenDeserializing_withMissingCredentialsField.conf")),
-          Arguments.of(
-              Named.of(
+          arguments(
+              named(
                   "With missing 'database' field",
                   "whenDeserializing_withMissingDatabaseField.conf")));
     }

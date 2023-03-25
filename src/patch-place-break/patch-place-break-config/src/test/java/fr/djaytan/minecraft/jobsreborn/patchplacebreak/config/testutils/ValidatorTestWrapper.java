@@ -27,7 +27,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import java.util.Set;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A validator wrapper for test purposes.
@@ -48,7 +48,7 @@ public class ValidatorTestWrapper {
   /**
    * @see jakarta.validation.Validator#validate(Object, Class[])
    */
-  public static @NonNull <T> Set<ConstraintViolation<T>> validate(@NonNull T object) {
+  public static <T> @NotNull Set<ConstraintViolation<T>> validate(@NotNull T object) {
     return INSTANCE.validatorFactory.getValidator().validate(object);
   }
 
@@ -57,7 +57,7 @@ public class ValidatorTestWrapper {
    *
    * @return A validator for test purposes.
    */
-  public static @NonNull Validator getValidator() {
+  public static @NotNull Validator getValidator() {
     return INSTANCE.validatorFactory.getValidator();
   }
 }

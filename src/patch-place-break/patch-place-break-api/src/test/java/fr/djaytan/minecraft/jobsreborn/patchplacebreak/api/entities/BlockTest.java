@@ -41,10 +41,10 @@ class BlockTest {
     int x = -54;
     int y = 67;
     int z = 4872;
-    BlockLocation blockLocation = BlockLocation.of(worldName, x, y, z);
+    BlockLocation blockLocation = new BlockLocation(worldName, x, y, z);
 
     // When
-    Block block = Block.of(blockLocation, "STONE");
+    Block block = new Block(blockLocation, "STONE");
 
     // Then
     assertAll(

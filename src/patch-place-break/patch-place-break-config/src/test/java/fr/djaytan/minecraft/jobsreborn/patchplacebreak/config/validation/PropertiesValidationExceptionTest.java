@@ -29,7 +29,8 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.Da
 import jakarta.validation.ConstraintViolation;
 import java.util.Collections;
 import java.util.Set;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,29 +42,29 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class PropertiesValidationExceptionTest extends ExceptionBaseTest {
 
   @Override
-  protected @NonNull Exception getException() {
+  protected @NotNull Exception getException() {
     return new PropertiesValidationException();
   }
 
   @Override
-  protected @NonNull Exception getException(@NonNull String message) {
+  protected @NotNull Exception getException(@NotNull String message) {
     return new PropertiesValidationException(message);
   }
 
   @Override
-  protected @NonNull Exception getException(Throwable cause) {
+  protected @NotNull Exception getException(@Nullable Throwable cause) {
     return new PropertiesValidationException(cause);
   }
 
   @Override
-  protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
+  protected @NotNull Exception getException(@NotNull String message, @Nullable Throwable cause) {
     return new PropertiesValidationException(message, cause);
   }
 
   @Test
   @DisplayName("When instantiating constraint violations exception")
   void whenInstantiatingConstraintViolationsException(
-      @Mock ConstraintViolation<DataSourceProperties> constraintViolation) {
+      @Mock @NotNull ConstraintViolation<DataSourceProperties> constraintViolation) {
     // Given
     Set<ConstraintViolation<DataSourceProperties>> constraintViolations =
         Collections.singleton(constraintViolation);

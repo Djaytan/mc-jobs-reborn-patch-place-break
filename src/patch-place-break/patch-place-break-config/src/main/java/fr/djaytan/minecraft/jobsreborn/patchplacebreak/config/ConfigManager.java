@@ -31,8 +31,8 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Manages config creation and manipulations.
@@ -54,9 +54,9 @@ final class ConfigManager {
 
   @Inject
   public ConfigManager(
-      @Named("dataFolder") Path dataFolder,
-      ConfigSerializer configSerializer,
-      PropertiesValidator propertiesValidator) {
+      @NotNull @Named("dataFolder") Path dataFolder,
+      @NotNull ConfigSerializer configSerializer,
+      @NotNull PropertiesValidator propertiesValidator) {
     this.dataFolder = dataFolder;
     this.configSerializer = configSerializer;
     this.propertiesValidator = propertiesValidator;
@@ -72,7 +72,7 @@ final class ConfigManager {
    *     yet.
    */
   public void createDefaultIfNotExists(
-      @NonNull String configFileName, @NonNull Properties defaultProperties) {
+      @NotNull String configFileName, @NotNull Properties defaultProperties) {
     Path configFile = dataFolder.resolve(configFileName);
 
     if (Files.exists(configFile)) {
@@ -95,15 +95,15 @@ final class ConfigManager {
    * @return The specified final type instantiated and populated with values coming from the config
    *     file content.
    */
-  public <T extends Properties> @NonNull T readAndValidate(
-      @NonNull String configFileName, @NonNull Class<T> propertiesType) {
+  public <T extends Properties> @NotNull T readAndValidate(
+      @NotNull String configFileName, @NotNull Class<T> propertiesType) {
     T properties = readAndDeserializeProperties(configFileName, propertiesType);
     propertiesValidator.validate(properties);
     return properties;
   }
 
-  private <T extends Properties> @NonNull T readAndDeserializeProperties(
-      @NonNull String configFileName, @NonNull Class<T> propertiesType) {
+  private <T extends Properties> @NotNull T readAndDeserializeProperties(
+      @NotNull String configFileName, @NotNull Class<T> propertiesType) {
     Path configFile = dataFolder.resolve(configFileName);
 
     log.atInfo().log("Reading '{}' file...", configFileName);

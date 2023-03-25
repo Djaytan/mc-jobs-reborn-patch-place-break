@@ -23,21 +23,16 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties;
 
 /**
- * Represents the restriction modes for a block filtering system.
- *
- * <p>The available restriction modes are:
- *
- * <p>BLACKLIST: All blocks in the block list should be ignored, while all other
- * blocks are allowed.
- *
- * <p>WHITELIST: Only blocks in the block list should be allowed, and all other blocks
- * should be ignored.
- *
- * <p>DISABLED: The restriction system is disabled, and all blocks will be taken into
- * account without any filtering.
+ * Represents the restriction modes permitting to know whether a block type should be ignored by the
+ * tag handling mechanism or not. This allows performances improvements when this is an issue (e.g.
+ * the Tree Feller skill from McMMO plugin cutting hundreds of logs at a time leading to a server
+ * freeze).
  */
 public enum RestrictionMode {
+  /** Only listed blocks are marked as restricted. */
   BLACKLIST,
+  /** All blocks are marked as restricted except the listed ones. */
   WHITELIST,
+  /** No restriction apply. */
   DISABLED
 }

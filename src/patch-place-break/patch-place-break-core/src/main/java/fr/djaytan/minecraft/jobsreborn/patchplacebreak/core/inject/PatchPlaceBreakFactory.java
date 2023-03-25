@@ -27,30 +27,33 @@ import com.google.inject.Injector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
 import java.nio.file.Path;
-import lombok.NonNull;
+import java.time.Clock;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class PatchPlaceBreakFactory {
 
   private final Injector injector;
 
-  public PatchPlaceBreakFactory(@NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
-    this.injector = createInjector(classLoader, dataFolder);
+  public PatchPlaceBreakFactory(
+      @NotNull ClassLoader classLoader, @Nullable Clock clock, @NotNull Path dataFolder) {
+    this.injector = createInjector(classLoader, clock, dataFolder);
   }
 
-  private static @NonNull Injector createInjector(
-      @NonNull ClassLoader classLoader, @NonNull Path dataFolder) {
+  private static @NotNull Injector createInjector(
+      @NotNull ClassLoader classLoader, @Nullable Clock clock, @NotNull Path dataFolder) {
     return Guice.createInjector(
         new ConfigModule(),
-        new PatchPlaceBreakModule(classLoader, dataFolder),
+        new PatchPlaceBreakModule(classLoader, clock, dataFolder),
         new StorageModule(),
         new ValidationModule());
   }
 
-  public @NonNull PatchPlaceBreakApi patchPlaceBreakApi() {
+  public @NotNull PatchPlaceBreakApi patchPlaceBreakApi() {
     return injector.getInstance(PatchPlaceBreakApi.class);
   }
 
-  public @NonNull DataSourceManager dataSourceManager() {
+  public @NotNull DataSourceManager dataSourceManager() {
     return injector.getInstance(DataSourceManager.class);
   }
 }

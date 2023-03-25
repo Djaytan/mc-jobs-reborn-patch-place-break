@@ -23,7 +23,6 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
 import com.gamingmesh.jobs.container.ActionInfo;
-import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Block;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
@@ -38,8 +37,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import org.bukkit.block.BlockFace;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Adapter of {@link PatchPlaceBreakApi} for Bukkit.
@@ -56,10 +56,10 @@ public class PatchPlaceBreakBukkitAdapterApi {
 
   @Inject
   public PatchPlaceBreakBukkitAdapterApi(
-      ActionTypeConverter actionTypeConverter,
-      BlockFaceConverter blockFaceConverter,
-      LocationConverter locationConverter,
-      PatchPlaceBreakApi patchPlaceBreakApi) {
+      @NotNull ActionTypeConverter actionTypeConverter,
+      @NotNull BlockFaceConverter blockFaceConverter,
+      @NotNull LocationConverter locationConverter,
+      @NotNull PatchPlaceBreakApi patchPlaceBreakApi) {
     this.actionTypeConverter = actionTypeConverter;
     this.blockFaceConverter = blockFaceConverter;
     this.locationConverter = locationConverter;
@@ -74,11 +74,11 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * @return The completable future object.
    * @see PatchPlaceBreakApi#putTag(Block, boolean)
    */
-  public @NonNull CompletableFuture<Void> putTag(
-      @NonNull org.bukkit.block.Block bukkitBlock, boolean isEphemeral) {
+  public @NotNull CompletableFuture<Void> putTag(
+      @NotNull org.bukkit.block.Block bukkitBlock, boolean isEphemeral) {
     BlockLocation blockLocation = locationConverter.convert(bukkitBlock);
     return patchPlaceBreakApi.putTag(
-        Block.of(blockLocation, bukkitBlock.getType().name()), isEphemeral);
+        new Block(blockLocation, bukkitBlock.getType().name()), isEphemeral);
   }
 
   /**
@@ -92,13 +92,13 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * @return The completable future object.
    * @see PatchPlaceBreakApi#moveTags(Set, Vector)
    */
-  public @NonNull CompletableFuture<Void> moveTags(
-      @NonNull Collection<org.bukkit.block.Block> bukkitBlocks, @NonNull BlockFace blockFace) {
+  public @NotNull CompletableFuture<Void> moveTags(
+      @NotNull Collection<org.bukkit.block.Block> bukkitBlocks, @NotNull BlockFace blockFace) {
     Set<Block> blocks =
         bukkitBlocks.stream()
             .map(
                 bukkitBlock ->
-                    Block.of(locationConverter.convert(bukkitBlock), bukkitBlock.getType().name()))
+                    new Block(locationConverter.convert(bukkitBlock), bukkitBlock.getType().name()))
             .collect(Collectors.toSet());
     Vector vector = blockFaceConverter.convert(blockFace);
     return patchPlaceBreakApi.moveTags(blocks, vector);
@@ -111,9 +111,9 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * @return The completable future object.
    * @see PatchPlaceBreakApi#removeTag(Block)
    */
-  public @NonNull CompletableFuture<Void> removeTag(@NonNull org.bukkit.block.Block bukkitBlock) {
+  public @NotNull CompletableFuture<Void> removeTag(@NotNull org.bukkit.block.Block bukkitBlock) {
     BlockLocation blockLocation = locationConverter.convert(bukkitBlock);
-    return patchPlaceBreakApi.removeTag(Block.of(blockLocation, bukkitBlock.getType().name()));
+    return patchPlaceBreakApi.removeTag(new Block(blockLocation, bukkitBlock.getType().name()));
   }
 
   /**
@@ -125,19 +125,14 @@ public class PatchPlaceBreakBukkitAdapterApi {
    *     patch-and-break exploit or not.
    * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, Block)
    */
-  public boolean isPlaceAndBreakExploit(ActionInfo actionInfo, org.bukkit.block.Block bukkitBlock) {
+  public boolean isPlaceAndBreakExploit(
+      @Nullable ActionInfo actionInfo, @Nullable org.bukkit.block.Block bukkitBlock) {
     if (actionInfo == null || bukkitBlock == null) {
       return false;
     }
 
-    ActionType actionType = actionInfo.getType();
-
-    if (actionType == null) {
-      return false;
-    }
-
-    BlockActionType patchActionType = actionTypeConverter.convert(actionType);
-    Block block = Block.of(locationConverter.convert(bukkitBlock), bukkitBlock.getType().name());
+    BlockActionType patchActionType = actionTypeConverter.convert(actionInfo.getType());
+    Block block = new Block(locationConverter.convert(bukkitBlock), bukkitBlock.getType().name());
     return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, block);
   }
 }

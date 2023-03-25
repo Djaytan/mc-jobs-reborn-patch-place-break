@@ -26,7 +26,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.Propert
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializer;
 import java.nio.file.Path;
 import java.util.Optional;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /** Wrapper class for config serialization in tests. */
 public final class ConfigSerializerTestWrapper {
@@ -34,7 +34,7 @@ public final class ConfigSerializerTestWrapper {
   /**
    * @see ConfigSerializer#serialize(Path, Properties)
    */
-  public static void serialize(@NonNull Path destConfigFile, @NonNull Properties properties) {
+  public static void serialize(@NotNull Path destConfigFile, @NotNull Properties properties) {
     ConfigSerializer configSerializer = new ConfigSerializer();
     configSerializer.serialize(destConfigFile, properties);
   }
@@ -42,8 +42,8 @@ public final class ConfigSerializerTestWrapper {
   /**
    * @see ConfigSerializer#deserialize(Path, Class)
    */
-  public static <T extends Properties> @NonNull Optional<T> deserialize(
-      @NonNull Path srcConfigFile, @NonNull Class<T> type) {
+  public static <T extends Properties> @NotNull Optional<T> deserialize(
+      @NotNull Path srcConfigFile, @NotNull Class<T> type) {
     ConfigSerializer configSerializer = new ConfigSerializer();
     return configSerializer.deserialize(srcConfigFile, type);
   }

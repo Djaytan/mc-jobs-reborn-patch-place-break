@@ -25,8 +25,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.regex.Pattern;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 /** Converts a class name to a filesystem path with {@link #convertClassToFsPath(Class)}. */
 @RequiredArgsConstructor
@@ -52,8 +52,8 @@ final class ClassToFsPathConverter {
    * @throws UnsupportedClassException If a primary, array, collection or any generic class is
    *     specified.
    */
-  @NonNull
-  Path convertClassToFsPath(@NonNull Class<?> clazz) {
+  @NotNull
+  Path convertClassToFsPath(@NotNull Class<?> clazz) {
     checkIfClassIsSupported(clazz);
 
     String className = clazz.getName();
@@ -61,15 +61,15 @@ final class ClassToFsPathConverter {
     return fileSystem.getPath(pathStr);
   }
 
-  private static @NonNull String getWithDotsReplacedBySlashes(@NonNull String className) {
+  private static @NotNull String getWithDotsReplacedBySlashes(@NotNull String className) {
     return DOTS_REGEX_PATTERN.matcher(className).replaceAll("/");
   }
 
-  private static @NonNull String getWithInnerClassesFiltered(@NonNull String className) {
+  private static @NotNull String getWithInnerClassesFiltered(@NotNull String className) {
     return INNER_CLASS_REGEX_PATTERN.matcher(className).replaceAll("");
   }
 
-  private static void checkIfClassIsSupported(@NonNull Class<?> clazz) {
+  private static void checkIfClassIsSupported(@NotNull Class<?> clazz) {
     if (clazz.isArray() || clazz.isPrimitive() || clazz.isAnnotation()) {
       throw UnsupportedClassException.unsupportedClass(clazz);
     }

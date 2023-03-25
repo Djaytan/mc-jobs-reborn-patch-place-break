@@ -32,6 +32,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.Restricted
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPair;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -40,8 +41,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 /** Implementation of {@link PatchPlaceBreakApi}. */
 @Singleton
@@ -49,34 +50,37 @@ import lombok.extern.slf4j.Slf4j;
 public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
 
   private final BlocksFilter blocksFilter;
+  private final Clock clock;
   private final RestrictedBlocksProperties restrictedBlocksProperties;
   private final TagRepository tagRepository;
 
   @Inject
   public PatchPlaceBreakImpl(
-      BlocksFilter blocksFilter,
-      RestrictedBlocksProperties restrictedBlocksProperties,
-      TagRepository tagRepository) {
+      @NotNull BlocksFilter blocksFilter,
+      @NotNull Clock clock,
+      @NotNull RestrictedBlocksProperties restrictedBlocksProperties,
+      @NotNull TagRepository tagRepository) {
     this.blocksFilter = blocksFilter;
+    this.clock = clock;
     this.restrictedBlocksProperties = restrictedBlocksProperties;
     this.tagRepository = tagRepository;
   }
 
-  public @NonNull CompletableFuture<Void> putTag(@NonNull Block block, boolean isEphemeral) {
+  public @NotNull CompletableFuture<Void> putTag(@NotNull Block block, boolean isEphemeral) {
     return CompletableFuture.runAsync(
         () -> {
           if (restrictedBlocksProperties.isRestricted(block.getMaterial())) {
             return;
           }
 
-          LocalDateTime localDateTime = LocalDateTime.now();
-          Tag tag = Tag.of(block.getBlockLocation(), isEphemeral, localDateTime);
+          LocalDateTime localDateTime = LocalDateTime.now(clock);
+          Tag tag = new Tag(block.getBlockLocation(), isEphemeral, localDateTime);
           tagRepository.put(tag);
         });
   }
 
-  public @NonNull CompletableFuture<Void> moveTags(
-      @NonNull Set<Block> blocks, @NonNull Vector direction) {
+  public @NotNull CompletableFuture<Void> moveTags(
+      @NotNull Set<Block> blocks, @NotNull Vector direction) {
     return CompletableFuture.runAsync(
         () -> {
           Set<Block> filteredBlocks = blocksFilter.filter(blocks);
@@ -99,7 +103,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
         });
   }
 
-  public @NonNull CompletableFuture<Void> removeTag(@NonNull Block block) {
+  public @NotNull CompletableFuture<Void> removeTag(@NotNull Block block) {
     return CompletableFuture.runAsync(
         () -> {
           if (restrictedBlocksProperties.isRestricted(block.getMaterial())) {
@@ -111,7 +115,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   }
 
   public boolean isPlaceAndBreakExploit(
-      @NonNull BlockActionType blockActionType, @NonNull Block block) {
+      @NotNull BlockActionType blockActionType, @NotNull Block block) {
     if (restrictedBlocksProperties.isRestricted(block.getMaterial())) {
       return false;
     }
@@ -126,7 +130,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
       return true;
     }
 
-    LocalDateTime localDateTime = LocalDateTime.now();
+    LocalDateTime localDateTime = LocalDateTime.now(clock);
     Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
 
     return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();

@@ -28,6 +28,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Value;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
@@ -74,7 +75,7 @@ public class DbmsHostPropertiesImpl implements DbmsHostProperties, Properties {
     this.isSslEnabled = true;
   }
 
-  public DbmsHostPropertiesImpl(String hostname, int port, boolean isSslEnabled) {
+  public DbmsHostPropertiesImpl(@Nullable String hostname, int port, boolean isSslEnabled) {
     this.hostname = hostname;
     this.port = port;
     this.isSslEnabled = isSslEnabled;

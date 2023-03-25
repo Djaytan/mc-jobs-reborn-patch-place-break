@@ -28,7 +28,7 @@
 
   <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
   <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
-  <version>2.1.38-SNAPSHOT</version>
+  <version>2.1.67-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>JobsReborn-PatchPlaceBreak</name>
@@ -48,7 +48,6 @@
     <module>src/bukkit</module>
     <module>src/commons-test</module>
     <module>src/patch-place-break</module>
-    <module>src/storage</module>
   </modules>
 
   <scm>
@@ -63,16 +62,8 @@
   </issueManagement>
 
   <ciManagement>
-    <url>https://app.circleci.com/pipelines/github/Djaytan/mc-jobs-reborn-patch-place-break</url>
+    <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions</url>
   </ciManagement>
-
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/djaytan/mc-jobs-reborn-patch-place-break</url>
-    </repository>
-  </distributionManagement>
 
   <properties>
     <!-- ==================== General ==================== -->
@@ -91,7 +82,7 @@
 
     <!-- ==================== Dependencies versions ==================== -->
     <version.configurate>4.1.2</version.configurate>
-    <version.flyway>9.16.0</version.flyway>
+    <version.flyway>9.16.1</version.flyway>
     <version.lombok>1.18.26</version.lombok>
     <version.slf4j>2.0.7</version.slf4j>
 
@@ -156,6 +147,36 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>2.11.0</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+        <artifactId>bukkit-patch-adapter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+        <artifactId>commons-test</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+        <artifactId>patch-place-break-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+        <artifactId>patch-place-break-config</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+        <artifactId>patch-place-break-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+        <artifactId>patch-place-break-storage</artifactId>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>javax.inject</groupId>
@@ -258,9 +279,20 @@
         <version>${version.configurate}</version>
       </dependency>
       <dependency>
+        <groupId>org.threeten</groupId>
+        <artifactId>threeten-extra</artifactId>
+        <version>1.7.2</version>
+      </dependency>
+      <dependency>
         <groupId>org.xerial</groupId>
         <artifactId>sqlite-jdbc</artifactId>
-        <version>3.41.0.0</version>
+        <version>3.41.2.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains</groupId>
+        <artifactId>annotations</artifactId>
+        <version>24.0.1</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.projectlombok</groupId>
@@ -371,16 +403,31 @@
         </configuration>
         <executions>
           <execution>
+            <id>sort-pom</id>
             <goals>
-              <goal>${sortpom.goal}</goal>
+              <goal>sort</goal>
             </goals>
+            <phase>initialize</phase>
+            <configuration>
+              <skip>${sortpom.skipSort}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>pom-sorting-check</id>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+            <phase>validate</phase>
+            <configuration>
+              <skip>${sortpom.skipCheck}</skip>
+            </configuration>
           </execution>
         </executions>
       </plugin>
       <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
-        <version>4.1</version>
+        <version>4.2</version>
         <configuration>
           <properties>
             <owner>Loïc DUBOIS-TERMOZ (alias Djaytan)</owner>
@@ -394,8 +441,9 @@
                 <exclude>src/test/resources/**</exclude>
                 <exclude>**/dir.empty</exclude>
                 <exclude>.editorconfig</exclude>
-                <exclude>renovate.json5</exclude>
+                <exclude>jitpack.yml</exclude>
                 <exclude>lombok.config</exclude>
+                <exclude>renovate.json5</exclude>
               </excludes>
             </licenseSet>
           </licenseSets>
@@ -431,10 +479,24 @@
         <version>2.19</version>
         <executions>
           <execution>
+            <id>format-code</id>
             <goals>
-              <goal>${fmt.goal}</goal>
+              <goal>format</goal>
             </goals>
-            <phase>${fmt.phase}</phase>
+            <phase>process-sources</phase>
+            <configuration>
+              <skip>${fmt.skipFormat}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>code-formatting-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>validate</phase>
+            <configuration>
+              <skip>${fmt.skipCheck}</skip>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -477,13 +539,14 @@
               org.slf4j:slf4j-nop
               <!-- Required for deactivating logs during tests execution -->
             </ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>org.projectlombok:lombok</ignoredUnusedDeclaredDependency>
           </ignoredUnusedDeclaredDependencies>
         </configuration>
         <executions>
           <execution>
             <id>analyse</id>
             <goals>
-              <goal>analyze</goal>
+              <goal>analyze-only</goal>
               <goal>analyze-dep-mgt</goal>
               <goal>analyze-duplicate</goal>
             </goals>
@@ -494,7 +557,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.1.1</version>
         <configuration>
           <!--
             We will not have to deploy in repository since we rely on Jitpack
@@ -560,7 +623,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.1.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -589,7 +652,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>3.0.0-M7</version>
+        <version>3.0.0</version>
         <configuration>
           <!-- Spigot API is a SNAPSHOT version... No other choice than to enable this option -->
           <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
@@ -603,7 +666,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.3.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -613,7 +676,7 @@
           <execution>
             <id>attach-sources</id>
             <goals>
-              <goal>jar</goal>
+              <goal>jar-no-fork</goal>
             </goals>
             <phase>verify</phase>
           </execution>
@@ -736,21 +799,23 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <fmt.goal>format</fmt.goal>
-        <fmt.phase>process-sources</fmt.phase>
+        <fmt.skipFormat>false</fmt.skipFormat>
+        <fmt.skipCheck>true</fmt.skipCheck>
         <license.skipFormat>false</license.skipFormat>
         <license.skipCheck>true</license.skipCheck>
-        <sortpom.goal>sort</sortpom.goal>
+        <sortpom.skipSort>false</sortpom.skipSort>
+        <sortpom.skipCheck>true</sortpom.skipCheck>
       </properties>
     </profile>
     <profile>
       <id>ci-cd</id>
       <properties>
-        <fmt.goal>check</fmt.goal>
-        <fmt.phase>validate</fmt.phase>
+        <fmt.skipFormat>true</fmt.skipFormat>
+        <fmt.skipCheck>false</fmt.skipCheck>
         <license.skipFormat>true</license.skipFormat>
         <license.skipCheck>false</license.skipCheck>
-        <sortpom.goal>verify</sortpom.goal>
+        <sortpom.skipSort>true</sortpom.skipSort>
+        <sortpom.skipCheck>false</sortpom.skipCheck>
       </properties>
     </profile>
   </profiles>

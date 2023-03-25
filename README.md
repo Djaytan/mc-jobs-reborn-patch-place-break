@@ -3,6 +3,7 @@
 ![Target](https://img.shields.io/badge/plugin-Minecraft-blueviolet)
 ![Minecraft version](https://img.shields.io/badge/version-1.11%20--%201.19-blue)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/djaytan/mc-jobs-reborn-patch-place-break/maven.yml)
+[![](https://jitpack.io/v/Djaytan/mc-jobs-reborn-patch-place-break.svg)](https://jitpack.io/#Djaytan/mc-jobs-reborn-patch-place-break)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
 
@@ -11,8 +12,9 @@ of [JobsReborn plugin](https://www.spigotmc.org/resources/jobs-reborn.4216/)
 for Bukkit servers.
 
 The resource is available
-on [Spigot](https://www.spigotmc.org/resources/jobsreborn-patchplacebreak.102779/)
-and [PaperMC](https://hangar.papermc.io/Djaytan/JobsRebornPatchPlaceBreak).
+on [Spigot](https://www.spigotmc.org/resources/jobsreborn-patchplacebreak.102779/),
+[Hangar (PaperMC)](https://hangar.papermc.io/Djaytan/JobsRebornPatchPlaceBreak) and
+[Modrinth](https://modrinth.com/plugin/jobsreborn-patchplacebreak).
 
 ## Place-and-break issue
 
@@ -98,51 +100,36 @@ PlaceAndBreak:
   SilkTouchProtection: false
 ```
 
-## Getting Started (as contributor)
-
-These instructions will get you a copy of the project up and running on your local machine for
-development and testing purposes. See deployment for notes on how to deploy the project on
-a live system.
-
-### Prerequisites
-
-Working on this project requires the following dependencies installed on your local environment:
-
-* JDK 11 ([Download Link](https://adoptium.net/en-GB/temurin/releases/?version=11))
-* Maven
-  3.6+ ([Download Link](https://maven.apache.org/download.cgi) | [Install Guide](https://maven.apache.org/install.html))
-
-### Installing
-
-Currently, we suppose you know how to install a Minecraft server. However, we plan to automate it:
-https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/39
-
-To retrieve the plugin, you can simply build the project by typing this command at the root project:
-
-    $ mvn clean package
-
-You will find the packaged JAR file of the Bukkit plugin at `bukkit/bukkit-plugin/target`.
-If you want to test it, copy it into your local Spigot server by taking care that the server
-version is compatible with the plugin.
-
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on ways to help us.
 
 Take care to always follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
+## Built With
+
+* Java 8
+* [Maven](https://maven.apache.org/)
+* [Guice](https://github.com/google/guice)
+* [HikariCP](https://github.com/brettwooldridge/HikariCP)
+* [Flyway](https://github.com/flyway/flyway)
+* [Jakarta Beans Validator](https://beanvalidation.org/)
+  (with [Hibernate Validator](https://github.com/hibernate/hibernate-validator) as implementation)
+* [Configurate](https://github.com/SpongePowered/Configurate)
+* [Lombok](https://projectlombok.org/)
+
+Specifically for the tests:
+
+* [JUnit 5](https://junit.org/junit5/)
+* [Mockito](https://site.mockito.org/)
+* [AssertJ](https://github.com/assertj/assertj)
+* [EqualsVerifier](https://jqno.nl/equalsverifier/) & [ToStringVerifier](https://github.com/jparams/to-string-verifier)
+* [Jimfs](https://github.com/google/jimfs)
+
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the
 [tags on this repository](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/tags).
-
-## Authors
-
-* [Djaytan](https://github.com/Djaytan) - *Initial work*
-
-See also the list of
-[contributors](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/graphs/contributors)
-who participated in this project.
 
 ## Licence
 

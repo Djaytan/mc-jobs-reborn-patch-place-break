@@ -29,7 +29,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.time.Duration;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This interface represents the API to apply place-and-break patch.
@@ -77,8 +77,8 @@ public interface PatchPlaceBreakApi {
    *     otherwise.
    * @return The completable future object.
    */
-  @NonNull
-  CompletableFuture<Void> putTag(@NonNull Block block, boolean isEphemeral);
+  @NotNull
+  CompletableFuture<Void> putTag(@NotNull Block block, boolean isEphemeral);
 
   /**
    * Moves given tags according to the specified direction.
@@ -93,8 +93,8 @@ public interface PatchPlaceBreakApi {
    * @param direction The direction where to move existing tags.
    * @return The completable future object.
    */
-  @NonNull
-  CompletableFuture<Void> moveTags(@NonNull Set<Block> blocks, @NonNull Vector direction);
+  @NotNull
+  CompletableFuture<Void> moveTags(@NotNull Set<Block> blocks, @NotNull Vector direction);
 
   /**
    * Removes existing tag from a specified block. This can be useful when the state of the block
@@ -105,8 +105,8 @@ public interface PatchPlaceBreakApi {
    * @param block The block where to remove tags if existing.
    * @return The completable future object.
    */
-  @NonNull
-  CompletableFuture<Void> removeTag(@NonNull Block block);
+  @NotNull
+  CompletableFuture<Void> removeTag(@NotNull Block block);
 
   /**
    * Checks if the specified block action type on the given block is a place-and-break exploit or
@@ -126,5 +126,5 @@ public interface PatchPlaceBreakApi {
    * @param block The block on which the action has been performed.
    * @return <code>true</code> if it's a place-and-break exploit, <code>false</code> otherwise.
    */
-  boolean isPlaceAndBreakExploit(@NonNull BlockActionType blockActionType, @NonNull Block block);
+  boolean isPlaceAndBreakExploit(@NotNull BlockActionType blockActionType, @NotNull Block block);
 }

@@ -24,9 +24,10 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
@@ -40,6 +41,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.Restrictio
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPair;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -47,10 +49,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -71,8 +73,9 @@ class PatchPlaceBreakImplTest {
   @Captor private ArgumentCaptor<Tag> tagCaptor;
   @Captor private ArgumentCaptor<OldNewBlockLocationPairSet> locationPairCaptor;
   @Captor private ArgumentCaptor<BlockLocation> blockLocationCaptor;
+  private final Clock clock = Clock.systemUTC();
   private final RestrictedBlocksProperties restrictedBlocksProperties =
-      RestrictedBlocksProperties.of(
+      new RestrictedBlocksProperties(
           new HashSet<>(Arrays.asList("STONE", "DIRT")), RestrictionMode.BLACKLIST);
   private PatchPlaceBreakImpl patchPlaceBreakImpl;
 
@@ -81,7 +84,7 @@ class PatchPlaceBreakImplTest {
     BlocksFilter blocksFilter = new BlocksFilter(restrictedBlocksProperties);
 
     this.patchPlaceBreakImpl =
-        new PatchPlaceBreakImpl(blocksFilter, restrictedBlocksProperties, tagRepository);
+        new PatchPlaceBreakImpl(blocksFilter, clock, restrictedBlocksProperties, tagRepository);
   }
 
   @Nested
@@ -92,14 +95,14 @@ class PatchPlaceBreakImplTest {
     @DisplayName("With not restricted block")
     void withNotRestrictedBlock() {
       // Given
-      BlockLocation blockLocation = BlockLocation.of("world", 0, 0, 0);
-      Block blockToTag = Block.of(blockLocation, "BEACON");
+      BlockLocation blockLocation = new BlockLocation("world", 0, 0, 0);
+      Block blockToTag = new Block(blockLocation, "BEACON");
 
       // When
       patchPlaceBreakImpl.putTag(blockToTag, false).join();
 
       // Then
-      verify(tagRepository, timeout(1000)).put(tagCaptor.capture());
+      verify(tagRepository).put(tagCaptor.capture());
       Tag tag = tagCaptor.getValue();
 
       assertAll(
@@ -111,8 +114,8 @@ class PatchPlaceBreakImplTest {
     @DisplayName("With restricted block")
     void withRestrictedBlock() {
       // Given
-      BlockLocation blockLocation = BlockLocation.of("world", 0, 0, 0);
-      Block blockToTag = Block.of(blockLocation, "STONE");
+      BlockLocation blockLocation = new BlockLocation("world", 0, 0, 0);
+      Block blockToTag = new Block(blockLocation, "STONE");
 
       // When
       patchPlaceBreakImpl.putTag(blockToTag, false).join();
@@ -125,14 +128,14 @@ class PatchPlaceBreakImplTest {
     @DisplayName("With ephemeral tag")
     void withEphemeralTag() {
       // Given
-      BlockLocation blockLocation = BlockLocation.of("world", 0, 0, 0);
-      Block blockToTag = Block.of(blockLocation, "BEACON");
+      BlockLocation blockLocation = new BlockLocation("world", 0, 0, 0);
+      Block blockToTag = new Block(blockLocation, "BEACON");
 
       // When
       patchPlaceBreakImpl.putTag(blockToTag, true).join();
 
       // Then
-      verify(tagRepository, timeout(1000)).put(tagCaptor.capture());
+      verify(tagRepository).put(tagCaptor.capture());
       Tag tag = tagCaptor.getValue();
 
       assertAll(
@@ -149,14 +152,14 @@ class PatchPlaceBreakImplTest {
     @DisplayName("With not restricted block")
     void withNotRestrictedBlock() {
       // Given
-      BlockLocation newBlockLocation = BlockLocation.of("world", 0, 0, 0);
-      Block blockToRemoveTag = Block.of(newBlockLocation, "BEACON");
+      BlockLocation newBlockLocation = new BlockLocation("world", 0, 0, 0);
+      Block blockToRemoveTag = new Block(newBlockLocation, "BEACON");
 
       // When
       patchPlaceBreakImpl.removeTag(blockToRemoveTag).join();
 
       // Then
-      verify(tagRepository, timeout(1000)).delete(blockLocationCaptor.capture());
+      verify(tagRepository).delete(blockLocationCaptor.capture());
       BlockLocation capturedBlockLocation = blockLocationCaptor.getValue();
       assertThat(capturedBlockLocation).isEqualTo(newBlockLocation);
     }
@@ -165,8 +168,8 @@ class PatchPlaceBreakImplTest {
     @DisplayName("With restricted block")
     void withRestrictedBlock() {
       // Given
-      BlockLocation blockLocation = BlockLocation.of("world", 0, 0, 0);
-      Block blockToTag = Block.of(blockLocation, "STONE");
+      BlockLocation blockLocation = new BlockLocation("world", 0, 0, 0);
+      Block blockToTag = new Block(blockLocation, "STONE");
 
       // When
       patchPlaceBreakImpl.removeTag(blockToTag).join();
@@ -184,18 +187,18 @@ class PatchPlaceBreakImplTest {
     @DisplayName("With only unrestricted blocks")
     void withOnlyUnrestrictedBlocks() {
       // Given
-      Vector direction = Vector.of(0, 0, 1);
-      Block block1 = Block.of(BlockLocation.of("world", 0, 0, 0), "BEACON");
-      Block block2 = Block.of(BlockLocation.of("world", 1, 0, 0), "BEACON");
-      Block block3 = Block.of(BlockLocation.of("world", 0, 1, 0), "BEACON");
-      Block block4 = Block.of(BlockLocation.of("world", 0, 0, 1), "BEACON");
+      Vector direction = new Vector(0, 0, 1);
+      Block block1 = new Block(new BlockLocation("world", 0, 0, 0), "BEACON");
+      Block block2 = new Block(new BlockLocation("world", 1, 0, 0), "BEACON");
+      Block block3 = new Block(new BlockLocation("world", 0, 1, 0), "BEACON");
+      Block block4 = new Block(new BlockLocation("world", 0, 0, 1), "BEACON");
       Set<Block> blocks = new HashSet<>(Arrays.asList(block1, block2, block3, block4));
 
       // When
       patchPlaceBreakImpl.moveTags(blocks, direction).join();
 
       // Then
-      verify(tagRepository, timeout(1000)).updateLocations(locationPairCaptor.capture());
+      verify(tagRepository).updateLocations(locationPairCaptor.capture());
       OldNewBlockLocationPairSet actualValue = locationPairCaptor.getValue();
 
       OldNewBlockLocationPairSet expectedValue =
@@ -215,11 +218,11 @@ class PatchPlaceBreakImplTest {
     @DisplayName("With only restricted block")
     void withOnlyRestrictedBlock() {
       // Given
-      Vector direction = Vector.of(0, 0, 1);
-      Block block1 = Block.of(BlockLocation.of("world", 0, 0, 0), "STONE");
-      Block block2 = Block.of(BlockLocation.of("world", 1, 0, 0), "STONE");
-      Block block3 = Block.of(BlockLocation.of("world", 0, 1, 0), "DIRT");
-      Block block4 = Block.of(BlockLocation.of("world", 0, 0, 1), "DIRT");
+      Vector direction = new Vector(0, 0, 1);
+      Block block1 = new Block(new BlockLocation("world", 0, 0, 0), "STONE");
+      Block block2 = new Block(new BlockLocation("world", 1, 0, 0), "STONE");
+      Block block3 = new Block(new BlockLocation("world", 0, 1, 0), "DIRT");
+      Block block4 = new Block(new BlockLocation("world", 0, 0, 1), "DIRT");
       Set<Block> blocks = new HashSet<>(Arrays.asList(block1, block2, block3, block4));
 
       // When
@@ -233,18 +236,18 @@ class PatchPlaceBreakImplTest {
     @DisplayName("With some restricted block")
     void withSomeRestrictedBlock() {
       // Given
-      Vector direction = Vector.of(0, 0, 1);
-      Block block1 = Block.of(BlockLocation.of("world", 0, 0, 0), "BEACON");
-      Block block2 = Block.of(BlockLocation.of("world", 1, 0, 0), "DIRT");
-      Block block3 = Block.of(BlockLocation.of("world", 0, 1, 0), "BEACON");
-      Block block4 = Block.of(BlockLocation.of("world", 0, 0, 1), "STONE");
+      Vector direction = new Vector(0, 0, 1);
+      Block block1 = new Block(new BlockLocation("world", 0, 0, 0), "BEACON");
+      Block block2 = new Block(new BlockLocation("world", 1, 0, 0), "DIRT");
+      Block block3 = new Block(new BlockLocation("world", 0, 1, 0), "BEACON");
+      Block block4 = new Block(new BlockLocation("world", 0, 0, 1), "STONE");
       Set<Block> blocks = new HashSet<>(Arrays.asList(block1, block2, block3, block4));
 
       // When
       patchPlaceBreakImpl.moveTags(blocks, direction).join();
 
       // Then
-      verify(tagRepository, timeout(1000)).updateLocations(locationPairCaptor.capture());
+      verify(tagRepository).updateLocations(locationPairCaptor.capture());
       OldNewBlockLocationPairSet actualValue = locationPairCaptor.getValue();
 
       OldNewBlockLocationPairSet expectedValue =
@@ -270,9 +273,9 @@ class PatchPlaceBreakImplTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With unrestricted block")
-    void withUnrestrictedBlock(Tag givenTag, boolean expectedValue) {
+    void withUnrestrictedBlock(@Nullable Tag givenTag, boolean expectedValue) {
       // Given
-      Block unrestrictedBlock = Block.of(BlockLocation.of("world", 0, 0, 0), "BEACON");
+      Block unrestrictedBlock = new Block(new BlockLocation("world", 0, 0, 0), "BEACON");
       given(tagRepository.findByLocation(any())).willReturn(Optional.ofNullable(givenTag));
 
       // When
@@ -283,26 +286,26 @@ class PatchPlaceBreakImplTest {
       assertThat(isExploit).isEqualTo(expectedValue);
     }
 
-    private @NonNull Stream<Arguments> withUnrestrictedBlock() {
+    private @NotNull Stream<Arguments> withUnrestrictedBlock() {
       return Stream.of(
-          Arguments.of(
-              Named.of(
+          arguments(
+              named(
                   "With persistent tag",
-                  Tag.of(BlockLocation.of("world", 0, 0, 0), false, LocalDateTime.now())),
+                  new Tag(new BlockLocation("world", 0, 0, 0), false, LocalDateTime.now(clock))),
               true),
-          Arguments.of(Named.of("Without tag", null), false),
-          Arguments.of(
-              Named.of(
+          arguments(named("Without tag", null), false),
+          arguments(
+              named(
                   "With active ephemeral tag",
-                  Tag.of(BlockLocation.of("world", 0, 0, 0), true, LocalDateTime.now())),
+                  new Tag(new BlockLocation("world", 0, 0, 0), true, LocalDateTime.now(clock))),
               true),
-          Arguments.of(
-              Named.of(
+          arguments(
+              named(
                   "With inactive ephemeral tag",
-                  Tag.of(
-                      BlockLocation.of("world", 0, 0, 0),
+                  new Tag(
+                      new BlockLocation("world", 0, 0, 0),
                       true,
-                      LocalDateTime.now().minusSeconds(10))),
+                      LocalDateTime.now(clock).minusSeconds(10))),
               false));
     }
 
@@ -310,7 +313,7 @@ class PatchPlaceBreakImplTest {
     @DisplayName("With restricted block")
     void withRestrictedBlock() {
       // Given
-      Block restrictedBlock = Block.of(BlockLocation.of("world", 0, 0, 0), "STONE");
+      Block restrictedBlock = new Block(new BlockLocation("world", 0, 0, 0), "STONE");
 
       // When
       boolean isExploit =

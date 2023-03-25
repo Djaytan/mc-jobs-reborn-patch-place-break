@@ -26,7 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -34,22 +35,22 @@ import org.junit.jupiter.api.Test;
 class BukkitAdapterExceptionTest extends ExceptionBaseTest {
 
   @Override
-  protected @NonNull Exception getException() {
+  protected @NotNull Exception getException() {
     return new BukkitAdapterException();
   }
 
   @Override
-  protected @NonNull Exception getException(@NonNull String message) {
+  protected @NotNull Exception getException(@NotNull String message) {
     return new BukkitAdapterException(message);
   }
 
   @Override
-  protected @NonNull Exception getException(Throwable cause) {
+  protected @NotNull Exception getException(@Nullable Throwable cause) {
     return new BukkitAdapterException(cause);
   }
 
   @Override
-  protected @NonNull Exception getException(@NonNull String message, Throwable cause) {
+  protected @NotNull Exception getException(@NotNull String message, @Nullable Throwable cause) {
     return new BukkitAdapterException(message, cause);
   }
 

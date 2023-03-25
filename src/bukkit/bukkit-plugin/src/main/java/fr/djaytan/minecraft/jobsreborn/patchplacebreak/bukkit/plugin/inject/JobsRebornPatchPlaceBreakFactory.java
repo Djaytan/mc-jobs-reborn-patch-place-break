@@ -27,32 +27,32 @@ import com.google.inject.Injector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.ListenerRegister;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.MetricsFacade;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
-import lombok.NonNull;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 /** Represents factory of the main dependencies. */
 public final class JobsRebornPatchPlaceBreakFactory {
 
   private final Injector injector;
 
-  public JobsRebornPatchPlaceBreakFactory(@NonNull JavaPlugin javaPlugin) {
+  public JobsRebornPatchPlaceBreakFactory(@NotNull JavaPlugin javaPlugin) {
     this.injector = createInjector(javaPlugin);
   }
 
-  private static @NonNull Injector createInjector(@NonNull JavaPlugin javaPlugin) {
+  private static @NotNull Injector createInjector(@NotNull JavaPlugin javaPlugin) {
     return Guice.createInjector(
         new BukkitModule(javaPlugin), new JobsRebornPatchPlaceBreakModule());
   }
 
-  public @NonNull ListenerRegister listenerRegister() {
+  public @NotNull ListenerRegister listenerRegister() {
     return injector.getInstance(ListenerRegister.class);
   }
 
-  public @NonNull MetricsFacade metricsFacade() {
+  public @NotNull MetricsFacade metricsFacade() {
     return injector.getInstance(MetricsFacade.class);
   }
 
-  public @NonNull PatchPlaceBreakCore patchPlaceBreakCore() {
+  public @NotNull PatchPlaceBreakCore patchPlaceBreakCore() {
     return injector.getInstance(PatchPlaceBreakCore.class);
   }
 }

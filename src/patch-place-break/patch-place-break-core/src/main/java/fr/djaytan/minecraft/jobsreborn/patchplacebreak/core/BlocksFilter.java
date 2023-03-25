@@ -29,28 +29,32 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents the blocks filter based on the corresponding properties.
+ *
+ * @see RestrictedBlocksProperties
+ */
 @Singleton
 public final class BlocksFilter {
 
-  /**
-   * Represents a filter for a collection of {@link Block} objects based on their materials.
-   */
   private final RestrictedBlocksProperties restrictedBlocksProperties;
 
   @Inject
-  public BlocksFilter(RestrictedBlocksProperties restrictedBlocksProperties) {
+  public BlocksFilter(@NotNull RestrictedBlocksProperties restrictedBlocksProperties) {
     this.restrictedBlocksProperties = restrictedBlocksProperties;
   }
 
   /**
-   * Filters the given {@link Collection} of {@link Block} objects based on their materials, removing any
-   * blocks with materials that are marked as restricted by the {@link RestrictedBlocksProperties} instance.
-   * @param  blocks the {@link Collection} of {@link Block} objects to filter
-   * @return        a new {@link Set} containing the filtered {@link Block} objects without any restricted materials
+   * Filters the given blocks based on their material by removing any blocks having ones marked as
+   * restricted. Filters the given blocks based on their material depending on the current {@link
+   * fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictionMode} which apply.
+   *
+   * @param blocks The blocks to filter.
+   * @return The filtered blocks according the currently applicable restriction mode.
    */
-  public @NonNull Set<Block> filter(@NonNull Collection<Block> blocks) {
+  public @NotNull Set<Block> filter(@NotNull Collection<Block> blocks) {
     return blocks.stream()
         .filter(block -> !restrictedBlocksProperties.isRestricted(block.getMaterial()))
         .collect(Collectors.toSet());

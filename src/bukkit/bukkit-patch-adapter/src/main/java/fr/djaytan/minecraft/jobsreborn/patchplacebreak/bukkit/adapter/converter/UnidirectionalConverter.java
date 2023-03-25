@@ -22,10 +22,10 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
 
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public interface UnidirectionalConverter<T, U> {
 
-  @NonNull
-  U convert(@NonNull T convertible);
+  @NotNull
+  U convert(@NotNull T convertible);
 }

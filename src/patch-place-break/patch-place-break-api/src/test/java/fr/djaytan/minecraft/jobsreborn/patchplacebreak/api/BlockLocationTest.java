@@ -24,16 +24,17 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.util.stream.Stream;
-import lombok.NonNull;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -59,7 +60,7 @@ class BlockLocationTest {
       int z = 4872;
 
       // When
-      BlockLocation blockLocation = BlockLocation.of(worldName, x, y, z);
+      BlockLocation blockLocation = new BlockLocation(worldName, x, y, z);
 
       // Then
       assertAll(
@@ -74,13 +75,13 @@ class BlockLocationTest {
     @MethodSource
     @DisplayName("With copy constructor")
     void withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue(
-        @NonNull Vector givenDirection, @NonNull BlockLocation expectedValue) {
+        @NotNull Vector givenDirection, @NotNull BlockLocation expectedValue) {
       // Given
       String worldName = "world";
       int initX = 1;
       int initY = -45;
       int initZ = -1;
-      BlockLocation blockLocation = BlockLocation.of(worldName, initX, initY, initZ);
+      BlockLocation blockLocation = new BlockLocation(worldName, initX, initY, initZ);
 
       // When
       BlockLocation movedBlockLocation = BlockLocation.from(blockLocation, givenDirection);
@@ -91,18 +92,18 @@ class BlockLocationTest {
           () -> assertThat(movedBlockLocation).isEqualTo(expectedValue));
     }
 
-    private @NonNull Stream<Arguments>
+    private @NotNull Stream<Arguments>
         withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue() {
       return Stream.of(
-          Arguments.of(
-              Named.of("With nominal values", Vector.of(5, 0, -452)),
-              BlockLocation.of("world", 6, -45, -453)),
-          Arguments.of(
-              Named.of("On overflow", Vector.of(Integer.MAX_VALUE, 1, -1)),
-              BlockLocation.of("world", Integer.MIN_VALUE, -44, -2)),
-          Arguments.of(
-              Named.of("On underflow", Vector.of(10, -50, Integer.MIN_VALUE)),
-              BlockLocation.of("world", 11, -95, Integer.MAX_VALUE)));
+          arguments(
+              named("With nominal values", new Vector(5, 0, -452)),
+              new BlockLocation("world", 6, -45, -453)),
+          arguments(
+              named("On overflow", new Vector(Integer.MAX_VALUE, 1, -1)),
+              new BlockLocation("world", Integer.MIN_VALUE, -44, -2)),
+          arguments(
+              named("On underflow", new Vector(10, -50, Integer.MIN_VALUE)),
+              new BlockLocation("world", 11, -95, Integer.MAX_VALUE)));
     }
   }
 

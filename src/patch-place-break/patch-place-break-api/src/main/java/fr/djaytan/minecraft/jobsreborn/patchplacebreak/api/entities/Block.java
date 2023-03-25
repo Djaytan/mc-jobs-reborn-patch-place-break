@@ -22,13 +22,12 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 
-import lombok.NonNull;
 import lombok.Value;
 
-/** Representation of a block */
-@Value(staticConstructor = "of")
+/** An immutable and thread-safe block. */
+@Value
 public class Block {
 
-  @NonNull BlockLocation blockLocation;
-  @NonNull String material;
+  BlockLocation blockLocation;
+  String material;
 }

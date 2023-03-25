@@ -28,7 +28,7 @@
   <parent>
     <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
     <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
-    <version>2.1.38-SNAPSHOT</version>
+    <version>2.1.67-SNAPSHOT</version>
     <relativePath>../../../pom.xml</relativePath>
   </parent>
 
@@ -48,8 +48,7 @@
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
-      <artifactId>storage-api</artifactId>
-      <version>${project.version}</version>
+      <artifactId>patch-place-break-storage</artifactId>
     </dependency>
     <dependency>
       <groupId>jakarta.validation</groupId>
@@ -74,6 +73,11 @@
     <dependency>
       <groupId>org.spongepowered</groupId>
       <artifactId>configurate-hocon</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -103,7 +107,6 @@
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>commons-test</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

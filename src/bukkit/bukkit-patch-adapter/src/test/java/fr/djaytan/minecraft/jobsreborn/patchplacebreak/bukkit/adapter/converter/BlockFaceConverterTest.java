@@ -49,7 +49,7 @@ class BlockFaceConverterTest {
     Vector vector = blockFaceConverter.convert(blockFace);
 
     // Then
-    assertThat(vector).isEqualTo(Vector.of(0, 0, -1));
+    assertThat(vector).isEqualTo(new Vector(0, 0, -1));
   }
 
   @Test
@@ -62,7 +62,7 @@ class BlockFaceConverterTest {
     Vector vector = blockFaceConverter.convert(blockFace);
 
     // Then
-    assertThat(vector).isEqualTo(Vector.of(1, 0, 1));
+    assertThat(vector).isEqualTo(new Vector(1, 0, 1));
   }
 
   @DisplayName("Conversion from a self-oriented direction")
@@ -75,7 +75,7 @@ class BlockFaceConverterTest {
     Vector vector = blockFaceConverter.convert(blockFace);
 
     // Then
-    assertThat(vector).isEqualTo(Vector.of(2, 0, -1));
+    assertThat(vector).isEqualTo(new Vector(2, 0, -1));
   }
 
   @DisplayName("Conversion from a self-oriented direction")
@@ -88,6 +88,6 @@ class BlockFaceConverterTest {
     Vector vector = blockFaceConverter.convert(blockFace);
 
     // Then
-    assertThat(vector).isEqualTo(Vector.of(0, 0, 0));
+    assertThat(vector).isEqualTo(new Vector(0, 0, 0));
   }
 }

@@ -27,6 +27,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 @Singleton
@@ -37,7 +38,7 @@ public class MetricsFacade {
   private final JavaPlugin javaPlugin;
 
   @Inject
-  public MetricsFacade(JavaPlugin javaPlugin) {
+  public MetricsFacade(@NotNull JavaPlugin javaPlugin) {
     this.javaPlugin = javaPlugin;
   }
 

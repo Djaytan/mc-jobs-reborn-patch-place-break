@@ -29,25 +29,25 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import javax.inject.Singleton;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 @Singleton
 public class ActionTypeConverter implements UnidirectionalConverter<ActionType, BlockActionType> {
 
   @Override
-  public @NonNull BlockActionType convert(@NonNull ActionType jobActionType) {
+  public @NotNull BlockActionType convert(@NotNull ActionType jobActionType) {
     if (!isValidJobActionType(jobActionType)) {
       throw BukkitAdapterException.invalidJobType(jobActionType);
     }
     return BlockActionType.valueOf(jobActionType.name());
   }
 
-  private boolean isValidJobActionType(@NonNull ActionType jobActionType) {
+  private boolean isValidJobActionType(@NotNull ActionType jobActionType) {
     Collection<ActionType> validJobActionTypes = getValidJobActionTypes();
     return validJobActionTypes.contains(jobActionType);
   }
 
-  private @NonNull Collection<ActionType> getValidJobActionTypes() {
+  private @NotNull Collection<ActionType> getValidJobActionTypes() {
     return Arrays.stream(BlockActionType.values())
         .map(BlockActionType::name)
         .map(ActionType::valueOf)

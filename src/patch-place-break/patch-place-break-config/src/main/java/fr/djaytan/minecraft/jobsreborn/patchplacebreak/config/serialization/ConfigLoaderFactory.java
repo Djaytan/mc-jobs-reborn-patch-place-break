@@ -25,8 +25,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import lombok.NonNull;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.configurate.loader.ConfigurationLoader;
@@ -54,8 +54,8 @@ final class ConfigLoaderFactory {
    * @return A configuration loader for the specified config file.
    * @throws IOException If something prevent the configuration loader creation.
    */
-  static @NonNull ConfigurationLoader<CommentedConfigurationNode> createLoader(
-      @NonNull Path configFile) throws IOException {
+  static @NotNull ConfigurationLoader<CommentedConfigurationNode> createLoader(
+      @NotNull Path configFile) throws IOException {
     ObjectMapper.Factory customFactory =
         ObjectMapper.factoryBuilder().defaultNamingScheme(NamingSchemes.CAMEL_CASE).build();
 
@@ -81,7 +81,7 @@ final class ConfigLoaderFactory {
         .build();
   }
 
-  private static @NonNull String createConfigHeader() throws IOException {
+  private static @NotNull String createConfigHeader() throws IOException {
     return IOUtils.resourceToString(
         CONFIG_HEADER_RESOURCE, StandardCharsets.UTF_8, ConfigLoaderFactory.class.getClassLoader());
   }

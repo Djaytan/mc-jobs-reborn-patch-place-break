@@ -29,6 +29,7 @@ import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
@@ -58,7 +59,7 @@ public class DbmsCredentialsPropertiesImpl implements DbmsCredentialsProperties,
     this.password = "password";
   }
 
-  public DbmsCredentialsPropertiesImpl(String username, String password) {
+  public DbmsCredentialsPropertiesImpl(@Nullable String username, @Nullable String password) {
     this.username = username;
     this.password = password;
   }
