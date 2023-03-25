@@ -22,7 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin;
 
-import fr.djaytan.bukkit.slf4j.BukkitLoggerFactory;
+import com.djaytan.bukkit.slf4j.BukkitLoggerFactory;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.ListenerRegister;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject.JobsRebornPatchPlaceBreakFactory;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
