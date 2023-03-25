@@ -149,6 +149,36 @@
         <version>2.11.0</version>
       </dependency>
       <dependency>
+        <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+        <artifactId>bukkit-patch-adapter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+        <artifactId>commons-test</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+        <artifactId>patch-place-break-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+        <artifactId>patch-place-break-config</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+        <artifactId>patch-place-break-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
+        <artifactId>patch-place-break-storage</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
         <groupId>javax.inject</groupId>
         <artifactId>javax.inject</artifactId>
         <version>1</version>

@@ -56,17 +56,14 @@
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>bukkit-patch-adapter</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-api</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-core</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>javax.inject</groupId>

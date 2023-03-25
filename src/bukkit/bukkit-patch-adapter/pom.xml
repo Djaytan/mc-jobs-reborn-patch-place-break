@@ -44,7 +44,6 @@
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-api</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>javax.inject</groupId>
@@ -77,13 +76,11 @@
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>commons-test</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-core</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

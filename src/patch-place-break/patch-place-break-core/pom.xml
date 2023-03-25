@@ -53,17 +53,14 @@
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-api</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-config</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>patch-place-break-storage</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>jakarta.validation</groupId>
@@ -104,7 +101,6 @@
     <dependency>
       <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
       <artifactId>commons-test</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
