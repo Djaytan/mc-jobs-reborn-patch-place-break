@@ -125,6 +125,8 @@ Specifically for the tests:
 * [AssertJ](https://github.com/assertj/assertj)
 * [EqualsVerifier](https://jqno.nl/equalsverifier/) & [ToStringVerifier](https://github.com/jparams/to-string-verifier)
 * [Jimfs](https://github.com/google/jimfs)
+* [MockBukkit](https://github.com/MockBukkit/MockBukkit)
+* [Awaitability](https://github.com/awaitility/awaitility)
 
 ## Versioning
 
