@@ -33,7 +33,6 @@ import java.time.Clock;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 final class PatchPlaceBreakModule extends AbstractModule {
 
@@ -42,7 +41,7 @@ final class PatchPlaceBreakModule extends AbstractModule {
   private final Path dataFolder;
 
   PatchPlaceBreakModule(
-      @NotNull ClassLoader classLoader, @Nullable Clock clock, @NotNull Path dataFolder) {
+      @NotNull ClassLoader classLoader, @NotNull Clock clock, @NotNull Path dataFolder) {
     this.classLoader = classLoader;
     this.clock = clock;
     this.dataFolder = dataFolder;
@@ -64,7 +63,7 @@ final class PatchPlaceBreakModule extends AbstractModule {
   @Singleton
   @NotNull
   Clock provideClock() {
-    return clock == null ? Clock.systemUTC() : clock;
+    return clock;
   }
 
   @Provides

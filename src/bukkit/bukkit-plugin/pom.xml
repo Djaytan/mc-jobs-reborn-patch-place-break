@@ -119,6 +119,36 @@
       <scope>runtime</scope>
       <!-- Guava version of CraftBukkit is incompatible with Guice: must shade it in plugin -->
     </dependency>
+    <dependency>
+      <groupId>com.github.seeseemelk</groupId>
+      <artifactId>MockBukkit-v1.13</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-commons</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.threeten</groupId>
+      <artifactId>threeten-extra</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -162,6 +192,7 @@
               <pattern>com</pattern>
               <shadedPattern>${package.lib}.com</shadedPattern>
               <includes>
+                <include>com.djaytan.bukkit.slf4j.**</include>
                 <include>com.fasterxml.jackson.**</include>
                 <include>com.fasterxml.classmate.**</include>
                 <include>com.google.common.**</include>
@@ -270,6 +301,7 @@
             <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.jee.jakarta.validation.** { *; }</option>
             <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.org.hibernate.validator.** { *; }</option>
             <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.org.slf4j.** { *; }</option>
+            <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.com.djaytan.bukkit.slf4j.** { *; }</option>
             <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.org.flywaydb.** { *; }</option>
             <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.com.zaxxer.hikari.HikariDataSource { *; }</option>
             <option>-keep class fr.djaytan.minecraft.jobsreborn.patchplacebreak.lib.org.aopalliance.intercept.MethodInterceptor { *; }</option>

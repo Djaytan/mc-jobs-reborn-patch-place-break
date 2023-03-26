@@ -29,14 +29,14 @@ import java.nio.file.Path;
 import java.time.Clock;
 import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * This class represents the patch place-break enabler for any consumer. Its role is to manage the
  * patch's lifecycle.
  *
- * <p>When enabling the patch with {@link #enable(ClassLoader, Path)}, it is ensured to be properly
- * initialized and a {@link PatchPlaceBreakApi} instance is returned to be consumed by the caller.
+ * <p>When enabling the patch with {@link #enable(ClassLoader, Clock, Path)}, it is ensured to be
+ * properly initialized and a {@link PatchPlaceBreakApi} instance is returned to be consumed by the
+ * caller.
  *
  * <p>When no longer using the patch, ensure to call the {@link #disable()} method (e.g. on plugin
  * disabling). This will ensure to properly disable the patch (e.g. by closing existing databases
@@ -50,12 +50,7 @@ public class PatchPlaceBreakCore {
   private DataSourceManager dataSourceManager;
 
   public @NotNull PatchPlaceBreakApi enable(
-      @NotNull ClassLoader classLoader, @NotNull Path dataFolder) {
-    return enable(classLoader, null, dataFolder);
-  }
-
-  public @NotNull PatchPlaceBreakApi enable(
-      @NotNull ClassLoader classLoader, @Nullable Clock clock, @NotNull Path dataFolder) {
+      @NotNull ClassLoader classLoader, @NotNull Clock clock, @NotNull Path dataFolder) {
     setupSlf4j();
     PatchPlaceBreakFactory factory = new PatchPlaceBreakFactory(classLoader, clock, dataFolder);
     dataSourceManager = factory.dataSourceManager();

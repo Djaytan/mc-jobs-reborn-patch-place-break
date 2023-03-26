@@ -24,9 +24,11 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.ListenerRegister;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.MetricsFacade;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
+import java.time.Clock;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,13 +37,14 @@ public final class JobsRebornPatchPlaceBreakFactory {
 
   private final Injector injector;
 
-  public JobsRebornPatchPlaceBreakFactory(@NotNull JavaPlugin javaPlugin) {
-    this.injector = createInjector(javaPlugin);
+  public JobsRebornPatchPlaceBreakFactory(@NotNull JavaPlugin javaPlugin, @NotNull Clock clock) {
+    this.injector = createInjector(javaPlugin, clock);
   }
 
-  private static @NotNull Injector createInjector(@NotNull JavaPlugin javaPlugin) {
+  private static @NotNull Injector createInjector(
+      @NotNull JavaPlugin javaPlugin, @NotNull Clock clock) {
     return Guice.createInjector(
-        new BukkitModule(javaPlugin), new JobsRebornPatchPlaceBreakModule());
+        new BukkitModule(javaPlugin), new JobsRebornPatchPlaceBreakModule(clock));
   }
 
   public @NotNull ListenerRegister listenerRegister() {
@@ -54,5 +57,9 @@ public final class JobsRebornPatchPlaceBreakFactory {
 
   public @NotNull PatchPlaceBreakCore patchPlaceBreakCore() {
     return injector.getInstance(PatchPlaceBreakCore.class);
+  }
+
+  public @NotNull PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi() {
+    return injector.getInstance(PatchPlaceBreakBukkitAdapterApi.class);
   }
 }

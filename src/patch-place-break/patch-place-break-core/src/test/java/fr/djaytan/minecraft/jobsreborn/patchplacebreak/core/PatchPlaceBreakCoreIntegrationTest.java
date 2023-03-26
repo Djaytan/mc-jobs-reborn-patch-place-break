@@ -30,6 +30,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResource
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Clock;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
@@ -61,7 +62,8 @@ class PatchPlaceBreakCoreIntegrationTest {
     ClassLoader classLoader = PatchPlaceBreakCore.class.getClassLoader();
 
     // When
-    PatchPlaceBreakApi patchPlaceBreakApi = patchPlaceBreakCore.enable(classLoader, dataFolder);
+    PatchPlaceBreakApi patchPlaceBreakApi =
+        patchPlaceBreakCore.enable(classLoader, Clock.systemUTC(), dataFolder);
 
     // Then
     Path expectedConfDataSourceFile =
@@ -100,7 +102,8 @@ class PatchPlaceBreakCoreIntegrationTest {
     ClassLoader classLoader = PatchPlaceBreakCore.class.getClassLoader();
 
     // When
-    PatchPlaceBreakApi patchPlaceBreakApi = patchPlaceBreakCore.enable(classLoader, dataFolder);
+    PatchPlaceBreakApi patchPlaceBreakApi =
+        patchPlaceBreakCore.enable(classLoader, Clock.systemUTC(), dataFolder);
 
     // Then
     Path actualConfDataSourceFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);

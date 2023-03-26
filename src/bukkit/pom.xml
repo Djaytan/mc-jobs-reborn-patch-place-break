@@ -54,6 +54,11 @@
         <version>1.0.13</version>
       </dependency>
       <dependency>
+        <groupId>com.github.seeseemelk</groupId>
+        <artifactId>MockBukkit-v1.13</artifactId>
+        <version>0.2.0</version>
+      </dependency>
+      <dependency>
         <groupId>org.bstats</groupId>
         <artifactId>bstats-bukkit</artifactId>
         <version>3.0.1</version>
@@ -83,8 +88,8 @@
 
   <repositories>
     <repository>
-      <id>spigot-repo</id>
-      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+      <id>papermc</id>
+      <url>https://repo.papermc.io/repository/maven-public/</url>
     </repository>
     <repository>
       <id>jitpack.io</id>
