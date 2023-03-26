@@ -204,6 +204,11 @@
         <version>3.24.2</version>
       </dependency>
       <dependency>
+        <groupId>org.awaitility</groupId>
+        <artifactId>awaitility</artifactId>
+        <version>4.2.0</version>
+      </dependency>
+      <dependency>
         <groupId>org.flywaydb</groupId>
         <artifactId>flyway-core</artifactId>
         <version>${version.flyway}</version>
@@ -272,11 +277,6 @@
         <groupId>org.spongepowered</groupId>
         <artifactId>configurate-core</artifactId>
         <version>${version.configurate}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.awaitility</groupId>
-        <artifactId>awaitility</artifactId>
-        <version>4.2.0</version>
       </dependency>
       <dependency>
         <groupId>org.spongepowered</groupId>
