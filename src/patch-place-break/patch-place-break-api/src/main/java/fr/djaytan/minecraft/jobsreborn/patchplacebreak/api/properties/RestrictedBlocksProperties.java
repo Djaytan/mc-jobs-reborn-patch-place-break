@@ -22,6 +22,7 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,7 +42,7 @@ public class RestrictedBlocksProperties {
   RestrictionMode restrictionMode;
 
   public RestrictedBlocksProperties(
-      @NotNull Set<String> materials, @NotNull RestrictionMode restrictionMode) {
+      @NotNull Collection<String> materials, @NotNull RestrictionMode restrictionMode) {
     this.materials = Collections.unmodifiableSet(new HashSet<>(materials));
     this.restrictionMode = restrictionMode;
   }

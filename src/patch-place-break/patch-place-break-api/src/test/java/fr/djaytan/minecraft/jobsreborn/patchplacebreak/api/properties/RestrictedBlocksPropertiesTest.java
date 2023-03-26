@@ -25,17 +25,24 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.assertj.core.api.ThrowableAssert;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class RestrictedBlocksPropertiesTest {
 
@@ -103,6 +110,41 @@ class RestrictedBlocksPropertiesTest {
             .isExactlyInstanceOf(UnsupportedOperationException.class);
       }
     }
+  }
+
+  @ParameterizedTest(name = "{index} - With {0} restriction mode")
+  @MethodSource
+  @DisplayName("When checking block restriction")
+  void whenCheckingBlockRestriction(
+      @NotNull RestrictionMode restrictionMode,
+      boolean isListedMaterialExpectedToBeRestricted,
+      boolean isNonListedMaterialExpectedToBeRestricted) {
+    // Given
+    String listedMaterial = "STONE";
+    String nonListedMaterial = "BEACON";
+    RestrictedBlocksProperties restrictedBlocksProperties =
+        new RestrictedBlocksProperties(Arrays.asList(listedMaterial), restrictionMode);
+
+    // When
+    boolean isListedMaterialRestricted = restrictedBlocksProperties.isRestricted(listedMaterial);
+    boolean isNonListedMaterialRestricted =
+        restrictedBlocksProperties.isRestricted(nonListedMaterial);
+
+    // Then
+    assertAll(
+        () ->
+            assertThat(isListedMaterialRestricted)
+                .isEqualTo(isListedMaterialExpectedToBeRestricted),
+        () ->
+            assertThat(isNonListedMaterialRestricted)
+                .isEqualTo(isNonListedMaterialExpectedToBeRestricted));
+  }
+
+  private static @NotNull Stream<Arguments> whenCheckingBlockRestriction() {
+    return Stream.of(
+        arguments(named(RestrictionMode.BLACKLIST.name(), RestrictionMode.BLACKLIST), true, false),
+        arguments(named(RestrictionMode.WHITELIST.name(), RestrictionMode.WHITELIST), false, true),
+        arguments(named(RestrictionMode.DISABLED.name(), RestrictionMode.DISABLED), false, false));
   }
 
   @Test
