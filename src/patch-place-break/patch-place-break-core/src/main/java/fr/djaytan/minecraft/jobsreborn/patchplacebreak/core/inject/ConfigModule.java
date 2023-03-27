@@ -25,10 +25,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictedBlocksProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictionMode;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.ConfigApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import java.util.HashSet;
 import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,7 +44,8 @@ final class ConfigModule extends AbstractModule {
 
   @Provides
   @Singleton
-  static @NotNull RestrictedBlocksProperties provideRestrictedBlocksProperties() {
-    return new RestrictedBlocksProperties(new HashSet<>(), RestrictionMode.DISABLED);
+  static @NotNull RestrictedBlocksProperties provideRestrictedBlocksProperties(
+      @NotNull ConfigApi configApi) {
+    return configApi.getRestrictedBlocksProperties();
   }
 }

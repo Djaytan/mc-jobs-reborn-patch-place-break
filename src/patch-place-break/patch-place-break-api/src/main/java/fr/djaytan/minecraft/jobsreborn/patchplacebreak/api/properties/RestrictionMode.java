@@ -33,6 +33,6 @@ public enum RestrictionMode {
   BLACKLIST,
   /** All blocks are marked as restricted except the listed ones. */
   WHITELIST,
-  /** No restriction apply. */
+  /** No restriction applied. */
   DISABLED
 }

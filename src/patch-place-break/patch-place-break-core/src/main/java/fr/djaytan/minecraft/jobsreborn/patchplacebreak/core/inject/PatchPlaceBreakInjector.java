@@ -20,46 +20,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.ListenerRegister;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.MetricsFacade;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
+import java.nio.file.Path;
 import java.time.Clock;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-/** Represents factory of the main dependencies. */
-public final class JobsRebornPatchPlaceBreakFactory {
+public final class PatchPlaceBreakInjector {
 
   private final Injector injector;
 
-  public JobsRebornPatchPlaceBreakFactory(@NotNull JavaPlugin javaPlugin, @NotNull Clock clock) {
-    this.injector = createInjector(javaPlugin, clock);
+  public PatchPlaceBreakInjector(
+      @NotNull ClassLoader classLoader, @NotNull Clock clock, @NotNull Path dataFolder) {
+    this.injector = createInjector(classLoader, clock, dataFolder);
   }
 
   private static @NotNull Injector createInjector(
-      @NotNull JavaPlugin javaPlugin, @NotNull Clock clock) {
+      @NotNull ClassLoader classLoader, @NotNull Clock clock, @NotNull Path dataFolder) {
     return Guice.createInjector(
-        new BukkitModule(javaPlugin), new JobsRebornPatchPlaceBreakModule(clock));
+        new ConfigModule(),
+        new PatchPlaceBreakModule(classLoader, clock, dataFolder),
+        new StorageModule(),
+        new ValidationModule());
   }
 
-  public @NotNull ListenerRegister listenerRegister() {
-    return injector.getInstance(ListenerRegister.class);
+  public @NotNull PatchPlaceBreakApi patchPlaceBreakApi() {
+    return injector.getInstance(PatchPlaceBreakApi.class);
   }
 
-  public @NotNull MetricsFacade metricsFacade() {
-    return injector.getInstance(MetricsFacade.class);
-  }
-
-  public @NotNull PatchPlaceBreakCore patchPlaceBreakCore() {
-    return injector.getInstance(PatchPlaceBreakCore.class);
-  }
-
-  public @NotNull PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi() {
-    return injector.getInstance(PatchPlaceBreakBukkitAdapterApi.class);
+  public @NotNull DataSourceManager dataSourceManager() {
+    return injector.getInstance(DataSourceManager.class);
   }
 }

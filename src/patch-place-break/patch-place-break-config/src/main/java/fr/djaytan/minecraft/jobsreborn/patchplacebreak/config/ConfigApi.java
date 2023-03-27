@@ -22,7 +22,9 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictedBlocksProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DataSourcePropertiesImpl;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.RestrictedBlocksPropertiesImpl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 public final class ConfigApi {
 
   private static final String DATA_SOURCE_CONFIG_FILE_NAME = "dataSource.conf";
+  private static final String RESTRICTED_BLOCKS_CONFIG_FILE_NAME = "restrictedBlocks.conf";
 
   private final ConfigManager configManager;
 
@@ -51,5 +54,12 @@ public final class ConfigApi {
         DATA_SOURCE_CONFIG_FILE_NAME, new DataSourcePropertiesImpl());
     return configManager.readAndValidate(
         DATA_SOURCE_CONFIG_FILE_NAME, DataSourcePropertiesImpl.class);
+  }
+
+  public @NotNull RestrictedBlocksProperties getRestrictedBlocksProperties() {
+    configManager.createDefaultIfNotExists(
+        RESTRICTED_BLOCKS_CONFIG_FILE_NAME, new RestrictedBlocksPropertiesImpl());
+    return configManager.readAndValidate(
+        RESTRICTED_BLOCKS_CONFIG_FILE_NAME, RestrictedBlocksPropertiesImpl.class);
   }
 }

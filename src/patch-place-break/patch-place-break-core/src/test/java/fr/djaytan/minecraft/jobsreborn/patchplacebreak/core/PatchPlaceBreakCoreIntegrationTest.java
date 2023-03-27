@@ -43,6 +43,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 class PatchPlaceBreakCoreIntegrationTest {
 
   private static final String CONFIG_DATA_SOURCE_FILE_NAME = "dataSource.conf";
+  private static final String RESTRICTED_BLOCKS_CONFIG_FILE_NAME = "restrictedBlocks.conf";
   private static final String SQLITE_DATABASE_FILE_NAME = "sqlite-data.db";
 
   @TempDir private Path dataFolder;
@@ -68,8 +69,14 @@ class PatchPlaceBreakCoreIntegrationTest {
     // Then
     Path expectedConfDataSourceFile =
         TestResourcesHelper.getClassResourceAsAbsolutePath(
-            this.getClass(), "whenEnabling_withDefaultSetup_expectedConfigFile.conf");
+            this.getClass(), "whenEnabling_withDefaultSetup_expectedDataSourceConfigFile.conf");
     Path actualConfDataSourceFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
+
+    Path expectedRestrictedBlocksConfigFile =
+        TestResourcesHelper.getClassResourceAsAbsolutePath(
+            this.getClass(),
+            "whenEnabling_withDefaultSetup_expectedRestrictedBlocksConfigFile.conf");
+    Path actualRestrictedBlocksConfigFile = dataFolder.resolve(RESTRICTED_BLOCKS_CONFIG_FILE_NAME);
 
     Path sqliteDatabaseFile = dataFolder.resolve(SQLITE_DATABASE_FILE_NAME);
 
@@ -77,9 +84,11 @@ class PatchPlaceBreakCoreIntegrationTest {
         () -> assertThat(patchPlaceBreakApi).isNotNull(),
         () ->
             assertThat(actualConfDataSourceFile)
-                .exists()
                 .hasSameTextualContentAs(expectedConfDataSourceFile),
-        () -> assertThat(sqliteDatabaseFile).exists().isNotEmptyFile());
+        () ->
+            assertThat(actualRestrictedBlocksConfigFile)
+                .hasSameTextualContentAs(expectedRestrictedBlocksConfigFile),
+        () -> assertThat(sqliteDatabaseFile).isNotEmptyFile());
   }
 
   @ParameterizedTest
@@ -93,7 +102,7 @@ class PatchPlaceBreakCoreIntegrationTest {
         String.format(
             TestResourcesHelper.getClassResourceAsString(
                 this.getClass(),
-                "whenEnabling_withCustomSetup_givenConfigFileTemplate.conf",
+                "whenEnabling_withCustomSetup_givenDataSourceConfigFileTemplate.conf",
                 false),
             dbmsPort);
     Path configFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);

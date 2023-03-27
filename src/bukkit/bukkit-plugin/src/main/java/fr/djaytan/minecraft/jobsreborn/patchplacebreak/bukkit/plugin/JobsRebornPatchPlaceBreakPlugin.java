@@ -25,7 +25,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin;
 import com.djaytan.bukkit.slf4j.BukkitLoggerFactory;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.ListenerRegister;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject.JobsRebornPatchPlaceBreakFactory;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject.JobsRebornPatchPlaceBreakInjector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
 import java.io.File;
 import java.time.Clock;
@@ -64,11 +64,11 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
   public void onEnable() {
     BukkitLoggerFactory.provideBukkitLogger(getLogger());
 
-    JobsRebornPatchPlaceBreakFactory factory = new JobsRebornPatchPlaceBreakFactory(this, clock);
-    ListenerRegister listenerRegister = factory.listenerRegister();
-    MetricsFacade metricsFacade = factory.metricsFacade();
-    patchPlaceBreakCore = factory.patchPlaceBreakCore();
-    patchPlaceBreakBukkitAdapterApi = factory.patchPlaceBreakBukkitAdapterApi();
+    JobsRebornPatchPlaceBreakInjector injector = new JobsRebornPatchPlaceBreakInjector(this, clock);
+    ListenerRegister listenerRegister = injector.listenerRegister();
+    MetricsFacade metricsFacade = injector.metricsFacade();
+    patchPlaceBreakCore = injector.patchPlaceBreakCore();
+    patchPlaceBreakBukkitAdapterApi = injector.patchPlaceBreakBukkitAdapterApi();
 
     listenerRegister.registerListeners();
     metricsFacade.activateMetricsCollection();

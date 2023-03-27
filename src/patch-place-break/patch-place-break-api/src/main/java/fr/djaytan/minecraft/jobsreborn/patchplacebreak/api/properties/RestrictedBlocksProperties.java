@@ -22,11 +22,6 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import lombok.Value;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -35,17 +30,7 @@ import org.jetbrains.annotations.NotNull;
  * <p>You can check if a block should be ignored according to the current properties thanks to the
  * {@link #isRestricted(String)} method.
  */
-@Value
-public class RestrictedBlocksProperties {
-
-  Set<String> materials;
-  RestrictionMode restrictionMode;
-
-  public RestrictedBlocksProperties(
-      @NotNull Collection<String> materials, @NotNull RestrictionMode restrictionMode) {
-    this.materials = Collections.unmodifiableSet(new HashSet<>(materials));
-    this.restrictionMode = restrictionMode;
-  }
+public interface RestrictedBlocksProperties {
 
   /**
    * Checks if a given material is restricted based on defined properties.
@@ -53,17 +38,5 @@ public class RestrictedBlocksProperties {
    * @param material The material name to check.
    * @return true if the material is restricted, false otherwise.
    */
-  public boolean isRestricted(@NotNull String material) {
-    switch (restrictionMode) {
-      case BLACKLIST:
-        return materials.contains(material);
-      case WHITELIST:
-        return !materials.contains(material);
-      case DISABLED:
-        return false;
-      default:
-        throw new IllegalStateException(
-            String.format("Restriction mode %s is not supported.", restrictionMode));
-    }
-  }
+  boolean isRestricted(@NotNull String material);
 }

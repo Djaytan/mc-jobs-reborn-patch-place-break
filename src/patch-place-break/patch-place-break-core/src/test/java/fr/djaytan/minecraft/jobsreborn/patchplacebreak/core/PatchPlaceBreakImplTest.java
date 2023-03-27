@@ -38,6 +38,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictedBlocksProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictionMode;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.RestrictedBlocksPropertiesImpl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPair;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
@@ -75,7 +76,7 @@ class PatchPlaceBreakImplTest {
   @Captor private ArgumentCaptor<BlockLocation> blockLocationCaptor;
   private final Clock clock = Clock.systemUTC();
   private final RestrictedBlocksProperties restrictedBlocksProperties =
-      new RestrictedBlocksProperties(
+      new RestrictedBlocksPropertiesImpl(
           new HashSet<>(Arrays.asList("STONE", "DIRT")), RestrictionMode.BLACKLIST);
   private PatchPlaceBreakImpl patchPlaceBreakImpl;
 

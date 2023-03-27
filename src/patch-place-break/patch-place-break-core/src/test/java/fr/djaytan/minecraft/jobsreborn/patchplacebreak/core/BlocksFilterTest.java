@@ -28,6 +28,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Block;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictedBlocksProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictionMode;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.RestrictedBlocksPropertiesImpl;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +38,7 @@ import org.junit.jupiter.api.Test;
 class BlocksFilterTest {
 
   private final RestrictedBlocksProperties restrictedBlocksProperties =
-      new RestrictedBlocksProperties(
+      new RestrictedBlocksPropertiesImpl(
           new HashSet<>(Arrays.asList("STONE", "DIRT")), RestrictionMode.BLACKLIST);
   private final BlocksFilter blocksFilter = new BlocksFilter(restrictedBlocksProperties);
 
