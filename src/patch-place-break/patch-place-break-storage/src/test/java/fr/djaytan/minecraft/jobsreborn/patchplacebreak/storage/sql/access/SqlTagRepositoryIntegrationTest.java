@@ -195,9 +195,7 @@ class SqlTagRepositoryIntegrationTest {
     assertThat(retrievedTag).isEmpty();
   }
 
-  /*
-   * Helper methods
-   */
+  /* Helpers */
 
   private @NotNull BlockLocation createRandomBlockLocation() {
     int randX = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();

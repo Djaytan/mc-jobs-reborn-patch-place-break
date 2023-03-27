@@ -13,7 +13,7 @@ for Bukkit servers.
 
 The resource is available
 on [Spigot](https://www.spigotmc.org/resources/jobsreborn-patchplacebreak.102779/),
-[Hangar (PaperMC)](https://hangar.papermc.io/Djaytan/JobsRebornPatchPlaceBreak) and
+[Hangar (PaperMC)](https://hangar.papermc.io/Djaytan/JobsReborn-PatchPlaceBreak) and
 [Modrinth](https://modrinth.com/plugin/jobsreborn-patchplacebreak).
 
 ## Place-and-break issue

@@ -169,9 +169,7 @@ abstract class BasePatchPlaceBreakApiIntegrationTest {
     assertThat(isExploit).isFalse();
   }
 
-  /*
-   * Helper methods
-   */
+  /* Helpers */
 
   /**
    * Prevents collisions by generating random block location for each test since for performances

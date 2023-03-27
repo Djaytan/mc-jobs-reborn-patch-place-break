@@ -234,9 +234,7 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
     assertThat(isExploit).isFalse();
   }
 
-  /*
-   * Helper methods
-   */
+  /* Helpers */
 
   private @NotNull PatchPlaceBreakBukkitAdapterApi createPatchPlaceBreakBukkitAdapterApi() {
     ClassLoader classLoader = PatchPlaceBreakCore.class.getClassLoader();

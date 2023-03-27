@@ -147,7 +147,7 @@ class PatchPlaceBreakVerifierTest {
     verify(listenerRegister).reloadListeners();
   }
 
-  /* Helper methods */
+  /* Helpers */
 
   private @NotNull BukkitPatchEnvironmentState createEnvironmentState(boolean isPatchApplied) {
     Location location = createRandomLocation();
