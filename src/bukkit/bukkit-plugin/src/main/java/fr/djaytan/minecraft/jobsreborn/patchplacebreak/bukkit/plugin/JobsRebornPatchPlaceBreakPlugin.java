@@ -82,9 +82,8 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
     getLogger().info("JobsReborn-PatchPlaceBreak successfully disabled.");
   }
 
-  /** API exposed only for testing purposes. */
   @NotNull
-  PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi() {
+  public PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi() {
     return patchPlaceBreakBukkitAdapterApi;
   }
 }

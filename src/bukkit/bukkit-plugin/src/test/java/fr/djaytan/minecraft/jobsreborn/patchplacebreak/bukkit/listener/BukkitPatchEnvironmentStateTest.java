@@ -23,22 +23,32 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
 
+import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.WorldMock;
 import be.seeseemelk.mockbukkit.block.BlockMock;
 import com.gamingmesh.jobs.actions.BlockActionInfo;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.JobsPrePaymentListener;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.JobsRebornPatchPlaceBreakPlugin;
+import java.time.Clock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.plugin.RegisteredListener;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,9 +58,51 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class BukkitPatchEnvironmentStateTest {
 
+  private static JavaPlugin plugin;
+  @Mock private Job job;
+  @Mock private Player player;
+
+  @BeforeAll
+  static void beforeAll() {
+    System.setProperty("bstats.relocatecheck", "false");
+    MockBukkit.mock();
+    plugin = MockBukkit.load(JobsRebornPatchPlaceBreakPlugin.class, Clock.systemUTC());
+  }
+
+  @AfterAll
+  static void afterAll() {
+    MockBukkit.unload();
+  }
+
   @Test
-  @DisplayName("When instantiating then calling toString() method")
-  void whenInstantiatingThenCallingToStringMethod(@Mock Job job, @Mock Player player) {
+  @DisplayName("When instantiating with nominal values")
+  void whenInstantiatingWithNominalValues(@Mock Block block) {
+    // Given
+    ActionInfo actionInfo = new BlockActionInfo(block, ActionType.BREAK);
+    Event event = new BlockBreakEvent(block, player);
+    boolean isCancelled = false;
+    HandlerList handlerList = event.getHandlers();
+
+    // When
+    BukkitPatchEnvironmentState environmentState =
+        new BukkitPatchEnvironmentState(
+            actionInfo, block, player, job, event, isCancelled, handlerList);
+
+    // Then
+    assertAll(
+        () -> assertThat(environmentState.getJobActionInfo()).isSameAs(actionInfo),
+        () -> assertThat(environmentState.getTargetedBlock()).isSameAs(block),
+        () -> assertThat(environmentState.getInvolvedPlayer()).isSameAs(player),
+        () -> assertThat(environmentState.getTriggeredJob()).isSameAs(job),
+        () -> assertThat(environmentState.getEventHandled()).isSameAs(event),
+        () -> assertThat(environmentState.isEventCancelled()).isSameAs(isCancelled),
+        () -> assertThat(environmentState.getEventHandlers()).isSameAs(handlerList));
+  }
+
+  @Test
+  @DisplayName("When calling toString() method")
+  void whenCallingToStringMethod(
+      @Mock JobsPrePaymentListener listener, @Mock RegisteredListener registeredListener) {
     // Given
     World world = new WorldMock();
     Location location = new Location(world, 15, 64, -78.05);
@@ -58,16 +110,23 @@ class BukkitPatchEnvironmentStateTest {
     ActionInfo actionInfo = new BlockActionInfo(block, ActionType.BREAK);
     Event event = new BlockBreakEvent(block, player);
     boolean isCancelled = false;
-    HandlerList handlerList = event.getHandlers();
+
+    HandlerList handlerList = new HandlerList();
+
+    given(registeredListener.getListener()).willReturn(listener);
+    given(registeredListener.getPlugin()).willReturn(plugin);
+    given(registeredListener.getPriority()).willReturn(EventPriority.HIGH);
+
+    handlerList.register(registeredListener);
 
     given(player.getName()).willReturn("Bob");
     given(job.getName()).willReturn("Miner");
 
     // When
-    BukkitPatchEnvironmentState bukkitPatchEnvironmentState =
+    BukkitPatchEnvironmentState environmentState =
         new BukkitPatchEnvironmentState(
             actionInfo, block, player, job, event, isCancelled, handlerList);
-    String toStringResult = bukkitPatchEnvironmentState.toString();
+    String toStringResult = environmentState.toString();
 
     // Then
     assertThat(toStringResult)
@@ -82,6 +141,11 @@ class BukkitPatchEnvironmentStateTest {
                 + "triggeredJob=Miner,"
                 + "eventHandled=org.bukkit.event.block.BlockBreakEvent@.*,"
                 + "isEventCancelled=false,"
-                + "eventHandlers=org.bukkit.event.HandlerList@.*\\[registeredListeners=\\[]]]");
+                + "eventHandlers=org.bukkit.event.HandlerList@.*\\["
+                + "registeredListeners=\\["
+                + "org.bukkit.plugin.RegisteredListener@.*\\["
+                + "listenerClass=fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.JobsPrePaymentListener,"
+                + "pluginName=JobsReborn-PatchPlaceBreak,eventPriority=HIGH"
+                + "]]]]");
   }
 }

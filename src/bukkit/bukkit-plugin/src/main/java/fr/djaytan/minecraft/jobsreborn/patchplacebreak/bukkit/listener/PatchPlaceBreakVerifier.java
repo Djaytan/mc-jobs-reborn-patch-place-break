@@ -66,34 +66,37 @@ public class PatchPlaceBreakVerifier {
    *
    * @param environmentState The environment state useful to check the well-application of the
    *     patch.
+   * @return The completable future.
    */
-  public void checkAndAttemptFixListenersIfRequired(
+  public @NotNull CompletableFuture<Void> checkAndAttemptFixListenersIfRequired(
       @NotNull BukkitPatchEnvironmentState environmentState) {
-    CompletableFuture.runAsync(
+    return CompletableFuture.runAsync(
         () -> {
-          if (!isPatchExpected(environmentState)) {
+          if (isValidState(environmentState)) {
             return;
           }
 
-          if (!isPatchApplied(environmentState)) {
-            log.atWarn()
-                .log(
-                    "Violation of a place-and-break patch detected! It's possible that's"
-                        + " because of a conflict with another plugin. Tentative to automatically fix the"
-                        + " issue on-going... If this warning persists, please, report this full log"
-                        + " message to the developer: {}",
-                    environmentState);
-            listenerRegister.get().reloadListeners();
-          }
+          log.atWarn()
+              .log(
+                  "Violation of a place-and-break patch detected! It's possible that's"
+                      + " because of a conflict with another plugin. Tentative to automatically fix the"
+                      + " issue on-going... If this warning persists, please, report this full log"
+                      + " message to the developer: {}",
+                  environmentState);
+          listenerRegister.get().reloadListeners();
         });
+  }
+
+  private boolean isValidState(@NotNull BukkitPatchEnvironmentState environmentState) {
+    return isPatchApplied(environmentState) || !isPatchExpected(environmentState);
+  }
+
+  private boolean isPatchApplied(@NotNull BukkitPatchEnvironmentState environmentState) {
+    return environmentState.isEventCancelled();
   }
 
   private boolean isPatchExpected(@NotNull BukkitPatchEnvironmentState environmentState) {
     return patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(
         environmentState.getJobActionInfo(), environmentState.getTargetedBlock());
-  }
-
-  private boolean isPatchApplied(@NotNull BukkitPatchEnvironmentState environmentState) {
-    return environmentState.isEventCancelled();
   }
 }

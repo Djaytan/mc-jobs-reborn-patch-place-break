@@ -42,13 +42,13 @@ import org.jetbrains.annotations.NotNull;
 @AllArgsConstructor
 public class BukkitPatchEnvironmentState {
 
-  ActionInfo jobActionInfo;
-  Block targetedBlock;
-  OfflinePlayer involvedPlayer;
-  Job triggeredJob;
-  Event eventHandled;
-  boolean isEventCancelled;
-  HandlerList eventHandlers;
+  private ActionInfo jobActionInfo;
+  private Block targetedBlock;
+  private OfflinePlayer involvedPlayer;
+  private Job triggeredJob;
+  private Event eventHandled;
+  private boolean isEventCancelled;
+  private HandlerList eventHandlers;
 
   @Override
   public @NotNull String toString() {
