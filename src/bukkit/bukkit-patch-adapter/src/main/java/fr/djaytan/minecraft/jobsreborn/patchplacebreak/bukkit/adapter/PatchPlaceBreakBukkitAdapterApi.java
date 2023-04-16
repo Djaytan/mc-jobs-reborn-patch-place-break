@@ -37,6 +37,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -76,6 +77,10 @@ public class PatchPlaceBreakBukkitAdapterApi {
    */
   public @NotNull CompletableFuture<Void> putTag(
       @NotNull org.bukkit.block.Block bukkitBlock, boolean isEphemeral) {
+    if (bukkitBlock.getType() == Material.AIR) {
+      return CompletableFuture.completedFuture(null);
+    }
+
     BlockLocation blockLocation = locationConverter.convert(bukkitBlock);
     return patchPlaceBreakApi.putTag(
         new Block(blockLocation, bukkitBlock.getType().name()), isEphemeral);
@@ -96,6 +101,7 @@ public class PatchPlaceBreakBukkitAdapterApi {
       @NotNull Collection<org.bukkit.block.Block> bukkitBlocks, @NotNull BlockFace blockFace) {
     Set<Block> blocks =
         bukkitBlocks.stream()
+            .filter(bukkitBlock -> bukkitBlock.getType() != Material.AIR)
             .map(
                 bukkitBlock ->
                     new Block(locationConverter.convert(bukkitBlock), bukkitBlock.getType().name()))
@@ -112,6 +118,10 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * @see PatchPlaceBreakApi#removeTag(Block)
    */
   public @NotNull CompletableFuture<Void> removeTag(@NotNull org.bukkit.block.Block bukkitBlock) {
+    if (bukkitBlock.getType() == Material.AIR) {
+      return CompletableFuture.completedFuture(null);
+    }
+
     BlockLocation blockLocation = locationConverter.convert(bukkitBlock);
     return patchPlaceBreakApi.removeTag(new Block(blockLocation, bukkitBlock.getType().name()));
   }
