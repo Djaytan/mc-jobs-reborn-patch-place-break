@@ -23,6 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
 import com.gamingmesh.jobs.container.ActionInfo;
+import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Block;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
@@ -31,12 +32,16 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.ActionTypeConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.BlockFaceConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.LocationConverter;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.apache.commons.lang3.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.jetbrains.annotations.NotNull;
@@ -49,6 +54,15 @@ import org.jetbrains.annotations.Nullable;
  */
 @Singleton
 public class PatchPlaceBreakBukkitAdapterApi {
+
+  /**
+   * These materials shall be blacklisted for BREAK actions since it doesn't make sense to check
+   * them (e.g. we never expect AIR being broken, even less by a player). Worst, it can be harmful
+   * (drop performances, side effects, ...). This is required to deal with weird behaviors coming
+   * from JobsReborn (why does it dispatch BREAK events for AIR blocks???).
+   */
+  private static final Set<Material> BLACKLISTED_MATERIALS_ON_BREAK =
+      Collections.unmodifiableSet(new HashSet<>(Arrays.asList(Material.AIR, Material.WATER)));
 
   private final ActionTypeConverter actionTypeConverter;
   private final BlockFaceConverter blockFaceConverter;
@@ -77,10 +91,6 @@ public class PatchPlaceBreakBukkitAdapterApi {
    */
   public @NotNull CompletableFuture<Void> putTag(
       @NotNull org.bukkit.block.Block bukkitBlock, boolean isEphemeral) {
-    if (bukkitBlock.getType() == Material.AIR) {
-      return CompletableFuture.completedFuture(null);
-    }
-
     BlockLocation blockLocation = locationConverter.convert(bukkitBlock);
     return patchPlaceBreakApi.putTag(
         new Block(blockLocation, bukkitBlock.getType().name()), isEphemeral);
@@ -101,7 +111,6 @@ public class PatchPlaceBreakBukkitAdapterApi {
       @NotNull Collection<org.bukkit.block.Block> bukkitBlocks, @NotNull BlockFace blockFace) {
     Set<Block> blocks =
         bukkitBlocks.stream()
-            .filter(bukkitBlock -> bukkitBlock.getType() != Material.AIR)
             .map(
                 bukkitBlock ->
                     new Block(locationConverter.convert(bukkitBlock), bukkitBlock.getType().name()))
@@ -118,10 +127,6 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * @see PatchPlaceBreakApi#removeTag(Block)
    */
   public @NotNull CompletableFuture<Void> removeTag(@NotNull org.bukkit.block.Block bukkitBlock) {
-    if (bukkitBlock.getType() == Material.AIR) {
-      return CompletableFuture.completedFuture(null);
-    }
-
     BlockLocation blockLocation = locationConverter.convert(bukkitBlock);
     return patchPlaceBreakApi.removeTag(new Block(blockLocation, bukkitBlock.getType().name()));
   }
@@ -141,8 +146,23 @@ public class PatchPlaceBreakBukkitAdapterApi {
       return false;
     }
 
+    if (isBlacklistedAction(actionInfo.getType(), bukkitBlock)) {
+      return false;
+    }
+
     BlockActionType patchActionType = actionTypeConverter.convert(actionInfo.getType());
     Block block = new Block(locationConverter.convert(bukkitBlock), bukkitBlock.getType().name());
     return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, block);
+  }
+
+  private static boolean isBlacklistedAction(
+      @NotNull ActionType actionType, @NotNull org.bukkit.block.Block bukkitBlock) {
+    Validate.notNull(actionType);
+    Validate.notNull(bukkitBlock);
+
+    if (Arrays.asList(ActionType.BREAK, ActionType.TNTBREAK).contains(actionType)) {
+      return BLACKLISTED_MATERIALS_ON_BREAK.contains(bukkitBlock.getType());
+    }
+    return false;
   }
 }

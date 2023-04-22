@@ -43,16 +43,19 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.Jobs
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.JobsPrePaymentListener;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.JobsRebornPatchPlaceBreakPlugin;
 import java.time.Clock;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import org.awaitility.Awaitility;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.Preconditions;
 
 class ListenerRegisterTest {
 
@@ -111,15 +114,23 @@ class ListenerRegisterTest {
     Location location = new Location(worldMock, 47, 64, -87);
     BlockMock blockMock = new BlockMock(Material.STONE, location);
     PlayerMock playerMock = serverMock.addPlayer();
+    ActionInfo actionInfo = new BlockActionInfo(blockMock, ActionType.PLACE);
+
+    Preconditions.condition(
+        !patchApi.isPlaceAndBreakExploit(actionInfo, blockMock),
+        "No tag is supposed to exist yet on the targeted block");
 
     // When
     listenerRegister.registerListeners();
-    boolean isBlockBroken = playerMock.simulateBlockBreak(blockMock);
 
     // Then
-    ActionInfo actionInfo = new BlockActionInfo(blockMock, ActionType.BREAK);
+    BlockPlaceEvent blockPlaceEvent =
+        new BlockPlaceEvent(blockMock, null, null, null, playerMock, true, null);
+    serverMock.getPluginManager().callEvent(blockPlaceEvent);
 
-    assertThat(isBlockBroken).isTrue();
-    await().until(() -> patchApi.isPlaceAndBreakExploit(actionInfo, blockMock));
+    assertThat(blockPlaceEvent.isCancelled()).isFalse();
+    await()
+        .pollDelay(Duration.ofSeconds(1))
+        .until(() -> patchApi.isPlaceAndBreakExploit(actionInfo, blockMock));
   }
 }

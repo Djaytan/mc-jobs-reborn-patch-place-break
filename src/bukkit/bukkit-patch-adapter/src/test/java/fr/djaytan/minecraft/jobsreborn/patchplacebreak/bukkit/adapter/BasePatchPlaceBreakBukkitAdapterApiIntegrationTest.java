@@ -26,8 +26,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
+import com.gamingmesh.jobs.actions.BlockActionInfo;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
@@ -71,9 +73,6 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
   @TempDir protected Path dataFolder;
 
   @Mock(strictness = Strictness.LENIENT)
-  private ActionInfo sampleActionInfoMocked;
-
-  @Mock(strictness = Strictness.LENIENT)
   private Block randomBlockMocked;
 
   @Mock(strictness = Strictness.LENIENT)
@@ -83,7 +82,6 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
   @SneakyThrows
   void beforeEach() {
     patchPlaceBreakBukkitAdapterApi = createPatchPlaceBreakBukkitAdapterApi();
-    prepareSampleActionInfoMocked(sampleActionInfoMocked);
     prepareRandomBlockMocked(randomBlockMocked, worldMocked);
   }
 
@@ -101,11 +99,10 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
   @DisplayName("When checking exploit while 'actionInfo' is null")
   void whenCheckingExploitWhileActionInfoIsNull_shouldNotDetectExploit() {
     // Given
-    ActionInfo actionInfo = null;
 
     // When
     boolean isExploit =
-        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
+        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(null, randomBlockMocked);
 
     // Then
     assertThat(isExploit).isFalse();
@@ -117,13 +114,11 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
    */
   @Test
   @DisplayName("When checking exploit while 'block' is null")
-  void whenCheckingExploitWhileBlockIsNull_shouldNotDetectExploit() {
+  void whenCheckingExploitWhileBlockIsNull_shouldNotDetectExploit(@Mock ActionInfo actionInfo) {
     // Given
-    Block block = null;
 
     // When
-    boolean isExploit =
-        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(sampleActionInfoMocked, block);
+    boolean isExploit = patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionInfo, null);
 
     // Then
     assertThat(isExploit).isFalse();
@@ -133,11 +128,27 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
   @DisplayName("When tag doesn't exist")
   void whenTagDoesntExist_shouldNotDetectExploit() {
     // Given
+    ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.PLACE);
+    given(randomBlockMocked.getType()).willReturn(Material.STONE);
 
     // When
     boolean isExploit =
-        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(
-            sampleActionInfoMocked, randomBlockMocked);
+        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
+
+    // Then
+    assertThat(isExploit).isFalse();
+  }
+
+  @Test
+  @DisplayName("When action is blacklisted")
+  void whenActionIsBlacklisted_shouldNotDetectExploit() {
+    // Given
+    ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.BREAK);
+    given(randomBlockMocked.getType()).willReturn(Material.AIR);
+
+    // When
+    boolean isExploit =
+        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
 
     // Then
     assertThat(isExploit).isFalse();
@@ -149,6 +160,7 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
   void whenPuttingTag(
       boolean isEphemeral, @NotNull TemporalAmount timeElapsedAfterPut, boolean isExploitExpected) {
     // Given
+    ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.PLACE);
 
     // When
     patchPlaceBreakBukkitAdapterApi.putTag(randomBlockMocked, isEphemeral).join();
@@ -156,8 +168,7 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
 
     // Then
     boolean isExploit =
-        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(
-            sampleActionInfoMocked, randomBlockMocked);
+        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
 
     assertThat(isExploit).isEqualTo(isExploitExpected);
   }
@@ -207,10 +218,12 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
     when(newBlock.getZ()).thenReturn(oldZ);
     when(newBlock.getType()).thenReturn(Material.STONE);
 
+    ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.PLACE);
+
     boolean isOnOldBlockAnExploit =
-        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(sampleActionInfoMocked, oldBlock);
+        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionInfo, oldBlock);
     boolean isOnNewBlockAnExploit =
-        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(sampleActionInfoMocked, newBlock);
+        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionInfo, newBlock);
 
     assertAll(
         () -> assertThat(isOnOldBlockAnExploit).isFalse(),
@@ -227,9 +240,10 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
     patchPlaceBreakBukkitAdapterApi.removeTag(randomBlockMocked).join();
 
     // Then
+    ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.PLACE);
+
     boolean isExploit =
-        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(
-            sampleActionInfoMocked, randomBlockMocked);
+        patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
 
     assertThat(isExploit).isFalse();
   }
@@ -247,10 +261,6 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
 
     return new PatchPlaceBreakBukkitAdapterApi(
         actionTypeConverter, blockFaceConverter, locationConverter, patchPlaceBreakApi);
-  }
-
-  private static void prepareSampleActionInfoMocked(@NotNull ActionInfo actionInfoMocked) {
-    when(actionInfoMocked.getType()).thenReturn(ActionType.BREAK);
   }
 
   /**
