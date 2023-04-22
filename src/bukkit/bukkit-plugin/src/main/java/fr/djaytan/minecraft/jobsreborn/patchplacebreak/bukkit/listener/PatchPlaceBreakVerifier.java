@@ -25,7 +25,6 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
 import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -33,39 +32,34 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Represents the patch-place-break verifier for the Bukkit plugin.
  *
- * <p>After the appliance of a patch (typically done by cancelling the appropriate events from
- * JobsReborn API), a risk that it's ignored because of conflicts with other plugins exists. The
- * idea of this class is then to provide a way to verify the well-application of the patch and try
- * to apply an automatic fix if things go wrong.
+ * <p>We need to verify the well-appliance of the patch because of conflicts risks with other
+ * plugins on a same server. In case the patch has not been applied has expected, then server
+ * administrator should be informed of the situation in order to report it to the developer for
+ * investigations.
+ *
+ * <p>Automatic reconcile is not trivial and costly to implement (because of asynchronous mode)
+ * without guarantees of success in the end, hence only sending warning message.
  */
 @Slf4j
 @Singleton
 public class PatchPlaceBreakVerifier {
 
-  /*
-   * Cyclic dependency: PatchPlaceBreakVerifier -> ListenerRegister
-   *  -> a listener (e.g. JobsExpGainVerificationListener) -> PatchPlaceBreakVerifier
-   */
-  private final Provider<ListenerRegister> listenerRegister;
   private final PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
 
   @Inject
   public PatchPlaceBreakVerifier(
-      @NotNull Provider<ListenerRegister> listenerRegister,
       @NotNull PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi) {
-    this.listenerRegister = listenerRegister;
     this.patchPlaceBreakBukkitAdapterApi = patchPlaceBreakBukkitAdapterApi;
   }
 
   /**
    * Checks if the patch has been well-applied in case of exploit-detection. If exploit has been
-   * detected but patch has not been well-applied, then an attempt to fix the issue will be done.
-   * Otherwise, nothing will be done.
+   * detected but patch has not been well-applied in the end, then a warning message is logger for
+   * encouraging further investigations.
    *
    * <p>The method is executed asynchronously for performances purposes.
    *
-   * @param environmentState The environment state useful to check the well-application of the
-   *     patch.
+   * @param environmentState The environment state useful to check the well-appliance of the patch.
    * @return The completable future.
    */
   public @NotNull CompletableFuture<Void> checkAndAttemptFixListenersIfRequired(
@@ -79,11 +73,9 @@ public class PatchPlaceBreakVerifier {
           log.atWarn()
               .log(
                   "Violation of a place-and-break patch detected! It's possible that's"
-                      + " because of a conflict with another plugin. Tentative to automatically fix the"
-                      + " issue on-going... If this warning persists, please, report this full log"
+                      + " because of a conflict with another plugin. Please, report this full log"
                       + " message to the developer: {}",
                   environmentState);
-          listenerRegister.get().reloadListeners();
         });
   }
 
