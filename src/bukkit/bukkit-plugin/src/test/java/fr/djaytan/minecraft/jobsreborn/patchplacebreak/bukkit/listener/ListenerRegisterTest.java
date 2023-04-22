@@ -44,12 +44,10 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.Jobs
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.JobsRebornPatchPlaceBreakPlugin;
 import java.time.Clock;
 import java.util.concurrent.TimeUnit;
-import javax.inject.Provider;
 import org.awaitility.Awaitility;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,9 +74,7 @@ class ListenerRegisterTest {
 
   @BeforeEach
   void beforeEach() {
-    ListenerRegisterProvider listenerRegisterProvider = new ListenerRegisterProvider();
-    PatchPlaceBreakVerifier patchPlaceBreakVerifier =
-        new PatchPlaceBreakVerifier(listenerRegisterProvider, patchApi);
+    PatchPlaceBreakVerifier patchPlaceBreakVerifier = new PatchPlaceBreakVerifier(patchApi);
 
     BlockBreakListener blockBreakListener = new BlockBreakListener(patchApi);
     BlockGrowListener blockGrowListener = new BlockGrowListener(patchApi);
@@ -100,8 +96,6 @@ class ListenerRegisterTest {
             blockSpreadListener,
             jobsExpGainListener,
             jobsPrePaymentListener);
-
-    listenerRegisterProvider.setListenerRegister(listenerRegister);
   }
 
   @AfterAll
@@ -127,41 +121,5 @@ class ListenerRegisterTest {
 
     assertThat(isBlockBroken).isTrue();
     await().until(() -> patchApi.isPlaceAndBreakExploit(actionInfo, blockMock));
-  }
-
-  @Test
-  @DisplayName("When reloading listeners")
-  void whenReloadingListeners() {
-    // Given
-    WorldMock worldMock = serverMock.addSimpleWorld("world");
-    Location location = new Location(worldMock, 47, 64, -87);
-    BlockMock blockMock = new BlockMock(Material.STONE, location);
-    PlayerMock playerMock = serverMock.addPlayer();
-
-    // When
-    listenerRegister.reloadListeners();
-    boolean isBlockBroken = playerMock.simulateBlockBreak(blockMock);
-
-    // Then
-    ActionInfo actionInfo = new BlockActionInfo(blockMock, ActionType.BREAK);
-
-    assertThat(isBlockBroken).isTrue();
-    await().until(() -> patchApi.isPlaceAndBreakExploit(actionInfo, blockMock));
-  }
-
-  /* Helpers */
-
-  static class ListenerRegisterProvider implements Provider<ListenerRegister> {
-
-    private ListenerRegister listenerRegister;
-
-    @Override
-    public ListenerRegister get() {
-      return listenerRegister;
-    }
-
-    public void setListenerRegister(@NotNull ListenerRegister listenerRegister) {
-      this.listenerRegister = listenerRegister;
-    }
   }
 }

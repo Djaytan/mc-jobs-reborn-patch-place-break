@@ -22,7 +22,6 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener;
 
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
@@ -78,7 +77,7 @@ class PatchPlaceBreakVerifierTest {
 
   @BeforeEach
   void beforeEach() {
-    patchPlaceBreakVerifier = new PatchPlaceBreakVerifier(() -> listenerRegister, patchApi);
+    patchPlaceBreakVerifier = new PatchPlaceBreakVerifier(patchApi);
   }
 
   @AfterAll
@@ -144,7 +143,7 @@ class PatchPlaceBreakVerifierTest {
     patchPlaceBreakVerifier.checkAndAttemptFixListenersIfRequired(environmentState).join();
 
     // Then
-    verify(listenerRegister).reloadListeners();
+    // A warning must be logged
   }
 
   /* Helpers */

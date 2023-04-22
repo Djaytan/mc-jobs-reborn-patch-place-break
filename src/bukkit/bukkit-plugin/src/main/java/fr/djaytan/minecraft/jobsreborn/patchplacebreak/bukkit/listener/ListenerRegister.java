@@ -32,7 +32,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.Jobs
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -87,17 +86,5 @@ public class ListenerRegister {
     pluginManager.registerEvents(jobsExpGainListener, javaPlugin);
     pluginManager.registerEvents(jobsPrePaymentListener, javaPlugin);
     log.atInfo().log("Event listeners registered.");
-  }
-
-  public void reloadListeners() {
-    log.atInfo().log("Reloading event listeners...");
-    unregisterListeners();
-    registerListeners();
-    log.atInfo().log("Event listeners reloaded successfully.");
-  }
-
-  private void unregisterListeners() {
-    HandlerList.unregisterAll(javaPlugin);
-    log.atInfo().log("Event listeners unregistered.");
   }
 }
