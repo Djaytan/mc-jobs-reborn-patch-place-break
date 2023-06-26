@@ -77,17 +77,13 @@ class ListenerRegisterTest {
 
   @BeforeEach
   void beforeEach() {
-    PatchPlaceBreakVerifier patchPlaceBreakVerifier = new PatchPlaceBreakVerifier(patchApi);
-
     BlockBreakListener blockBreakListener = new BlockBreakListener(patchApi);
     BlockGrowListener blockGrowListener = new BlockGrowListener(patchApi);
     BlockPistonListener blockPistonListener = new BlockPistonListener(patchApi);
     BlockPlaceListener blockPlaceListener = new BlockPlaceListener(patchApi);
     BlockSpreadListener blockSpreadListener = new BlockSpreadListener(patchApi);
-    JobsExpGainListener jobsExpGainListener =
-        new JobsExpGainListener(patchApi, patchPlaceBreakVerifier);
-    JobsPrePaymentListener jobsPrePaymentListener =
-        new JobsPrePaymentListener(patchApi, patchPlaceBreakVerifier);
+    JobsExpGainListener jobsExpGainListener = new JobsExpGainListener(patchApi);
+    JobsPrePaymentListener jobsPrePaymentListener = new JobsPrePaymentListener(patchApi);
     listenerRegister =
         new ListenerRegister(
             plugin,

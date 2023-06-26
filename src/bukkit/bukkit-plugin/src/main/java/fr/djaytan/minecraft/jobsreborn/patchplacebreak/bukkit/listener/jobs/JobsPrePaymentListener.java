@@ -23,13 +23,9 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs;
 
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
-import com.gamingmesh.jobs.container.ActionInfo;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.BukkitPatchEnvironmentState;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.PatchPlaceBreakVerifier;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -45,14 +41,11 @@ import org.jetbrains.annotations.NotNull;
 public class JobsPrePaymentListener implements Listener {
 
   private final PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
-  private final PatchPlaceBreakVerifier patchPlaceBreakVerifier;
 
   @Inject
   public JobsPrePaymentListener(
-      @NotNull PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi,
-      @NotNull PatchPlaceBreakVerifier patchPlaceBreakVerifier) {
+      @NotNull PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi) {
     this.patchPlaceBreakBukkitAdapterApi = patchPlaceBreakBukkitAdapterApi;
-    this.patchPlaceBreakVerifier = patchPlaceBreakVerifier;
   }
 
   /**
@@ -71,36 +64,5 @@ public class JobsPrePaymentListener implements Listener {
         event.getActionInfo(), event.getBlock())) {
       event.setCancelled(true);
     }
-  }
-
-  /**
-   * This method is called when a {@link JobsPrePaymentEvent} is dispatched to verify a
-   * place-and-break action have been well-patched. Otherwise, a warning log is sent.
-   *
-   * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we just want to know if
-   * the event has been cancelled or not without modifying its result.
-   *
-   * @param event The jobs pre-payment event.
-   */
-  @EventHandler(priority = EventPriority.MONITOR)
-  public void verifyPatchOnJobsPrePayment(@NotNull JobsPrePaymentEvent event) {
-    Block block = event.getBlock();
-    ActionInfo actionInfo = event.getActionInfo();
-
-    if (block == null || actionInfo == null || actionInfo.getType() == null) {
-      return;
-    }
-
-    BukkitPatchEnvironmentState environmentState =
-        new BukkitPatchEnvironmentState(
-            actionInfo,
-            block,
-            event.getPlayer(),
-            event.getJob(),
-            event,
-            event.isCancelled(),
-            event.getHandlers());
-
-    patchPlaceBreakVerifier.checkAndAttemptFixListenersIfRequired(environmentState);
   }
 }
