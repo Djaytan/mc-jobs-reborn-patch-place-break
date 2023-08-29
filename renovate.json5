@@ -3,24 +3,5 @@
   "extends": [
     "config:base"
   ],
-  // All dependencies which can't be bumped unless by upgrading Java version are ignored
-  "ignoreDeps": [
-    "com.zaxxer:HikariCP",
-    "jakarta.platform:jakarta.jakartaee-bom",
-    "org.glassfish:jakarta.el",
-    "org.hibernate.validator:hibernate-validator"
-  ],
-  "labels": ["t:dependencies"],
-  "packageRules": [
-    {
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true,
-      "automergeStrategy": "fast-forward",
-      "automergeType": "pr"
-    }
-  ]
+  "labels": ["t:dependencies"]
 }
