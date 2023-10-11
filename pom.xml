@@ -443,7 +443,7 @@
                 <exclude>.editorconfig</exclude>
                 <exclude>jitpack.yml</exclude>
                 <exclude>lombok.config</exclude>
-                <exclude>renovate.json5</exclude>
+                <exclude>renovate.json</exclude>
               </excludes>
             </licenseSet>
           </licenseSets>
