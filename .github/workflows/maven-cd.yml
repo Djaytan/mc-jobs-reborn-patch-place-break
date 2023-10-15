@@ -20,7 +20,8 @@ on:
       - 'src/**'
   create:
 
-permissions: write-all # Required when creating protected tag
+permissions:
+  contents: write
 
 jobs:
   # For this workflow, the following assumptions have been made and thus should be reality:
