@@ -28,7 +28,7 @@
 
   <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
   <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
-  <version>2.2.79-SNAPSHOT</version>
+  <version>DEV-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>JobsReborn-PatchPlaceBreak</name>
@@ -49,13 +49,6 @@
     <module>src/commons-test</module>
     <module>src/patch-place-break</module>
   </modules>
-
-  <scm>
-    <connection>scm:git:${project.scm.url}</connection>
-    <developerConnection>scm:git:${project.scm.url}</developerConnection>
-    <tag>HEAD</tag>
-    <url>git@github.com:Djaytan/mc-jobs-reborn-patch-place-break.git</url>
-  </scm>
 
   <issueManagement>
     <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues</url>
@@ -552,18 +545,6 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.1.1</version>
-        <configuration>
-          <!--
-            We will not have to deploy in repository since we rely on Jitpack
-            https://jitpack.io/#Djaytan/mc-jobs-reborn-patch-place-break
-          -->
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.4.0</version>
         <configuration>
@@ -647,20 +628,6 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>3.0.1</version>
-        <configuration>
-          <!-- Spigot API is a SNAPSHOT version... No other choice than to enable this option -->
-          <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
-          <checkModificationExcludes>
-            <checkModificationExclude>pom.xml</checkModificationExclude>
-          </checkModificationExcludes>
-          <tagNameFormat>v@{project.version}</tagNameFormat>
-          <scmCommentPrefix>[ci skip]</scmCommentPrefix>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <version>3.3.1</version>
       </plugin>
@@ -699,6 +666,11 @@
           </systemPropertyVariables>
           <skipTests>${skipUnitTests}</skipTests>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>2.16.0</version>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -804,7 +776,7 @@
       </properties>
     </profile>
     <profile>
-      <id>ci-cd</id>
+      <id>ci</id>
       <properties>
         <fmt.skipFormat>true</fmt.skipFormat>
         <fmt.skipCheck>false</fmt.skipCheck>

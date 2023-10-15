@@ -1,0 +1,55 @@
+name: Security Scan - CodeQL
+
+# All release branches are supposed to follow SemVer convention while being restricted
+# to only the major.minor part.
+# Filtering performed based on recommended RegEx from semver.org:
+# https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+# The pattern has been adapted since workflow syntax doesn't support RegEx.
+on:
+  push:
+    # Re-execute the CI only for status and ensure the default branch remains stable in any circumstances
+    branches:
+      - 'main'
+    paths:
+      - '**/pom.xml'
+      - '.github/workflows/*'
+      - 'src/**'
+  pull_request:
+    branches:
+      - 'main'
+      - 'release/v0.0'
+      - 'release/v0.[1-9][0-9]*'
+      - 'release/v[1-9][0-9]*.0'
+      - 'release/v[1-9][0-9]*.[1-9][0-9]*'
+    paths:
+      - '**/pom.xml'
+      - '.github/workflows/*'
+      - 'src/**'
+  schedule:
+    - cron: '28 14 * * 5'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java' ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"
