@@ -45,10 +45,6 @@ jobs:
   # * Release branches should only diverge from the default one
   # * Any commit made at release branch level must be made at default branch level as well
   #   (except if otherwise required)
-  # * Tags following 'v*.*.*' format should be protected
-  #   (https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/configuring-tag-protection-rules)
-  #   and managed exclusively by the workflow (i.e. not create/changed by a user except if
-  #   he knows exactly what he is doing!)
   #
   # Usages:
   # * When needing to perform a minor or major version bump: simply create a new release branch
@@ -67,10 +63,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # 4.1.0
 
       - name: Set up JDK 11
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@0ab4596768b603586c0de567f2430c30f5b0d2b0 # 3.13.0
         with:
           java-version: 11
           distribution: temurin
