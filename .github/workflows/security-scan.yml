@@ -31,25 +31,25 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: read
       security-events: write
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'java' ]
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # 4.1.0
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@0116bc2df50751f9724a2e35ef1f24d22f90e4e1 # 2.22.3
         with:
-          languages: ${{ matrix.language }}
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@0116bc2df50751f9724a2e35ef1f24d22f90e4e1 # 2.22.3
+          languages: java
+
+      - name: Build
+        run: mvn package -Pci -B -C -U -ntp -fae -V -e
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@0116bc2df50751f9724a2e35ef1f24d22f90e4e1 # 2.22.3
         with:
-          category: "/language:${{matrix.language}}"
+          category: /language:java
