@@ -18,6 +18,7 @@ on:
       - '**/pom.xml'
       - '.github/workflows/*'
       - 'src/**'
+  create:
 
 permissions:
   contents: write
@@ -64,6 +65,7 @@ jobs:
   #   and build tools (e.g. JavaScript/TypeScript, Java with Gradle, ...)
   cd:
     name: CD
+    if: ${{ contains(github.ref, 'refs/heads/release/v') }}
     runs-on: ubuntu-latest
 
     steps:
