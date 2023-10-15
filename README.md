@@ -2,7 +2,7 @@
 
 ![Target](https://img.shields.io/badge/plugin-Minecraft-blueviolet)
 ![Minecraft version](https://img.shields.io/badge/version-1.11%20--%201.19-blue)
-[![Maven - CI](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions/workflows/maven-ci.yml/badge.svg)](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions/workflows/maven-ci.yml)
+[![Maven - CI](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions/workflows/maven-ci.yml/badge.svg?branch=main)](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions/workflows/maven-ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
 
