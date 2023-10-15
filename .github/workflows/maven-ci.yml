@@ -1,0 +1,72 @@
+name: Maven - CI
+
+# All release branches are supposed to follow SemVer convention while being restricted
+# to only the major.minor part.
+# Filtering performed based on recommended RegEx from semver.org:
+# https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+# The pattern has been adapted since workflow syntax doesn't support RegEx.
+on:
+  push:
+    # Re-execute the CI only for status and ensure the default branch remains stable in any circumstances
+    branches:
+      - 'main'
+    paths:
+      - '**/pom.xml'
+      - '.github/workflows/*'
+      - 'src/**'
+  pull_request:
+    branches:
+      - 'main'
+      - 'release/v0.0'
+      - 'release/v0.[1-9][0-9]*'
+      - 'release/v[1-9][0-9]*.0'
+      - 'release/v[1-9][0-9]*.[1-9][0-9]*'
+    paths:
+      - '**/pom.xml'
+      - '.github/workflows/*'
+      - 'src/**'
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # SonarQube - Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: temurin
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: m2
+
+      - name: Build & Test
+        run: mvn verify -Pci -B -C -U -ntp -fae -V -e
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: sonar
+          restore-keys: sonar
+
+      - name: SonarCloud Quality Scan
+        env:
+          GITHUB_TOKEN: ${{ github.token }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: Djaytan_mc-jobs-reborn-patch-place-break
+        run: mvn sonar:sonar -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}

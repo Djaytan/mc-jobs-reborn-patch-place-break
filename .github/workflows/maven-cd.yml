@@ -1,0 +1,124 @@
+name: Maven - CD
+
+# All release branches are supposed to follow SemVer convention while being restricted
+# to only the major.minor part.
+# Filtering performed based on recommended RegEx from semver.org:
+# https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+# The pattern has been adapted since workflow syntax doesn't support RegEx.
+on:
+  # It is assumed that every commit pushed into release branches has been validated by the CI first:
+  # whether at PR level or when pushing to the default branch (i.e. main)
+  push:
+    branches:
+      - 'release/v0.0'
+      - 'release/v0.[1-9][0-9]*'
+      - 'release/v[1-9][0-9]*.0'
+      - 'release/v[1-9][0-9]*.[1-9][0-9]*'
+    paths:
+      - '**/pom.xml'
+      - '.github/workflows/*'
+      - 'src/**'
+
+permissions:
+  contents: write
+
+jobs:
+  # For this workflow, the following assumptions have been made and thus should be reality:
+  # * The Git repository is a Java project
+  # * Git tags are supposed to be the source of truth regarding the latest existing version
+  #   of the Git repository.
+  # * The application version is managed by Maven and is located under the pom.xml file(s)
+  #   (multi-module is supported)
+  # * The version-maven-plugin has been declared in the root pom.xml file
+  # * Release branches follow the format 'release/v<major>.<minor>' (SemVer compliant)
+  #
+  # Vision:
+  # This workflow has been designed for continuous delivery, meaning that every change dispatch
+  # the delivering of a new release which then can be directly promoted to PRD / published
+  # if all checks pass.
+  # Thus, this workflow allows delivering potentially multiple releases in a day in a safe
+  # and secure way.
+  #
+  # Project setup recommendations:
+  # * The version located in the pom.xml file must be 'DEV-SNAPSHOT'
+  # * Release branches should only diverge from the default one
+  # * Any commit made at release branch level must be made at default branch level as well
+  #   (except if otherwise required)
+  # * Branches following 'github-actions/auto-release-*' format should be protected
+  #   (https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+  #   * The options 'Lock branch' and 'Do not allow bypassing the above settings' should be ticked
+  # * Tags following 'v*.*.*' format should be protected
+  #   (https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/configuring-tag-protection-rules)
+  #   and managed exclusively by the workflow (i.e. not create/changed by a user except if
+  #   he knows exactly what he is doing!)
+  #
+  # Usages:
+  # * When needing to perform a minor or major version bump: simply create a new release branch
+  # * When needing to perform a patch version bump: simply add a new commit to existing release branch
+  #
+  # Limitations:
+  # * alpha, beta and release candidates (RC) versions are not supported
+  #
+  # Perspectives:
+  # * The approach is generic enough to be easily re-exploited for other languages
+  #   and build tools (e.g. JavaScript/TypeScript, Java with Gradle, ...)
+  cd:
+    name: CD
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: temurin
+
+      - name: Config Git user as release bot
+        env:
+          # https://github.com/orgs/community/discussions/26560#discussioncomment-3252339
+          RELEASE_BOT_NAME: 'github-actions[bot]'
+          RELEASE_BOT_EMAIL: '41898282+github-actions[bot]@users.noreply.github.com'
+        run: |
+          git config --global user.name "${RELEASE_BOT_NAME}"
+          git config --global user.email "${RELEASE_BOT_EMAIL}"
+
+      - name: Retrieve current patchless release
+        run: |
+          echo "CURRENT_PATCHLESS_VERSION=$(
+            git branch --show-current |
+            sed 's_^release/v__'
+            )" >> $GITHUB_ENV
+
+      - name: Retrieve latest available release
+        run: |
+          echo "LATEST_PATCH_VERSION=$(
+            git tag -l "v${CURRENT_PATCHLESS_VERSION}.*" |
+            sort --version-sort -r |
+            head -n1 |
+            sed 's_v__'
+            )" >> $GITHUB_ENV
+
+      # Bump patch version part
+      - name: Compute new release
+        run: |
+          echo "NEW_RELEASE=$(
+            echo \"${LATEST_PATCH_VERSION}\" |
+            awk -v FS=. -v OFS=. '{$(NF)++; print}'
+            )" >> $GITHUB_ENV
+
+      # A Git branch is temporary required at commit time so that it can be replaced by a tag later on.
+      # The versions-maven-plugin is a convenient solution for setting up the new version.
+      - name: Update, commit, tag and push new version
+        run: |
+          TMP_BRANCH_NAME="github-actions/auto-release-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git checkout -b "${TMP_BRANCH_NAME}"
+          mvn -B versions:set -DnewVersion="${NEW_RELEASE}" -DgenerateBackupPoms=false
+          git add .
+          git commit -m "[ci skip] release v${NEW_RELEASE}"
+          git tag "v${NEW_RELEASE}"
+          git checkout "${GITHUB_REF}"
+          git branch -d "${TMP_BRANCH_NAME}"
+          git push --tags
