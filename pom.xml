@@ -134,7 +134,7 @@
         <groupId>com.zaxxer</groupId>
         <artifactId>HikariCP</artifactId>
         <!-- Latest version of HikariCP compatible with Java 8: don't bump it! -->
-        <version>4.0.3</version>
+        <version>5.0.1</version>
       </dependency>
       <dependency>
         <groupId>commons-io</groupId>
