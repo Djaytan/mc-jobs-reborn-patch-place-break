@@ -20,8 +20,7 @@ on:
       - 'src/**'
   create:
 
-permissions:
-  contents: write
+permissions: write-all # Required when creating protected tag
 
 jobs:
   # For this workflow, the following assumptions have been made and thus should be reality:
@@ -45,9 +44,6 @@ jobs:
   # * Release branches should only diverge from the default one
   # * Any commit made at release branch level must be made at default branch level as well
   #   (except if otherwise required)
-  # * Branches following 'github-actions/auto-release-*' format should be protected
-  #   (https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
-  #   * The options 'Lock branch' and 'Do not allow bypassing the above settings' should be ticked
   # * Tags following 'v*.*.*' format should be protected
   #   (https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/configuring-tag-protection-rules)
   #   and managed exclusively by the workflow (i.e. not create/changed by a user except if
