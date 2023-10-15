@@ -89,30 +89,30 @@ jobs:
 
       - name: Retrieve current patchless release
         run: |
-          echo "CURRENT_PATCHLESS_VERSION=\"$(
+          echo "CURRENT_PATCHLESS_VERSION=$(
             git branch --show-current |
             sed 's_^release/v__'
-            )\"" >> $GITHUB_ENV
+            )" >> $GITHUB_ENV
 
       - name: Retrieve latest available release
         run: |
-          echo "LATEST_PATCH_VERSION=\"$(
+          echo "LATEST_PATCH_VERSION=$(
             git tag -l "v${CURRENT_PATCHLESS_VERSION}.*" |
             sort --version-sort -r |
             head -n1 |
             sed 's_v__'
-            )\"" >> $GITHUB_ENV
+            )" >> $GITHUB_ENV
 
       # Bump patch version part
       - name: Compute new release
         run: |
           if [[ -n ${LATEST_PATCH_VERSION} ]]; then
-            echo "NEW_RELEASE=\"$(
+            echo "NEW_RELEASE=$(
               echo \"${LATEST_PATCH_VERSION}\" |
               awk -v FS=. -v OFS=. '{$(NF)++; print}'
-              )\"" >> $GITHUB_ENV
+              )" >> $GITHUB_ENV
           else
-            echo "NEW_RELEASE=\"${CURRENT_PATCHLESS_VERSION}.0\"" >> $GITHUB_ENV
+            echo "NEW_RELEASE=${CURRENT_PATCHLESS_VERSION}.0" >> $GITHUB_ENV
           fi
 
       # A Git branch is temporary required at commit time so that it can be replaced by a tag later on.
