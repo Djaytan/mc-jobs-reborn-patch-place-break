@@ -434,7 +434,6 @@
                 <exclude>src/test/resources/**</exclude>
                 <exclude>**/dir.empty</exclude>
                 <exclude>.editorconfig</exclude>
-                <exclude>jitpack.yml</exclude>
                 <exclude>lombok.config</exclude>
                 <exclude>renovate.json</exclude>
               </excludes>
