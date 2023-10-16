@@ -49,7 +49,7 @@ jobs:
           languages: java
 
       - name: Build
-        run: mvn package -Pci -B -C -U -ntp -fae -V -e
+        run: mvn package -Pfast -B -C -U -ntp -fae -V -e
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@0116bc2df50751f9724a2e35ef1f24d22f90e4e1 # 2.22.3

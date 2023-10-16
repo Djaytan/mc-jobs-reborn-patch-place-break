@@ -298,6 +298,7 @@
   </dependencyManagement>
 
   <build>
+    <defaultGoal>clean verify</defaultGoal>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -783,6 +784,28 @@
         <license.skipCheck>false</license.skipCheck>
         <sortpom.skipSort>true</sortpom.skipSort>
         <sortpom.skipCheck>false</sortpom.skipCheck>
+      </properties>
+    </profile>
+    <profile>
+      <id>fast</id>
+      <properties>
+        <fmt.skipFormat>true</fmt.skipFormat>
+        <fmt.skipCheck>true</fmt.skipCheck>
+        <license.skipFormat>true</license.skipFormat>
+        <license.skipCheck>true</license.skipCheck>
+        <sortpom.skipSort>true</sortpom.skipSort>
+        <sortpom.skipCheck>true</sortpom.skipCheck>
+        <enforcer.skip>true</enforcer.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <maven.source.skip>true</maven.source.skip>
+        <jacoco.skip>true</jacoco.skip>
+        <mdep.analyze.skip>true</mdep.analyze.skip>
+        <docker.skip>true</docker.skip>
+        <proguard.skip>true</proguard.skip>
+
+        <!-- Skip tests -->
+        <skipTests>true</skipTests>
+        <maven.test.skip>true</maven.test.skip>
       </properties>
     </profile>
   </profiles>
