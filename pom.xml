@@ -75,7 +75,7 @@
 
     <!-- ==================== Dependencies versions ==================== -->
     <version.configurate>4.1.2</version.configurate>
-    <version.flyway>9.22.2</version.flyway>
+    <version.flyway>9.22.3</version.flyway>
     <version.lombok>1.18.28</version.lombok>
     <version.slf4j>2.0.9</version.slf4j>
 
