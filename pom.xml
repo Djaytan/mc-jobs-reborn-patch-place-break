@@ -221,9 +221,9 @@
         <groupId>org.hibernate.validator</groupId>
         <artifactId>hibernate-validator</artifactId>
         <!--
-          Latest version of Hibernate Validator compatible with Java 8: don't bump it!
-          As well compatible with JEE 9, bumping this implementation imply bumping Jakarta as well.
-        -->
+		  Latest version of Hibernate Validator compatible with Java 8: don't bump it!
+		  Even if compatible with JEE 9, bumping this implementation implies bumping Jakarta as well.
+		-->
         <version>7.0.5.Final</version>
       </dependency>
       <dependency>
