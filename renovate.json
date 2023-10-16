@@ -3,7 +3,9 @@
   "extends": [
     "config:base"
   ],
-  "labels": ["t:dependencies"],
+  "labels": [
+    "t:dependencies"
+  ],
   "prHourlyLimit": 10,
   "schedule": [
     "before 5am on monday"
