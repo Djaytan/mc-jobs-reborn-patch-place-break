@@ -40,11 +40,19 @@ We suppose you know how to install a Minecraft server.
 To build the project and run unit and integration tests, you can simply build the project by typing
 this command at the root project:
 
-    $ mvn clean install
+    $ mvn
 
+This is the command you will run most of the time.
 You will find the packaged JAR file of the Bukkit plugin at `bukkit/bukkit-plugin/target`.
 If you want to test it, copy it into your local Spigot server by taking care that the server
 version is compatible with the plugin.
+
+If you want to quickly package the Jar file without running tests and other time-consuming steps:
+
+    $ mvn -Pfast
+
+However, it's recommended to use it as little as possible.
+Never use it for validating changes before committing.
 
 ### Documentation & Help
 
