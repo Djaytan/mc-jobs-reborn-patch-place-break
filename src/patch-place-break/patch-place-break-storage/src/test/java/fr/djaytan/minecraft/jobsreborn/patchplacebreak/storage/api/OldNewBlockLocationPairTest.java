@@ -22,20 +22,25 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+@ExtendWith(SoftAssertionsExtension.class)
 class OldNewBlockLocationPairTest {
+
+  @InjectSoftAssertions private SoftAssertions softly;
 
   @Nested
   @DisplayName("When instantiating")
@@ -53,12 +58,8 @@ class OldNewBlockLocationPairTest {
           new OldNewBlockLocationPair(oldBlockLocation, newBlockLocation);
 
       // Then
-      assertAll(
-          () ->
-              assertThat(oldNewBlockLocationPair.getOldBlockLocation()).isEqualTo(oldBlockLocation),
-          () ->
-              assertThat(oldNewBlockLocationPair.getNewBlockLocation())
-                  .isEqualTo(newBlockLocation));
+      softly.assertThat(oldNewBlockLocationPair.getOldBlockLocation()).isEqualTo(oldBlockLocation);
+      softly.assertThat(oldNewBlockLocationPair.getNewBlockLocation()).isEqualTo(newBlockLocation);
     }
 
     @Test

@@ -22,16 +22,20 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+@ExtendWith(SoftAssertionsExtension.class)
 class BlockTest {
+
+  @InjectSoftAssertions private SoftAssertions softly;
 
   @Test
   @DisplayName("When instantiating with nominal values")
@@ -47,10 +51,8 @@ class BlockTest {
     Block block = new Block(blockLocation, "STONE");
 
     // Then
-    assertAll(
-        "Verification of returned values from getters",
-        () -> assertThat(block.getBlockLocation()).isEqualTo(blockLocation),
-        () -> assertThat(block.getMaterial()).isEqualTo("STONE"));
+    softly.assertThat(block.getBlockLocation()).isEqualTo(blockLocation);
+    softly.assertThat(block.getMaterial()).isEqualTo("STONE");
   }
 
   @Test

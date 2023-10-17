@@ -24,7 +24,6 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
@@ -38,6 +37,9 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlace
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.awaitility.Awaitility;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -48,11 +50,14 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.commons.util.Preconditions;
 import org.threeten.extra.MutableClock;
 
+@ExtendWith(SoftAssertionsExtension.class)
 class JobsRebornPatchPlaceBreakPluginTest {
 
+  @InjectSoftAssertions private SoftAssertions softly;
   private static final MutableClock mutableClock = MutableClock.epochUTC();
   private static PatchPlaceBreakBukkitAdapterApi patchApi;
   private static ServerMock serverMock;
@@ -115,9 +120,9 @@ class JobsRebornPatchPlaceBreakPluginTest {
 
     // Then
     assertThat(blockBreakEvent).isNotNull();
-    assertAll(
-        () -> assertThat(blockBreakEvent.isCancelled()).isFalse(),
-        () -> assertThat(blockMock.getType()).isEqualTo(Material.AIR));
+    softly.assertThat(blockBreakEvent.isCancelled()).isFalse();
+    softly.assertThat(blockMock.getType()).isEqualTo(Material.AIR);
+    softly.assertAll();
 
     ActionInfo actionInfo = new BlockActionInfo(blockMock, ActionType.PLACE);
     await().until(() -> patchApi.isPlaceAndBreakExploit(actionInfo, blockMock));

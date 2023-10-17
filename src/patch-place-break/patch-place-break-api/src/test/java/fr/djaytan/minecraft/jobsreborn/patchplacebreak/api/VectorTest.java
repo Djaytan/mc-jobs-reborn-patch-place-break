@@ -22,17 +22,21 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+@ExtendWith(SoftAssertionsExtension.class)
 class VectorTest {
+
+  @InjectSoftAssertions private SoftAssertions softly;
 
   @Test
   @DisplayName("When instantiating with nominal values")
@@ -46,11 +50,9 @@ class VectorTest {
     Vector vector = new Vector(modX, modY, modZ);
 
     // Then
-    assertAll(
-        "Verification of returned values from getters",
-        () -> assertThat(vector.getModX()).isEqualTo(modX),
-        () -> assertThat(vector.getModY()).isEqualTo(modY),
-        () -> assertThat(vector.getModZ()).isEqualTo(modZ));
+    softly.assertThat(vector.getModX()).isEqualTo(modX);
+    softly.assertThat(vector.getModY()).isEqualTo(modY);
+    softly.assertThat(vector.getModZ()).isEqualTo(modZ);
   }
 
   @Test

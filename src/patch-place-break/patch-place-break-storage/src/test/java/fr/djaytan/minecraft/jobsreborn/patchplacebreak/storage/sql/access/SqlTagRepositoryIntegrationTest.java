@@ -23,7 +23,6 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.access;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
@@ -33,15 +32,21 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Random;
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.commons.util.Preconditions;
 
+@ExtendWith(SoftAssertionsExtension.class)
 class SqlTagRepositoryIntegrationTest {
 
+  @InjectSoftAssertions private SoftAssertions softly;
   private BlockLocation randomBlockLocation;
   private final MysqlTagRepositoryFactory mysqlTagRepositoryFactory =
       new MysqlTagRepositoryFactory();
@@ -141,8 +146,8 @@ class SqlTagRepositoryIntegrationTest {
     Optional<Tag> tagOldLocation = sqlTagRepository.findByLocation(oldLocation);
     Optional<Tag> tagNewLocation = sqlTagRepository.findByLocation(newLocation);
 
-    assertAll(
-        () -> assertThat(tagOldLocation).isEmpty(), () -> assertThat(tagNewLocation).isPresent());
+    softly.assertThat(tagOldLocation).isEmpty();
+    softly.assertThat(tagNewLocation).isPresent();
   }
 
   @Test
@@ -175,8 +180,8 @@ class SqlTagRepositoryIntegrationTest {
     Optional<Tag> tagOldLocation = sqlTagRepository.findByLocation(oldLocation);
     Optional<Tag> tagNewLocation = sqlTagRepository.findByLocation(newLocation);
 
-    assertAll(
-        () -> assertThat(tagOldLocation).isEmpty(), () -> assertThat(tagNewLocation).isEmpty());
+    softly.assertThat(tagOldLocation).isEmpty();
+    softly.assertThat(tagNewLocation).isEmpty();
   }
 
   @Test

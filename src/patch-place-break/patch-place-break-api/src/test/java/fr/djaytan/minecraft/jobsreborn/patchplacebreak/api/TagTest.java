@@ -22,19 +22,23 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import java.time.LocalDateTime;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+@ExtendWith(SoftAssertionsExtension.class)
 class TagTest {
+
+  @InjectSoftAssertions private SoftAssertions softly;
 
   @Test
   @DisplayName("When instantiating with nominal values")
@@ -53,11 +57,9 @@ class TagTest {
     Tag tag = new Tag(blockLocation, isEphemeral, localDateTime);
 
     // Then
-    assertAll(
-        "Verification of returned values from getters",
-        () -> assertThat(tag.getInitLocalDateTime()).isEqualTo(localDateTime),
-        () -> assertThat(tag.isEphemeral()).isEqualTo(isEphemeral),
-        () -> assertThat(tag.getBlockLocation()).isEqualTo(blockLocation));
+    softly.assertThat(tag.getInitLocalDateTime()).isEqualTo(localDateTime);
+    softly.assertThat(tag.isEphemeral()).isEqualTo(isEphemeral);
+    softly.assertThat(tag.getBlockLocation()).isEqualTo(blockLocation);
   }
 
   @Test
