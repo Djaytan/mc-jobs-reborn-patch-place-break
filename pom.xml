@@ -74,13 +74,8 @@
     <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco-merged-test-coverage-report/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 
     <!-- ==================== Dependencies versions ==================== -->
-    <version.configurate>4.1.2</version.configurate>
     <version.flyway>9.22.3</version.flyway>
     <version.lombok>1.18.30</version.lombok>
-    <version.slf4j>2.0.9</version.slf4j>
-
-    <!-- ==================== Test Dependencies versions ==================== -->
-    <version.mockito>5.5.0</version.mockito>
   </properties>
 
   <dependencyManagement>
@@ -96,6 +91,27 @@
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
         <version>5.10.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-bom</artifactId>
+        <version>5.5.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-bom</artifactId>
+        <version>2.0.9</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.spongepowered</groupId>
+        <artifactId>configurate-bom</artifactId>
+        <version>4.1.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -228,36 +244,6 @@
         <groupId>org.jboss.logging</groupId>
         <artifactId>jboss-logging-processor</artifactId>
         <version>2.2.1.Final</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>${version.mockito}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-junit-jupiter</artifactId>
-        <version>${version.mockito}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>${version.slf4j}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-nop</artifactId>
-        <version>${version.slf4j}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.spongepowered</groupId>
-        <artifactId>configurate-core</artifactId>
-        <version>${version.configurate}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.spongepowered</groupId>
-        <artifactId>configurate-hocon</artifactId>
-        <version>${version.configurate}</version>
       </dependency>
       <dependency>
         <groupId>org.threeten</groupId>
