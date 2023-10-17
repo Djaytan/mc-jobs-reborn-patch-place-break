@@ -41,32 +41,38 @@ public class DataSourcePropertiesImpl implements DataSourceProperties, Propertie
   @NotNull
   @Required
   @Comment(
-      "The type of datasource to use\n"
-          + "Available types:\n"
-          + "- SQLITE: use a local file as database (easy & fast setup)\n"
-          + "- MYSQL: use a MySQL database server (better performances)")
+      """
+          The type of datasource to use
+          Available types:
+          * SQLITE: use a local file as database (easy & fast setup)
+          * MYSQL: use a MySQL database server (better performances)""")
   DataSourceType type;
 
   @NotBlank
   @Size(max = 128)
   @Required
-  @Comment("The table where data will be stored\n" + "Value can't be empty or blank")
+  @Comment("""
+      The table where data will be stored
+      Value can't be empty or blank""")
   String table;
 
   @NotNull
   @Valid
   @Required
   @Comment(
-      "The DBMS server properties for connection establishment\n" + "Not applicable for SQLite")
+      """
+          The DBMS server properties for connection establishment
+          Not applicable for SQLite""")
   DbmsServerPropertiesImpl dbmsServer;
 
   @NotNull
   @Valid
   @Required
   @Comment(
-      "Connection pool properties\n"
-          + "This is reserved for advanced usage only\n"
-          + "Change these settings only if you know what you are doing")
+      """
+          Connection pool properties
+          This is reserved for advanced usage only
+          Change these settings only if you know what you are doing""")
   ConnectionPoolPropertiesImpl connectionPool;
 
   public DataSourcePropertiesImpl() {

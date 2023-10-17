@@ -97,14 +97,11 @@ class ConfigSerializerTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      Optional<DbmsHostPropertiesImpl> optionalHostValidatingProperties =
+      Optional<DbmsHostPropertiesImpl> properties =
           configSerializer.deserialize(confFile, DbmsHostPropertiesImpl.class);
 
       // Then
-      assertThat(optionalHostValidatingProperties)
-          .isPresent()
-          .get()
-          .isEqualTo(new DbmsHostPropertiesImpl("example.com", 1234, true));
+      assertThat(properties).hasValue(new DbmsHostPropertiesImpl("example.com", 1234, true));
     }
 
     @Test

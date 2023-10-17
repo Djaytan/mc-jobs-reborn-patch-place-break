@@ -28,7 +28,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.BukkitAdap
 import jakarta.inject.Singleton;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 @Singleton
@@ -51,6 +50,6 @@ public class ActionTypeConverter implements UnidirectionalConverter<ActionType, 
     return Arrays.stream(BlockActionType.values())
         .map(BlockActionType::name)
         .map(ActionType::valueOf)
-        .collect(Collectors.toList());
+        .toList();
   }
 }

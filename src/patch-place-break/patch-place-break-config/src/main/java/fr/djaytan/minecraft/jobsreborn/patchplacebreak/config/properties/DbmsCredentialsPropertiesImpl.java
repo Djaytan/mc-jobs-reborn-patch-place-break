@@ -44,8 +44,9 @@ public class DbmsCredentialsPropertiesImpl implements DbmsCredentialsProperties,
   @Size(max = 32)
   @Required
   @Comment(
-      "Under behalf of which user to connect on the DBMS server\n"
-          + "Value can't be empty or blank")
+      """
+          Under behalf of which user to connect on the DBMS server
+          Value can't be empty or blank""")
   String username;
 
   @NotNull

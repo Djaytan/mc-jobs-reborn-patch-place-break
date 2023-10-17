@@ -23,7 +23,6 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import lombok.SneakyThrows;
@@ -43,7 +42,7 @@ class MysqlPatchPlaceBreakBukkitAdapterApiIntegrationTest
             TestResourcesHelper.getClassResourceAsString(this.getClass(), "mysql.conf", false),
             dbmsPort);
     Path dataSourceConf = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
-    Files.write(dataSourceConf, givenDataSourceConfFileContent.getBytes(StandardCharsets.UTF_8));
+    Files.writeString(dataSourceConf, givenDataSourceConfFileContent);
     super.beforeEach();
   }
 }

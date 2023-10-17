@@ -91,7 +91,7 @@ public class SqlTagRepository implements TagRepository {
       Optional<Tag> oldTag =
           tagSqlDao.findByLocation(connection, oldNewLocationPair.getOldBlockLocation());
 
-      if (!oldTag.isPresent()) {
+      if (oldTag.isEmpty()) {
         continue;
       }
 

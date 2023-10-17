@@ -38,20 +38,22 @@ public class ConnectionPoolPropertiesImpl implements ConnectionPoolProperties, P
   @Positive
   @Required
   @Comment(
-      "The connection timeout in milliseconds\n"
-          + "Corresponds to the maximum time the connection pool will wait to acquire a new connection\n"
-          + "from the DBMS server\n"
-          + "Not applicable for SQLite\n"
-          + "Accepted range values: [1-600000]")
+      """
+          The connection timeout (in milliseconds)
+          Corresponds to the maximum time the connection pool will wait to acquire a new connection
+          from the DBMS server
+          Not applicable for SQLite
+          Accepted range values: [1-600000]""")
   long connectionTimeout;
 
   @Max(100)
   @Positive
   @Required
   @Comment(
-      "The number of DBMS connections in the pool\n"
-          + "Could be best determined by the executing environment\n"
-          + "Accepted range values: [1-100]")
+      """
+          The number of DBMS connections in the pool
+          Could be best determined by the executing environment
+          Accepted range values: [1-100]""")
   int poolSize;
 
   public ConnectionPoolPropertiesImpl() {

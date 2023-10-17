@@ -102,21 +102,21 @@ class DataSourcePropertiesImplTest {
       // Given
 
       // When
-      DataSourcePropertiesImpl dataSourcePropertiesImpl = new DataSourcePropertiesImpl();
+      DataSourcePropertiesImpl properties = new DataSourcePropertiesImpl();
 
       // Then
       assertAll(
-          () -> assertThat(dataSourcePropertiesImpl.getType()).isEqualTo(DataSourceType.SQLITE),
-          () -> assertThat(dataSourcePropertiesImpl.getTable()).isEqualTo("patch_place_break_tag"),
+          () -> assertThat(properties.getType()).isEqualTo(DataSourceType.SQLITE),
+          () -> assertThat(properties.getTable()).isEqualTo("patch_place_break_tag"),
           () ->
-              assertThat(dataSourcePropertiesImpl.getDbmsServer())
+              assertThat(properties.getDbmsServer())
                   .isEqualTo(
                       new DbmsServerPropertiesImpl(
                           new DbmsHostPropertiesImpl("localhost", 3306, true),
                           new DbmsCredentialsPropertiesImpl("username", "password"),
                           "database")),
           () ->
-              assertThat(dataSourcePropertiesImpl.getConnectionPool())
+              assertThat(properties.getConnectionPool())
                   .isEqualTo(new ConnectionPoolPropertiesImpl(30000, 10)));
     }
 
@@ -135,20 +135,16 @@ class DataSourcePropertiesImplTest {
           new ConnectionPoolPropertiesImpl(60000, 10);
 
       // When
-      DataSourcePropertiesImpl dataSourcePropertiesImpl =
+      DataSourcePropertiesImpl properties =
           new DataSourcePropertiesImpl(
               dataSourceType, table, dbmsServerPropertiesImpl, connectionPoolPropertiesImpl);
 
       // Then
       assertAll(
-          () -> assertThat(dataSourcePropertiesImpl.getType()).isEqualTo(dataSourceType),
-          () -> assertThat(dataSourcePropertiesImpl.getTable()).isEqualTo(table),
-          () ->
-              assertThat(dataSourcePropertiesImpl.getDbmsServer())
-                  .isEqualTo(dbmsServerPropertiesImpl),
-          () ->
-              assertThat(dataSourcePropertiesImpl.getConnectionPool())
-                  .isEqualTo(connectionPoolPropertiesImpl));
+          () -> assertThat(properties.getType()).isEqualTo(dataSourceType),
+          () -> assertThat(properties.getTable()).isEqualTo(table),
+          () -> assertThat(properties.getDbmsServer()).isEqualTo(dbmsServerPropertiesImpl),
+          () -> assertThat(properties.getConnectionPool()).isEqualTo(connectionPoolPropertiesImpl));
     }
   }
 
@@ -160,11 +156,11 @@ class DataSourcePropertiesImplTest {
     @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
-      DataSourcePropertiesImpl dataSourcePropertiesImpl = new DataSourcePropertiesImpl();
+      DataSourcePropertiesImpl properties = new DataSourcePropertiesImpl();
 
       // When
       Set<ConstraintViolation<DataSourcePropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(dataSourcePropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -174,7 +170,7 @@ class DataSourcePropertiesImplTest {
     @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
-      DataSourcePropertiesImpl dataSourcePropertiesImpl =
+      DataSourcePropertiesImpl properties =
           new DataSourcePropertiesImpl(
               DataSourceType.MYSQL,
               "patch_place_break",
@@ -186,7 +182,7 @@ class DataSourcePropertiesImplTest {
 
       // When
       Set<ConstraintViolation<DataSourcePropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(dataSourcePropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -196,12 +192,11 @@ class DataSourcePropertiesImplTest {
     @DisplayName("With only shallow invalid values")
     void withOnlyShallowInvalidValues_shouldGenerateConstraintViolations() {
       // Given
-      DataSourcePropertiesImpl dataSourcePropertiesImpl =
-          new DataSourcePropertiesImpl(null, null, null, null);
+      DataSourcePropertiesImpl properties = new DataSourcePropertiesImpl(null, null, null, null);
 
       // When
       Set<ConstraintViolation<DataSourcePropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(dataSourcePropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).hasSize(4);
@@ -211,7 +206,7 @@ class DataSourcePropertiesImplTest {
     @DisplayName("With only deep invalid values")
     void withOnlyDeepInvalidValues_shouldGenerateConstraintViolations() {
       // Given
-      DataSourcePropertiesImpl dataSourcePropertiesImpl =
+      DataSourcePropertiesImpl properties =
           new DataSourcePropertiesImpl(
               null,
               null,
@@ -223,7 +218,7 @@ class DataSourcePropertiesImplTest {
 
       // When
       Set<ConstraintViolation<DataSourcePropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(dataSourcePropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).hasSize(9);
@@ -239,7 +234,7 @@ class DataSourcePropertiesImplTest {
       @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(@NotNull String validTable) {
         // Given
-        DataSourcePropertiesImpl dataSourcePropertiesImpl =
+        DataSourcePropertiesImpl properties =
             new DataSourcePropertiesImpl(
                 DataSourceType.MYSQL,
                 validTable,
@@ -251,7 +246,7 @@ class DataSourcePropertiesImplTest {
 
         // When
         Set<ConstraintViolation<DataSourcePropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(dataSourcePropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations).isEmpty();
@@ -268,7 +263,7 @@ class DataSourcePropertiesImplTest {
       @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(@Nullable String invalidTable) {
         // Given
-        DataSourcePropertiesImpl dataSourcePropertiesImpl =
+        DataSourcePropertiesImpl properties =
             new DataSourcePropertiesImpl(
                 DataSourceType.MYSQL,
                 invalidTable,
@@ -280,7 +275,7 @@ class DataSourcePropertiesImplTest {
 
         // When
         Set<ConstraintViolation<DataSourcePropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(dataSourcePropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations)
@@ -371,7 +366,7 @@ class DataSourcePropertiesImplTest {
           ConfigSerializerTestWrapper.deserialize(confFile, DataSourcePropertiesImpl.class);
 
       // Then
-      assertThat(optionalDataSourceValidatingProperties).isPresent().get().isEqualTo(expectedValue);
+      assertThat(optionalDataSourceValidatingProperties).hasValue(expectedValue);
     }
 
     private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {

@@ -26,7 +26,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.Restricted
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.RestrictionMode;
 import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Value;
@@ -45,11 +44,12 @@ public class RestrictedBlocksPropertiesImpl implements Properties, RestrictedBlo
   @NotNull
   @Required
   @Comment(
-      "Define the restriction mode when handling tags for the listed blocks."
-          + "\nThree values are available:\n"
-          + "* BLACKLIST: Only listed blocks are marked as restricted \n"
-          + "* WHITELIST: All blocks are marked as restricted except the listed ones\n"
-          + "* DISABLED: No restriction applied")
+      """
+          Define the restriction mode when handling tags for the listed blocks.
+          Three values are available:
+          * BLACKLIST: Only listed blocks are marked as restricted
+          * WHITELIST: All blocks are marked as restricted except the listed ones
+          * DISABLED: No restriction applied""")
   RestrictionMode restrictionMode;
 
   public RestrictedBlocksPropertiesImpl() {
@@ -59,22 +59,16 @@ public class RestrictedBlocksPropertiesImpl implements Properties, RestrictedBlo
 
   public RestrictedBlocksPropertiesImpl(
       Collection<String> materials, RestrictionMode restrictionMode) {
-    this.materials = Collections.unmodifiableSet(new HashSet<>(materials));
+    this.materials = Set.copyOf(materials);
     this.restrictionMode = restrictionMode;
   }
 
   @Override
   public boolean isRestricted(@org.jetbrains.annotations.NotNull String material) {
-    switch (restrictionMode) {
-      case BLACKLIST:
-        return materials.contains(material);
-      case WHITELIST:
-        return !materials.contains(material);
-      case DISABLED:
-        return false;
-      default:
-        throw new IllegalStateException(
-            String.format("Restriction mode %s is not supported.", restrictionMode));
-    }
+    return switch (restrictionMode) {
+      case BLACKLIST -> materials.contains(material);
+      case WHITELIST -> !materials.contains(material);
+      case DISABLED -> false;
+    };
   }
 }

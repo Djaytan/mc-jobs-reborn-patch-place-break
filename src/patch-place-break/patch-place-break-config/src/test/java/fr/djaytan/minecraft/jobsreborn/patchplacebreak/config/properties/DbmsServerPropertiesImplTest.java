@@ -101,17 +101,17 @@ class DbmsServerPropertiesImplTest {
       // Given
 
       // When
-      DbmsServerPropertiesImpl dbmsServerPropertiesImpl = new DbmsServerPropertiesImpl();
+      DbmsServerPropertiesImpl properties = new DbmsServerPropertiesImpl();
 
       // Then
       assertAll(
           () ->
-              assertThat(dbmsServerPropertiesImpl.getHost())
+              assertThat(properties.getHost())
                   .isEqualTo(new DbmsHostPropertiesImpl("localhost", 3306, true)),
           () ->
-              assertThat(dbmsServerPropertiesImpl.getCredentials())
+              assertThat(properties.getCredentials())
                   .isEqualTo(new DbmsCredentialsPropertiesImpl("username", "password")),
-          () -> assertThat(dbmsServerPropertiesImpl.getDatabase()).isEqualTo("database"));
+          () -> assertThat(properties.getDatabase()).isEqualTo("database"));
     }
 
     @Test
@@ -123,14 +123,14 @@ class DbmsServerPropertiesImplTest {
       String database = "patch_database";
 
       // When
-      DbmsServerPropertiesImpl dbmsServerPropertiesImpl =
+      DbmsServerPropertiesImpl properties =
           new DbmsServerPropertiesImpl(host, credentials, database);
 
       // Then
       assertAll(
-          () -> assertThat(dbmsServerPropertiesImpl.getHost()).isEqualTo(host),
-          () -> assertThat(dbmsServerPropertiesImpl.getCredentials()).isEqualTo(credentials),
-          () -> assertThat(dbmsServerPropertiesImpl.getDatabase()).isEqualTo(database));
+          () -> assertThat(properties.getHost()).isEqualTo(host),
+          () -> assertThat(properties.getCredentials()).isEqualTo(credentials),
+          () -> assertThat(properties.getDatabase()).isEqualTo(database));
     }
   }
 
@@ -142,11 +142,11 @@ class DbmsServerPropertiesImplTest {
     @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
-      DbmsServerPropertiesImpl dbmsServerPropertiesImpl = new DbmsServerPropertiesImpl();
+      DbmsServerPropertiesImpl properties = new DbmsServerPropertiesImpl();
 
       // When
       Set<ConstraintViolation<DbmsServerPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsServerPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -156,7 +156,7 @@ class DbmsServerPropertiesImplTest {
     @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
-      DbmsServerPropertiesImpl dbmsServerPropertiesImpl =
+      DbmsServerPropertiesImpl properties =
           new DbmsServerPropertiesImpl(
               new DbmsHostPropertiesImpl("example.com", 1234, true),
               new DbmsCredentialsPropertiesImpl("foo", "bar"),
@@ -164,7 +164,7 @@ class DbmsServerPropertiesImplTest {
 
       // When
       Set<ConstraintViolation<DbmsServerPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsServerPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -174,12 +174,11 @@ class DbmsServerPropertiesImplTest {
     @DisplayName("With only shallow invalid values")
     void withOnlyShallowInvalidValues_shouldGenerateConstraintViolations() {
       // Given
-      DbmsServerPropertiesImpl dbmsServerPropertiesImpl =
-          new DbmsServerPropertiesImpl(null, null, " ");
+      DbmsServerPropertiesImpl properties = new DbmsServerPropertiesImpl(null, null, " ");
 
       // When
       Set<ConstraintViolation<DbmsServerPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsServerPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).hasSize(3);
@@ -192,12 +191,12 @@ class DbmsServerPropertiesImplTest {
       DbmsHostPropertiesImpl invalidHost = new DbmsHostPropertiesImpl(" ", 0, false);
       DbmsCredentialsPropertiesImpl invalidCredentials =
           new DbmsCredentialsPropertiesImpl("", null);
-      DbmsServerPropertiesImpl dbmsServerPropertiesImpl =
+      DbmsServerPropertiesImpl properties =
           new DbmsServerPropertiesImpl(invalidHost, invalidCredentials, " ");
 
       // When
       Set<ConstraintViolation<DbmsServerPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsServerPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).hasSize(5);
@@ -213,7 +212,7 @@ class DbmsServerPropertiesImplTest {
       @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(@NotNull String validDatabase) {
         // Given
-        DbmsServerPropertiesImpl dbmsServerPropertiesImpl =
+        DbmsServerPropertiesImpl properties =
             new DbmsServerPropertiesImpl(
                 new DbmsHostPropertiesImpl("example.com", 1234, true),
                 new DbmsCredentialsPropertiesImpl("foo", "bar"),
@@ -221,7 +220,7 @@ class DbmsServerPropertiesImplTest {
 
         // When
         Set<ConstraintViolation<DbmsServerPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(dbmsServerPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations).isEmpty();
@@ -238,7 +237,7 @@ class DbmsServerPropertiesImplTest {
       @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(@Nullable String invalidDatabase) {
         // Given
-        DbmsServerPropertiesImpl dbmsServerPropertiesImpl =
+        DbmsServerPropertiesImpl properties =
             new DbmsServerPropertiesImpl(
                 new DbmsHostPropertiesImpl("example.com", 1234, true),
                 new DbmsCredentialsPropertiesImpl("foo", "bar"),
@@ -246,7 +245,7 @@ class DbmsServerPropertiesImplTest {
 
         // When
         Set<ConstraintViolation<DbmsServerPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(dbmsServerPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations)
@@ -333,7 +332,7 @@ class DbmsServerPropertiesImplTest {
           ConfigSerializerTestWrapper.deserialize(confFile, DbmsServerPropertiesImpl.class);
 
       // Then
-      assertThat(optionalDbmsServerValidatingProperties).isPresent().get().isEqualTo(expectedValue);
+      assertThat(optionalDbmsServerValidatingProperties).hasValue(expectedValue);
     }
 
     private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {

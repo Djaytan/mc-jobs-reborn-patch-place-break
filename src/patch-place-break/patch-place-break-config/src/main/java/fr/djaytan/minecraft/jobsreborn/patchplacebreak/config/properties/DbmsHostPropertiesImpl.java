@@ -48,7 +48,9 @@ public class DbmsHostPropertiesImpl implements DbmsHostProperties, Properties {
   @Size(max = 255)
   @Required
   @Comment(
-      "Hostname (an IP address (IPv4/IPv6) or a domain name)\n" + "Value can't be empty or blank")
+      """
+          Hostname (an IP address (IPv4/IPv6) or a domain name)
+          Value can't be empty or blank""")
   String hostname;
 
   /**
@@ -60,13 +62,16 @@ public class DbmsHostPropertiesImpl implements DbmsHostProperties, Properties {
   @Max(65535)
   @Positive
   @Required
-  @Comment("Port\n" + "Accepted range values: [1-65535]")
+  @Comment("""
+      Port
+      Accepted range values: [1-65535]""")
   int port;
 
   @Required
   @Comment(
-      "Whether an SSL/TLS communication must be established at connection time (more secure)\n"
-          + "Only boolean values accepted (true|false)")
+      """
+          Whether an SSL/TLS communication must be established at connection time (more secure)
+          Only boolean values accepted (true|false)""")
   boolean isSslEnabled;
 
   public DbmsHostPropertiesImpl() {

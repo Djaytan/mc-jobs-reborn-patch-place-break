@@ -105,12 +105,12 @@ class DbmsCredentialsPropertiesImplTest {
       // Given
 
       // When
-      DbmsCredentialsPropertiesImpl credentialsPropertiesImpl = new DbmsCredentialsPropertiesImpl();
+      DbmsCredentialsPropertiesImpl properties = new DbmsCredentialsPropertiesImpl();
 
       // Then
       assertAll(
-          () -> assertThat(credentialsPropertiesImpl.getUsername()).isEqualTo("username"),
-          () -> assertThat(credentialsPropertiesImpl.getPassword()).isEqualTo("password"));
+          () -> assertThat(properties.getUsername()).isEqualTo("username"),
+          () -> assertThat(properties.getPassword()).isEqualTo("password"));
     }
 
     @Test
@@ -121,13 +121,13 @@ class DbmsCredentialsPropertiesImplTest {
       String password = "bar";
 
       // When
-      DbmsCredentialsPropertiesImpl credentialsPropertiesImpl =
+      DbmsCredentialsPropertiesImpl properties =
           new DbmsCredentialsPropertiesImpl(username, password);
 
       // Then
       assertAll(
-          () -> assertThat(credentialsPropertiesImpl.getUsername()).isEqualTo("foo"),
-          () -> assertThat(credentialsPropertiesImpl.getPassword()).isEqualTo("bar"));
+          () -> assertThat(properties.getUsername()).isEqualTo("foo"),
+          () -> assertThat(properties.getPassword()).isEqualTo("bar"));
     }
   }
 
@@ -139,11 +139,11 @@ class DbmsCredentialsPropertiesImplTest {
     @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
-      DbmsCredentialsPropertiesImpl credentialsPropertiesImpl = new DbmsCredentialsPropertiesImpl();
+      DbmsCredentialsPropertiesImpl properties = new DbmsCredentialsPropertiesImpl();
 
       // When
       Set<ConstraintViolation<DbmsCredentialsPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(credentialsPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -153,12 +153,11 @@ class DbmsCredentialsPropertiesImplTest {
     @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
-      DbmsCredentialsPropertiesImpl credentialsPropertiesImpl =
-          new DbmsCredentialsPropertiesImpl("foo", "bar");
+      DbmsCredentialsPropertiesImpl properties = new DbmsCredentialsPropertiesImpl("foo", "bar");
 
       // When
       Set<ConstraintViolation<DbmsCredentialsPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(credentialsPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -168,12 +167,11 @@ class DbmsCredentialsPropertiesImplTest {
     @DisplayName("With only invalid values")
     void withOnlyInvalidValues_shouldGenerateConstraintViolations() {
       // Given
-      DbmsCredentialsPropertiesImpl credentialsPropertiesImpl =
-          new DbmsCredentialsPropertiesImpl("", null);
+      DbmsCredentialsPropertiesImpl properties = new DbmsCredentialsPropertiesImpl("", null);
 
       // When
       Set<ConstraintViolation<DbmsCredentialsPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(credentialsPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).hasSize(2);
@@ -189,12 +187,12 @@ class DbmsCredentialsPropertiesImplTest {
       @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(@NotNull String validUsername) {
         // Given
-        DbmsCredentialsPropertiesImpl credentialsPropertiesImpl =
+        DbmsCredentialsPropertiesImpl properties =
             new DbmsCredentialsPropertiesImpl(validUsername, "bar");
 
         // When
         Set<ConstraintViolation<DbmsCredentialsPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(credentialsPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations).isEmpty();
@@ -211,12 +209,12 @@ class DbmsCredentialsPropertiesImplTest {
       @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(@Nullable String invalidUsername) {
         // Given
-        DbmsCredentialsPropertiesImpl credentialsPropertiesImpl =
+        DbmsCredentialsPropertiesImpl properties =
             new DbmsCredentialsPropertiesImpl(invalidUsername, "bar");
 
         // When
         Set<ConstraintViolation<DbmsCredentialsPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(credentialsPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations)
@@ -252,12 +250,12 @@ class DbmsCredentialsPropertiesImplTest {
       @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(@NotNull String validPassword) {
         // Given
-        DbmsCredentialsPropertiesImpl credentialsPropertiesImpl =
+        DbmsCredentialsPropertiesImpl properties =
             new DbmsCredentialsPropertiesImpl("for", validPassword);
 
         // When
         Set<ConstraintViolation<DbmsCredentialsPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(credentialsPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations).isEmpty();
@@ -275,12 +273,12 @@ class DbmsCredentialsPropertiesImplTest {
       @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(@Nullable String invalidPassword) {
         // Given
-        DbmsCredentialsPropertiesImpl credentialsPropertiesImpl =
+        DbmsCredentialsPropertiesImpl properties =
             new DbmsCredentialsPropertiesImpl("foo", invalidPassword);
 
         // When
         Set<ConstraintViolation<DbmsCredentialsPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(credentialsPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations)
@@ -360,10 +358,7 @@ class DbmsCredentialsPropertiesImplTest {
           ConfigSerializerTestWrapper.deserialize(confFile, DbmsCredentialsPropertiesImpl.class);
 
       // Then
-      assertThat(optionalCredentialsValidatingProperties)
-          .isPresent()
-          .get()
-          .isEqualTo(expectedValue);
+      assertThat(optionalCredentialsValidatingProperties).hasValue(expectedValue);
     }
 
     private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {

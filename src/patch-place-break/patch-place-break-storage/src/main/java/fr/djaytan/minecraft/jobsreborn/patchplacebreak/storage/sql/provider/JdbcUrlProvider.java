@@ -23,9 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlStorageException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.MysqlJdbcUrl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite.SqliteJdbcUrl;
 import jakarta.inject.Inject;
@@ -50,21 +48,9 @@ public class JdbcUrlProvider implements Provider<JdbcUrl> {
 
   @Override
   public @NotNull JdbcUrl get() {
-    DataSourceType dataSourceType = dataSourceProperties.getType();
-
-    switch (dataSourceType) {
-      case MYSQL:
-        {
-          return mysqlJdbcUrl;
-        }
-      case SQLITE:
-        {
-          return sqliteJdbcUrl;
-        }
-      default:
-        {
-          throw SqlStorageException.unsupportedDataSourceType(dataSourceType);
-        }
-    }
+    return switch (dataSourceProperties.getType()) {
+      case MYSQL -> mysqlJdbcUrl;
+      case SQLITE -> sqliteJdbcUrl;
+    };
   }
 }

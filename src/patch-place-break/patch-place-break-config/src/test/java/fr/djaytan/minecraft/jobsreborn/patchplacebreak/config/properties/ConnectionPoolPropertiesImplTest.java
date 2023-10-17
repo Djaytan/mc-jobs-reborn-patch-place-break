@@ -99,13 +99,12 @@ class ConnectionPoolPropertiesImplTest {
       // Given
 
       // When
-      ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
-          new ConnectionPoolPropertiesImpl();
+      ConnectionPoolPropertiesImpl properties = new ConnectionPoolPropertiesImpl();
 
       // Then
       assertAll(
-          () -> assertThat(connectionPoolPropertiesImpl.getConnectionTimeout()).isEqualTo(30000),
-          () -> assertThat(connectionPoolPropertiesImpl.getPoolSize()).isEqualTo(10));
+          () -> assertThat(properties.getConnectionTimeout()).isEqualTo(30000),
+          () -> assertThat(properties.getPoolSize()).isEqualTo(10));
     }
 
     @Test
@@ -116,15 +115,13 @@ class ConnectionPoolPropertiesImplTest {
       int poolSize = 10;
 
       // When
-      ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+      ConnectionPoolPropertiesImpl properties =
           new ConnectionPoolPropertiesImpl(connectionTimeout, poolSize);
 
       // Then
       assertAll(
-          () ->
-              assertThat(connectionPoolPropertiesImpl.getConnectionTimeout())
-                  .isEqualTo(connectionTimeout),
-          () -> assertThat(connectionPoolPropertiesImpl.getPoolSize()).isEqualTo(poolSize));
+          () -> assertThat(properties.getConnectionTimeout()).isEqualTo(connectionTimeout),
+          () -> assertThat(properties.getPoolSize()).isEqualTo(poolSize));
     }
   }
 
@@ -136,12 +133,11 @@ class ConnectionPoolPropertiesImplTest {
     @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
-      ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
-          new ConnectionPoolPropertiesImpl();
+      ConnectionPoolPropertiesImpl properties = new ConnectionPoolPropertiesImpl();
 
       // When
       Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -151,12 +147,11 @@ class ConnectionPoolPropertiesImplTest {
     @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
-      ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
-          new ConnectionPoolPropertiesImpl(30000, 10);
+      ConnectionPoolPropertiesImpl properties = new ConnectionPoolPropertiesImpl(30000, 10);
 
       // When
       Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -166,12 +161,11 @@ class ConnectionPoolPropertiesImplTest {
     @DisplayName("With only invalid values")
     void withOnlyInvalidValues_shouldGenerateConstraintViolations() {
       // Given
-      ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
-          new ConnectionPoolPropertiesImpl(-1, -1);
+      ConnectionPoolPropertiesImpl properties = new ConnectionPoolPropertiesImpl(-1, -1);
 
       // When
       Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).hasSize(2);
@@ -187,12 +181,12 @@ class ConnectionPoolPropertiesImplTest {
       @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(long validConnectionTimeout) {
         // Given
-        ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+        ConnectionPoolPropertiesImpl properties =
             new ConnectionPoolPropertiesImpl(validConnectionTimeout, 10);
 
         // When
         Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations).isEmpty();
@@ -209,12 +203,12 @@ class ConnectionPoolPropertiesImplTest {
       @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(long invalidConnectionTimeout) {
         // Given
-        ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+        ConnectionPoolPropertiesImpl properties =
             new ConnectionPoolPropertiesImpl(invalidConnectionTimeout, 10);
 
         // When
         Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations)
@@ -247,12 +241,12 @@ class ConnectionPoolPropertiesImplTest {
       @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(int validPoolSize) {
         // Given
-        ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+        ConnectionPoolPropertiesImpl properties =
             new ConnectionPoolPropertiesImpl(60000, validPoolSize);
 
         // When
         Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations).isEmpty();
@@ -269,12 +263,12 @@ class ConnectionPoolPropertiesImplTest {
       @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(int invalidPoolSize) {
         // Given
-        ConnectionPoolPropertiesImpl connectionPoolPropertiesImpl =
+        ConnectionPoolPropertiesImpl properties =
             new ConnectionPoolPropertiesImpl(60000, invalidPoolSize);
 
         // When
         Set<ConstraintViolation<ConnectionPoolPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(connectionPoolPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations)
@@ -349,14 +343,11 @@ class ConnectionPoolPropertiesImplTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      Optional<ConnectionPoolPropertiesImpl> optionalConnectionPoolValidatingProperties =
+      Optional<ConnectionPoolPropertiesImpl> actualValue =
           ConfigSerializerTestWrapper.deserialize(confFile, ConnectionPoolPropertiesImpl.class);
 
       // Then
-      assertThat(optionalConnectionPoolValidatingProperties)
-          .isPresent()
-          .get()
-          .isEqualTo(expectedValue);
+      assertThat(actualValue).hasValue(expectedValue);
     }
 
     private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
@@ -412,11 +403,11 @@ class ConnectionPoolPropertiesImplTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      Optional<ConnectionPoolPropertiesImpl> connectionPoolValidatingProperties =
+      Optional<ConnectionPoolPropertiesImpl> actualValue =
           ConfigSerializerTestWrapper.deserialize(confFile, ConnectionPoolPropertiesImpl.class);
 
       // Then
-      assertThat(connectionPoolValidatingProperties).isNotPresent();
+      assertThat(actualValue).isNotPresent();
     }
   }
 }

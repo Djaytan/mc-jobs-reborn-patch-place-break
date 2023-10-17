@@ -52,7 +52,9 @@ public class DbmsServerPropertiesImpl implements DbmsServerProperties, Propertie
   @NotBlank
   @Size(max = 128)
   @Required
-  @Comment("The database to use on DBMS server\n" + "Value can't be empty or blank")
+  @Comment("""
+      The database to use on DBMS server
+      Value can't be empty or blank""")
   String database;
 
   public DbmsServerPropertiesImpl() {
