@@ -37,7 +37,7 @@ import org.spongepowered.configurate.util.NamingSchemes;
 /**
  * Factory of config loader.
  *
- * <p>The method {@link #createLoader(Path)} is the one to use in order to create a loader.
+ * <p>The method {@link #createLoader(Path)} is the one to use to create a loader.
  */
 final class ConfigLoaderFactory {
 
@@ -52,7 +52,7 @@ final class ConfigLoaderFactory {
    *
    * @param configFile The config file path from which to create the loader.
    * @return A configuration loader for the specified config file.
-   * @throws IOException If something prevent the configuration loader creation.
+   * @throws IOException If something prevents the configuration loader creation.
    */
   static @NotNull ConfigurationLoader<CommentedConfigurationNode> createLoader(
       @NotNull Path configFile) throws IOException {

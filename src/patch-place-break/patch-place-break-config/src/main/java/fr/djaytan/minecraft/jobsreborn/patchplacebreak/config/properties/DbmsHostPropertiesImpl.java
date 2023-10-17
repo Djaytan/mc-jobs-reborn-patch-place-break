@@ -38,10 +38,10 @@ import org.spongepowered.configurate.objectmapping.meta.Required;
 public class DbmsHostPropertiesImpl implements DbmsHostProperties, Properties {
 
   /**
-   * An hostname cannot exceed 255 characters as per the DNS standard specification.
+   * A hostname cannot exceed 255 characters as per the DNS standard specification.
    *
    * <p><i/>Note: we explicitly allow most invalid hostnames since otherwise it will require too
-   * many work for too limited earnings. In fact, specifying an invalid hostname will be detected by
+   * much work for too limited earnings. In fact, specifying an invalid hostname will be detected by
    * underlying systems (e.g. JDBC). So, we only focus on easy detectable invalid addresses.
    */
   @NotBlank
@@ -56,8 +56,7 @@ public class DbmsHostPropertiesImpl implements DbmsHostProperties, Properties {
   /**
    * A port cannot exceed 65535, which is the maximum value allowed by the Transport Control
    * Protocol (TCP) and User Datagram Protocol (UDP) standards. The value "0" is excluded since it's
-   * a reserved one and must not be used. This is as well an indicator that the port as not been
-   * explicitly specified.
+   * a reserved one and must not be used.
    */
   @Max(65535)
   @Positive

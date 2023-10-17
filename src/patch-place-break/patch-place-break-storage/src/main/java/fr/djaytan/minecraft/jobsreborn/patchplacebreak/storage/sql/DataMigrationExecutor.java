@@ -43,7 +43,7 @@ public class DataMigrationExecutor {
   }
 
   /**
-   * Performs migrations into the currently in-used data source. Once done, validates that
+   * Performs migrations into the currently in-used data source. Once done, it validates that
    * migrations have been well-performed and are up-to-date.
    */
   public void migrate() {

@@ -92,8 +92,8 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
   }
 
   /**
-   * If the action is not specified then we consider that no particular action has been performed on
-   * the targeted block. Hence, we consider the action is not an exploit one.
+   * If the block is not specified, then we consider that the given action doesn't target any
+   * particular block. Hence, we consider the action is not an exploit one.
    */
   @Test
   @DisplayName("When checking exploit while 'actionInfo' is null")
@@ -109,8 +109,8 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
   }
 
   /**
-   * If the block is not specified then we consider that no particular block is targeted by the
-   * given action. Hence, we consider the action is not an exploit one.
+   * If the block is not specified, then we consider that the given action doesn't target any
+   * particular block. Hence, we consider the action is not an exploit one.
    */
   @Test
   @DisplayName("When checking exploit while 'block' is null")

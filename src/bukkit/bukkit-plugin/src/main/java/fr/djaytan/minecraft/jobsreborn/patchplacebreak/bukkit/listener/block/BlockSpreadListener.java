@@ -35,9 +35,9 @@ import org.jetbrains.annotations.NotNull;
 /**
  * This class represents a {@link BlockSpreadEvent} listener.
  *
- * <p>The purpose of this listener is to removed potentially existing place-and-break tag to spread
- * blocks (e.g. we consider that a player-placed dirt block becoming a grass by spreading event
- * shall result to a successful job action when breaking it).
+ * <p>The purpose of this listener is to remove potentially existing place-and-break tag to spread
+ * blocks (e.g. we consider that a player-placed dirt block becoming grass by spreading event shall
+ * result to a successful job action when breaking it).
  */
 @Singleton
 public class BlockSpreadListener implements Listener {

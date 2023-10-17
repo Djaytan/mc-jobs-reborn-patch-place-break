@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Represents the blocks filter based on the corresponding properties.
+ * Represents the blocks' filter based on the corresponding properties.
  *
  * @see RestrictedBlocksProperties
  */

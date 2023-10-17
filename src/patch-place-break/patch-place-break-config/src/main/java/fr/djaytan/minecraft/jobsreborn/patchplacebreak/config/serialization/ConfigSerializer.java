@@ -45,7 +45,7 @@ public final class ConfigSerializer {
    *
    * @param destConfigFile The destination config file into which serialize properties.
    * @param properties The properties to serialize.
-   * @throws ConfigSerializationException If something prevent the serialization.
+   * @throws ConfigSerializationException If something prevents the serialization.
    */
   public void serialize(@NotNull Path destConfigFile, @NotNull Properties properties) {
     try {
@@ -70,7 +70,7 @@ public final class ConfigSerializer {
    * @param propertiesType The targeted properties type of YAML deserialization.
    * @return The deserialized value if present and of valid properties type.
    * @param <T> The expected properties type to be obtained from deserialization.
-   * @throws ConfigSerializationException If something prevent the deserialization.
+   * @throws ConfigSerializationException If something prevents the deserialization.
    */
   public <T extends Properties> @NotNull Optional<T> deserialize(
       @NotNull Path srcConfigFile, @NotNull Class<T> propertiesType) {

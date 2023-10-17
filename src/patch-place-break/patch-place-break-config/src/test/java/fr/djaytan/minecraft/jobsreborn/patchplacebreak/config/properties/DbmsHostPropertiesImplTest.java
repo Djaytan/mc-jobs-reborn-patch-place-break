@@ -199,8 +199,8 @@ class DbmsHostPropertiesImplTest {
       }
 
       /*
-       * We accept most invalid values here. More details given
-       * in the DbmsHostValidatingProperties class.
+       * We accept most of the invalid values here.
+       * More details given in the DbmsHostValidatingProperties class.
        */
       private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(

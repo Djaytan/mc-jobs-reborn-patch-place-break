@@ -82,7 +82,7 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * Puts a tag on the specified location.
    *
    * @param bukkitBlock The block where to put tag.
-   * @param isEphemeral Whether the tag to put must be an ephemeral one or not.
+   * @param isEphemeral Whether the tag to put must be ephemeral or not.
    * @return The completable future object.
    * @see PatchPlaceBreakApi#putTag(Block, boolean)
    */

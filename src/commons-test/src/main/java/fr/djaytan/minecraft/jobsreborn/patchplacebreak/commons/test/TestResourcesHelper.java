@@ -35,7 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A helper class for resources management with tests.
+ * A helper class for resource management with tests.
  *
  * <p>The methods {@link #getClassResourceAsAbsolutePath(Class, String)} and {@link
  * #getClassResourceAsString(Class, String, boolean)} permits to retrieve a resource associated to a
@@ -111,7 +111,8 @@ public final class TestResourcesHelper {
   private static @NotNull Path resourceToAbsolutePath(
       @NotNull Path relativeResourcePath, @NotNull ClassLoader classLoader)
       throws IOException, URISyntaxException {
-    // /!\ Not retrieving absolute path from class loader can lead to wrong path depending on cases
+    // /!\ Not retrieving an absolute path from class loader can lead to a wrong path depending on
+    // cases
     // (i.e. when working directory of a library isn't the same as the one used by this class)
     URL url = IOUtils.resourceToURL(relativeResourcePath.toString(), classLoader);
     return Paths.get(url.toURI());

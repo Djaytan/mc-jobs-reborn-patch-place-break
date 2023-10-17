@@ -98,7 +98,7 @@ class JobsRebornPatchPlaceBreakPluginTest {
   }
 
   /**
-   * Typically this is relevant against place-break of saplings when profession pay for placing
+   * Typically, this is relevant against place-break of saplings when profession pay for placing
    * them.
    */
   @Test
