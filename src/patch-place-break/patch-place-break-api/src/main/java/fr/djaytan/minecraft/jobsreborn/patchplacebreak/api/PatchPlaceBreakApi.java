@@ -32,7 +32,7 @@ import java.util.concurrent.CompletableFuture;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This interface represents the API to apply place-and-break patch.
+ * This interface represents the API to apply a place-and-break patch.
  *
  * <p>The patch of JobsReborn plugin works as follows: when an eligible event occurs (e.g. a block
  * place), a tag is attached to the block in order to cancel future jobs rewards (payments,
@@ -41,19 +41,19 @@ import org.jetbrains.annotations.NotNull;
  * BlockActionType#TNTBREAK} jobs actions.
  *
  * <p>It can work in the reverse order: when breaking a block, an "ephemeral" tag is placed to the
- * newly "placed" AIR block. It permits to cancel jobs rewards when placing another block in a
+ * newly "placed" AIR block. It permits canceling jobs rewards when placing another block in a
  * short-time delay (e.g. prevent sapling place-and-break exploit). This will be applied for {@link
  * BlockActionType#PLACE} jobs actions.
  *
- * <p>Nevertheless, an attached tag can be removed given specific conditions like when a block grow
+ * <p>Nevertheless, an attached tag can be removed given specific conditions like when a block grows
  * event happens. This will permit farmers to achieve their job without seeing their action being
  * cancelled by this patch plugin. This is the purpose of the {@link #removeTag(Block)} method.
  *
  * <p>A tag can be placed with {@link #putTag(Block, boolean)} method. The {@link #moveTags(Set,
- * Vector)} has a special purpose: to permit to put back tags when blocks are moved (e.g. by block
+ * Vector)} has a special purpose: to permit putting back tags when blocks are moved (e.g. by block
  * piston extend and retract events).
  *
- * <p>Finally, this API give the possibility to check if the jobs action type involving a given
+ * <p>Finally, this API gives the possibility to check if the job action type involving a given
  * block is a place-and-break exploit or no with the method {@link
  * #isPlaceAndBreakExploit(BlockActionType, Block)}.
  */
@@ -70,7 +70,7 @@ public interface PatchPlaceBreakApi {
    * active anymore and will be ignored by {@link #isPlaceAndBreakExploit(BlockActionType, Block)}
    * method.
    *
-   * <p>The method is executed asynchronously for performances purposes.
+   * <p>The method is executed asynchronously for performance purposes.
    *
    * @param block The block where the tag must be put.
    * @param isEphemeral <code>true</code> if the tag must be ephemeral, <code>false</code>
@@ -85,9 +85,9 @@ public interface PatchPlaceBreakApi {
    *
    * <p>For each location a check will be done to ensure an active tag exist or not. If it doesn't
    * exist, then nothing else will be done for the concerned location. In other words: this method
-   * will <b>never</b> create tag, at most just update existing ones when they are actives.
+   * will <b>never</b> create tag, at most update existing ones when they are actives.
    *
-   * <p>The method is executed asynchronously for performances purposes.
+   * <p>The method is executed asynchronously for performance purposes.
    *
    * @param blocks The blocks from where to move existing tags.
    * @param direction The direction where to move existing tags.
@@ -98,9 +98,9 @@ public interface PatchPlaceBreakApi {
 
   /**
    * Removes existing tag from a specified block. This can be useful when the state of the block
-   * change (e.g. crops grow like with wheat).
+   * changes (e.g. crops grow like with wheat).
    *
-   * <p>The method is executed asynchronously for performances purposes.
+   * <p>The method is executed asynchronously for performance purposes.
    *
    * @param block The block where to remove tags if existing.
    * @return The completable future object.

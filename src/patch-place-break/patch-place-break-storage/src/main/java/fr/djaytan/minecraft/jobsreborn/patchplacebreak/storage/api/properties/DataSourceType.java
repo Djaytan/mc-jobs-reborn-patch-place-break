@@ -23,7 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties;
 
 /**
- * Represents the data source type to be used as solution for storing and retrieving {@link
+ * Represents the data source type to be used as a solution for storing and retrieving {@link
  * fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag}s.
  */
 public enum DataSourceType {

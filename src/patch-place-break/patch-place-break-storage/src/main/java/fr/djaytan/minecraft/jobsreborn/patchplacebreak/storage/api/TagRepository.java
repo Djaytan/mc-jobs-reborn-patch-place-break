@@ -34,19 +34,18 @@ import org.jetbrains.annotations.NotNull;
  * Access Object pattern (DAO).
  *
  * <p><i>Note:</i> It is agnostic about whether the final storage is persistent (e.g. non-temporary
- * files) or not (like in-memory). However, it is expected that the underlying implementation share
- * ways to select the type of storage wished. At least one type must be a persistent one.
- * Non-persistent ones are typically reserved for test purposes. If there isn't way to configure the
- * type of storage, or no particular type wished as been provided, then the default type must be a
- * persistent one.
+ * files) or not (like in-memory). However, it is expected that the underlying implementation shares
+ * ways to select the type of storage wished. At least one type must be persistent. Non-persistent
+ * ones are typically reserved for test purposes. If there is no way to configure the type of
+ * storage, or no particular type wished as been provided, then the default type must be persistent.
  */
 public interface TagRepository {
 
   /**
    * Puts a tag at the targeted {@link BlockLocation}.
    *
-   * <p>If no tag exist at the targeted location, a new resource is created. Otherwise, the existing
-   * tag is overridden.
+   * <p>If no tag exists at the targeted location, a new resource is created. Otherwise, the
+   * existing tag is overridden.
    *
    * @param tag The tag to be put at the targeted location.
    * @throws TagRepositoryException If something prevents the tag to be put into the storage.
@@ -67,7 +66,7 @@ public interface TagRepository {
    * Finds a tag from a {@link BlockLocation}.
    *
    * @param blockLocation The location where the sought tag may be.
-   * @return The tag which match with the given location if exists.
+   * @return The tag which matches with the given location if exists.
    * @throws TagRepositoryException If something prevents the search to be done.
    */
   @NotNull

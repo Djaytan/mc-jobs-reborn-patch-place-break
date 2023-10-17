@@ -55,7 +55,7 @@ public class JobsExpGainListener implements Listener {
    * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we want to have the final
    * word about the result of this event (a place-and-break action must be cancelled in all cases).
    *
-   * @param event The jobs exp-gain event.
+   * @param event The job exp-gain event.
    */
   @EventHandler(priority = EventPriority.HIGHEST)
   public void patchOnJobsExpGain(@NotNull JobsExpGainEvent event) {

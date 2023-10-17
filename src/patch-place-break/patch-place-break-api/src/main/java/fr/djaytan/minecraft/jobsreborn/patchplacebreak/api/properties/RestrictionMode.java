@@ -24,7 +24,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties;
 
 /**
  * Represents the restriction modes permitting to know whether a block type should be ignored by the
- * tag handling mechanism or not. This allows performances improvements when this is an issue (e.g.
+ * tag handling mechanism or not. This allows performance improvements when this is an issue (e.g.
  * the Tree Feller skill from McMMO plugin cutting hundreds of logs at a time leading to a server
  * freeze).
  */

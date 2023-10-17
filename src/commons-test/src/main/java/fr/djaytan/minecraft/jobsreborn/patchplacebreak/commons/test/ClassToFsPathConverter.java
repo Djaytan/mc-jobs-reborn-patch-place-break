@@ -47,7 +47,7 @@ final class ClassToFsPathConverter {
    * - Equivalent filesystem path:
    * fr/djaytan/minecraft/jobsreborn/patchplacebreak/core/config/annotated/HostValidatingPropertiesTest
    *
-   * @param clazz The class with name to be converted to filesystem path.
+   * @param clazz The class with name to be converted to a filesystem path.
    * @return The converted class name to a filesystem path.
    * @throws UnsupportedClassException If a primary, array, collection or any generic class is
    *     specified.

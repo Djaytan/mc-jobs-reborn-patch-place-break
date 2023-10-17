@@ -39,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
  * caller.
  *
  * <p>When no longer using the patch, ensure to call the {@link #disable()} method (e.g. on plugin
- * disabling). This will ensure to properly disable the patch (e.g. by closing existing databases
+ * disabling). This will ensure to properly disable the patch (e.g. by closing existing database
  * connections).
  *
  * <p>Only one instance of this class is expected to be run at once.

@@ -36,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
  * This class represents a {@link BlockPlaceEvent} listener.
  *
  * <p>The purpose of this listener is to put a place-and-break tag to newly placed blocks by a
- * player. This permits to prevent place-and-break exploit with diamond ores for example.
+ * player. This permits to prevent place-and-break exploit with diamond ores, for example.
  */
 @Singleton
 public class BlockPlaceListener implements Listener {

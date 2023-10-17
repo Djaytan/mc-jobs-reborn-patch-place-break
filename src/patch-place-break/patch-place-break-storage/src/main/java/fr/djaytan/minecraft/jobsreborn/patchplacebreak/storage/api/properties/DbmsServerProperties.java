@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents the properties related to the DBMS server.
  *
  * <p>These properties are applicable only for DBMS servers like MySQL/MariaDB (i.e. does not apply
- * for SQLite which is just a file in local file system).
+ * for SQLite, which is just a file in local file system).
  */
 public interface DbmsServerProperties {
 

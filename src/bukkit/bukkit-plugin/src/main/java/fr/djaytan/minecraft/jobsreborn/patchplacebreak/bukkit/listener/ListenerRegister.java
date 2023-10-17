@@ -75,7 +75,7 @@ public class ListenerRegister {
   }
 
   /**
-   * The purposes of this method is simple: registering listeners through the {@link PluginManager}.
+   * The purpose of this method is simple: registering listeners through the {@link PluginManager}.
    */
   public void registerListeners() {
     pluginManager.registerEvents(blockBreakListener, javaPlugin);

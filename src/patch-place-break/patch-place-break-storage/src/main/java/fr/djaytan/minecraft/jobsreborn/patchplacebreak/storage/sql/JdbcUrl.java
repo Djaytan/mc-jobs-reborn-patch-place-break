@@ -24,7 +24,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
 import org.jetbrains.annotations.NotNull;
 
-/** Represents a JDBC URL required to establish connexion with underlying data source. */
+/** Represents a JDBC URL required to establish connexion with the underlying data source. */
 public interface JdbcUrl {
 
   /**

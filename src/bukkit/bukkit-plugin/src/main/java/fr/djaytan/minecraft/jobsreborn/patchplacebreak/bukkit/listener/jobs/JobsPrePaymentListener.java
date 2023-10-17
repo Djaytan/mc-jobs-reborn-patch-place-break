@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
  * This class represents a {@link JobsPrePaymentEvent} listener.
  *
  * <p>The purpose of this listener is to cancel payments jobs rewards when the action is considered
- * as a place-and-break one to be patched. This cover both points and incomes.
+ * as a place-and-break one to be patched. This covers both points and incomes.
  */
 @Singleton
 public class JobsPrePaymentListener implements Listener {
@@ -56,7 +56,7 @@ public class JobsPrePaymentListener implements Listener {
    * word about the result of this event (there isn't any reason to not cancel a place-and-break
    * action).
    *
-   * @param event The jobs pre-payment event.
+   * @param event The job pre-payment event.
    */
   @EventHandler(priority = EventPriority.HIGHEST)
   public void patchOnJobsPrePayment(@NotNull JobsPrePaymentEvent event) {
