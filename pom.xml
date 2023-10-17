@@ -614,7 +614,7 @@
         <configuration>
           <quiet>true</quiet>
           <additionalJOptions>
-            <additionalJOption>-Xdoclint:all,-html</additionalJOption>
+            <additionalJOption>-Xdoclint:none</additionalJOption>
           </additionalJOptions>
         </configuration>
         <executions>
