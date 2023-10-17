@@ -55,8 +55,8 @@
       </dependency>
       <dependency>
         <groupId>com.github.seeseemelk</groupId>
-        <artifactId>MockBukkit-v1.13</artifactId>
-        <version>0.2.0</version>
+        <artifactId>MockBukkit-v1.17</artifactId>
+        <version>1.13.0</version>
       </dependency>
       <dependency>
         <groupId>org.bstats</groupId>
@@ -73,15 +73,9 @@
       <dependency>
         <groupId>org.spigotmc</groupId>
         <artifactId>spigot-api</artifactId>
-        <version>1.11.2-R0.1-SNAPSHOT</version>
-        <!-- The server must be a Spigot one or a derivative one (e.g. PaperMC, Purpur, ...) -->
+        <version>1.17.1-R0.1-SNAPSHOT</version>
+        <!-- The server must be a Spigot or a derivative one (e.g. PaperMC, Purpur, ...) -->
         <scope>provided</scope>
-        <exclusions>
-          <exclusion>
-            <groupId>*</groupId>
-            <artifactId>*</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
     </dependencies>
   </dependencyManagement>

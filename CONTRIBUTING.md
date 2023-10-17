@@ -79,9 +79,9 @@ development and testing purposes.
 
 Working on this project requires the following dependencies installed in your local environment:
 
-* JDK 11 ([Download Link](https://adoptium.net/en-GB/temurin/releases/?version=11))
+* JDK 17 ([Download Link](https://adoptium.net/en-GB/temurin/releases/?version=17))
 * Maven
-  3.6+ ([Download Link](https://maven.apache.org/download.cgi) | [Install Guide](https://maven.apache.org/install.html))
+  3.8+ ([Download Link](https://maven.apache.org/download.cgi) | [Install Guide](https://maven.apache.org/install.html))
 
 ### 🔌 Installing
 

@@ -117,7 +117,7 @@
     </dependency>
     <dependency>
       <groupId>com.github.seeseemelk</groupId>
-      <artifactId>MockBukkit-v1.13</artifactId>
+      <artifactId>MockBukkit-v1.17</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

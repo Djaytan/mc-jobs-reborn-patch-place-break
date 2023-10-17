@@ -69,7 +69,7 @@ class JobsRebornPatchPlaceBreakPluginTest {
 
   @AfterAll
   static void afterAll() {
-    MockBukkit.unload();
+    MockBukkit.unmock();
   }
 
   /** Obviously relevant against place-break diamond ore exploit. */
@@ -108,14 +108,15 @@ class JobsRebornPatchPlaceBreakPluginTest {
     PlayerMock player = serverMock.addPlayer();
     WorldMock worldMock = serverMock.addSimpleWorld("world");
     Location nominalLocation = new Location(worldMock, 145, 70, 87.909);
-    BlockMock blockMock = new BlockMock(Material.SAPLING, nominalLocation);
+    BlockMock blockMock = new BlockMock(Material.OAK_SAPLING, nominalLocation);
 
     // When
-    boolean isBlockBroken = player.simulateBlockBreak(blockMock);
+    BlockBreakEvent blockBreakEvent = player.simulateBlockBreak(blockMock);
 
     // Then
+    assertThat(blockBreakEvent).isNotNull();
     assertAll(
-        () -> assertThat(isBlockBroken).isTrue(),
+        () -> assertThat(blockBreakEvent.isCancelled()).isFalse(),
         () -> assertThat(blockMock.getType()).isEqualTo(Material.AIR));
 
     ActionInfo actionInfo = new BlockActionInfo(blockMock, ActionType.PLACE);
@@ -129,8 +130,8 @@ class JobsRebornPatchPlaceBreakPluginTest {
    * test the patch under these conditions.
    */
   @Test
-  @DisplayName("When JobsReborn think AIR block has been broken")
-  void whenJobsRebornThinkAirBlockHasBeenBroken_shouldNotConsiderItAsAnExploit() {
+  @DisplayName("When JobsReborn thinks AIR block has been broken")
+  void whenJobsRebornThinksAirBlockHasBeenBroken_shouldNotConsiderItAsAnExploit() {
     // Given
     WorldMock worldMock = serverMock.addSimpleWorld("world");
     Location nominalLocation = new Location(worldMock, 5869.25, 72, 457.01);
@@ -158,8 +159,8 @@ class JobsRebornPatchPlaceBreakPluginTest {
    * test the patch under these conditions.
    */
   @Test
-  @DisplayName("When JobsReborn think WATER block has been broken")
-  void whenJobsRebornThinkWaterBlockHasBeenBroken_shouldNotConsiderItAsAnExploit() {
+  @DisplayName("When JobsReborn thinks WATER block has been broken")
+  void whenJobsRebornThinksWaterBlockHasBeenBroken_shouldNotConsiderItAsAnExploit() {
     // Given
     WorldMock worldMock = serverMock.addSimpleWorld("world");
     Location nominalLocation = new Location(worldMock, 5414.6, 74.5, 449.1);

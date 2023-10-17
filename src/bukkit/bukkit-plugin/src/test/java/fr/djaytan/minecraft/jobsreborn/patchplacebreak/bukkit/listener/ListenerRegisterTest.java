@@ -99,7 +99,7 @@ class ListenerRegisterTest {
 
   @AfterAll
   static void afterAll() {
-    MockBukkit.unload();
+    MockBukkit.unmock();
   }
 
   @Test
