@@ -1,7 +1,7 @@
 # jobs-reborn-patch-place-break
 
 ![Target](https://img.shields.io/badge/plugin-Minecraft-blueviolet)
-![Minecraft version](https://img.shields.io/badge/version-1.11%20--%201.19-blue)
+![Minecraft version](https://img.shields.io/badge/version-1.17%20--%201.20-blue)
 [![Maven - CI](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions/workflows/maven-ci.yml/badge.svg?branch=main)](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions/workflows/maven-ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
@@ -67,10 +67,15 @@ Easy and efficient, this does the trick.
 We expect here that you already have a Bukkit server already set up with the JobsReborn plugin
 installed on it.
 
-The server's version must be higher or equals to 1.11. If you wish to use this plugin on a lower
-version of the server (1.8, 1.9 or 1.10), you should instead use the version
-[1.2.0](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/tag/v1.2.0) of the
-plugin.
+The server's version must be higher or equals to 1.17.x.
+
+If you wish to use this plugin on a lower version of the server, you should instead use the
+following version:
+
+* [2.2.53](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/tag/v2.2.53) for
+  Minecraft versions from 1.11 tp 1.16 (included)
+* [1.2.0](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/tag/v1.2.0) for
+  Minecraft versions 1.8, 1.9 and 1.10
 
 Download the latest `.jar` file from the
 [release section](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/) of this
