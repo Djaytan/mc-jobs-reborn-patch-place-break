@@ -36,10 +36,10 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.time.temporal.TemporalAmount;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.RandomUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -173,13 +173,13 @@ abstract class BasePatchPlaceBreakApiIntegrationTest {
 
   /**
    * Prevents collisions by generating random block location for each test since for performances
-   * purpose the database will not be recycled between tests.
+   * purposes the database will not be recycled between tests.
    */
   private static @NotNull BlockLocation generateRandomBlockLocation() {
-    int randX = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();
-    int randY = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();
-    int randZ = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();
-
+    Random random = new Random();
+    int randX = (random.nextBoolean() ? 1 : -1) * random.nextInt();
+    int randY = (random.nextBoolean() ? 1 : -1) * random.nextInt();
+    int randZ = (random.nextBoolean() ? 1 : -1) * random.nextInt();
     return new BlockLocation("world", randX, randY, randZ);
   }
 }

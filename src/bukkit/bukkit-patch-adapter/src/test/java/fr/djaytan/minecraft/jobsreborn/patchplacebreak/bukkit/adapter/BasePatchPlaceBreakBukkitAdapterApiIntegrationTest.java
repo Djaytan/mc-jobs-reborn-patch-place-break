@@ -41,10 +41,10 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.time.temporal.TemporalAmount;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.RandomUtils;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -264,13 +264,14 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
   }
 
   /**
-   * Prevents collisions by generating random block for each test since for performances purpose the
-   * database will not be recycled between tests.
+   * Prevents collisions by generating random block for each test since for performances purposes
+   * the database will not be recycled between tests.
    */
   private static void prepareRandomBlockMocked(@NotNull Block blockMocked, @NotNull World world) {
-    int randX = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();
-    int randY = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();
-    int randZ = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();
+    Random random = new Random();
+    int randX = (random.nextBoolean() ? 1 : -1) * random.nextInt();
+    int randY = (random.nextBoolean() ? 1 : -1) * random.nextInt();
+    int randZ = (random.nextBoolean() ? 1 : -1) * random.nextInt();
 
     when(world.getName()).thenReturn("world");
     when(blockMocked.getWorld()).thenReturn(world);

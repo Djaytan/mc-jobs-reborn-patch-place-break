@@ -32,7 +32,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLo
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
-import org.apache.commons.lang3.RandomUtils;
+import java.util.Random;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -198,10 +198,10 @@ class SqlTagRepositoryIntegrationTest {
   /* Helpers */
 
   private @NotNull BlockLocation createRandomBlockLocation() {
-    int randX = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();
-    int randY = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();
-    int randZ = (RandomUtils.nextBoolean() ? 1 : -1) * RandomUtils.nextInt();
-
+    Random random = new Random();
+    int randX = (random.nextBoolean() ? 1 : -1) * random.nextInt();
+    int randY = (random.nextBoolean() ? 1 : -1) * random.nextInt();
+    int randZ = (random.nextBoolean() ? 1 : -1) * random.nextInt();
     return new BlockLocation("world", randX, randY, randZ);
   }
 }
