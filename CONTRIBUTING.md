@@ -82,6 +82,9 @@ Working on this project requires the following dependencies installed in your lo
 * JDK 17 ([Download Link](https://adoptium.net/en-GB/temurin/releases/?version=17))
 * Maven
   3.8+ ([Download Link](https://maven.apache.org/download.cgi) | [Install Guide](https://maven.apache.org/install.html))
+* Docker v24.0+ (on Windows it's possible to use Docker Desktop, Podman Desktop or Rancher Desktop:
+  choose whatever you want or any other alternative if you like)
+  * _Required for running integration tests_
 
 ### 🔌 Installing
 
