@@ -23,7 +23,6 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.BDDMockito.given;
@@ -45,6 +44,9 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -64,13 +66,14 @@ import org.mockito.Mock.Strictness;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.threeten.extra.MutableClock;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith({MockitoExtension.class, SoftAssertionsExtension.class})
 abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
 
+  @InjectSoftAssertions private SoftAssertions softly;
+  @TempDir protected Path dataFolder;
   private final MutableClock mutableClock = MutableClock.epochUTC();
   private final PatchPlaceBreakCore patchPlaceBreakCore = new PatchPlaceBreakCore();
   private PatchPlaceBreakBukkitAdapterApi patchPlaceBreakBukkitAdapterApi;
-  @TempDir protected Path dataFolder;
 
   @Mock(strictness = Strictness.LENIENT)
   private Block randomBlockMocked;
@@ -225,9 +228,8 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
     boolean isOnNewBlockAnExploit =
         patchPlaceBreakBukkitAdapterApi.isPlaceAndBreakExploit(actionInfo, newBlock);
 
-    assertAll(
-        () -> assertThat(isOnOldBlockAnExploit).isFalse(),
-        () -> assertThat(isOnNewBlockAnExploit).isTrue());
+    softly.assertThat(isOnOldBlockAnExploit).isFalse();
+    softly.assertThat(isOnNewBlockAnExploit).isTrue();
   }
 
   @Test

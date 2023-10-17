@@ -22,8 +22,6 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -33,17 +31,24 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocatio
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.util.stream.Stream;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+@ExtendWith(SoftAssertionsExtension.class)
 class BlockLocationTest {
+
+  @InjectSoftAssertions private SoftAssertions softly;
 
   @Nested
   @DisplayName("When instantiating")
@@ -63,12 +68,10 @@ class BlockLocationTest {
       BlockLocation blockLocation = new BlockLocation(worldName, x, y, z);
 
       // Then
-      assertAll(
-          "Verification of returned values from getters",
-          () -> assertThat(blockLocation.getWorldName()).isEqualTo(worldName),
-          () -> assertThat(blockLocation.getX()).isEqualTo(x),
-          () -> assertThat(blockLocation.getY()).isEqualTo(y),
-          () -> assertThat(blockLocation.getZ()).isEqualTo(z));
+      softly.assertThat(blockLocation.getWorldName()).isEqualTo(worldName);
+      softly.assertThat(blockLocation.getX()).isEqualTo(x);
+      softly.assertThat(blockLocation.getY()).isEqualTo(y);
+      softly.assertThat(blockLocation.getZ()).isEqualTo(z);
     }
 
     @ParameterizedTest(name = "{index} - {0}")
@@ -87,9 +90,8 @@ class BlockLocationTest {
       BlockLocation movedBlockLocation = BlockLocation.from(blockLocation, givenDirection);
 
       // Then
-      assertAll(
-          () -> assertThat(movedBlockLocation).isNotSameAs(blockLocation),
-          () -> assertThat(movedBlockLocation).isEqualTo(expectedValue));
+      softly.assertThat(movedBlockLocation).isNotSameAs(blockLocation);
+      softly.assertThat(movedBlockLocation).isEqualTo(expectedValue);
     }
 
     private @NotNull Stream<Arguments>

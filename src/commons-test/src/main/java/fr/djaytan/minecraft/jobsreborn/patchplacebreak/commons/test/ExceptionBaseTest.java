@@ -22,16 +22,20 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+@ExtendWith(SoftAssertionsExtension.class)
 public abstract class ExceptionBaseTest {
+
+  @InjectSoftAssertions private SoftAssertions softly;
 
   protected abstract @NotNull Exception getException();
 
@@ -56,9 +60,8 @@ public abstract class ExceptionBaseTest {
       Exception exception = getException();
 
       // Then
-      assertAll(
-          () -> assertThat(exception.getMessage()).isNull(),
-          () -> assertThat(exception.getCause()).isNull());
+      softly.assertThat(exception.getMessage()).isNull();
+      softly.assertThat(exception.getCause()).isNull();
     }
 
     @Test
@@ -72,9 +75,8 @@ public abstract class ExceptionBaseTest {
       Exception exception = getException(message);
 
       // Then
-      assertAll(
-          () -> assertThat(exception.getMessage()).isEqualTo(message),
-          () -> assertThat(exception.getCause()).isNull());
+      softly.assertThat(exception.getMessage()).isEqualTo(message);
+      softly.assertThat(exception.getCause()).isNull();
     }
 
     @Nested
@@ -92,9 +94,8 @@ public abstract class ExceptionBaseTest {
         Exception exception = getException(cause);
 
         // Then
-        assertAll(
-            () -> assertThat(exception.getMessage()).isEqualTo("Cause message"),
-            () -> assertThat(exception.getCause()).isEqualTo(cause));
+        softly.assertThat(exception.getMessage()).isEqualTo("Cause message");
+        softly.assertThat(exception.getCause()).isEqualTo(cause);
       }
 
       @Test
@@ -108,9 +109,8 @@ public abstract class ExceptionBaseTest {
         Exception exception = getException(cause);
 
         // Then
-        assertAll(
-            () -> assertThat(exception.getMessage()).isNull(),
-            () -> assertThat(exception.getCause()).isEqualTo(cause));
+        softly.assertThat(exception.getMessage()).isNull();
+        softly.assertThat(exception.getCause()).isEqualTo(cause);
       }
 
       @Test
@@ -123,9 +123,8 @@ public abstract class ExceptionBaseTest {
         Exception exception = getException((Throwable) null);
 
         // Then
-        assertAll(
-            () -> assertThat(exception.getMessage()).isNull(),
-            () -> assertThat(exception.getCause()).isNull());
+        softly.assertThat(exception.getMessage()).isNull();
+        softly.assertThat(exception.getCause()).isNull();
       }
     }
 
@@ -145,9 +144,8 @@ public abstract class ExceptionBaseTest {
         Exception exception = getException(message, cause);
 
         // Then
-        assertAll(
-            () -> assertThat(exception.getMessage()).isEqualTo(message),
-            () -> assertThat(exception.getCause()).isEqualTo(cause));
+        softly.assertThat(exception.getMessage()).isEqualTo(message);
+        softly.assertThat(exception.getCause()).isEqualTo(cause);
       }
 
       @Test
@@ -161,9 +159,8 @@ public abstract class ExceptionBaseTest {
         Exception exception = getException(message, null);
 
         // Then
-        assertAll(
-            () -> assertThat(exception.getMessage()).isEqualTo(message),
-            () -> assertThat(exception.getCause()).isNull());
+        softly.assertThat(exception.getMessage()).isEqualTo(message);
+        softly.assertThat(exception.getCause()).isNull();
       }
     }
   }

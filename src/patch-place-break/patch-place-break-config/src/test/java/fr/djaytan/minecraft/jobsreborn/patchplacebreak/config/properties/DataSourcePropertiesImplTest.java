@@ -24,7 +24,6 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -48,7 +47,10 @@ import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.apache.commons.lang3.StringUtils;
+import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
@@ -58,12 +60,16 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.spongepowered.configurate.serialize.SerializationException;
 
+@ExtendWith(SoftAssertionsExtension.class)
 class DataSourcePropertiesImplTest {
+
+  @InjectSoftAssertions private SoftAssertions softly;
 
   private FileSystem imfs;
 
@@ -105,19 +111,18 @@ class DataSourcePropertiesImplTest {
       DataSourcePropertiesImpl properties = new DataSourcePropertiesImpl();
 
       // Then
-      assertAll(
-          () -> assertThat(properties.getType()).isEqualTo(DataSourceType.SQLITE),
-          () -> assertThat(properties.getTable()).isEqualTo("patch_place_break_tag"),
-          () ->
-              assertThat(properties.getDbmsServer())
-                  .isEqualTo(
-                      new DbmsServerPropertiesImpl(
-                          new DbmsHostPropertiesImpl("localhost", 3306, true),
-                          new DbmsCredentialsPropertiesImpl("username", "password"),
-                          "database")),
-          () ->
-              assertThat(properties.getConnectionPool())
-                  .isEqualTo(new ConnectionPoolPropertiesImpl(30000, 10)));
+      softly.assertThat(properties.getType()).isEqualTo(DataSourceType.SQLITE);
+      softly.assertThat(properties.getTable()).isEqualTo("patch_place_break_tag");
+      softly
+          .assertThat(properties.getDbmsServer())
+          .isEqualTo(
+              new DbmsServerPropertiesImpl(
+                  new DbmsHostPropertiesImpl("localhost", 3306, true),
+                  new DbmsCredentialsPropertiesImpl("username", "password"),
+                  "database"));
+      softly
+          .assertThat(properties.getConnectionPool())
+          .isEqualTo(new ConnectionPoolPropertiesImpl(30000, 10));
     }
 
     @Test
@@ -140,11 +145,10 @@ class DataSourcePropertiesImplTest {
               dataSourceType, table, dbmsServerPropertiesImpl, connectionPoolPropertiesImpl);
 
       // Then
-      assertAll(
-          () -> assertThat(properties.getType()).isEqualTo(dataSourceType),
-          () -> assertThat(properties.getTable()).isEqualTo(table),
-          () -> assertThat(properties.getDbmsServer()).isEqualTo(dbmsServerPropertiesImpl),
-          () -> assertThat(properties.getConnectionPool()).isEqualTo(connectionPoolPropertiesImpl));
+      softly.assertThat(properties.getType()).isEqualTo(dataSourceType);
+      softly.assertThat(properties.getTable()).isEqualTo(table);
+      softly.assertThat(properties.getDbmsServer()).isEqualTo(dbmsServerPropertiesImpl);
+      softly.assertThat(properties.getConnectionPool()).isEqualTo(connectionPoolPropertiesImpl);
     }
   }
 
