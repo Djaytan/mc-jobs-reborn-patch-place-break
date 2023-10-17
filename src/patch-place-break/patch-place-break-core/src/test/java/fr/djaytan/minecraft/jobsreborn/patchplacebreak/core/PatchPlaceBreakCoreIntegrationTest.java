@@ -27,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Clock;
@@ -106,7 +105,7 @@ class PatchPlaceBreakCoreIntegrationTest {
                 false),
             dbmsPort);
     Path configFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
-    Files.write(configFile, givenConfigFileContent.getBytes(StandardCharsets.UTF_8));
+    Files.writeString(configFile, givenConfigFileContent);
 
     ClassLoader classLoader = PatchPlaceBreakCore.class.getClassLoader();
 

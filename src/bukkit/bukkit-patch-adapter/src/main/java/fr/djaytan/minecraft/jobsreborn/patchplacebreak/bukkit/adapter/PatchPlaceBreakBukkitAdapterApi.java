@@ -36,8 +36,6 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -61,7 +59,7 @@ public class PatchPlaceBreakBukkitAdapterApi {
    * from JobsReborn (why does it dispatch BREAK events for AIR blocks???).
    */
   private static final Set<Material> BLACKLISTED_MATERIALS_ON_BREAK =
-      Collections.unmodifiableSet(new HashSet<>(Arrays.asList(Material.AIR, Material.WATER)));
+      Set.of(Material.AIR, Material.WATER);
 
   private final ActionTypeConverter actionTypeConverter;
   private final BlockFaceConverter blockFaceConverter;

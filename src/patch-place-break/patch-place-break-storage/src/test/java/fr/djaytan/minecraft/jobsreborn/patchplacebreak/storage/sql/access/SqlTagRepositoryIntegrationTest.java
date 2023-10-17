@@ -75,7 +75,7 @@ class SqlTagRepositoryIntegrationTest {
   void whenPuttingTagWhenNoOneAlreadyExist_shouldThenBeRetrievable() {
     // Given
     Preconditions.condition(
-        !sqlTagRepository.findByLocation(randomBlockLocation).isPresent(),
+        sqlTagRepository.findByLocation(randomBlockLocation).isEmpty(),
         String.format("No tag must exist at the following location: %s", randomBlockLocation));
 
     Tag tag = new Tag(randomBlockLocation, true, LocalDateTime.now());
@@ -125,7 +125,7 @@ class SqlTagRepositoryIntegrationTest {
             oldLocation.getZ());
 
     Preconditions.condition(
-        !sqlTagRepository.findByLocation(newLocation).isPresent(),
+        sqlTagRepository.findByLocation(newLocation).isEmpty(),
         String.format("No tag must exist at the following location: %s", newLocation));
 
     sqlTagRepository.put(oldTag);
@@ -158,10 +158,10 @@ class SqlTagRepositoryIntegrationTest {
             oldLocation.getZ());
 
     Preconditions.condition(
-        !sqlTagRepository.findByLocation(oldLocation).isPresent(),
+        sqlTagRepository.findByLocation(oldLocation).isEmpty(),
         String.format("No tag must exist at the following location: %s", oldLocation));
     Preconditions.condition(
-        !sqlTagRepository.findByLocation(newLocation).isPresent(),
+        sqlTagRepository.findByLocation(newLocation).isEmpty(),
         String.format("No tag must exist at the following location: %s", newLocation));
 
     OldNewBlockLocationPairSet oldNewBlockLocationPairSet =

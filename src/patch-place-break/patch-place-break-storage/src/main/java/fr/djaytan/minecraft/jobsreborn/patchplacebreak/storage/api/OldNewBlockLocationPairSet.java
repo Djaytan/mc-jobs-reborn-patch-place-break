@@ -24,8 +24,6 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -40,8 +38,7 @@ public class OldNewBlockLocationPairSet {
 
   public OldNewBlockLocationPairSet(
       @NotNull Collection<OldNewBlockLocationPair> oldNewBlockLocationPairs) {
-    this.oldNewBlockLocationPairs =
-        Collections.unmodifiableSet(new HashSet<>(oldNewBlockLocationPairs));
+    this.oldNewBlockLocationPairs = Set.copyOf(oldNewBlockLocationPairs);
   }
 
   /**

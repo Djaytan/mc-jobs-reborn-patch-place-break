@@ -109,7 +109,7 @@ final class ConfigManager {
     log.atInfo().log("Reading '{}' file...", configFileName);
     Optional<T> properties = configSerializer.deserialize(configFile, propertiesType);
 
-    if (!properties.isPresent()) {
+    if (properties.isEmpty()) {
       throw ConfigException.failedReadingConfig(configFileName);
     }
 

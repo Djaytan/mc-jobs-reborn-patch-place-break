@@ -101,13 +101,13 @@ class DbmsHostPropertiesImplTest {
       // Given
 
       // When
-      DbmsHostPropertiesImpl dbmsHostPropertiesImpl = new DbmsHostPropertiesImpl();
+      DbmsHostPropertiesImpl properties = new DbmsHostPropertiesImpl();
 
       // Then
       assertAll(
-          () -> assertThat(dbmsHostPropertiesImpl.getHostname()).isEqualTo("localhost"),
-          () -> assertThat(dbmsHostPropertiesImpl.getPort()).isEqualTo(3306),
-          () -> assertThat(dbmsHostPropertiesImpl.isSslEnabled()).isTrue());
+          () -> assertThat(properties.getHostname()).isEqualTo("localhost"),
+          () -> assertThat(properties.getPort()).isEqualTo(3306),
+          () -> assertThat(properties.isSslEnabled()).isTrue());
     }
 
     @Test
@@ -119,14 +119,13 @@ class DbmsHostPropertiesImplTest {
       boolean isSslEnabled = true;
 
       // When
-      DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
-          new DbmsHostPropertiesImpl(hostname, port, isSslEnabled);
+      DbmsHostPropertiesImpl properties = new DbmsHostPropertiesImpl(hostname, port, isSslEnabled);
 
       // Then
       assertAll(
-          () -> assertThat(dbmsHostPropertiesImpl.getHostname()).isEqualTo("example.com"),
-          () -> assertThat(dbmsHostPropertiesImpl.getPort()).isEqualTo(1234),
-          () -> assertThat(dbmsHostPropertiesImpl.isSslEnabled()).isTrue());
+          () -> assertThat(properties.getHostname()).isEqualTo("example.com"),
+          () -> assertThat(properties.getPort()).isEqualTo(1234),
+          () -> assertThat(properties.isSslEnabled()).isTrue());
     }
   }
 
@@ -138,11 +137,11 @@ class DbmsHostPropertiesImplTest {
     @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
-      DbmsHostPropertiesImpl dbmsHostPropertiesImpl = new DbmsHostPropertiesImpl();
+      DbmsHostPropertiesImpl properties = new DbmsHostPropertiesImpl();
 
       // When
       Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -152,12 +151,11 @@ class DbmsHostPropertiesImplTest {
     @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
-      DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
-          new DbmsHostPropertiesImpl("example.com", 1234, true);
+      DbmsHostPropertiesImpl properties = new DbmsHostPropertiesImpl("example.com", 1234, true);
 
       // When
       Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -170,11 +168,11 @@ class DbmsHostPropertiesImplTest {
     @DisplayName("With only invalid values")
     void withOnlyInvalidValues_shouldGenerateConstraintViolations() {
       // Given
-      DbmsHostPropertiesImpl dbmsHostPropertiesImpl = new DbmsHostPropertiesImpl("", -1, false);
+      DbmsHostPropertiesImpl properties = new DbmsHostPropertiesImpl("", -1, false);
 
       // When
       Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).hasSize(2);
@@ -190,12 +188,11 @@ class DbmsHostPropertiesImplTest {
       @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(@NotNull String validHostname) {
         // Given
-        DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
-            new DbmsHostPropertiesImpl(validHostname, 1234, true);
+        DbmsHostPropertiesImpl properties = new DbmsHostPropertiesImpl(validHostname, 1234, true);
 
         // When
         Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations).isEmpty();
@@ -221,12 +218,11 @@ class DbmsHostPropertiesImplTest {
       @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(@Nullable String invalidHostname) {
         // Given
-        DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
-            new DbmsHostPropertiesImpl(invalidHostname, 1234, true);
+        DbmsHostPropertiesImpl properties = new DbmsHostPropertiesImpl(invalidHostname, 1234, true);
 
         // When
         Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations)
@@ -262,12 +258,12 @@ class DbmsHostPropertiesImplTest {
       @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(int validPort) {
         // Given
-        DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
+        DbmsHostPropertiesImpl properties =
             new DbmsHostPropertiesImpl("example.com", validPort, true);
 
         // When
         Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations).isEmpty();
@@ -284,12 +280,12 @@ class DbmsHostPropertiesImplTest {
       @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(int invalidPort) {
         // Given
-        DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
+        DbmsHostPropertiesImpl properties =
             new DbmsHostPropertiesImpl("example.com", invalidPort, true);
 
         // When
         Set<ConstraintViolation<DbmsHostPropertiesImpl>> constraintViolations =
-            ValidatorTestWrapper.validate(dbmsHostPropertiesImpl);
+            ValidatorTestWrapper.validate(properties);
 
         // Then
         assertThat(constraintViolations)
@@ -370,7 +366,7 @@ class DbmsHostPropertiesImplTest {
           ConfigSerializerTestWrapper.deserialize(confFile, DbmsHostPropertiesImpl.class);
 
       // Then
-      assertThat(optionalHostValidatingProperties).isPresent().get().isEqualTo(expectedValue);
+      assertThat(optionalHostValidatingProperties).hasValue(expectedValue);
     }
 
     private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {

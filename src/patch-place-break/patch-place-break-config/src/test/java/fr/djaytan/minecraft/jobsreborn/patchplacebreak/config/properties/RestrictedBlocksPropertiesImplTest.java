@@ -44,6 +44,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -105,14 +106,14 @@ class RestrictedBlocksPropertiesImplTest {
       RestrictionMode mode = RestrictionMode.WHITELIST;
 
       // When
-      RestrictedBlocksPropertiesImpl restrictedBlocksPropertiesImpl =
+      RestrictedBlocksPropertiesImpl properties =
           new RestrictedBlocksPropertiesImpl(materials, mode);
 
       // Then
       assertAll(
           "Verification of returned values from getters",
-          () -> assertThat(restrictedBlocksPropertiesImpl.getMaterials()).isEqualTo(materials),
-          () -> assertThat(restrictedBlocksPropertiesImpl.getRestrictionMode()).isEqualTo(mode));
+          () -> assertThat(properties.getMaterials()).isEqualTo(materials),
+          () -> assertThat(properties.getRestrictionMode()).isEqualTo(mode));
     }
 
     @Test
@@ -121,15 +122,12 @@ class RestrictedBlocksPropertiesImplTest {
       // Given
 
       // Where
-      RestrictedBlocksPropertiesImpl restrictedBlocksPropertiesImpl =
-          new RestrictedBlocksPropertiesImpl();
+      RestrictedBlocksPropertiesImpl properties = new RestrictedBlocksPropertiesImpl();
 
       // Then
       assertAll(
-          () -> assertThat(restrictedBlocksPropertiesImpl.getMaterials()).isEmpty(),
-          () ->
-              assertThat(restrictedBlocksPropertiesImpl.getRestrictionMode())
-                  .isEqualTo(RestrictionMode.DISABLED));
+          () -> assertThat(properties.getMaterials()).isEmpty(),
+          () -> assertThat(properties.getRestrictionMode()).isEqualTo(RestrictionMode.DISABLED));
     }
 
     @Nested
@@ -144,14 +142,14 @@ class RestrictedBlocksPropertiesImplTest {
             new HashSet<>(Arrays.asList("COBBLESTONE", "STONE", "DIAMOND_BLOCK"));
         RestrictionMode mode = RestrictionMode.WHITELIST;
 
-        RestrictedBlocksPropertiesImpl restrictedBlocksPropertiesImpl =
+        RestrictedBlocksPropertiesImpl properties =
             new RestrictedBlocksPropertiesImpl(materials, mode);
 
         // When
         materials.add("SPONGE");
 
         // Then
-        assertThat(restrictedBlocksPropertiesImpl.getMaterials()).isNotEqualTo(materials);
+        assertThat(properties.getMaterials()).isNotEqualTo(materials);
       }
 
       @Test
@@ -162,12 +160,12 @@ class RestrictedBlocksPropertiesImplTest {
             new HashSet<>(Arrays.asList("COBBLESTONE", "STONE", "DIAMOND_BLOCK"));
         RestrictionMode mode = RestrictionMode.WHITELIST;
 
-        RestrictedBlocksPropertiesImpl restrictedBlocksPropertiesImpl =
+        RestrictedBlocksPropertiesImpl properties =
             new RestrictedBlocksPropertiesImpl(materials, mode);
 
         // When
         ThrowableAssert.ThrowingCallable throwingCallable =
-            () -> restrictedBlocksPropertiesImpl.getMaterials().add("SPONGE");
+            () -> properties.getMaterials().add("SPONGE");
 
         // Then
         assertThatThrownBy(throwingCallable)
@@ -186,14 +184,12 @@ class RestrictedBlocksPropertiesImplTest {
     // Given
     String listedMaterial = "STONE";
     String nonListedMaterial = "BEACON";
-    RestrictedBlocksPropertiesImpl restrictedBlocksPropertiesImpl =
-        new RestrictedBlocksPropertiesImpl(Arrays.asList(listedMaterial), restrictionMode);
+    RestrictedBlocksPropertiesImpl properties =
+        new RestrictedBlocksPropertiesImpl(List.of(listedMaterial), restrictionMode);
 
     // When
-    boolean isListedMaterialRestricted =
-        restrictedBlocksPropertiesImpl.isRestricted(listedMaterial);
-    boolean isNonListedMaterialRestricted =
-        restrictedBlocksPropertiesImpl.isRestricted(nonListedMaterial);
+    boolean isListedMaterialRestricted = properties.isRestricted(listedMaterial);
+    boolean isNonListedMaterialRestricted = properties.isRestricted(nonListedMaterial);
 
     // Then
     assertAll(
@@ -220,12 +216,11 @@ class RestrictedBlocksPropertiesImplTest {
     @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
-      RestrictedBlocksPropertiesImpl restrictedBlocksPropertiesImpl =
-          new RestrictedBlocksPropertiesImpl();
+      RestrictedBlocksPropertiesImpl properties = new RestrictedBlocksPropertiesImpl();
 
       // When
       Set<ConstraintViolation<RestrictedBlocksPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(restrictedBlocksPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -235,12 +230,12 @@ class RestrictedBlocksPropertiesImplTest {
     @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
-      RestrictedBlocksPropertiesImpl restrictedBlocksPropertiesImpl =
-          new RestrictedBlocksPropertiesImpl(Arrays.asList("STONE"), RestrictionMode.BLACKLIST);
+      RestrictedBlocksPropertiesImpl properties =
+          new RestrictedBlocksPropertiesImpl(List.of("STONE"), RestrictionMode.BLACKLIST);
 
       // When
       Set<ConstraintViolation<RestrictedBlocksPropertiesImpl>> constraintViolations =
-          ValidatorTestWrapper.validate(restrictedBlocksPropertiesImpl);
+          ValidatorTestWrapper.validate(properties);
 
       // Then
       assertThat(constraintViolations).isEmpty();
@@ -295,8 +290,7 @@ class RestrictedBlocksPropertiesImplTest {
           arguments(
               named(
                   "With custom values",
-                  new RestrictedBlocksPropertiesImpl(
-                      Arrays.asList("STONE"), RestrictionMode.BLACKLIST)),
+                  new RestrictedBlocksPropertiesImpl(List.of("STONE"), RestrictionMode.BLACKLIST)),
               "whenSerializing_withCustomValues.conf"));
     }
   }
@@ -320,19 +314,17 @@ class RestrictedBlocksPropertiesImplTest {
           ConfigSerializerTestWrapper.deserialize(confFile, RestrictedBlocksPropertiesImpl.class);
 
       // Then
-      assertThat(optionalRestrictedBlocksPropertiesImpl).isPresent().get().isEqualTo(expectedValue);
+      assertThat(optionalRestrictedBlocksPropertiesImpl).hasValue(expectedValue);
     }
 
     private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
           arguments(
               named("With valid values", "whenDeserializing_withValidValues.conf"),
-              new RestrictedBlocksPropertiesImpl(
-                  Arrays.asList("STONE"), RestrictionMode.BLACKLIST)),
+              new RestrictedBlocksPropertiesImpl(List.of("STONE"), RestrictionMode.BLACKLIST)),
           arguments(
               named("With unexpected field", "whenDeserializing_withUnexpectedField.conf"),
-              new RestrictedBlocksPropertiesImpl(
-                  Arrays.asList("STONE"), RestrictionMode.BLACKLIST)));
+              new RestrictedBlocksPropertiesImpl(List.of("STONE"), RestrictionMode.BLACKLIST)));
     }
 
     @ParameterizedTest(name = "{index} - {0}")

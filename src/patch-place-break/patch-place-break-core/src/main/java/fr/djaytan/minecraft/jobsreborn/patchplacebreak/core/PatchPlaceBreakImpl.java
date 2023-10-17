@@ -122,7 +122,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
 
     Optional<Tag> tag = tagRepository.findByLocation(block.getBlockLocation());
 
-    if (!tag.isPresent()) {
+    if (tag.isEmpty()) {
       return false;
     }
 
