@@ -41,7 +41,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import org.apache.commons.lang3.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.jetbrains.annotations.NotNull;
@@ -157,9 +156,6 @@ public class PatchPlaceBreakBukkitAdapterApi {
 
   private static boolean isBlacklistedAction(
       @NotNull ActionType actionType, @NotNull org.bukkit.block.Block bukkitBlock) {
-    Validate.notNull(actionType);
-    Validate.notNull(bukkitBlock);
-
     if (Arrays.asList(ActionType.BREAK, ActionType.TNTBREAK).contains(actionType)) {
       return BLACKLISTED_MATERIALS_ON_BREAK.contains(bukkitBlock.getType());
     }
