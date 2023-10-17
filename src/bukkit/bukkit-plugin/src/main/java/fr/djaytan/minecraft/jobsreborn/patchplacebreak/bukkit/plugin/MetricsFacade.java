@@ -22,8 +22,8 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;

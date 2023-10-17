@@ -23,7 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 

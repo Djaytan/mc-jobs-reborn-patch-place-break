@@ -88,8 +88,7 @@
       <dependency>
         <groupId>jakarta.platform</groupId>
         <artifactId>jakarta.jakartaee-bom</artifactId>
-        <!-- JEE v10+ requires JDK 11: don't bump it! -->
-        <version>9.1.0</version>
+        <version>10.0.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -113,7 +112,7 @@
       <dependency>
         <groupId>com.google.inject</groupId>
         <artifactId>guice</artifactId>
-        <version>5.1.0</version>
+        <version>7.0.0</version>
       </dependency>
       <dependency>
         <groupId>com.google.jimfs</groupId>
@@ -133,7 +132,6 @@
       <dependency>
         <groupId>com.zaxxer</groupId>
         <artifactId>HikariCP</artifactId>
-        <!-- Latest version of HikariCP compatible with Java 8: don't bump it! -->
         <version>5.0.1</version>
       </dependency>
       <dependency>
@@ -170,11 +168,6 @@
         <groupId>fr.djaytan.minecraft.jobsreborn.patchplacebreak</groupId>
         <artifactId>patch-place-break-storage</artifactId>
         <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.inject</groupId>
-        <artifactId>javax.inject</artifactId>
-        <version>1</version>
       </dependency>
       <dependency>
         <groupId>net.bytebuddy</groupId>
@@ -214,17 +207,12 @@
       <dependency>
         <groupId>org.glassfish</groupId>
         <artifactId>jakarta.el</artifactId>
-        <!-- Glassfish EL v4 is compatible with JEE 9 -->
         <version>4.0.2</version>
       </dependency>
       <dependency>
         <groupId>org.hibernate.validator</groupId>
         <artifactId>hibernate-validator</artifactId>
-        <!--
-		  Latest version of Hibernate Validator compatible with Java 8: don't bump it!
-		  Even if compatible with JEE 9, bumping this implementation implies bumping Jakarta as well.
-		-->
-        <version>7.0.5.Final</version>
+        <version>8.0.1.Final</version>
       </dependency>
       <dependency>
         <groupId>org.jboss.logging</groupId>

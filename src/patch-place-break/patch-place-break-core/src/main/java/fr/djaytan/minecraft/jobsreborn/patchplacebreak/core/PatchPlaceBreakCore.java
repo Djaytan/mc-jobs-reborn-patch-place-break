@@ -25,9 +25,9 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject.PatchPlaceBreakInjector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.DataSourceManager;
+import jakarta.inject.Singleton;
 import java.nio.file.Path;
 import java.time.Clock;
-import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
 /**

@@ -26,8 +26,8 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.Restricted
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DataSourcePropertiesImpl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.RestrictedBlocksPropertiesImpl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
 /** API permitting to retrieve config properties. */

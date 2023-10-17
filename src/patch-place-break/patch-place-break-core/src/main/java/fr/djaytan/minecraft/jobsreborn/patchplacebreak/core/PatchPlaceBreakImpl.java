@@ -32,6 +32,8 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.Restricted
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPair;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -39,8 +41,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 

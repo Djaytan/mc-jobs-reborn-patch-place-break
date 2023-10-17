@@ -25,10 +25,10 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.BukkitAdapterException;
+import jakarta.inject.Singleton;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
-import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
 @Singleton
