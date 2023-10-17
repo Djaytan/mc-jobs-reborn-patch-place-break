@@ -33,9 +33,9 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.access.SqlTag
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider.FlywayProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider.HikariDataSourceProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider.JdbcUrlProvider;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import java.nio.file.Path;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.jetbrains.annotations.NotNull;

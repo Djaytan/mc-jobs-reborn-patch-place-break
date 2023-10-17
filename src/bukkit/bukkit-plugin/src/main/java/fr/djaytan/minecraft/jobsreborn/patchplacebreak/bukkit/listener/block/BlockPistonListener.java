@@ -23,9 +23,9 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.block;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.PatchPlaceBreakBukkitAdapterApi;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import java.util.Collection;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;

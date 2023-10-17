@@ -28,8 +28,8 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.SqlStorageException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.MysqlJdbcUrl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite.SqliteJdbcUrl;
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 import org.jetbrains.annotations.NotNull;
 
 public class JdbcUrlProvider implements Provider<JdbcUrl> {

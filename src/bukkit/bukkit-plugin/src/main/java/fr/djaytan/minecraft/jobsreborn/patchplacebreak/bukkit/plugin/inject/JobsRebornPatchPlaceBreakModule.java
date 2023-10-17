@@ -26,10 +26,10 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import java.nio.file.Path;
 import java.time.Clock;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
 final class JobsRebornPatchPlaceBreakModule extends AbstractModule {

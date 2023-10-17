@@ -23,10 +23,10 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import java.nio.file.Path;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
 /** Represents the SQLite JDBC URL. */

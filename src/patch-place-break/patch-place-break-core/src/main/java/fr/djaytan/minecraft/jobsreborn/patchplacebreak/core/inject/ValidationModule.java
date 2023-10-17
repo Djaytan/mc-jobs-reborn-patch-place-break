@@ -24,10 +24,10 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import jakarta.inject.Singleton;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
 final class ValidationModule extends AbstractModule {

@@ -22,9 +22,9 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.serializer;
 
+import jakarta.inject.Singleton;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
 @Singleton

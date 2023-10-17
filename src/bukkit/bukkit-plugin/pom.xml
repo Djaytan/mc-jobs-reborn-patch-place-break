@@ -66,8 +66,8 @@
       <artifactId>patch-place-break-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
+      <groupId>jakarta.inject</groupId>
+      <artifactId>jakarta.inject-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.bstats</groupId>
@@ -163,16 +163,12 @@
         <configuration>
           <shadedArtifactAttached>false</shadedArtifactAttached>
           <createDependencyReducedPom>false</createDependencyReducedPom>
-          <artifactSet>
-            <includes>
-              <include>*:*</include>
-            </includes>
-          </artifactSet>
           <filters>
             <filter>
               <artifact>*:*</artifact>
               <excludes>
                 <exclude>**/module-info.class</exclude>
+                <exclude>assets/**/*</exclude>
                 <exclude>META-INF/*.SF</exclude>
                 <exclude>META-INF/*.DSA</exclude>
                 <exclude>META-INF/*.RSA</exclude>
@@ -193,6 +189,7 @@
                 <include>com.fasterxml.classmate.**</include>
                 <include>com.google.common.**</include>
                 <include>com.google.errorprone.**</include>
+                <include>com.google.gson.**</include>
                 <include>com.google.inject.**</include>
                 <include>com.google.j2objc.**</include>
                 <include>com.google.thirdparty.**</include>
@@ -210,18 +207,18 @@
             </relocation>
             <relocation>
               <pattern>jakarta</pattern>
-              <shadedPattern>${package.lib}.jee.jakarta</shadedPattern>
+              <shadedPattern>${package.lib}.jakarta</shadedPattern>
               <includes>
-                <include>jakarta.validation.**</include>
                 <include>jakarta.el.**</include>
+                <include>jakarta.inject.**</include>
+                <include>jakarta.validation.**</include>
               </includes>
             </relocation>
             <relocation>
               <pattern>javax</pattern>
-              <shadedPattern>${package.lib}.jee.javax</shadedPattern>
+              <shadedPattern>${package.lib}.javax</shadedPattern>
               <includes>
                 <include>javax.annotation.**</include>
-                <include>javax.inject.**</include>
               </includes>
             </relocation>
             <relocation>

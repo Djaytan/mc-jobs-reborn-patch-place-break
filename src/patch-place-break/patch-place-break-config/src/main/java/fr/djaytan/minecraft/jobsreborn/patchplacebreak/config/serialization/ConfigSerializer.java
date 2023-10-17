@@ -23,10 +23,10 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.Properties;
+import jakarta.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
-import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.loader.ConfigurationLoader;

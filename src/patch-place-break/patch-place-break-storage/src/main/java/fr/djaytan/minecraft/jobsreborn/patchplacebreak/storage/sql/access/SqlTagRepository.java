@@ -29,13 +29,13 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.OldNewBlockLo
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepository;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.TagRepositoryException;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.ConnectionPool;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
 @Singleton
