@@ -47,9 +47,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param blockLocation The block's location.
  * @param isEphemeral Whether the tag is ephemeral or not.
- * @param initLocalDateTime The initial local-date time since which the tag is created.
+ * @param createdAt The local-date time since which the tag is created.
  */
 public record Tag(
-    @NotNull BlockLocation blockLocation,
-    boolean isEphemeral,
-    @NotNull LocalDateTime initLocalDateTime) {}
+    @NotNull BlockLocation blockLocation, boolean isEphemeral, @NotNull LocalDateTime createdAt) {}

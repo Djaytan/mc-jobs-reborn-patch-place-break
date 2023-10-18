@@ -68,8 +68,7 @@ public class TagSqlDao {
       preparedStatement.setInt(3, tag.blockLocation().y());
       preparedStatement.setInt(4, tag.blockLocation().z());
       preparedStatement.setInt(5, booleanIntegerSerializer.serialize(tag.isEphemeral()));
-      preparedStatement.setString(
-          6, localDateTimeStringSerializer.serialize(tag.initLocalDateTime()));
+      preparedStatement.setString(6, localDateTimeStringSerializer.serialize(tag.createdAt()));
       preparedStatement.executeUpdate();
     }
   }
@@ -114,7 +113,7 @@ public class TagSqlDao {
 
     boolean isEphemeral = booleanIntegerSerializer.deserialize(resultSet.getInt("is_ephemeral"));
     LocalDateTime initLocalDateTime =
-        localDateTimeStringSerializer.deserialize(resultSet.getString("init_timestamp"));
+        localDateTimeStringSerializer.deserialize(resultSet.getString("created_at_timestamp"));
 
     Tag tag = new Tag(blockLocation, isEphemeral, initLocalDateTime);
     return Optional.of(tag);
