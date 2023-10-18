@@ -129,7 +129,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
     }
 
     LocalDateTime localDateTime = LocalDateTime.now(clock);
-    Duration timeElapsed = Duration.between(tag.get().initLocalDateTime(), localDateTime);
+    Duration timeElapsed = Duration.between(tag.get().createdAt(), localDateTime);
 
     return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
   }

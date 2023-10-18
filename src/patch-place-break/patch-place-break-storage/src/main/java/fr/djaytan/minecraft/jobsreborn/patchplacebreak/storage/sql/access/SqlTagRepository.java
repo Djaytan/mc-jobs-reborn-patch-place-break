@@ -99,7 +99,7 @@ public class SqlTagRepository implements TagRepository {
           new Tag(
               oldNewLocationPair.newBlockLocation(),
               oldTag.get().isEphemeral(),
-              oldTag.get().initLocalDateTime());
+              oldTag.get().createdAt());
       newTags.add(newTag);
     }
 

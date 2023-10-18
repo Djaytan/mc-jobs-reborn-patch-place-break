@@ -50,7 +50,7 @@ class TagTest {
     // Then
     assertAll(
         "Verification of returned values from getters",
-        () -> assertThat(tag.initLocalDateTime()).isEqualTo(localDateTime),
+        () -> assertThat(tag.createdAt()).isEqualTo(localDateTime),
         () -> assertThat(tag.isEphemeral()).isEqualTo(isEphemeral),
         () -> assertThat(tag.blockLocation()).isEqualTo(blockLocation));
   }
