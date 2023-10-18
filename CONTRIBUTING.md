@@ -120,20 +120,3 @@ automatically when building the project and running tests.
 If you are using IntelliJ IDEA, you can install the
 [google-java-format plugin](https://plugins.jetbrains.com/plugin/8527-google-java-format) which will
 replace the default IDE code formatting behavior.
-
-## 🔧 Troubleshooting
-
-### ⚠️ Windows Long Paths
-
-> "Git has a limit of 4096 characters for a filename, except on Windows when Git is compiled with
-> msys.
-> It uses an older version of the Windows API, and there's a limit of 260 characters for a
-> filename." - _From StackOverflow answer: https://stackoverflow.com/a/22575737_
-
-Since some files in project exceed 265 characters long, it is required to overcome this limitation.
-
-To solve the issue, run with administrator rights the following command:
-
-```
-$ git config --system core.longpaths true
-```
