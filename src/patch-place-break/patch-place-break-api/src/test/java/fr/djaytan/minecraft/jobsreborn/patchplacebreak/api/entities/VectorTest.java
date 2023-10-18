@@ -22,17 +22,13 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 
-import org.assertj.core.api.SoftAssertions;
-import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
-import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-@ExtendWith(SoftAssertionsExtension.class)
 class VectorTest {
-
-  @InjectSoftAssertions private SoftAssertions softly;
 
   @Test
   @DisplayName("When instantiating with nominal values")
@@ -46,8 +42,10 @@ class VectorTest {
     Vector vector = new Vector(modX, modY, modZ);
 
     // Then
-    softly.assertThat(vector.modX()).isEqualTo(modX);
-    softly.assertThat(vector.modY()).isEqualTo(modY);
-    softly.assertThat(vector.modZ()).isEqualTo(modZ);
+    assertAll(
+        "Verification of returned values from getters",
+        () -> assertThat(vector.modX()).isEqualTo(modX),
+        () -> assertThat(vector.modY()).isEqualTo(modY),
+        () -> assertThat(vector.modZ()).isEqualTo(modZ));
   }
 }

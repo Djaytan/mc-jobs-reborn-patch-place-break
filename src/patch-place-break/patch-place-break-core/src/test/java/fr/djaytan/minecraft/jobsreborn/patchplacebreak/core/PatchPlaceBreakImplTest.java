@@ -23,6 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.any;
@@ -49,9 +50,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.assertj.core.api.SoftAssertions;
-import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
-import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,10 +67,9 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith({MockitoExtension.class, SoftAssertionsExtension.class})
+@ExtendWith(MockitoExtension.class)
 class PatchPlaceBreakImplTest {
 
-  @InjectSoftAssertions private SoftAssertions softly;
   @Mock private TagRepository tagRepository;
   @Captor private ArgumentCaptor<Tag> tagCaptor;
   @Captor private ArgumentCaptor<OldNewBlockLocationPairSet> locationPairCaptor;
@@ -109,8 +106,9 @@ class PatchPlaceBreakImplTest {
       verify(tagRepository).put(tagCaptor.capture());
       Tag tag = tagCaptor.getValue();
 
-      softly.assertThat(tag.blockLocation()).isEqualTo(blockLocation);
-      softly.assertThat(tag.isEphemeral()).isFalse();
+      assertAll(
+          () -> assertThat(tag.blockLocation()).isEqualTo(blockLocation),
+          () -> assertThat(tag.isEphemeral()).isFalse());
     }
 
     @Test
@@ -141,8 +139,9 @@ class PatchPlaceBreakImplTest {
       verify(tagRepository).put(tagCaptor.capture());
       Tag tag = tagCaptor.getValue();
 
-      softly.assertThat(tag.blockLocation()).isEqualTo(blockLocation);
-      softly.assertThat(tag.isEphemeral()).isTrue();
+      assertAll(
+          () -> assertThat(tag.blockLocation()).isEqualTo(blockLocation),
+          () -> assertThat(tag.isEphemeral()).isTrue());
     }
   }
 

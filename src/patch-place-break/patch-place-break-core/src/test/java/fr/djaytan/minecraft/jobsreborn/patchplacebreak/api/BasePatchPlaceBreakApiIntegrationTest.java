@@ -23,6 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -39,30 +40,24 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
-import org.assertj.core.api.SoftAssertions;
-import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
-import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.threeten.extra.MutableClock;
 
-@ExtendWith(SoftAssertionsExtension.class)
 abstract class BasePatchPlaceBreakApiIntegrationTest {
 
-  @InjectSoftAssertions private SoftAssertions softly;
-  @TempDir protected Path dataFolder;
   private final BlockLocation randomBlockLocation = generateRandomBlockLocation();
   private final MutableClock mutableClock = MutableClock.epochUTC();
   private PatchPlaceBreakApi patchPlaceBreakApi;
   private final PatchPlaceBreakCore patchPlaceBreakCore = new PatchPlaceBreakCore();
+  @TempDir protected Path dataFolder;
 
   @BeforeEach
   void beforeEach() throws IOException {
@@ -151,8 +146,9 @@ abstract class BasePatchPlaceBreakApiIntegrationTest {
     boolean isOnNewBlockAnExploit =
         patchPlaceBreakApi.isPlaceAndBreakExploit(BlockActionType.BREAK, newBlock);
 
-    softly.assertThat(isOnOldBlockAnExploit).isFalse();
-    softly.assertThat(isOnNewBlockAnExploit).isTrue();
+    assertAll(
+        () -> assertThat(isOnOldBlockAnExploit).isFalse(),
+        () -> assertThat(isOnNewBlockAnExploit).isTrue());
   }
 
   @Test

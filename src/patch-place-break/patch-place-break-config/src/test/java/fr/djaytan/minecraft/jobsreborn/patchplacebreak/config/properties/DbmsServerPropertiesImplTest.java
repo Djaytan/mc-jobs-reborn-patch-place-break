@@ -24,6 +24,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -46,10 +47,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.apache.commons.lang3.StringUtils;
-import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
-import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
@@ -59,16 +57,12 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.spongepowered.configurate.serialize.SerializationException;
 
-@ExtendWith(SoftAssertionsExtension.class)
 class DbmsServerPropertiesImplTest {
-
-  @InjectSoftAssertions private SoftAssertions softly;
 
   private FileSystem imfs;
 
@@ -109,13 +103,14 @@ class DbmsServerPropertiesImplTest {
       DbmsServerPropertiesImpl properties = new DbmsServerPropertiesImpl();
 
       // Then
-      softly
-          .assertThat(properties.getHost())
-          .isEqualTo(new DbmsHostPropertiesImpl("localhost", 3306, true));
-      softly
-          .assertThat(properties.getCredentials())
-          .isEqualTo(new DbmsCredentialsPropertiesImpl("username", "password"));
-      softly.assertThat(properties.getDatabase()).isEqualTo("database");
+      assertAll(
+          () ->
+              assertThat(properties.getHost())
+                  .isEqualTo(new DbmsHostPropertiesImpl("localhost", 3306, true)),
+          () ->
+              assertThat(properties.getCredentials())
+                  .isEqualTo(new DbmsCredentialsPropertiesImpl("username", "password")),
+          () -> assertThat(properties.getDatabase()).isEqualTo("database"));
     }
 
     @Test
@@ -131,9 +126,10 @@ class DbmsServerPropertiesImplTest {
           new DbmsServerPropertiesImpl(host, credentials, database);
 
       // Then
-      softly.assertThat(properties.getHost()).isEqualTo(host);
-      softly.assertThat(properties.getCredentials()).isEqualTo(credentials);
-      softly.assertThat(properties.getDatabase()).isEqualTo(database);
+      assertAll(
+          () -> assertThat(properties.getHost()).isEqualTo(host),
+          () -> assertThat(properties.getCredentials()).isEqualTo(credentials),
+          () -> assertThat(properties.getDatabase()).isEqualTo(database));
     }
   }
 

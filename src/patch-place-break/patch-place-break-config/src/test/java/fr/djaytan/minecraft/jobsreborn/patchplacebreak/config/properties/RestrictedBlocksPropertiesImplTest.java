@@ -24,6 +24,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -49,11 +50,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.ThrowableAssert;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
-import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,16 +60,12 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.spongepowered.configurate.serialize.SerializationException;
 
-@ExtendWith(SoftAssertionsExtension.class)
 class RestrictedBlocksPropertiesImplTest {
-
-  @InjectSoftAssertions private SoftAssertions softly;
 
   private FileSystem imfs;
 
@@ -115,8 +109,10 @@ class RestrictedBlocksPropertiesImplTest {
           new RestrictedBlocksPropertiesImpl(materials, mode);
 
       // Then
-      softly.assertThat(properties.getMaterials()).isEqualTo(materials);
-      softly.assertThat(properties.getRestrictionMode()).isEqualTo(mode);
+      assertAll(
+          "Verification of returned values from getters",
+          () -> assertThat(properties.getMaterials()).isEqualTo(materials),
+          () -> assertThat(properties.getRestrictionMode()).isEqualTo(mode));
     }
 
     @Test
@@ -128,8 +124,9 @@ class RestrictedBlocksPropertiesImplTest {
       RestrictedBlocksPropertiesImpl properties = new RestrictedBlocksPropertiesImpl();
 
       // Then
-      softly.assertThat(properties.getMaterials()).isEmpty();
-      softly.assertThat(properties.getRestrictionMode()).isEqualTo(RestrictionMode.DISABLED);
+      assertAll(
+          () -> assertThat(properties.getMaterials()).isEmpty(),
+          () -> assertThat(properties.getRestrictionMode()).isEqualTo(RestrictionMode.DISABLED));
     }
 
     @Nested
@@ -194,10 +191,13 @@ class RestrictedBlocksPropertiesImplTest {
     boolean isNonListedMaterialRestricted = properties.isRestricted(nonListedMaterial);
 
     // Then
-    softly.assertThat(isListedMaterialRestricted).isEqualTo(isListedMaterialExpectedToBeRestricted);
-    softly
-        .assertThat(isNonListedMaterialRestricted)
-        .isEqualTo(isNonListedMaterialExpectedToBeRestricted);
+    assertAll(
+        () ->
+            assertThat(isListedMaterialRestricted)
+                .isEqualTo(isListedMaterialExpectedToBeRestricted),
+        () ->
+            assertThat(isNonListedMaterialRestricted)
+                .isEqualTo(isNonListedMaterialExpectedToBeRestricted));
   }
 
   private static @NotNull Stream<Arguments> whenCheckingBlockRestriction() {
