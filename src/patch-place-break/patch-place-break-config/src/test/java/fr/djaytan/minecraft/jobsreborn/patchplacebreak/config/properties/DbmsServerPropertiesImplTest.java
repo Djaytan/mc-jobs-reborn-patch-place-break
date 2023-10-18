@@ -23,7 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchException;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -47,7 +47,6 @@ import java.util.Set;
 import java.util.stream.Stream;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.apache.commons.lang3.StringUtils;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
@@ -365,11 +364,14 @@ class DbmsServerPropertiesImplTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      ThrowingCallable throwingCallable =
-          () -> ConfigSerializerTestWrapper.deserialize(confFile, DbmsServerPropertiesImpl.class);
+      Exception exception =
+          catchException(
+              () ->
+                  ConfigSerializerTestWrapper.deserialize(
+                      confFile, DbmsServerPropertiesImpl.class));
 
       // Then
-      assertThatThrownBy(throwingCallable)
+      assertThat(exception)
           .isInstanceOf(ConfigSerializationException.class)
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }

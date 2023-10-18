@@ -23,6 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchException;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -31,8 +32,6 @@ import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -111,11 +110,11 @@ class ClassToFsPathConverterTest {
       Class<?> clazz = int.class;
 
       // When
-      ThrowingCallable throwingCallable = () -> classToFsPathConverter.convertClassToFsPath(clazz);
+      Exception exception =
+          catchException(() -> classToFsPathConverter.convertClassToFsPath(clazz));
 
       // Then
-      Assertions.assertThatThrownBy(throwingCallable)
-          .isExactlyInstanceOf(UnsupportedClassException.class);
+      assertThat(exception).isExactlyInstanceOf(UnsupportedClassException.class);
     }
 
     @Test
@@ -125,11 +124,11 @@ class ClassToFsPathConverterTest {
       Class<?> clazz = Object[].class;
 
       // When
-      ThrowingCallable throwingCallable = () -> classToFsPathConverter.convertClassToFsPath(clazz);
+      Exception exception =
+          catchException(() -> classToFsPathConverter.convertClassToFsPath(clazz));
 
       // Then
-      Assertions.assertThatThrownBy(throwingCallable)
-          .isExactlyInstanceOf(UnsupportedClassException.class);
+      assertThat(exception).isExactlyInstanceOf(UnsupportedClassException.class);
     }
 
     @Test
@@ -139,11 +138,11 @@ class ClassToFsPathConverterTest {
       Class<?> clazz = Retention.class;
 
       // When
-      ThrowingCallable throwingCallable = () -> classToFsPathConverter.convertClassToFsPath(clazz);
+      Exception exception =
+          catchException(() -> classToFsPathConverter.convertClassToFsPath(clazz));
 
       // Then
-      Assertions.assertThatThrownBy(throwingCallable)
-          .isExactlyInstanceOf(UnsupportedClassException.class);
+      assertThat(exception).isExactlyInstanceOf(UnsupportedClassException.class);
     }
   }
 }

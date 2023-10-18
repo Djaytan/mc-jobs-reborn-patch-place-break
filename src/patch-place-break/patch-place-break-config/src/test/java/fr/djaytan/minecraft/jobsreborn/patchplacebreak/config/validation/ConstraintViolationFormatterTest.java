@@ -23,7 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchException;
 import static org.mockito.BDDMockito.given;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
@@ -32,7 +32,6 @@ import jakarta.validation.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -55,11 +54,11 @@ class ConstraintViolationFormatterTest {
       Collection<ConstraintViolation<Object>> constraintViolations = Collections.emptySet();
 
       // When
-      ThrowingCallable throwingCallable =
-          () -> ConstraintViolationFormatter.format(constraintViolations);
+      Exception exception =
+          catchException(() -> ConstraintViolationFormatter.format(constraintViolations));
 
       // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(IllegalArgumentException.class);
+      assertThat(exception).isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

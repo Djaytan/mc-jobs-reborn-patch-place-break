@@ -23,12 +23,11 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchException;
 
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.BukkitAdapterException;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -56,10 +55,10 @@ class ActionTypeConverterTest {
     ActionType invalidActionType = ActionType.BREED;
 
     // When
-    ThrowingCallable throwingCallable = () -> actionTypeConverter.convert(invalidActionType);
+    Exception exception = catchException(() -> actionTypeConverter.convert(invalidActionType));
 
     // Then
-    Assertions.assertThatThrownBy(throwingCallable)
+    assertThat(exception)
         .isExactlyInstanceOf(BukkitAdapterException.class)
         .hasMessage(
             "Invalid job action type 'BREED' specified. Expecting one of the following: BREAK, TNTBREAK, PLACE");

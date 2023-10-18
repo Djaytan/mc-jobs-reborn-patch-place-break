@@ -23,7 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchException;
 
 import com.zaxxer.hikari.HikariDataSource;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
@@ -35,7 +35,6 @@ import java.sql.Connection;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -94,12 +93,10 @@ class ConnectionPoolTest {
         };
 
     // When
-    ThrowingCallable throwingCallable = () -> connectionPool.useConnection(callback);
+    Exception exception = catchException(() -> connectionPool.useConnection(callback));
 
     // Then
-    assertThatThrownBy(throwingCallable)
-        .isExactlyInstanceOf(IllegalStateException.class)
-        .hasMessage("test");
+    assertThat(exception).isExactlyInstanceOf(IllegalStateException.class).hasMessage("test");
   }
 
   @Test
@@ -125,11 +122,9 @@ class ConnectionPoolTest {
         };
 
     // When
-    ThrowingCallable throwingCallable = () -> connectionPool.useConnection(callback);
+    Exception exception = catchException(() -> connectionPool.useConnection(callback));
 
     // Then
-    assertThatThrownBy(throwingCallable)
-        .isExactlyInstanceOf(IllegalStateException.class)
-        .hasMessage("test");
+    assertThat(exception).isExactlyInstanceOf(IllegalStateException.class).hasMessage("test");
   }
 }
