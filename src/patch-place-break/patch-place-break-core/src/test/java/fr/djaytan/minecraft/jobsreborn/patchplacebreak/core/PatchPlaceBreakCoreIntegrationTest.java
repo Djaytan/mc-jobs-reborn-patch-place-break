@@ -22,32 +22,29 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Clock;
-import org.assertj.core.api.SoftAssertions;
-import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
-import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-@ExtendWith(SoftAssertionsExtension.class)
 class PatchPlaceBreakCoreIntegrationTest {
 
   private static final String CONFIG_DATA_SOURCE_FILE_NAME = "dataSource.conf";
   private static final String RESTRICTED_BLOCKS_CONFIG_FILE_NAME = "restrictedBlocks.conf";
   private static final String SQLITE_DATABASE_FILE_NAME = "sqlite-data.db";
 
-  @InjectSoftAssertions private SoftAssertions softly;
   @TempDir private Path dataFolder;
   private final PatchPlaceBreakCore patchPlaceBreakCore = new PatchPlaceBreakCore();
 
@@ -80,12 +77,15 @@ class PatchPlaceBreakCoreIntegrationTest {
 
     Path sqliteDatabaseFile = dataFolder.resolve(SQLITE_DATABASE_FILE_NAME);
 
-    softly.assertThat(patchPlaceBreakApi).isNotNull();
-    softly.assertThat(actualConfDataSourceFile).hasSameTextualContentAs(expectedConfDataSourceFile);
-    softly
-        .assertThat(actualRestrictedBlocksConfigFile)
-        .hasSameTextualContentAs(expectedRestrictedBlocksConfigFile);
-    softly.assertThat(sqliteDatabaseFile).isNotEmptyFile();
+    assertAll(
+        () -> assertThat(patchPlaceBreakApi).isNotNull(),
+        () ->
+            assertThat(actualConfDataSourceFile)
+                .hasSameTextualContentAs(expectedConfDataSourceFile),
+        () ->
+            assertThat(actualRestrictedBlocksConfigFile)
+                .hasSameTextualContentAs(expectedRestrictedBlocksConfigFile),
+        () -> assertThat(sqliteDatabaseFile).isNotEmptyFile());
   }
 
   @ParameterizedTest
@@ -113,7 +113,8 @@ class PatchPlaceBreakCoreIntegrationTest {
     // Then
     Path actualConfDataSourceFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
 
-    softly.assertThat(patchPlaceBreakApi).isNotNull();
-    softly.assertThat(actualConfDataSourceFile).exists().hasContent(givenConfigFileContent);
+    assertAll(
+        () -> assertThat(patchPlaceBreakApi).isNotNull(),
+        () -> assertThat(actualConfDataSourceFile).exists().hasContent(givenConfigFileContent));
   }
 }
