@@ -56,7 +56,7 @@ public final class BlocksFilter {
    */
   public @NotNull Set<Block> filter(@NotNull Collection<Block> blocks) {
     return blocks.stream()
-        .filter(block -> !restrictedBlocksProperties.isRestricted(block.getMaterial()))
+        .filter(block -> !restrictedBlocksProperties.isRestricted(block.material()))
         .collect(Collectors.toSet());
   }
 }

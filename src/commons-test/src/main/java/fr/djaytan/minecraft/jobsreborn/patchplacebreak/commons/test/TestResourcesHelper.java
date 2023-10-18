@@ -23,15 +23,16 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.UncheckedException;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -64,7 +65,6 @@ public final class TestResourcesHelper {
    * @param resourceName The sought resource name.
    * @return The class' resource as an absolute path.
    */
-  @SneakyThrows
   public static @NotNull Path getClassResourceAsAbsolutePath(
       @NotNull Class<?> clazz, @NotNull String resourceName) {
     Path relativeResourcePath = getClassResourceAsRelativePath(clazz, resourceName);
@@ -90,14 +90,17 @@ public final class TestResourcesHelper {
    *     StringUtils#chop(String)}
    * @return The class' resource as a string encoded with UTF_8 charset.
    */
-  @SneakyThrows
   public static @NotNull String getClassResourceAsString(
       @NotNull Class<?> clazz, @NotNull String resourceName, boolean chopContent) {
-    Path resourceRelativePath = getClassResourceAsRelativePath(clazz, resourceName);
-    String resourceContent =
-        IOUtils.resourceToString(
-            resourceRelativePath.toString(), StandardCharsets.UTF_8, clazz.getClassLoader());
-    return chopContent ? StringUtils.chop(resourceContent) : resourceContent;
+    try {
+      Path resourceRelativePath = getClassResourceAsRelativePath(clazz, resourceName);
+      String resourceContent =
+          IOUtils.resourceToString(
+              resourceRelativePath.toString(), StandardCharsets.UTF_8, clazz.getClassLoader());
+      return chopContent ? StringUtils.chop(resourceContent) : resourceContent;
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
   }
 
   private static @NotNull Path getClassResourceAsRelativePath(
@@ -109,12 +112,17 @@ public final class TestResourcesHelper {
   }
 
   private static @NotNull Path resourceToAbsolutePath(
-      @NotNull Path relativeResourcePath, @NotNull ClassLoader classLoader)
-      throws IOException, URISyntaxException {
-    // /!\ Not retrieving an absolute path from class loader can lead to a wrong path depending on
-    // cases
-    // (i.e. when working directory of a library isn't the same as the one used by this class)
-    URL url = IOUtils.resourceToURL(relativeResourcePath.toString(), classLoader);
-    return Paths.get(url.toURI());
+      @NotNull Path relativeResourcePath, @NotNull ClassLoader classLoader) {
+    try {
+      // /!\ Not retrieving an absolute path from class loader can lead to a wrong path depending on
+      // cases
+      // (i.e. when working directory of a library isn't the same as the one used by this class)
+      URL url = IOUtils.resourceToURL(relativeResourcePath.toString(), classLoader);
+      return Paths.get(url.toURI());
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    } catch (URISyntaxException e) {
+      throw new UncheckedException(e);
+    }
   }
 }

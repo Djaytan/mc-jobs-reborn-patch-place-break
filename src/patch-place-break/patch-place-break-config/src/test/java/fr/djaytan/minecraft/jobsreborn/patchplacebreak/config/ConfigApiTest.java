@@ -30,10 +30,10 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResource
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.ConfigSerializer;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidator;
+import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -58,15 +58,13 @@ class ConfigApiTest {
   }
 
   @AfterEach
-  @SneakyThrows
-  void afterEach() {
+  void afterEach() throws IOException {
     imfs.close();
   }
 
   @Test
   @DisplayName("When retrieving data source properties")
-  @SneakyThrows
-  void whenRetrievingDataSourceProperties_shouldSuccess() {
+  void whenRetrievingDataSourceProperties_shouldSuccess() throws IOException {
     // Given
 
     // When

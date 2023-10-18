@@ -23,12 +23,11 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchException;
 
-import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -69,12 +68,13 @@ class TestResourcesHelperTest {
         String resourceName = "notExistingResource";
 
         // When
-        ThrowingCallable throwingCallable =
-            () -> TestResourcesHelper.getClassResourceAsAbsolutePath(clazz, resourceName);
+        Exception exception =
+            catchException(
+                () -> TestResourcesHelper.getClassResourceAsAbsolutePath(clazz, resourceName));
 
         // Then
-        assertThatThrownBy(throwingCallable)
-            .isExactlyInstanceOf(IOException.class)
+        assertThat(exception)
+            .isExactlyInstanceOf(UncheckedIOException.class)
             .hasMessageContaining(
                 Paths.get(
                         "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/TestResourcesHelperTest/notExistingResource")
@@ -129,12 +129,13 @@ class TestResourcesHelperTest {
         String resourceName = "notExistingResource";
 
         // When
-        ThrowingCallable throwingCallable =
-            () -> TestResourcesHelper.getClassResourceAsString(clazz, resourceName, true);
+        Exception exception =
+            catchException(
+                () -> TestResourcesHelper.getClassResourceAsString(clazz, resourceName, true));
 
         // Then
-        assertThatThrownBy(throwingCallable)
-            .isExactlyInstanceOf(IOException.class)
+        assertThat(exception)
+            .isExactlyInstanceOf(UncheckedIOException.class)
             .hasMessageContaining(
                 Paths.get(
                         "fr/djaytan/minecraft/jobsreborn/patchplacebreak/commons/test/TestResourcesHelperTest/notExistingResource")

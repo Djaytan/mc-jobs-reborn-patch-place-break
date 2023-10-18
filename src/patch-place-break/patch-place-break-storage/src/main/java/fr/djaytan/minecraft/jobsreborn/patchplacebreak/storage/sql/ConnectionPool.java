@@ -30,8 +30,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents the connection pool used by the program to manage all connections with DBMS server.
@@ -42,9 +43,10 @@ import org.jetbrains.annotations.NotNull;
  * <p>When stopping the program, the method {@link #close()} must be called to cleanly stop the
  * connection pool by releasing all remaining opened connections and related resources.
  */
-@Slf4j
 @Singleton
 public class ConnectionPool implements AutoCloseable {
+
+  private static final Logger LOG = LoggerFactory.getLogger(ConnectionPool.class);
 
   private final HikariDataSource hikariDataSource;
 
@@ -89,6 +91,6 @@ public class ConnectionPool implements AutoCloseable {
   @Override
   public void close() {
     hikariDataSource.close();
-    log.atInfo().log("Disconnected from the database '{}'", hikariDataSource.getJdbcUrl());
+    LOG.atInfo().log("Disconnected from the database '{}'", hikariDataSource.getJdbcUrl());
   }
 }

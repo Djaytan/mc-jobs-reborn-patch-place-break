@@ -22,15 +22,16 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 
-import lombok.AccessLevel;
-import lombok.experimental.StandardException;
 import org.jetbrains.annotations.NotNull;
 
-@StandardException(access = AccessLevel.PROTECTED)
-public class UnsupportedClassException extends RuntimeException {
+final class UnsupportedClassException extends RuntimeException {
 
   private static final String UNSUPPORTED_CLASS =
       "The class '%s' isn't supported for resource conversion.";
+
+  private UnsupportedClassException(@NotNull String message) {
+    super(message);
+  }
 
   public static @NotNull UnsupportedClassException unsupportedClass(@NotNull Class<?> clazz) {
     String message = String.format(UNSUPPORTED_CLASS, clazz.getName());

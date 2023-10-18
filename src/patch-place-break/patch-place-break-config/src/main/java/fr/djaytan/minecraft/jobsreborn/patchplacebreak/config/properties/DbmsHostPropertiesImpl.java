@@ -27,15 +27,16 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import lombok.Value;
+import java.util.Objects;
+import java.util.StringJoiner;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-@Value
-public class DbmsHostPropertiesImpl implements DbmsHostProperties, Properties {
+public final class DbmsHostPropertiesImpl implements DbmsHostProperties, Properties {
 
   /**
    * A hostname cannot exceed 255 characters as per the DNS standard specification.
@@ -51,7 +52,7 @@ public class DbmsHostPropertiesImpl implements DbmsHostProperties, Properties {
       """
           Hostname (an IP address (IPv4/IPv6) or a domain name)
           Value can't be empty or blank""")
-  String hostname;
+  private final String hostname;
 
   /**
    * A port cannot exceed 65535, which is the maximum value allowed by the Transport Control
@@ -64,14 +65,14 @@ public class DbmsHostPropertiesImpl implements DbmsHostProperties, Properties {
   @Comment("""
       Port
       Accepted range values: [1-65535]""")
-  int port;
+  private final int port;
 
   @Required
   @Comment(
       """
           Whether an SSL/TLS communication must be established at connection time (more secure)
           Only boolean values accepted (true|false)""")
-  boolean isSslEnabled;
+  private final boolean isSslEnabled;
 
   public DbmsHostPropertiesImpl() {
     this.hostname = "localhost";
@@ -79,9 +80,49 @@ public class DbmsHostPropertiesImpl implements DbmsHostProperties, Properties {
     this.isSslEnabled = true;
   }
 
+  /** Testing purposes only. */
   public DbmsHostPropertiesImpl(@Nullable String hostname, int port, boolean isSslEnabled) {
     this.hostname = hostname;
     this.port = port;
     this.isSslEnabled = isSslEnabled;
+  }
+
+  @Override
+  public @NotNull String getHostname() {
+    return Objects.requireNonNull(hostname);
+  }
+
+  @Override
+  public int getPort() {
+    return port;
+  }
+
+  @Override
+  public boolean isSslEnabled() {
+    return isSslEnabled;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    DbmsHostPropertiesImpl that = (DbmsHostPropertiesImpl) o;
+    return port == that.port
+        && isSslEnabled == that.isSslEnabled
+        && Objects.equals(hostname, that.hostname);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(hostname, port, isSslEnabled);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", DbmsHostPropertiesImpl.class.getSimpleName() + "[", "]")
+        .add("hostname='" + hostname + "'")
+        .add("port=" + port)
+        .add("isSslEnabled=" + isSslEnabled)
+        .toString();
   }
 }

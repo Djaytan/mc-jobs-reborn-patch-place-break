@@ -31,8 +31,9 @@ import jakarta.inject.Singleton;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Manages config creation and manipulations.
@@ -44,9 +45,10 @@ import org.jetbrains.annotations.NotNull;
  * <p>The data folder definition is let to the patch enabler (e.g. the Bukkit plugin enabling and
  * calling the patch).
  */
-@Slf4j
 @Singleton
 final class ConfigManager {
+
+  private static final Logger LOG = LoggerFactory.getLogger(ConfigManager.class);
 
   private final Path dataFolder;
   private final ConfigSerializer configSerializer;
@@ -79,10 +81,10 @@ final class ConfigManager {
       return;
     }
 
-    log.atInfo().log("No config file detected: creating default one.");
+    LOG.atInfo().log("No config file detected: creating default one.");
     propertiesValidator.validate(defaultProperties);
     configSerializer.serialize(configFile, defaultProperties);
-    log.atInfo().log("Default configuration file created.");
+    LOG.atInfo().log("Default configuration file created.");
   }
 
   /**
@@ -106,14 +108,14 @@ final class ConfigManager {
       @NotNull String configFileName, @NotNull Class<T> propertiesType) {
     Path configFile = dataFolder.resolve(configFileName);
 
-    log.atInfo().log("Reading '{}' file...", configFileName);
+    LOG.atInfo().log("Reading '{}' file...", configFileName);
     Optional<T> properties = configSerializer.deserialize(configFile, propertiesType);
 
     if (properties.isEmpty()) {
       throw ConfigException.failedReadingConfig(configFileName);
     }
 
-    log.atInfo().log("File '{}' read successfully.", configFileName);
+    LOG.atInfo().log("File '{}' read successfully.", configFileName);
     return properties.get();
   }
 }

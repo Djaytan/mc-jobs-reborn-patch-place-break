@@ -41,12 +41,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 /** Implementation of {@link PatchPlaceBreakApi}. */
 @Singleton
-@Slf4j
 public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
 
   private final BlocksFilter blocksFilter;
@@ -69,12 +67,12 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   public @NotNull CompletableFuture<Void> putTag(@NotNull Block block, boolean isEphemeral) {
     return CompletableFuture.runAsync(
         () -> {
-          if (restrictedBlocksProperties.isRestricted(block.getMaterial())) {
+          if (restrictedBlocksProperties.isRestricted(block.material())) {
             return;
           }
 
           LocalDateTime localDateTime = LocalDateTime.now(clock);
-          Tag tag = new Tag(block.getBlockLocation(), isEphemeral, localDateTime);
+          Tag tag = new Tag(block.blockLocation(), isEphemeral, localDateTime);
           tagRepository.put(tag);
         });
   }
@@ -95,8 +93,8 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
                       .map(
                           oldBlock ->
                               new OldNewBlockLocationPair(
-                                  oldBlock.getBlockLocation(),
-                                  BlockLocation.from(oldBlock.getBlockLocation(), direction)))
+                                  oldBlock.blockLocation(),
+                                  BlockLocation.from(oldBlock.blockLocation(), direction)))
                       .collect(Collectors.toSet()));
 
           tagRepository.updateLocations(oldNewLocationPairs);
@@ -106,21 +104,21 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   public @NotNull CompletableFuture<Void> removeTag(@NotNull Block block) {
     return CompletableFuture.runAsync(
         () -> {
-          if (restrictedBlocksProperties.isRestricted(block.getMaterial())) {
+          if (restrictedBlocksProperties.isRestricted(block.material())) {
             return;
           }
 
-          tagRepository.delete(block.getBlockLocation());
+          tagRepository.delete(block.blockLocation());
         });
   }
 
   public boolean isPlaceAndBreakExploit(
       @NotNull BlockActionType blockActionType, @NotNull Block block) {
-    if (restrictedBlocksProperties.isRestricted(block.getMaterial())) {
+    if (restrictedBlocksProperties.isRestricted(block.material())) {
       return false;
     }
 
-    Optional<Tag> tag = tagRepository.findByLocation(block.getBlockLocation());
+    Optional<Tag> tag = tagRepository.findByLocation(block.blockLocation());
 
     if (tag.isEmpty()) {
       return false;
@@ -131,7 +129,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
     }
 
     LocalDateTime localDateTime = LocalDateTime.now(clock);
-    Duration timeElapsed = Duration.between(tag.get().getInitLocalDateTime(), localDateTime);
+    Duration timeElapsed = Duration.between(tag.get().initLocalDateTime(), localDateTime);
 
     return timeElapsed.minus(EPHEMERAL_TAG_DURATION).isNegative();
   }

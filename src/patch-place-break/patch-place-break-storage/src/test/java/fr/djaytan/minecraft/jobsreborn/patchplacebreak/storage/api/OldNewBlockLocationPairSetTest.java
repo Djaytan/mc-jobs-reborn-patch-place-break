@@ -25,15 +25,12 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.jparams.verifier.tostring.NameStyle;
-import com.jparams.verifier.tostring.ToStringVerifier;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
-import nl.jqno.equalsverifier.EqualsVerifier;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -67,7 +64,7 @@ class OldNewBlockLocationPairSetTest {
           new OldNewBlockLocationPairSet(oldNewBlockLocationPairs);
 
       // Then
-      assertThat(oldNewBlockLocationPairSet.getOldNewBlockLocationPairs())
+      assertThat(oldNewBlockLocationPairSet.oldNewBlockLocationPairs())
           .containsExactlyInAnyOrderElementsOf(oldNewBlockLocationPairs);
     }
 
@@ -99,7 +96,7 @@ class OldNewBlockLocationPairSetTest {
         mutableOldNewBlockLocationPairs.add(oldNewBlockLocationPair2);
 
         // Then
-        assertThat(oldNewBlockLocationPairSet.getOldNewBlockLocationPairs())
+        assertThat(oldNewBlockLocationPairSet.oldNewBlockLocationPairs())
             .containsExactlyInAnyOrder(oldNewBlockLocationPair1);
       }
 
@@ -126,9 +123,7 @@ class OldNewBlockLocationPairSetTest {
 
         ThrowingCallable throwingCallable =
             () ->
-                oldNewBlockLocationPairSet
-                    .getOldNewBlockLocationPairs()
-                    .add(oldNewBlockLocationPair2);
+                oldNewBlockLocationPairSet.oldNewBlockLocationPairs().add(oldNewBlockLocationPair2);
 
         // Then
         assertThatThrownBy(throwingCallable)
@@ -212,19 +207,5 @@ class OldNewBlockLocationPairSetTest {
       // Then
       assertThat(blockLocations).isEmpty();
     }
-  }
-
-  @Test
-  @DisplayName("When calling equals() & hashCode()")
-  void whenCallingEqualsAndHashCode_shouldMetContracts() {
-    EqualsVerifier.forClass(OldNewBlockLocationPairSet.class).verify();
-  }
-
-  @Test
-  @DisplayName("When calling toString()")
-  void whenCallingToString_shouldMetContracts() {
-    ToStringVerifier.forClass(OldNewBlockLocationPairSet.class)
-        .withClassName(NameStyle.SIMPLE_NAME)
-        .verify();
   }
 }

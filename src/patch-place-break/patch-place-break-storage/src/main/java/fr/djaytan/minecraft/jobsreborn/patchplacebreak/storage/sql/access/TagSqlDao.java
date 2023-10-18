@@ -35,12 +35,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 @Singleton
 public class TagSqlDao {
+
+  private static final Logger LOG = LoggerFactory.getLogger(TagSqlDao.class);
 
   private final BooleanIntegerSerializer booleanIntegerSerializer;
   private final DataSourceProperties dataSourceProperties;
@@ -61,13 +63,13 @@ public class TagSqlDao {
         String.format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?)", dataSourceProperties.getTable());
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      preparedStatement.setString(1, tag.getBlockLocation().getWorldName());
-      preparedStatement.setInt(2, tag.getBlockLocation().getX());
-      preparedStatement.setInt(3, tag.getBlockLocation().getY());
-      preparedStatement.setInt(4, tag.getBlockLocation().getZ());
+      preparedStatement.setString(1, tag.blockLocation().worldName());
+      preparedStatement.setInt(2, tag.blockLocation().x());
+      preparedStatement.setInt(3, tag.blockLocation().y());
+      preparedStatement.setInt(4, tag.blockLocation().z());
       preparedStatement.setInt(5, booleanIntegerSerializer.serialize(tag.isEphemeral()));
       preparedStatement.setString(
-          6, localDateTimeStringSerializer.serialize(tag.getInitLocalDateTime()));
+          6, localDateTimeStringSerializer.serialize(tag.initLocalDateTime()));
       preparedStatement.executeUpdate();
     }
   }
@@ -81,10 +83,10 @@ public class TagSqlDao {
             dataSourceProperties.getTable());
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      preparedStatement.setString(1, blockLocation.getWorldName());
-      preparedStatement.setInt(2, blockLocation.getX());
-      preparedStatement.setInt(3, blockLocation.getY());
-      preparedStatement.setInt(4, blockLocation.getZ());
+      preparedStatement.setString(1, blockLocation.worldName());
+      preparedStatement.setInt(2, blockLocation.x());
+      preparedStatement.setInt(3, blockLocation.y());
+      preparedStatement.setInt(4, blockLocation.z());
 
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         return extractTag(resultSet);
@@ -94,7 +96,7 @@ public class TagSqlDao {
 
   private @NotNull Optional<Tag> extractTag(@NotNull ResultSet resultSet) throws SQLException {
     if (resultSet.getFetchSize() > 1) {
-      log.atWarn()
+      LOG.atWarn()
           .log(
               "Multiple tags detected for a same location, selecting the first one."
                   + " Anyway, please report this issue to the developer for investigation.");
@@ -127,10 +129,10 @@ public class TagSqlDao {
             dataSourceProperties.getTable());
 
     try (PreparedStatement deleteStmt = connection.prepareStatement(sqlDelete)) {
-      deleteStmt.setString(1, blockLocation.getWorldName());
-      deleteStmt.setInt(2, blockLocation.getX());
-      deleteStmt.setInt(3, blockLocation.getY());
-      deleteStmt.setInt(4, blockLocation.getZ());
+      deleteStmt.setString(1, blockLocation.worldName());
+      deleteStmt.setInt(2, blockLocation.x());
+      deleteStmt.setInt(3, blockLocation.y());
+      deleteStmt.setInt(4, blockLocation.z());
       deleteStmt.executeUpdate();
     }
   }

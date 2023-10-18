@@ -23,7 +23,6 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
-import lombok.Value;
 import org.apache.commons.lang3.Validate;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,19 +34,12 @@ import org.jetbrains.annotations.NotNull;
  *
  * @see TagRepository#updateLocations(OldNewBlockLocationPairSet)
  */
-@Value
-public class OldNewBlockLocationPair {
+public record OldNewBlockLocationPair(
+    @NotNull BlockLocation oldBlockLocation, @NotNull BlockLocation newBlockLocation) {
 
-  BlockLocation oldBlockLocation;
-  BlockLocation newBlockLocation;
-
-  public OldNewBlockLocationPair(
-      @NotNull BlockLocation oldBlockLocation, @NotNull BlockLocation newBlockLocation) {
+  public OldNewBlockLocationPair {
     Validate.validState(
         !oldBlockLocation.equals(newBlockLocation),
         "The old and new location must not be the same");
-
-    this.oldBlockLocation = oldBlockLocation;
-    this.newBlockLocation = newBlockLocation;
   }
 }

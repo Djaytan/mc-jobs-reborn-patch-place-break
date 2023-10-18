@@ -31,6 +31,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionT
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.temporal.TemporalAmount;
@@ -38,7 +39,6 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
-import lombok.SneakyThrows;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
@@ -65,14 +65,12 @@ abstract class BasePatchPlaceBreakApiIntegrationTest {
   private final PatchPlaceBreakCore patchPlaceBreakCore = new PatchPlaceBreakCore();
 
   @BeforeEach
-  @SneakyThrows
-  void beforeEach() {
+  void beforeEach() throws IOException {
     ClassLoader classLoader = PatchPlaceBreakCore.class.getClassLoader();
     patchPlaceBreakApi = patchPlaceBreakCore.enable(classLoader, mutableClock, dataFolder);
   }
 
   @AfterEach
-  @SneakyThrows
   void afterEach() {
     patchPlaceBreakCore.disable();
   }
@@ -145,7 +143,7 @@ abstract class BasePatchPlaceBreakApiIntegrationTest {
     // Then
     BlockLocation newBlockLocation =
         new BlockLocation(
-            "world", oldBlockLocation.getX() + 1, oldBlockLocation.getY(), oldBlockLocation.getZ());
+            "world", oldBlockLocation.x() + 1, oldBlockLocation.y(), oldBlockLocation.z());
     Block newBlock = new Block(newBlockLocation, "STONE");
 
     boolean isOnOldBlockAnExploit =

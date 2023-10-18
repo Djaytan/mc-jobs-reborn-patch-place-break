@@ -24,10 +24,7 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.jparams.verifier.tostring.NameStyle;
-import com.jparams.verifier.tostring.ToStringVerifier;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
-import nl.jqno.equalsverifier.EqualsVerifier;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
@@ -58,8 +55,8 @@ class OldNewBlockLocationPairTest {
           new OldNewBlockLocationPair(oldBlockLocation, newBlockLocation);
 
       // Then
-      softly.assertThat(oldNewBlockLocationPair.getOldBlockLocation()).isEqualTo(oldBlockLocation);
-      softly.assertThat(oldNewBlockLocationPair.getNewBlockLocation()).isEqualTo(newBlockLocation);
+      softly.assertThat(oldNewBlockLocationPair.oldBlockLocation()).isEqualTo(oldBlockLocation);
+      softly.assertThat(oldNewBlockLocationPair.newBlockLocation()).isEqualTo(newBlockLocation);
     }
 
     @Test
@@ -76,19 +73,5 @@ class OldNewBlockLocationPairTest {
       // Then
       assertThatThrownBy(throwingCallable).isExactlyInstanceOf(IllegalStateException.class);
     }
-  }
-
-  @Test
-  @DisplayName("When calling equals() & hashCode()")
-  void whenCallingEqualsAndHashCode_shouldMetContracts() {
-    EqualsVerifier.forClass(OldNewBlockLocationPair.class).verify();
-  }
-
-  @Test
-  @DisplayName("When calling toString()")
-  void whenCallingToString_shouldMetContracts() {
-    ToStringVerifier.forClass(OldNewBlockLocationPair.class)
-        .withClassName(NameStyle.SIMPLE_NAME)
-        .verify();
   }
 }

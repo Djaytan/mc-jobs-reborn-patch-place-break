@@ -22,21 +22,23 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.ConnectionPoolProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsServerProperties;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Value;
+import java.util.Objects;
+import java.util.StringJoiner;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-@Value
-public class DataSourcePropertiesImpl implements DataSourceProperties, Properties {
+public final class DataSourcePropertiesImpl implements DataSourceProperties, Properties {
 
   @NotNull
   @Required
@@ -46,7 +48,7 @@ public class DataSourcePropertiesImpl implements DataSourceProperties, Propertie
           Available types:
           * SQLITE: use a local file as database (easy & fast setup)
           * MYSQL: use a MySQL database server (better performances)""")
-  DataSourceType type;
+  private final DataSourceType type;
 
   @NotBlank
   @Size(max = 128)
@@ -54,7 +56,7 @@ public class DataSourcePropertiesImpl implements DataSourceProperties, Propertie
   @Comment("""
       The table where data will be stored
       Value can't be empty or blank""")
-  String table;
+  private final String table;
 
   @NotNull
   @Valid
@@ -63,7 +65,7 @@ public class DataSourcePropertiesImpl implements DataSourceProperties, Propertie
       """
           The DBMS server properties for connection establishment
           Not applicable for SQLite""")
-  DbmsServerPropertiesImpl dbmsServer;
+  private final DbmsServerPropertiesImpl dbmsServer;
 
   @NotNull
   @Valid
@@ -73,7 +75,7 @@ public class DataSourcePropertiesImpl implements DataSourceProperties, Propertie
           Connection pool properties
           This is reserved for advanced usage only
           Change these settings only if you know what you are doing""")
-  ConnectionPoolPropertiesImpl connectionPool;
+  private final ConnectionPoolPropertiesImpl connectionPool;
 
   public DataSourcePropertiesImpl() {
     this.type = DataSourceType.SQLITE;
@@ -82,6 +84,7 @@ public class DataSourcePropertiesImpl implements DataSourceProperties, Propertie
     this.connectionPool = new ConnectionPoolPropertiesImpl();
   }
 
+  /** Testing purposes only. */
   public DataSourcePropertiesImpl(
       @Nullable DataSourceType type,
       @Nullable String table,
@@ -91,5 +94,51 @@ public class DataSourcePropertiesImpl implements DataSourceProperties, Propertie
     this.table = table;
     this.dbmsServer = dbmsServer;
     this.connectionPool = connectionPool;
+  }
+
+  @Override
+  public @org.jetbrains.annotations.NotNull DataSourceType getType() {
+    return Objects.requireNonNull(type);
+  }
+
+  @Override
+  public @org.jetbrains.annotations.NotNull String getTable() {
+    return Objects.requireNonNull(table);
+  }
+
+  @Override
+  public @org.jetbrains.annotations.NotNull DbmsServerProperties getDbmsServer() {
+    return Objects.requireNonNull(dbmsServer);
+  }
+
+  @Override
+  public @org.jetbrains.annotations.NotNull ConnectionPoolProperties getConnectionPool() {
+    return Objects.requireNonNull(connectionPool);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    DataSourcePropertiesImpl that = (DataSourcePropertiesImpl) o;
+    return type == that.type
+        && Objects.equals(table, that.table)
+        && Objects.equals(dbmsServer, that.dbmsServer)
+        && Objects.equals(connectionPool, that.connectionPool);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(type, table, dbmsServer, connectionPool);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", DataSourcePropertiesImpl.class.getSimpleName() + "[", "]")
+        .add("type=" + type)
+        .add("table='" + table + "'")
+        .add("dbmsServer=" + dbmsServer)
+        .add("connectionPool=" + connectionPool)
+        .toString();
   }
 }

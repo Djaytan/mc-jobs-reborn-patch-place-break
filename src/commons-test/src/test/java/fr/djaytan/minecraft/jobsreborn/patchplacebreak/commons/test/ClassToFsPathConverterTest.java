@@ -26,11 +26,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
-import lombok.SneakyThrows;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
@@ -51,8 +51,7 @@ class ClassToFsPathConverterTest {
   }
 
   @AfterEach
-  @SneakyThrows
-  void afterEach() {
+  void afterEach() throws IOException {
     fileSystem.close();
   }
 

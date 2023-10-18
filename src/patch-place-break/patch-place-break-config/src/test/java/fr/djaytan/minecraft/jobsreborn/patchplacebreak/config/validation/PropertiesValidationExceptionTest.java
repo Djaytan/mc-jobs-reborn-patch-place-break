@@ -24,13 +24,11 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import jakarta.validation.ConstraintViolation;
 import java.util.Collections;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,28 +36,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-@SuppressWarnings("java:S2187")
-class PropertiesValidationExceptionTest extends ExceptionBaseTest {
-
-  @Override
-  protected @NotNull Exception getException() {
-    return new PropertiesValidationException();
-  }
-
-  @Override
-  protected @NotNull Exception getException(@NotNull String message) {
-    return new PropertiesValidationException(message);
-  }
-
-  @Override
-  protected @NotNull Exception getException(@Nullable Throwable cause) {
-    return new PropertiesValidationException(cause);
-  }
-
-  @Override
-  protected @NotNull Exception getException(@NotNull String message, @Nullable Throwable cause) {
-    return new PropertiesValidationException(message, cause);
-  }
+class PropertiesValidationExceptionTest {
 
   @Test
   @DisplayName("When instantiating constraint violations exception")

@@ -22,17 +22,17 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 
-import lombok.Value;
 import org.jetbrains.annotations.NotNull;
 
-/** An immutable and thread-safe block location. */
-@Value
-public class BlockLocation {
-
-  String worldName;
-  int x;
-  int y;
-  int z;
+/**
+ * An immutable and thread-safe block location.
+ *
+ * @param worldName The world name in which the block is located.
+ * @param x The block location in the x-axis of the world.
+ * @param y The block location in the y-axis of the world.
+ * @param z The block location in the z-axis of the world.
+ */
+public record BlockLocation(String worldName, int x, int y, int z) {
 
   /**
    * Creates a block location from a specified one and a given direction.
@@ -43,9 +43,9 @@ public class BlockLocation {
    */
   public static @NotNull BlockLocation from(
       @NotNull BlockLocation blockLocation, @NotNull Vector direction) {
-    int newX = blockLocation.getX() + direction.getModX();
-    int newY = blockLocation.getY() + direction.getModY();
-    int newZ = blockLocation.getZ() + direction.getModZ();
-    return new BlockLocation(blockLocation.getWorldName(), newX, newY, newZ);
+    int newX = blockLocation.x() + direction.modX();
+    int newY = blockLocation.y() + direction.modY();
+    int newZ = blockLocation.z() + direction.modZ();
+    return new BlockLocation(blockLocation.worldName(), newX, newY, newZ);
   }
 }

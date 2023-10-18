@@ -22,30 +22,23 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings("java:S2187")
-class ConfigExceptionTest extends ExceptionBaseTest {
+import org.junit.jupiter.api.Test;
 
-  @Override
-  protected @NotNull Exception getException() {
-    return new ConfigException();
-  }
+class ConfigExceptionTest {
 
-  @Override
-  protected @NotNull Exception getException(@NotNull String message) {
-    return new ConfigException(message);
-  }
+  @Test
+  void whenInstantiatingFailedReadingConfigException() {
+    // Given
+    String configFileName = "dataSource.conf";
 
-  @Override
-  protected @NotNull Exception getException(@Nullable Throwable cause) {
-    return new ConfigException(cause);
-  }
+    // When
+    ConfigException exception = ConfigException.failedReadingConfig(configFileName);
 
-  @Override
-  protected @NotNull Exception getException(@NotNull String message, @Nullable Throwable cause) {
-    return new ConfigException(message, cause);
+    // Then
+    assertThat(exception)
+        .isExactlyInstanceOf(ConfigException.class)
+        .hasMessage("Failed to read config file 'dataSource.conf'. Is config file empty?");
   }
 }

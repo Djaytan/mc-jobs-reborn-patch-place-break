@@ -43,10 +43,10 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.Propert
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation.PropertiesValidator;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
+import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import lombok.SneakyThrows;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,8 +76,7 @@ class ConfigManagerTest {
   }
 
   @AfterEach
-  @SneakyThrows
-  void afterEach() {
+  void afterEach() throws IOException {
     imfs.close();
   }
 
@@ -87,8 +86,7 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With already existing one")
-    @SneakyThrows
-    void withAlreadyExistingOne_shouldDoNothing() {
+    void withAlreadyExistingOne_shouldDoNothing() throws IOException {
       // Given
       String configFileName = "alreadyExisting.conf";
       DataSourcePropertiesImpl defaultProperties = new DataSourcePropertiesImpl();
@@ -106,8 +104,7 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With generic default properties")
-    @SneakyThrows
-    void withGenericDefaultProperties_shouldSerializeConfig() {
+    void withGenericDefaultProperties_shouldSerializeConfig() throws IOException {
       // Given
       String configFileName = "nominalCase.conf";
       Properties defaultProperties = new DataSourcePropertiesImpl();
@@ -166,8 +163,7 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With nominal config file")
-    @SneakyThrows
-    void withNominalConfigFile_shouldSuccess() {
+    void withNominalConfigFile_shouldSuccess() throws IOException {
       // Given
       String nominalConfigFileName = "whenReadingAndValidatingConfig_withNominalConfigFile.conf";
       Path nominalConfigFile =
@@ -197,8 +193,7 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With missing required fields in config file")
-    @SneakyThrows
-    void withMissingRequiredFieldsInConfigFile_shouldThrowException() {
+    void withMissingRequiredFieldsInConfigFile_shouldThrowException() throws IOException {
       // Given
       String invalidConfigFileName =
           "whenReadingAndValidatingConfig_withMissingRequiredFieldsInConfigFile.conf";
@@ -220,8 +215,7 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With invalid config file")
-    @SneakyThrows
-    void withInvalidConfigFile_shouldThrowException() {
+    void withInvalidConfigFile_shouldThrowException() throws IOException {
       // Given
       String invalidConfigFileName = "whenReadingAndValidatingConfig_withInvalidConfigFile.conf";
       Path invalidConfigFile =
@@ -242,8 +236,7 @@ class ConfigManagerTest {
 
     @Test
     @DisplayName("With empty config file")
-    @SneakyThrows
-    void withEmptyConfigFile_shouldThrowException() {
+    void withEmptyConfigFile_shouldThrowException() throws IOException {
       // Given
       String emptyConfigFileName = "whenReadingAndValidatingConfig_withEmptyConfigFile.conf";
       Path emptyConfigFile =

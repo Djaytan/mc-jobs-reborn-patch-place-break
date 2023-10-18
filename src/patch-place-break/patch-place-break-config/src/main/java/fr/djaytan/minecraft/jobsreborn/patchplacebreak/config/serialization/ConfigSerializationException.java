@@ -23,11 +23,8 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 
 import java.nio.file.Path;
-import lombok.AccessLevel;
-import lombok.experimental.StandardException;
 import org.jetbrains.annotations.NotNull;
 
-@StandardException(access = AccessLevel.PROTECTED)
 public class ConfigSerializationException extends RuntimeException {
 
   private static final String INVALID_LOADER_CONFIGURATION =
@@ -37,6 +34,14 @@ public class ConfigSerializationException extends RuntimeException {
       "Fail to serialize config properties of type '%s' from '%s' file";
   private static final String FAIL_TO_DESERIALIZE =
       "Fail to deserialize config properties of type '%s' from '%s' file";
+
+  private ConfigSerializationException(@NotNull String message) {
+    super(message);
+  }
+
+  private ConfigSerializationException(@NotNull String message, @NotNull Throwable cause) {
+    super(message, cause);
+  }
 
   public static @NotNull ConfigSerializationException serialization(
       @NotNull Path destConfigFile, @NotNull Class<?> propertiesType, @NotNull Throwable cause) {

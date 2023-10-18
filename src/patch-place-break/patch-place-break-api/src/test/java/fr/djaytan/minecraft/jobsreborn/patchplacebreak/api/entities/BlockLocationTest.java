@@ -20,17 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import com.jparams.verifier.tostring.NameStyle;
-import com.jparams.verifier.tostring.ToStringVerifier;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
 import java.util.stream.Stream;
-import nl.jqno.equalsverifier.EqualsVerifier;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
@@ -68,10 +63,10 @@ class BlockLocationTest {
       BlockLocation blockLocation = new BlockLocation(worldName, x, y, z);
 
       // Then
-      softly.assertThat(blockLocation.getWorldName()).isEqualTo(worldName);
-      softly.assertThat(blockLocation.getX()).isEqualTo(x);
-      softly.assertThat(blockLocation.getY()).isEqualTo(y);
-      softly.assertThat(blockLocation.getZ()).isEqualTo(z);
+      softly.assertThat(blockLocation.worldName()).isEqualTo(worldName);
+      softly.assertThat(blockLocation.x()).isEqualTo(x);
+      softly.assertThat(blockLocation.y()).isEqualTo(y);
+      softly.assertThat(blockLocation.z()).isEqualTo(z);
     }
 
     @ParameterizedTest(name = "{index} - {0}")
@@ -107,17 +102,5 @@ class BlockLocationTest {
               named("On underflow", new Vector(10, -50, Integer.MIN_VALUE)),
               new BlockLocation("world", 11, -95, Integer.MAX_VALUE)));
     }
-  }
-
-  @Test
-  @DisplayName("When calling equals() & hashCode()")
-  void whenCallingEqualsAndHashCode_shouldMetContracts() {
-    EqualsVerifier.forClass(BlockLocation.class).verify();
-  }
-
-  @Test
-  @DisplayName("When calling toString()")
-  void whenCallingToString_shouldMetContracts() {
-    ToStringVerifier.forClass(BlockLocation.class).withClassName(NameStyle.SIMPLE_NAME).verify();
   }
 }
