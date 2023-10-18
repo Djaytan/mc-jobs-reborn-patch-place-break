@@ -23,7 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 
@@ -47,7 +47,6 @@ import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -133,11 +132,12 @@ class ConfigManagerTest {
           .serialize(any(), any());
 
       // When
-      ThrowingCallable throwingCallable =
-          () -> configManager.createDefaultIfNotExists(configFileName, defaultProperties);
+      Exception exception =
+          catchException(
+              () -> configManager.createDefaultIfNotExists(configFileName, defaultProperties));
 
       // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigSerializationException.class);
+      assertThat(exception).isExactlyInstanceOf(ConfigSerializationException.class);
     }
 
     @Test
@@ -149,11 +149,12 @@ class ConfigManagerTest {
           new DataSourcePropertiesImpl(null, null, null, null);
 
       // When
-      ThrowingCallable throwingCallable =
-          () -> configManager.createDefaultIfNotExists(configFileName, defaultProperties);
+      Exception exception =
+          catchException(
+              () -> configManager.createDefaultIfNotExists(configFileName, defaultProperties));
 
       // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(PropertiesValidationException.class);
+      assertThat(exception).isExactlyInstanceOf(PropertiesValidationException.class);
     }
   }
 
@@ -206,11 +207,12 @@ class ConfigManagerTest {
       Files.copy(invalidConfigFile, configFile);
 
       // When
-      ThrowingCallable throwingCallable =
-          () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class);
+      Exception exception =
+          catchException(
+              () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class));
 
       // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigSerializationException.class);
+      assertThat(exception).isExactlyInstanceOf(ConfigSerializationException.class);
     }
 
     @Test
@@ -227,11 +229,12 @@ class ConfigManagerTest {
       Files.copy(invalidConfigFile, configFile);
 
       // When
-      ThrowingCallable throwingCallable =
-          () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class);
+      Exception exception =
+          catchException(
+              () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class));
 
       // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(PropertiesValidationException.class);
+      assertThat(exception).isExactlyInstanceOf(PropertiesValidationException.class);
     }
 
     @Test
@@ -247,11 +250,12 @@ class ConfigManagerTest {
       Files.copy(emptyConfigFile, configFile);
 
       // When
-      ThrowingCallable throwingCallable =
-          () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class);
+      Exception exception =
+          catchException(
+              () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class));
 
       // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigException.class);
+      assertThat(exception).isExactlyInstanceOf(ConfigException.class);
     }
 
     @Test
@@ -261,11 +265,12 @@ class ConfigManagerTest {
       String configFileName = "test.conf";
 
       // When
-      ThrowingCallable throwingCallable =
-          () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class);
+      Exception exception =
+          catchException(
+              () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class));
 
       // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(ConfigException.class);
+      assertThat(exception).isExactlyInstanceOf(ConfigException.class);
     }
   }
 }

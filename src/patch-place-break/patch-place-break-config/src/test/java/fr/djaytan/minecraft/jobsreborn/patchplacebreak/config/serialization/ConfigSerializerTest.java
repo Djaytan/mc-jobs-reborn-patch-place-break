@@ -23,7 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchException;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -34,7 +34,6 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -111,11 +110,12 @@ class ConfigSerializerTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      ThrowingCallable throwingCallable =
-          () -> configSerializer.deserialize(confFile, DbmsHostPropertiesImpl.class);
+      Exception exception =
+          catchException(
+              () -> configSerializer.deserialize(confFile, DbmsHostPropertiesImpl.class));
 
       // Then
-      assertThatThrownBy(throwingCallable)
+      assertThat(exception)
           .isExactlyInstanceOf(ConfigSerializationException.class)
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }

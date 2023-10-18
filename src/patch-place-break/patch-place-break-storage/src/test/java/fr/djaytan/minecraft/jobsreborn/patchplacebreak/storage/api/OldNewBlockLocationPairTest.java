@@ -23,11 +23,10 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchException;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -63,11 +62,11 @@ class OldNewBlockLocationPairTest {
       BlockLocation newBlockLocation = new BlockLocation("world", 12, 64, -35);
 
       // When
-      ThrowingCallable throwingCallable =
-          () -> new OldNewBlockLocationPair(oldBlockLocation, newBlockLocation);
+      Exception exception =
+          catchException(() -> new OldNewBlockLocationPair(oldBlockLocation, newBlockLocation));
 
       // Then
-      assertThatThrownBy(throwingCallable).isExactlyInstanceOf(IllegalStateException.class);
+      assertThat(exception).isExactlyInstanceOf(IllegalStateException.class);
     }
   }
 }

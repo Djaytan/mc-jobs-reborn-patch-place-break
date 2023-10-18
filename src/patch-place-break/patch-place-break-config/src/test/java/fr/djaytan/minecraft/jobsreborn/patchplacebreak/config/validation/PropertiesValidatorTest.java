@@ -22,8 +22,9 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchException;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.ConnectionPoolPropertiesImpl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DataSourcePropertiesImpl;
@@ -83,10 +84,10 @@ class PropertiesValidatorTest {
             new ConnectionPoolPropertiesImpl(60000, 10));
 
     // When
-    ThrowingCallable throwingCallable =
-        () -> propertiesValidator.validate(dataSourcePropertiesImpl);
+    Exception exception =
+        catchException(() -> propertiesValidator.validate(dataSourcePropertiesImpl));
 
     // Then
-    assertThatThrownBy(throwingCallable).isExactlyInstanceOf(PropertiesValidationException.class);
+    assertThat(exception).isExactlyInstanceOf(PropertiesValidationException.class);
   }
 }

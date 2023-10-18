@@ -23,7 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchException;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import java.util.ArrayList;
@@ -31,7 +31,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -121,13 +120,15 @@ class OldNewBlockLocationPairSetTest {
         OldNewBlockLocationPair oldNewBlockLocationPair2 =
             new OldNewBlockLocationPair(oldBlockLocation2, newBlockLocation2);
 
-        ThrowingCallable throwingCallable =
-            () ->
-                oldNewBlockLocationPairSet.oldNewBlockLocationPairs().add(oldNewBlockLocationPair2);
+        Exception exception =
+            catchException(
+                () ->
+                    oldNewBlockLocationPairSet
+                        .oldNewBlockLocationPairs()
+                        .add(oldNewBlockLocationPair2));
 
         // Then
-        assertThatThrownBy(throwingCallable)
-            .isExactlyInstanceOf(UnsupportedOperationException.class);
+        assertThat(exception).isExactlyInstanceOf(UnsupportedOperationException.class);
       }
     }
   }

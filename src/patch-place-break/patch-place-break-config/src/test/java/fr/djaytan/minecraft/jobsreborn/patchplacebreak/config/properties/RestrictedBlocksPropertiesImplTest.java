@@ -23,7 +23,7 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchException;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -50,8 +50,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.assertj.core.api.ThrowableAssert;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -163,12 +161,10 @@ class RestrictedBlocksPropertiesImplTest {
             new RestrictedBlocksPropertiesImpl(materials, mode);
 
         // When
-        ThrowableAssert.ThrowingCallable throwingCallable =
-            () -> properties.getMaterials().add("SPONGE");
+        Exception exception = catchException(() -> properties.getMaterials().add("SPONGE"));
 
         // Then
-        assertThatThrownBy(throwingCallable)
-            .isExactlyInstanceOf(UnsupportedOperationException.class);
+        assertThat(exception).isExactlyInstanceOf(UnsupportedOperationException.class);
       }
     }
   }
@@ -335,13 +331,14 @@ class RestrictedBlocksPropertiesImplTest {
           TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
 
       // When
-      ThrowingCallable throwingCallable =
-          () ->
-              ConfigSerializerTestWrapper.deserialize(
-                  confFile, RestrictedBlocksPropertiesImpl.class);
+      Exception exception =
+          catchException(
+              () ->
+                  ConfigSerializerTestWrapper.deserialize(
+                      confFile, RestrictedBlocksPropertiesImpl.class));
 
       // Then
-      assertThatThrownBy(throwingCallable)
+      assertThat(exception)
           .isInstanceOf(ConfigSerializationException.class)
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
