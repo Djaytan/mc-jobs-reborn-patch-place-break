@@ -36,6 +36,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.BlockFaceConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter.converter.LocationConverter;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.temporal.TemporalAmount;
@@ -43,7 +44,6 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
-import lombok.SneakyThrows;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
@@ -82,14 +82,12 @@ abstract class BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
   private World worldMocked;
 
   @BeforeEach
-  @SneakyThrows
-  void beforeEach() {
+  void beforeEach() throws IOException {
     patchPlaceBreakBukkitAdapterApi = createPatchPlaceBreakBukkitAdapterApi();
     prepareRandomBlockMocked(randomBlockMocked, worldMocked);
   }
 
   @AfterEach
-  @SneakyThrows
   void afterEach() {
     patchPlaceBreakCore.disable();
   }

@@ -26,37 +26,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@SuppressWarnings("java:S2187")
-class TagRepositoryExceptionTest extends ExceptionBaseTest {
-
-  @Override
-  protected @NotNull Exception getException() {
-    return new TagRepositoryException();
-  }
-
-  @Override
-  protected @NotNull Exception getException(@NotNull String message) {
-    return new TagRepositoryException(message);
-  }
-
-  @Override
-  protected @NotNull Exception getException(@Nullable Throwable cause) {
-    return new TagRepositoryException(cause);
-  }
-
-  @Override
-  protected @NotNull Exception getException(@NotNull String message, @Nullable Throwable cause) {
-    return new TagRepositoryException(message, cause);
-  }
+class TagRepositoryExceptionTest {
 
   @Test
   @DisplayName("When instantiating put tag exception")

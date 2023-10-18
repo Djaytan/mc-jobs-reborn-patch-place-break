@@ -25,17 +25,19 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.regex.Pattern;
-import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 /** Converts a class name to a filesystem path with {@link #convertClassToFsPath(Class)}. */
-@RequiredArgsConstructor
 final class ClassToFsPathConverter {
 
   private static final Pattern DOTS_REGEX_PATTERN = Pattern.compile("\\.");
   private static final Pattern INNER_CLASS_REGEX_PATTERN = Pattern.compile("\\$.*");
 
   private final FileSystem fileSystem;
+
+  ClassToFsPathConverter(@NotNull FileSystem fileSystem) {
+    this.fileSystem = fileSystem;
+  }
 
   /**
    * Converts a class name to a filesystem path.

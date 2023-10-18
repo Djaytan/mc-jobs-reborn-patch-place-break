@@ -37,6 +37,7 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization.Conf
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ConfigSerializerTestWrapper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.testutils.ValidatorTestWrapper;
 import jakarta.validation.ConstraintViolation;
+import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,7 +48,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-import lombok.SneakyThrows;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.ThrowableAssert;
@@ -81,8 +81,7 @@ class RestrictedBlocksPropertiesImplTest {
   }
 
   @AfterEach
-  @SneakyThrows
-  void afterEach() {
+  void afterEach() throws IOException {
     imfs.close();
   }
 
@@ -265,9 +264,9 @@ class RestrictedBlocksPropertiesImplTest {
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
     @DisplayName("With valid values")
-    @SneakyThrows
     void withValidValues_shouldMatchExpectedYamlContent(
-        @NotNull RestrictedBlocksPropertiesImpl givenValue, @NotNull String expectedYamlFileName) {
+        @NotNull RestrictedBlocksPropertiesImpl givenValue, @NotNull String expectedYamlFileName)
+        throws IOException {
       // Given
       Path imDestFile = imfs.getPath("test.conf");
 

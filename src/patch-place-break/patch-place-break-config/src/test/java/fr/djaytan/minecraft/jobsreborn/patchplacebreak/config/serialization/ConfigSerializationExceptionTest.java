@@ -24,38 +24,14 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.serialization;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceProperties;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@SuppressWarnings("java:S2187")
-class ConfigSerializationExceptionTest extends ExceptionBaseTest {
-
-  @Override
-  protected @NotNull Exception getException() {
-    return new ConfigSerializationException();
-  }
-
-  @Override
-  protected @NotNull Exception getException(@NotNull String message) {
-    return new ConfigSerializationException(message);
-  }
-
-  @Override
-  protected @NotNull Exception getException(@Nullable Throwable cause) {
-    return new ConfigSerializationException(cause);
-  }
-
-  @Override
-  protected @NotNull Exception getException(@NotNull String message, @Nullable Throwable cause) {
-    return new ConfigSerializationException(message, cause);
-  }
+class ConfigSerializationExceptionTest {
 
   @Test
   @DisplayName("When instantiating serialization exception")

@@ -20,12 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 
-import com.jparams.verifier.tostring.NameStyle;
-import com.jparams.verifier.tostring.ToStringVerifier;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Vector;
-import nl.jqno.equalsverifier.EqualsVerifier;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
@@ -50,20 +46,8 @@ class VectorTest {
     Vector vector = new Vector(modX, modY, modZ);
 
     // Then
-    softly.assertThat(vector.getModX()).isEqualTo(modX);
-    softly.assertThat(vector.getModY()).isEqualTo(modY);
-    softly.assertThat(vector.getModZ()).isEqualTo(modZ);
-  }
-
-  @Test
-  @DisplayName("When calling equals() & hashCode()")
-  void whenCallingEqualsAndHashcode_shouldMetContracts() {
-    EqualsVerifier.forClass(Vector.class).verify();
-  }
-
-  @Test
-  @DisplayName("When calling toString()")
-  void whenCallingToString_shouldMetContracts() {
-    ToStringVerifier.forClass(Vector.class).withClassName(NameStyle.SIMPLE_NAME).verify();
+    softly.assertThat(vector.modX()).isEqualTo(modX);
+    softly.assertThat(vector.modY()).isEqualTo(modY);
+    softly.assertThat(vector.modZ()).isEqualTo(modZ);
   }
 }

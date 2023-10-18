@@ -23,9 +23,9 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 
 class MysqlPatchPlaceBreakBukkitAdapterApiIntegrationTest
@@ -34,8 +34,7 @@ class MysqlPatchPlaceBreakBukkitAdapterApiIntegrationTest
   private static final String CONFIG_DATA_SOURCE_FILE_NAME = "dataSource.conf";
 
   @BeforeEach
-  @SneakyThrows
-  void beforeEach() {
+  void beforeEach() throws IOException {
     int dbmsPort = Integer.parseInt(System.getProperty("mysql.port"));
     String givenDataSourceConfFileContent =
         String.format(

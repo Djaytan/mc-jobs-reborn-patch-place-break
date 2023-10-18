@@ -22,12 +22,12 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 
-import lombok.Value;
+import org.jetbrains.annotations.NotNull;
 
-/** An immutable and thread-safe block. */
-@Value
-public class Block {
-
-  BlockLocation blockLocation;
-  String material;
-}
+/**
+ * An immutable and thread-safe block.
+ *
+ * @param blockLocation The block's location.
+ * @param material The block's material.
+ */
+public record Block(@NotNull BlockLocation blockLocation, @NotNull String material) {}

@@ -24,36 +24,12 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.ExceptionBaseTest;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
 import java.io.IOException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@SuppressWarnings("java:S2187")
-class SqlStorageExceptionTest extends ExceptionBaseTest {
-
-  @Override
-  protected @NotNull Exception getException() {
-    return new SqlStorageException();
-  }
-
-  @Override
-  protected @NotNull Exception getException(@NotNull String message) {
-    return new SqlStorageException(message);
-  }
-
-  @Override
-  protected @NotNull Exception getException(@Nullable Throwable cause) {
-    return new SqlStorageException(cause);
-  }
-
-  @Override
-  protected @NotNull Exception getException(@NotNull String message, @Nullable Throwable cause) {
-    return new SqlStorageException(message, cause);
-  }
+class SqlStorageExceptionTest {
 
   @Test
   @DisplayName("When instantiating connection pool not setup exception")
@@ -113,6 +89,8 @@ class SqlStorageExceptionTest extends ExceptionBaseTest {
         SqlStorageException.unsupportedDataSourceType(dataSourceType);
 
     // Then
-    assertThat(sqlStorageException).hasMessage("Unsupported data source type 'MYSQL'");
+    assertThat(sqlStorageException)
+        .hasMessage(
+            "java.lang.UnsupportedOperationException: Unsupported data source type 'MYSQL'");
   }
 }

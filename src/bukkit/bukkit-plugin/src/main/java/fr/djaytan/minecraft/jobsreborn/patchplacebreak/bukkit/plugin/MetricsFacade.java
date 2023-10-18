@@ -24,14 +24,16 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 @Singleton
 public class MetricsFacade {
+
+  private static final Logger LOG = LoggerFactory.getLogger(MetricsFacade.class);
 
   private static final int BSTATS_ID = 16899;
 
@@ -44,6 +46,6 @@ public class MetricsFacade {
 
   public void activateMetricsCollection() {
     new Metrics(javaPlugin, BSTATS_ID);
-    log.atInfo().log("bStats metrics collection activated.");
+    LOG.atInfo().log("bStats metrics collection activated.");
   }
 }

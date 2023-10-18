@@ -24,11 +24,8 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
-import lombok.AccessLevel;
-import lombok.experimental.StandardException;
 import org.jetbrains.annotations.NotNull;
 
-@StandardException(access = AccessLevel.PROTECTED)
 public class TagRepositoryException extends RuntimeException {
 
   private static final String PUT = "Failed to put the following tag: %s";
@@ -36,6 +33,10 @@ public class TagRepositoryException extends RuntimeException {
       "Failed to update the tags for the following old-new location pairs: %s";
   private static final String FETCH = "Failed to fetch the tag with the following location: %s";
   private static final String DELETE = "Failed to delete the tag with the following location: %s";
+
+  private TagRepositoryException(@NotNull String message, @NotNull Throwable cause) {
+    super(message, cause);
+  }
 
   public static @NotNull TagRepositoryException put(@NotNull Tag tag, @NotNull Throwable cause) {
     String message = String.format(PUT, tag);

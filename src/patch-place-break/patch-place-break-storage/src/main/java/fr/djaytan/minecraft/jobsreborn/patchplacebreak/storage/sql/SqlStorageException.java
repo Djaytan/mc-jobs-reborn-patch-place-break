@@ -23,11 +23,8 @@
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DataSourceType;
-import lombok.AccessLevel;
-import lombok.experimental.StandardException;
 import org.jetbrains.annotations.NotNull;
 
-@StandardException(access = AccessLevel.PROTECTED)
 public class SqlStorageException extends RuntimeException {
 
   private static final String CONNECTION_POOL_NOT_SETUP =
@@ -37,6 +34,18 @@ public class SqlStorageException extends RuntimeException {
           + "(establishment, releasing, ...)";
   private static final String DATABASE_CREATION = "Unable to create the database '%s'";
   private static final String UNSUPPORTED_DATA_SOURCE_TYPE = "Unsupported data source type '%s'";
+
+  private SqlStorageException(@NotNull String message) {
+    super(message);
+  }
+
+  private SqlStorageException(@NotNull Throwable cause) {
+    super(cause);
+  }
+
+  private SqlStorageException(@NotNull String message, @NotNull Throwable cause) {
+    super(message, cause);
+  }
 
   public static @NotNull SqlStorageException connectionPoolNotSetup() {
     return new SqlStorageException(CONNECTION_POOL_NOT_SETUP);

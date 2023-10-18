@@ -31,15 +31,17 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.Jobs
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.listener.jobs.JobsPrePaymentListener;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** This class represents a register of listeners. */
-@Slf4j
 @Singleton
 public class ListenerRegister {
+
+  private static final Logger LOG = LoggerFactory.getLogger(ListenerRegister.class);
 
   private final JavaPlugin javaPlugin;
   private final PluginManager pluginManager;
@@ -85,6 +87,6 @@ public class ListenerRegister {
     pluginManager.registerEvents(blockSpreadListener, javaPlugin);
     pluginManager.registerEvents(jobsExpGainListener, javaPlugin);
     pluginManager.registerEvents(jobsPrePaymentListener, javaPlugin);
-    log.atInfo().log("Event listeners registered.");
+    LOG.atInfo().log("Event listeners registered.");
   }
 }

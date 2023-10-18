@@ -56,7 +56,7 @@ public class SqlTagRepository implements TagRepository {
         connection -> {
           try {
             connection.setAutoCommit(false);
-            tagSqlDao.delete(connection, tag.getBlockLocation());
+            tagSqlDao.delete(connection, tag.blockLocation());
             tagSqlDao.insert(connection, tag);
             connection.commit();
           } catch (SQLException e) {
@@ -87,9 +87,9 @@ public class SqlTagRepository implements TagRepository {
     Set<Tag> newTags = new HashSet<>();
 
     for (OldNewBlockLocationPair oldNewLocationPair :
-        oldNewLocationPairs.getOldNewBlockLocationPairs()) {
+        oldNewLocationPairs.oldNewBlockLocationPairs()) {
       Optional<Tag> oldTag =
-          tagSqlDao.findByLocation(connection, oldNewLocationPair.getOldBlockLocation());
+          tagSqlDao.findByLocation(connection, oldNewLocationPair.oldBlockLocation());
 
       if (oldTag.isEmpty()) {
         continue;
@@ -97,9 +97,9 @@ public class SqlTagRepository implements TagRepository {
 
       Tag newTag =
           new Tag(
-              oldNewLocationPair.getNewBlockLocation(),
+              oldNewLocationPair.newBlockLocation(),
               oldTag.get().isEphemeral(),
-              oldTag.get().getInitLocalDateTime());
+              oldTag.get().initLocalDateTime());
       newTags.add(newTag);
     }
 

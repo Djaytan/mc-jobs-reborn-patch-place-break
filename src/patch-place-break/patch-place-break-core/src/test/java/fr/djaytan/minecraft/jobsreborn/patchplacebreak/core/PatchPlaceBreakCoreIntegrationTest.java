@@ -24,10 +24,10 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.core;
 
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.PatchPlaceBreakApi;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Clock;
-import lombok.SneakyThrows;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
@@ -52,14 +52,12 @@ class PatchPlaceBreakCoreIntegrationTest {
   private final PatchPlaceBreakCore patchPlaceBreakCore = new PatchPlaceBreakCore();
 
   @AfterEach
-  @SneakyThrows
   void afterEach() {
     patchPlaceBreakCore.disable();
   }
 
   @Test
   @DisplayName("When enabling with default setup (SQLite)")
-  @SneakyThrows
   void whenEnabling_withDefaultSetup() {
     // Given
     ClassLoader classLoader = PatchPlaceBreakCore.class.getClassLoader();
@@ -93,8 +91,7 @@ class PatchPlaceBreakCoreIntegrationTest {
   @ParameterizedTest
   @ValueSource(strings = {"mysql", "mariadb"})
   @DisplayName("When enabling with custom setup")
-  @SneakyThrows
-  void whenEnabling_withCustomSetup(@NotNull String dbmsType) {
+  void whenEnabling_withCustomSetup(@NotNull String dbmsType) throws IOException {
     // Given
     int dbmsPort = Integer.parseInt(System.getProperty(String.format("%s.port", dbmsType)));
     String givenConfigFileContent =

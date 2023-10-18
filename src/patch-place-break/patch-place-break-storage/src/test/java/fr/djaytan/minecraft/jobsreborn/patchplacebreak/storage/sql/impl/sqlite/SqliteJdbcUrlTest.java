@@ -26,9 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
+import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,8 +38,7 @@ class SqliteJdbcUrlTest {
   private final FileSystem imfs = Jimfs.newFileSystem(Configuration.unix());
 
   @AfterEach
-  @SneakyThrows
-  void afterEach() {
+  void afterEach() throws IOException {
     imfs.close();
   }
 

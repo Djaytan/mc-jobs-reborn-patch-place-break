@@ -29,11 +29,11 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.commons.test.TestResourcesHelper;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties.DbmsHostPropertiesImpl;
+import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-import lombok.SneakyThrows;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,8 +54,7 @@ class ConfigSerializerTest {
   }
 
   @AfterEach
-  @SneakyThrows
-  void afterEach() {
+  void afterEach() throws IOException {
     imfs.close();
   }
 
@@ -65,8 +64,7 @@ class ConfigSerializerTest {
 
     @Test
     @DisplayName("With nominal values")
-    @SneakyThrows
-    void withNominalValues_shouldCreateAndFillYamlFile() {
+    void withNominalValues_shouldCreateAndFillYamlFile() throws IOException {
       // Given
       Path targetFileLocation = imfs.getPath("test.conf");
       DbmsHostPropertiesImpl dbmsHostPropertiesImpl =

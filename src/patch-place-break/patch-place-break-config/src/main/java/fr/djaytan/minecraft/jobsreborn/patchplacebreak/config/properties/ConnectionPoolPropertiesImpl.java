@@ -25,14 +25,14 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.ConnectionPoolProperties;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Positive;
-import lombok.Value;
+import java.util.Objects;
+import java.util.StringJoiner;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-@Value
-public class ConnectionPoolPropertiesImpl implements ConnectionPoolProperties, Properties {
+public final class ConnectionPoolPropertiesImpl implements ConnectionPoolProperties, Properties {
 
   @Max(600000)
   @Positive
@@ -44,7 +44,7 @@ public class ConnectionPoolPropertiesImpl implements ConnectionPoolProperties, P
           from the DBMS server
           Not applicable for SQLite
           Accepted range values: [1-600000]""")
-  long connectionTimeout;
+  private final long connectionTimeout;
 
   @Max(100)
   @Positive
@@ -54,15 +54,47 @@ public class ConnectionPoolPropertiesImpl implements ConnectionPoolProperties, P
           The number of DBMS connections in the pool
           Could be best determined by the executing environment
           Accepted range values: [1-100]""")
-  int poolSize;
+  private final int poolSize;
 
   public ConnectionPoolPropertiesImpl() {
     this.connectionTimeout = 30000;
     this.poolSize = 10;
   }
 
+  /** Testing purposes only. */
   public ConnectionPoolPropertiesImpl(long connectionTimeout, int poolSize) {
     this.connectionTimeout = connectionTimeout;
     this.poolSize = poolSize;
+  }
+
+  @Override
+  public long getConnectionTimeout() {
+    return connectionTimeout;
+  }
+
+  @Override
+  public int getPoolSize() {
+    return poolSize;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ConnectionPoolPropertiesImpl that = (ConnectionPoolPropertiesImpl) o;
+    return connectionTimeout == that.connectionTimeout && poolSize == that.poolSize;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(connectionTimeout, poolSize);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", ConnectionPoolPropertiesImpl.class.getSimpleName() + "[", "]")
+        .add("connectionTimeout=" + connectionTimeout)
+        .add("poolSize=" + poolSize)
+        .toString();
   }
 }

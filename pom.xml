@@ -75,7 +75,6 @@
 
     <!-- ==================== Dependencies versions ==================== -->
     <version.flyway>9.22.3</version.flyway>
-    <version.lombok>1.18.30</version.lombok>
   </properties>
 
   <dependencyManagement>
@@ -261,13 +260,6 @@
         <version>24.0.1</version>
         <scope>provided</scope>
       </dependency>
-      <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>${version.lombok}</version>
-        <scope>provided</scope>
-        <!-- Useful only before compile time for code generation -->
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -409,7 +401,6 @@
                 <exclude>src/test/resources/**</exclude>
                 <exclude>**/dir.empty</exclude>
                 <exclude>.editorconfig</exclude>
-                <exclude>lombok.config</exclude>
                 <exclude>renovate.json</exclude>
               </excludes>
             </licenseSet>
@@ -480,13 +471,6 @@
           <release>${java.version}</release>
           <failOnWarning>true</failOnWarning>
           <showDeprecation>true</showDeprecation>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-              <version>${version.lombok}</version>
-            </path>
-          </annotationProcessorPaths>
         </configuration>
       </plugin>
       <plugin>
@@ -502,7 +486,6 @@
               org.slf4j:slf4j-nop
               <!-- Required for deactivating logs during tests execution -->
             </ignoredUnusedDeclaredDependency>
-            <ignoredUnusedDeclaredDependency>org.projectlombok:lombok</ignoredUnusedDeclaredDependency>
           </ignoredUnusedDeclaredDependencies>
         </configuration>
         <executions>
@@ -627,7 +610,7 @@
           <parallel>all</parallel>
           <useUnlimitedThreads>true</useUnlimitedThreads>
           <!--suppress UnresolvedMavenProperty - Defined at runtime by JaCoCo -->
-          <argLine>-Xshare:off ${surefire.jacoco.args}</argLine>
+          <argLine>${surefire.jacoco.args}</argLine>
           <includes>
             <include>**/*Test.java</include>
           </includes>

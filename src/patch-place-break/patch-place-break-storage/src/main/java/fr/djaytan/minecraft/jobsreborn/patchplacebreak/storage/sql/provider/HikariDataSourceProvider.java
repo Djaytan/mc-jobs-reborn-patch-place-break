@@ -29,12 +29,14 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.JdbcUrl;
 import jakarta.inject.Inject;
 import jakarta.inject.Provider;
 import jakarta.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
-@Slf4j
 public class HikariDataSourceProvider implements Provider<HikariDataSource> {
+
+  private static final Logger LOG = LoggerFactory.getLogger(HikariDataSourceProvider.class);
 
   private final DataSourceProperties dataSourceProperties;
   private final JdbcUrl jdbcUrl;
@@ -47,9 +49,9 @@ public class HikariDataSourceProvider implements Provider<HikariDataSource> {
   }
 
   public @NotNull HikariDataSource get() {
-    log.atInfo().log("Connecting to database '{}'...", jdbcUrl.get());
+    LOG.atInfo().log("Connecting to database '{}'...", jdbcUrl.get());
     HikariDataSource hikariDataSource = new HikariDataSource(createHikariConfig());
-    log.atInfo().log("Connected to the database successfully.");
+    LOG.atInfo().log("Connected to the database successfully.");
     return hikariDataSource;
   }
 

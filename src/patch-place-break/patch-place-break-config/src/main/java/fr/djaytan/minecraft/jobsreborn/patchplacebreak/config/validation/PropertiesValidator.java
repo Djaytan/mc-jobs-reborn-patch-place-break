@@ -28,12 +28,14 @@ import jakarta.inject.Singleton;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import java.util.Set;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
-@Slf4j
 public final class PropertiesValidator {
+
+  private static final Logger LOG = LoggerFactory.getLogger(PropertiesValidator.class);
 
   private static final String LINE_SEPARATOR = System.getProperty("line.separator");
   private final Validator validator;
@@ -51,16 +53,16 @@ public final class PropertiesValidator {
    */
   public void validate(@NotNull Properties properties) {
     String propertiesTypeName = properties.getClass().getSimpleName();
-    log.atInfo().log("Validating properties of type '{}'...", propertiesTypeName);
+    LOG.atInfo().log("Validating properties of type '{}'...", propertiesTypeName);
 
     Set<ConstraintViolation<Properties>> constraintViolations = validator.validate(properties);
 
     if (!constraintViolations.isEmpty()) {
       String formatted = ConstraintViolationFormatter.format(constraintViolations);
-      log.atError().log("Detected constraint violations:{}{}", LINE_SEPARATOR, formatted);
+      LOG.atError().log("Detected constraint violations:{}{}", LINE_SEPARATOR, formatted);
       throw PropertiesValidationException.constraintViolations(constraintViolations);
     }
 
-    log.atInfo().log("Properties of type '{}' validated.", propertiesTypeName);
+    LOG.atInfo().log("Properties of type '{}' validated.", propertiesTypeName);
   }
 }

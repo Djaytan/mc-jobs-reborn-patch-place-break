@@ -22,32 +22,34 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.properties;
 
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsCredentialsProperties;
+import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsHostProperties;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.DbmsServerProperties;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Value;
+import java.util.Objects;
+import java.util.StringJoiner;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-@Value
-public class DbmsServerPropertiesImpl implements DbmsServerProperties, Properties {
+public final class DbmsServerPropertiesImpl implements DbmsServerProperties, Properties {
 
   @NotNull
   @Valid
   @Required
   @Comment("Host properties of the DBMS server")
-  DbmsHostPropertiesImpl host;
+  private final DbmsHostPropertiesImpl host;
 
   @NotNull
   @Valid
   @Required
   @Comment("Credentials for authentication with the DBMS server")
-  DbmsCredentialsPropertiesImpl credentials;
+  private final DbmsCredentialsPropertiesImpl credentials;
 
   @NotBlank
   @Size(max = 128)
@@ -55,7 +57,7 @@ public class DbmsServerPropertiesImpl implements DbmsServerProperties, Propertie
   @Comment("""
       The database to use on DBMS server
       Value can't be empty or blank""")
-  String database;
+  private final String database;
 
   public DbmsServerPropertiesImpl() {
     this.host = new DbmsHostPropertiesImpl();
@@ -63,6 +65,7 @@ public class DbmsServerPropertiesImpl implements DbmsServerProperties, Propertie
     this.database = "database";
   }
 
+  /** Testing purposes only. */
   public DbmsServerPropertiesImpl(
       @Nullable DbmsHostPropertiesImpl host,
       @Nullable DbmsCredentialsPropertiesImpl credentials,
@@ -70,5 +73,44 @@ public class DbmsServerPropertiesImpl implements DbmsServerProperties, Propertie
     this.host = host;
     this.credentials = credentials;
     this.database = database;
+  }
+
+  @Override
+  public @org.jetbrains.annotations.NotNull DbmsHostProperties getHost() {
+    return Objects.requireNonNull(host);
+  }
+
+  @Override
+  public @org.jetbrains.annotations.NotNull DbmsCredentialsProperties getCredentials() {
+    return Objects.requireNonNull(credentials);
+  }
+
+  @Override
+  public @org.jetbrains.annotations.NotNull String getDatabase() {
+    return Objects.requireNonNull(database);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    DbmsServerPropertiesImpl that = (DbmsServerPropertiesImpl) o;
+    return Objects.equals(host, that.host)
+        && Objects.equals(credentials, that.credentials)
+        && Objects.equals(database, that.database);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(host, credentials, database);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", DbmsServerPropertiesImpl.class.getSimpleName() + "[", "]")
+        .add("host=" + host)
+        .add("credentials=" + credentials)
+        .add("database='" + database + "'")
+        .toString();
   }
 }

@@ -24,15 +24,16 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config.validation;
 
 import jakarta.validation.ConstraintViolation;
 import java.util.Set;
-import lombok.AccessLevel;
-import lombok.experimental.StandardException;
 import org.jetbrains.annotations.NotNull;
 
-@StandardException(access = AccessLevel.PROTECTED)
 public class PropertiesValidationException extends RuntimeException {
 
   private static final String CONFIG_CONSTRAINT_VIOLATIONS =
       "Detected config constraint violations: %s";
+
+  private PropertiesValidationException(@NotNull String message) {
+    super(message);
+  }
 
   public static <T> @NotNull PropertiesValidationException constraintViolations(
       @NotNull Set<ConstraintViolation<T>> constraintViolations) {

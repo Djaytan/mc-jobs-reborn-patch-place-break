@@ -24,16 +24,17 @@ package fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.adapter;
 
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockActionType;
-import lombok.AccessLevel;
-import lombok.experimental.StandardException;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-@StandardException(access = AccessLevel.PROTECTED)
 public class BukkitAdapterException extends RuntimeException {
 
   private static final String INVALID_JOB_TYPE =
       "Invalid job action type '%s' specified. Expecting one of the following: %s";
+
+  private BukkitAdapterException(@NotNull String message) {
+    super(message);
+  }
 
   public static @NotNull BukkitAdapterException invalidJobType(
       @NotNull ActionType invalidJobActionType) {

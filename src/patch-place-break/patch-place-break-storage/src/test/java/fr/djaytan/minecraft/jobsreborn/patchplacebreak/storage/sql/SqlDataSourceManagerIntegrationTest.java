@@ -35,10 +35,10 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.mysql.My
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.impl.sqlite.SqliteJdbcUrl;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider.FlywayProvider;
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.sql.provider.HikariDataSourceProvider;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
-import lombok.SneakyThrows;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.flywaydb.core.Flyway;
 import org.jetbrains.annotations.NotNull;
@@ -63,7 +63,6 @@ class SqlDataSourceManagerIntegrationTest {
   @ParameterizedTest
   @MethodSource
   @DisplayName("When connecting to existing database")
-  @SneakyThrows
   void whenConnectingToExistingDatabase_shouldNotThrow(
       @NotNull SqlDataSourceManager sqlDataSourceManager) {
     // Given
@@ -76,12 +75,12 @@ class SqlDataSourceManagerIntegrationTest {
     assertThatCode(throwingCallable).doesNotThrowAnyException();
   }
 
-  private static @NotNull Stream<Arguments> whenConnectingToExistingDatabase_shouldNotThrow() {
+  private static @NotNull Stream<Arguments> whenConnectingToExistingDatabase_shouldNotThrow()
+      throws IOException {
     return Stream.of(forSqlite(), forMysql(), forMariadb());
   }
 
-  @SneakyThrows
-  private static @NotNull Arguments forSqlite() {
+  private static @NotNull Arguments forSqlite() throws IOException {
     DataSourceProperties dataSourcePropertiesMocked =
         DataSourcePropertiesMock.get(DataSourceType.SQLITE);
     Path sqliteDatabaseFile = Files.createTempFile("ppb-datasourcemanager", "");

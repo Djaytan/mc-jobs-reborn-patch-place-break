@@ -122,7 +122,6 @@ Take care to always follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 * [Jakarta Beans Validator](https://beanvalidation.org/)
   (with [Hibernate Validator](https://github.com/hibernate/hibernate-validator) as implementation)
 * [Configurate](https://github.com/SpongePowered/Configurate)
-* [Lombok](https://projectlombok.org/)
 
 Specifically for the tests:
 

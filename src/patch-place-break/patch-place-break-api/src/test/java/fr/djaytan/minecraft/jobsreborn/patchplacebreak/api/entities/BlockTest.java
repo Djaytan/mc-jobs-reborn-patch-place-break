@@ -22,9 +22,6 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 
-import com.jparams.verifier.tostring.NameStyle;
-import com.jparams.verifier.tostring.ToStringVerifier;
-import nl.jqno.equalsverifier.EqualsVerifier;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
@@ -51,19 +48,7 @@ class BlockTest {
     Block block = new Block(blockLocation, "STONE");
 
     // Then
-    softly.assertThat(block.getBlockLocation()).isEqualTo(blockLocation);
-    softly.assertThat(block.getMaterial()).isEqualTo("STONE");
-  }
-
-  @Test
-  @DisplayName("When calling equals() & hashCode()")
-  void whenCallingEqualsAndHashCode_shouldMetContracts() {
-    EqualsVerifier.forClass(Block.class).verify();
-  }
-
-  @Test
-  @DisplayName("When calling toString()")
-  void whenCallingToString_shouldMetContracts() {
-    ToStringVerifier.forClass(Block.class).withClassName(NameStyle.SIMPLE_NAME).verify();
+    softly.assertThat(block.blockLocation()).isEqualTo(blockLocation);
+    softly.assertThat(block.material()).isEqualTo("STONE");
   }
 }

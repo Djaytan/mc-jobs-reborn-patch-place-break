@@ -109,7 +109,7 @@ class PatchPlaceBreakImplTest {
       verify(tagRepository).put(tagCaptor.capture());
       Tag tag = tagCaptor.getValue();
 
-      softly.assertThat(tag.getBlockLocation()).isEqualTo(blockLocation);
+      softly.assertThat(tag.blockLocation()).isEqualTo(blockLocation);
       softly.assertThat(tag.isEphemeral()).isFalse();
     }
 
@@ -141,7 +141,7 @@ class PatchPlaceBreakImplTest {
       verify(tagRepository).put(tagCaptor.capture());
       Tag tag = tagCaptor.getValue();
 
-      softly.assertThat(tag.getBlockLocation()).isEqualTo(blockLocation);
+      softly.assertThat(tag.blockLocation()).isEqualTo(blockLocation);
       softly.assertThat(tag.isEphemeral()).isTrue();
     }
   }
@@ -209,8 +209,8 @@ class PatchPlaceBreakImplTest {
                   .map(
                       oldBlock ->
                           new OldNewBlockLocationPair(
-                              oldBlock.getBlockLocation(),
-                              BlockLocation.from(oldBlock.getBlockLocation(), direction)))
+                              oldBlock.blockLocation(),
+                              BlockLocation.from(oldBlock.blockLocation(), direction)))
                   .collect(Collectors.toSet()));
 
       assertThat(actualValue).isEqualTo(expectedValue);
@@ -255,12 +255,12 @@ class PatchPlaceBreakImplTest {
       OldNewBlockLocationPairSet expectedValue =
           new OldNewBlockLocationPairSet(
               blocks.stream()
-                  .filter(block -> !restrictedBlocksProperties.isRestricted(block.getMaterial()))
+                  .filter(block -> !restrictedBlocksProperties.isRestricted(block.material()))
                   .map(
                       oldBlockLocation ->
                           new OldNewBlockLocationPair(
-                              oldBlockLocation.getBlockLocation(),
-                              BlockLocation.from(oldBlockLocation.getBlockLocation(), direction)))
+                              oldBlockLocation.blockLocation(),
+                              BlockLocation.from(oldBlockLocation.blockLocation(), direction)))
                   .collect(Collectors.toSet()));
 
       assertThat(actualValue).isEqualTo(expectedValue);

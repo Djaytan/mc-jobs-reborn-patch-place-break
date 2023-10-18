@@ -27,18 +27,15 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lombok.Value;
 import org.jetbrains.annotations.NotNull;
 
 /** Represents a set of {@link OldNewBlockLocationPair}. */
-@Value
-public class OldNewBlockLocationPairSet {
-
-  Set<OldNewBlockLocationPair> oldNewBlockLocationPairs;
+public record OldNewBlockLocationPairSet(
+    @NotNull Set<OldNewBlockLocationPair> oldNewBlockLocationPairs) {
 
   public OldNewBlockLocationPairSet(
       @NotNull Collection<OldNewBlockLocationPair> oldNewBlockLocationPairs) {
-    this.oldNewBlockLocationPairs = Set.copyOf(oldNewBlockLocationPairs);
+    this(Set.copyOf(oldNewBlockLocationPairs));
   }
 
   /**
@@ -51,8 +48,8 @@ public class OldNewBlockLocationPairSet {
         .flatMap(
             oldNewBlockLocationPair ->
                 Stream.of(
-                    oldNewBlockLocationPair.getOldBlockLocation(),
-                    oldNewBlockLocationPair.getNewBlockLocation()))
+                    oldNewBlockLocationPair.oldBlockLocation(),
+                    oldNewBlockLocationPair.newBlockLocation()))
         .collect(Collectors.toSet());
   }
 }

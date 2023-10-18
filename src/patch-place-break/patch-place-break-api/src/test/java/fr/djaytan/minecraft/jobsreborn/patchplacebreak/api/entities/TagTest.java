@@ -20,14 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api;
+package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 
-import com.jparams.verifier.tostring.NameStyle;
-import com.jparams.verifier.tostring.ToStringVerifier;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.BlockLocation;
-import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities.Tag;
 import java.time.LocalDateTime;
-import nl.jqno.equalsverifier.EqualsVerifier;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
@@ -57,20 +52,8 @@ class TagTest {
     Tag tag = new Tag(blockLocation, isEphemeral, localDateTime);
 
     // Then
-    softly.assertThat(tag.getInitLocalDateTime()).isEqualTo(localDateTime);
+    softly.assertThat(tag.initLocalDateTime()).isEqualTo(localDateTime);
     softly.assertThat(tag.isEphemeral()).isEqualTo(isEphemeral);
-    softly.assertThat(tag.getBlockLocation()).isEqualTo(blockLocation);
-  }
-
-  @Test
-  @DisplayName("When calling equals() & hashCode()")
-  void whenCallingEqualsAndHashcode_shouldMetContracts() {
-    EqualsVerifier.forClass(Tag.class).verify();
-  }
-
-  @Test
-  @DisplayName("When calling toString()")
-  void whenCallingToString_shouldMetContracts() {
-    ToStringVerifier.forClass(Tag.class).withClassName(NameStyle.SIMPLE_NAME).verify();
+    softly.assertThat(tag.blockLocation()).isEqualTo(blockLocation);
   }
 }

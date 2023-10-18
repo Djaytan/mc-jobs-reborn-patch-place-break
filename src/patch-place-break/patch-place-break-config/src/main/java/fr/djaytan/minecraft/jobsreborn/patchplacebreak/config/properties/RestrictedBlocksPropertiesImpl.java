@@ -27,19 +27,21 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.properties.Restrictio
 import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
-import lombok.Value;
+import java.util.StringJoiner;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-@Value
-public class RestrictedBlocksPropertiesImpl implements Properties, RestrictedBlocksProperties {
+public final class RestrictedBlocksPropertiesImpl
+    implements Properties, RestrictedBlocksProperties {
 
   @Required
   @Comment("List of materials used when applying restrictions to patch tags")
-  Set<String> materials;
+  private final Set<String> materials;
 
   @NotNull
   @Required
@@ -50,17 +52,29 @@ public class RestrictedBlocksPropertiesImpl implements Properties, RestrictedBlo
           * BLACKLIST: Only listed blocks are marked as restricted
           * WHITELIST: All blocks are marked as restricted except the listed ones
           * DISABLED: No restriction applied""")
-  RestrictionMode restrictionMode;
+  private final RestrictionMode restrictionMode;
 
   public RestrictedBlocksPropertiesImpl() {
     this.materials = new HashSet<>();
     this.restrictionMode = RestrictionMode.DISABLED;
   }
 
+  /** Testing purposes only. */
   public RestrictedBlocksPropertiesImpl(
-      Collection<String> materials, RestrictionMode restrictionMode) {
+      @org.jetbrains.annotations.NotNull Collection<String> materials,
+      @Nullable RestrictionMode restrictionMode) {
     this.materials = Set.copyOf(materials);
     this.restrictionMode = restrictionMode;
+  }
+
+  @org.jetbrains.annotations.NotNull
+  Set<String> getMaterials() {
+    return materials;
+  }
+
+  @org.jetbrains.annotations.NotNull
+  RestrictionMode getRestrictionMode() {
+    return Objects.requireNonNull(restrictionMode);
   }
 
   @Override
@@ -70,5 +84,26 @@ public class RestrictedBlocksPropertiesImpl implements Properties, RestrictedBlo
       case WHITELIST -> !materials.contains(material);
       case DISABLED -> false;
     };
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    RestrictedBlocksPropertiesImpl that = (RestrictedBlocksPropertiesImpl) o;
+    return Objects.equals(materials, that.materials) && restrictionMode == that.restrictionMode;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(materials, restrictionMode);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", RestrictedBlocksPropertiesImpl.class.getSimpleName() + "[", "]")
+        .add("materials=" + materials)
+        .add("restrictionMode=" + restrictionMode)
+        .toString();
   }
 }

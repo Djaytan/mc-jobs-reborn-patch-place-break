@@ -124,10 +124,7 @@ class SqlTagRepositoryIntegrationTest {
 
     BlockLocation newLocation =
         new BlockLocation(
-            oldLocation.getWorldName(),
-            oldLocation.getX() + 1,
-            oldLocation.getY(),
-            oldLocation.getZ());
+            oldLocation.worldName(), oldLocation.x() + 1, oldLocation.y(), oldLocation.z());
 
     Preconditions.condition(
         sqlTagRepository.findByLocation(newLocation).isEmpty(),
@@ -157,10 +154,7 @@ class SqlTagRepositoryIntegrationTest {
     BlockLocation oldLocation = randomBlockLocation;
     BlockLocation newLocation =
         new BlockLocation(
-            oldLocation.getWorldName(),
-            oldLocation.getX() + 1,
-            oldLocation.getY(),
-            oldLocation.getZ());
+            oldLocation.worldName(), oldLocation.x() + 1, oldLocation.y(), oldLocation.z());
 
     Preconditions.condition(
         sqlTagRepository.findByLocation(oldLocation).isEmpty(),

@@ -22,15 +22,16 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.config;
 
-import lombok.AccessLevel;
-import lombok.experimental.StandardException;
 import org.jetbrains.annotations.NotNull;
 
-@StandardException(access = AccessLevel.PROTECTED)
 public class ConfigException extends RuntimeException {
 
   private static final String READ_CONFIG =
       "Failed to read config file '%s'. Is config file empty?";
+
+  private ConfigException(@NotNull String message) {
+    super(message);
+  }
 
   public static @NotNull ConfigException failedReadingConfig(@NotNull String configFileName) {
     String message = String.format(READ_CONFIG, configFileName);

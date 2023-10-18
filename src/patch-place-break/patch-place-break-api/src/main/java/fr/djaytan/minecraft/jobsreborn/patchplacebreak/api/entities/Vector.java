@@ -22,12 +22,11 @@
  */
 package fr.djaytan.minecraft.jobsreborn.patchplacebreak.api.entities;
 
-import lombok.Value;
-
-@Value
-public class Vector {
-
-  int modX;
-  int modY;
-  int modZ;
-}
+/**
+ * An immutable and thread-safe vector in a 3D plan.
+ *
+ * @param modX The modifier for the x-axis.
+ * @param modY The modifier for the y-axis.
+ * @param modZ The modifier for the z-axis.
+ */
+public record Vector(int modX, int modY, int modZ) {}

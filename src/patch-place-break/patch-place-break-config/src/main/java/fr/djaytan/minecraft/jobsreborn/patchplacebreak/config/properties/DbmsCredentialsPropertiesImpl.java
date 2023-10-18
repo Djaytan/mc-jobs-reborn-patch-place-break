@@ -26,19 +26,15 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.storage.api.properties.Db
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
+import java.util.Objects;
+import java.util.StringJoiner;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-@Value
-@EqualsAndHashCode(exclude = "password")
-@ToString(exclude = "password")
-public class DbmsCredentialsPropertiesImpl implements DbmsCredentialsProperties, Properties {
+public final class DbmsCredentialsPropertiesImpl implements DbmsCredentialsProperties, Properties {
 
   @NotBlank
   @Size(max = 32)
@@ -47,21 +43,52 @@ public class DbmsCredentialsPropertiesImpl implements DbmsCredentialsProperties,
       """
           Under behalf of which user to connect on the DBMS server
           Value can't be empty or blank""")
-  String username;
+  private final String username;
 
   @NotNull
   @Size(max = 128)
   @Required
   @Comment("Password of the user (optional but highly recommended)")
-  String password;
+  private final String password;
 
   public DbmsCredentialsPropertiesImpl() {
     this.username = "username";
     this.password = "password";
   }
 
+  /** Testing purposes only. */
   public DbmsCredentialsPropertiesImpl(@Nullable String username, @Nullable String password) {
     this.username = username;
     this.password = password;
+  }
+
+  @Override
+  public @org.jetbrains.annotations.NotNull String getUsername() {
+    return Objects.requireNonNull(username);
+  }
+
+  @Override
+  public @org.jetbrains.annotations.NotNull String getPassword() {
+    return Objects.requireNonNull(password);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    DbmsCredentialsPropertiesImpl that = (DbmsCredentialsPropertiesImpl) o;
+    return Objects.equals(username, that.username);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(username);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", DbmsCredentialsPropertiesImpl.class.getSimpleName() + "[", "]")
+        .add("username='" + username + "'")
+        .toString();
   }
 }

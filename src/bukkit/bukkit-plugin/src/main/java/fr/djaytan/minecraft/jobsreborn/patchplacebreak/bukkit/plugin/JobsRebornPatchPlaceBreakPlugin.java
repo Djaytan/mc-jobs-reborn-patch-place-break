@@ -29,7 +29,6 @@ import fr.djaytan.minecraft.jobsreborn.patchplacebreak.bukkit.plugin.inject.Jobs
 import fr.djaytan.minecraft.jobsreborn.patchplacebreak.core.PatchPlaceBreakCore;
 import java.io.File;
 import java.time.Clock;
-import lombok.SneakyThrows;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
@@ -60,7 +59,6 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
   }
 
   @Override
-  @SneakyThrows
   public void onEnable() {
     BukkitLoggerFactory.provideBukkitLogger(getLogger());
 
