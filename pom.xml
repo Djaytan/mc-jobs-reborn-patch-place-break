@@ -171,17 +171,7 @@
       </dependency>
       <dependency>
         <groupId>fr.djaytan.mc.jr-ppb</groupId>
-        <artifactId>patch-place-break-config</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>fr.djaytan.mc.jr-ppb</groupId>
         <artifactId>patch-place-break-core</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>fr.djaytan.mc.jr-ppb</groupId>
-        <artifactId>patch-place-break-storage</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

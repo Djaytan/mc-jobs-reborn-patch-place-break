@@ -25,8 +25,8 @@ package fr.djaytan.mc.jrppb.core.inject;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import fr.djaytan.mc.jrppb.api.properties.RestrictedBlocksProperties;
-import fr.djaytan.mc.jrppb.config.ConfigApi;
-import fr.djaytan.mc.jrppb.storage.api.properties.DataSourceProperties;
+import fr.djaytan.mc.jrppb.core.config.ConfigApi;
+import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
 import jakarta.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 

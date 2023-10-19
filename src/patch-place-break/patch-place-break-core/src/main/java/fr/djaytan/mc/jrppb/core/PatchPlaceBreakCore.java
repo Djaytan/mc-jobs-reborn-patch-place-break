@@ -24,7 +24,7 @@ package fr.djaytan.mc.jrppb.core;
 
 import fr.djaytan.mc.jrppb.api.PatchPlaceBreakApi;
 import fr.djaytan.mc.jrppb.core.inject.PatchPlaceBreakInjector;
-import fr.djaytan.mc.jrppb.storage.api.DataSourceManager;
+import fr.djaytan.mc.jrppb.core.storage.api.DataSourceManager;
 import jakarta.inject.Singleton;
 import java.nio.file.Path;
 import java.time.Clock;
