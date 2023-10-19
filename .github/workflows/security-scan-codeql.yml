@@ -49,6 +49,13 @@ jobs:
           java-version: 17
           distribution: temurin
 
+      - name: Cache local Maven repository
+        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3.3.2
+        with:
+          path: ~/.m2/repository
+          key: m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: m2
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@0116bc2df50751f9724a2e35ef1f24d22f90e4e1 # v2.22.3
         with:
