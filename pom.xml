@@ -45,9 +45,11 @@
   </licenses>
 
   <modules>
-    <module>src/bukkit</module>
+    <module>src/bukkit-patch-adapter</module>
+    <module>src/bukkit-plugin</module>
     <module>src/commons-test</module>
-    <module>src/patch-place-break</module>
+    <module>src/patch-place-break-api</module>
+    <module>src/patch-place-break-core</module>
   </modules>
 
   <issueManagement>
@@ -113,6 +115,16 @@
         <version>4.1.2</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.github.Djaytan</groupId>
+        <artifactId>bukkit-slf4j</artifactId>
+        <version>1.0.29</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.seeseemelk</groupId>
+        <artifactId>MockBukkit-v1.17</artifactId>
+        <version>1.13.0</version>
       </dependency>
       <dependency>
         <groupId>com.google.errorprone</groupId>
@@ -200,6 +212,11 @@
         <version>4.2.0</version>
       </dependency>
       <dependency>
+        <groupId>org.bstats</groupId>
+        <artifactId>bstats-bukkit</artifactId>
+        <version>3.0.2</version>
+      </dependency>
+      <dependency>
         <groupId>org.flywaydb</groupId>
         <artifactId>flyway-core</artifactId>
         <version>${version.flyway}</version>
@@ -245,13 +262,38 @@
         <version>3.43.2.0</version>
       </dependency>
       <dependency>
+        <groupId>com.github.Zrips</groupId>
+        <artifactId>Jobs</artifactId>
+        <version>v4.17.2</version>
+        <!-- Server must have JobsReborn plugin installed -->
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
         <groupId>org.jetbrains</groupId>
         <artifactId>annotations</artifactId>
         <version>24.0.1</version>
         <scope>provided</scope>
       </dependency>
+      <dependency>
+        <groupId>org.spigotmc</groupId>
+        <artifactId>spigot-api</artifactId>
+        <version>1.17.1-R0.1-SNAPSHOT</version>
+        <!-- The server must be a Spigot or a derivative one (e.g. PaperMC, Purpur, ...) -->
+        <scope>provided</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <repositories>
+    <repository>
+      <id>papermc</id>
+      <url>https://repo.papermc.io/repository/maven-public/</url>
+    </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
 
   <build>
     <defaultGoal>clean verify</defaultGoal>

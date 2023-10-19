@@ -27,8 +27,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>fr.djaytan.mc.jr-ppb</groupId>
-    <artifactId>bukkit</artifactId>
+    <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
     <version>DEV-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <artifactId>bukkit-plugin</artifactId>
@@ -37,7 +38,7 @@
   <description>The Bukkit plugin of the place-and-break patch</description>
 
   <properties>
-    <main.basedir>${project.basedir}/../../../</main.basedir>
+    <main.basedir>${project.basedir}/../../</main.basedir>
     <package.root>fr.djaytan.mc.jrppb</package.root>
     <package.lib>${package.root}.lib</package.lib>
     <plugin.name>JobsReborn-PatchPlaceBreak</plugin.name>
