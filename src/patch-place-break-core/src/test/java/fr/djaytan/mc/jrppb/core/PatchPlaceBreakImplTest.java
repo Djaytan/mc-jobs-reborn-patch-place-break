@@ -43,7 +43,9 @@ import fr.djaytan.mc.jrppb.core.storage.api.OldNewBlockLocationPair;
 import fr.djaytan.mc.jrppb.core.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.mc.jrppb.core.storage.api.TagRepository;
 import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
@@ -74,7 +76,7 @@ class PatchPlaceBreakImplTest {
   @Captor private ArgumentCaptor<Tag> tagCaptor;
   @Captor private ArgumentCaptor<OldNewBlockLocationPairSet> locationPairCaptor;
   @Captor private ArgumentCaptor<BlockLocation> blockLocationCaptor;
-  private final Clock clock = Clock.systemUTC();
+  private final Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
   private final RestrictedBlocksProperties restrictedBlocksProperties =
       new RestrictedBlocksPropertiesImpl(
           new HashSet<>(Arrays.asList("STONE", "DIRT")), RestrictionMode.BLACKLIST);
