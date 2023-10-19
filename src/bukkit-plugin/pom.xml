@@ -26,7 +26,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>fr.djaytan.mc.jr-ppb</groupId>
+    <groupId>fr.djaytan.mc.jrppb</groupId>
     <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
     <version>DEV-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
@@ -39,7 +39,7 @@
 
   <properties>
     <main.basedir>${project.basedir}/../../</main.basedir>
-    <package.root>fr.djaytan.mc.jrppb</package.root>
+    <package.root>${project.groupId}</package.root>
     <package.lib>${package.root}.lib</package.lib>
     <plugin.name>JobsReborn-PatchPlaceBreak</plugin.name>
     <plugin.finalName>${plugin.name}-${project.version}</plugin.finalName>
@@ -55,15 +55,15 @@
       <artifactId>guice</artifactId>
     </dependency>
     <dependency>
-      <groupId>fr.djaytan.mc.jr-ppb</groupId>
+      <groupId>fr.djaytan.mc.jrppb</groupId>
       <artifactId>bukkit-patch-adapter</artifactId>
     </dependency>
     <dependency>
-      <groupId>fr.djaytan.mc.jr-ppb</groupId>
+      <groupId>fr.djaytan.mc.jrppb</groupId>
       <artifactId>patch-place-break-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>fr.djaytan.mc.jr-ppb</groupId>
+      <groupId>fr.djaytan.mc.jrppb</groupId>
       <artifactId>patch-place-break-core</artifactId>
     </dependency>
     <dependency>
@@ -274,7 +274,7 @@
               <artifactId>bukkit-slf4j</artifactId>
             </exclusion>
             <exclusion>
-              <groupId>fr.djaytan.mc.jr-ppb</groupId>
+              <groupId>fr.djaytan.mc.jrppb</groupId>
               <artifactId>*</artifactId>
             </exclusion>
           </exclusions>

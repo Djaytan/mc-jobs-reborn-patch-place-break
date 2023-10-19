@@ -26,7 +26,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>fr.djaytan.mc.jr-ppb</groupId>
+    <groupId>fr.djaytan.mc.jrppb</groupId>
     <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
     <version>DEV-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
@@ -43,7 +43,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>fr.djaytan.mc.jr-ppb</groupId>
+      <groupId>fr.djaytan.mc.jrppb</groupId>
       <artifactId>patch-place-break-api</artifactId>
     </dependency>
     <dependency>
@@ -70,12 +70,12 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>fr.djaytan.mc.jr-ppb</groupId>
+      <groupId>fr.djaytan.mc.jrppb</groupId>
       <artifactId>commons-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>fr.djaytan.mc.jr-ppb</groupId>
+      <groupId>fr.djaytan.mc.jrppb</groupId>
       <artifactId>patch-place-break-core</artifactId>
       <scope>test</scope>
     </dependency>

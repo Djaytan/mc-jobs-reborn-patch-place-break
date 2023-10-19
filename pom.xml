@@ -26,7 +26,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>fr.djaytan.mc.jr-ppb</groupId>
+  <groupId>fr.djaytan.mc.jrppb</groupId>
   <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
   <version>DEV-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -167,22 +167,22 @@
         <version>2.14.0</version>
       </dependency>
       <dependency>
-        <groupId>fr.djaytan.mc.jr-ppb</groupId>
+        <groupId>fr.djaytan.mc.jrppb</groupId>
         <artifactId>bukkit-patch-adapter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>fr.djaytan.mc.jr-ppb</groupId>
+        <groupId>fr.djaytan.mc.jrppb</groupId>
         <artifactId>commons-test</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>fr.djaytan.mc.jr-ppb</groupId>
+        <groupId>fr.djaytan.mc.jrppb</groupId>
         <artifactId>patch-place-break-api</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>fr.djaytan.mc.jr-ppb</groupId>
+        <groupId>fr.djaytan.mc.jrppb</groupId>
         <artifactId>patch-place-break-core</artifactId>
         <version>${project.version}</version>
       </dependency>
