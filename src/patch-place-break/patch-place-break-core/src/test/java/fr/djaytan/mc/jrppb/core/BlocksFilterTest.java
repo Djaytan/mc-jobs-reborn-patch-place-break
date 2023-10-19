@@ -28,7 +28,7 @@ import fr.djaytan.mc.jrppb.api.entities.Block;
 import fr.djaytan.mc.jrppb.api.entities.BlockLocation;
 import fr.djaytan.mc.jrppb.api.properties.RestrictedBlocksProperties;
 import fr.djaytan.mc.jrppb.api.properties.RestrictionMode;
-import fr.djaytan.mc.jrppb.config.properties.RestrictedBlocksPropertiesImpl;
+import fr.djaytan.mc.jrppb.core.config.properties.RestrictedBlocksPropertiesImpl;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

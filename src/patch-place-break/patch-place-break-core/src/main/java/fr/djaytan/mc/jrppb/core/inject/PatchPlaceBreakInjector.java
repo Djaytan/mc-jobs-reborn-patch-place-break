@@ -25,7 +25,7 @@ package fr.djaytan.mc.jrppb.core.inject;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import fr.djaytan.mc.jrppb.api.PatchPlaceBreakApi;
-import fr.djaytan.mc.jrppb.storage.api.DataSourceManager;
+import fr.djaytan.mc.jrppb.core.storage.api.DataSourceManager;
 import java.nio.file.Path;
 import java.time.Clock;
 import org.jetbrains.annotations.NotNull;
