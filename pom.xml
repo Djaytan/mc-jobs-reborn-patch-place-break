@@ -69,6 +69,14 @@
     <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
     <java.version>17</java.version>
 
+    <!-- Default properties -->
+    <fmt.skipFormat>false</fmt.skipFormat>
+    <fmt.skipCheck>true</fmt.skipCheck>
+    <license.skipFormat>false</license.skipFormat>
+    <license.skipCheck>true</license.skipCheck>
+    <sortpom.skipSort>false</sortpom.skipSort>
+    <sortpom.skipCheck>true</sortpom.skipCheck>
+
     <!-- ==================== Dependencies versions ==================== -->
     <version.flyway>9.22.3</version.flyway>
   </properties>
@@ -631,20 +639,6 @@
 
   <profiles>
     <profile>
-      <id>local-dev</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <properties>
-        <fmt.skipFormat>false</fmt.skipFormat>
-        <fmt.skipCheck>true</fmt.skipCheck>
-        <license.skipFormat>false</license.skipFormat>
-        <license.skipCheck>true</license.skipCheck>
-        <sortpom.skipSort>false</sortpom.skipSort>
-        <sortpom.skipCheck>true</sortpom.skipCheck>
-      </properties>
-    </profile>
-    <profile>
       <id>ci</id>
       <properties>
         <fmt.skipFormat>true</fmt.skipFormat>
@@ -669,8 +663,6 @@
         <maven.source.skip>true</maven.source.skip>
         <jacoco.skip>true</jacoco.skip>
         <mdep.analyze.skip>true</mdep.analyze.skip>
-        <docker.skip>true</docker.skip>
-        <proguard.skip>true</proguard.skip>
 
         <!-- Skip tests -->
         <skipTests>true</skipTests>
