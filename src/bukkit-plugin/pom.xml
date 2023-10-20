@@ -267,64 +267,6 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>com.github.wvengen</groupId>
-        <artifactId>proguard-maven-plugin</artifactId>
-        <version>2.6.0</version>
-        <configuration>
-          <attach>true</attach>
-          <includeDependency>true</includeDependency>
-          <exclusions>
-            <exclusion>
-              <groupId>com.github.Djaytan</groupId>
-              <artifactId>bukkit-slf4j</artifactId>
-            </exclusion>
-            <exclusion>
-              <groupId>fr.djaytan.mc.jrppb</groupId>
-              <artifactId>*</artifactId>
-            </exclusion>
-          </exclusions>
-          <libs>
-            <lib>${java.home}/jmods</lib>
-          </libs>
-          <options>
-            <option>-allowaccessmodification</option>
-            <option>-dontnote</option>
-            <option>-dontwarn</option>
-            <option>-keep,allowoptimization class !fr.djaytan.mc.jrppb.lib.** { *; }</option>
-            <option>-keep,allowoptimization class fr.djaytan.mc.jrppb.lib.com.google.inject.** { *; }</option>
-            <option>-keep class fr.djaytan.mc.jrppb.lib.jee.jakarta.validation.** { *; }</option>
-            <option>-keep class fr.djaytan.mc.jrppb.lib.org.hibernate.validator.** { *; }</option>
-            <option>-keep class fr.djaytan.mc.jrppb.lib.org.slf4j.** { *; }</option>
-            <option>-keep class fr.djaytan.mc.jrppb.lib.com.djaytan.bukkit.slf4j.** { *; }</option>
-            <option>-keep class fr.djaytan.mc.jrppb.lib.org.flywaydb.** { *; }</option>
-            <option>-keep class fr.djaytan.mc.jrppb.lib.com.zaxxer.hikari.HikariDataSource { *; }</option>
-            <option>-keep class fr.djaytan.mc.jrppb.lib.org.aopalliance.intercept.MethodInterceptor { *; }</option>
-            <option>-keep class fr.djaytan.mc.jrppb.lib.org.spongepowered.configurate.ConfigurationNode { *; }</option>
-            <option>-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod</option>
-            <option>-optimizationpasses 3</option>
-          </options>
-          <!-- Obfuscation forbidden by SpigotMC and Hangar when publishing plugin there -->
-          <obfuscate>false</obfuscate>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.21.0</version>
-            <scope>runtime</scope>
-          </dependency>
-        </dependencies>
-        <executions>
-          <execution>
-            <id>run-proguard</id>
-            <goals>
-              <goal>proguard</goal>
-            </goals>
-            <phase>package</phase>
-          </execution>
-        </executions>
-      </plugin>
       <?SORTPOM RESUME?>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
