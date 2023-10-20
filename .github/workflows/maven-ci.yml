@@ -70,7 +70,10 @@ jobs:
 
       - name: SonarCloud Quality Scan
         env:
-          GITHUB_TOKEN: ${{ github.token }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ github.token }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: Djaytan_mc-jobs-reborn-patch-place-break
-        run: mvn sonar:sonar -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
+        run: |
+          mvn sonar:sonar \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.organization=djaytan \
+            -Dsonar.projectKey=Djaytan_mc-jobs-reborn-patch-place-break
