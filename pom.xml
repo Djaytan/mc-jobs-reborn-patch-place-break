@@ -70,12 +70,8 @@
     <java.version>17</java.version>
 
     <!-- Default properties -->
-    <fmt.skipFormat>false</fmt.skipFormat>
-    <fmt.skipCheck>true</fmt.skipCheck>
-    <license.skipFormat>false</license.skipFormat>
-    <license.skipCheck>true</license.skipCheck>
-    <sortpom.skipSort>false</sortpom.skipSort>
-    <sortpom.skipCheck>true</sortpom.skipCheck>
+    <format.perform.skip>false</format.perform.skip>
+    <format.check.skip>true</format.check.skip>
 
     <!-- ==================== Dependencies versions ==================== -->
     <version.flyway>9.22.3</version.flyway>
@@ -354,7 +350,7 @@
             </goals>
             <phase>initialize</phase>
             <configuration>
-              <skip>${sortpom.skipSort}</skip>
+              <skip>${format.perform.skip}</skip>
             </configuration>
           </execution>
           <execution>
@@ -364,7 +360,7 @@
             </goals>
             <phase>validate</phase>
             <configuration>
-              <skip>${sortpom.skipCheck}</skip>
+              <skip>${format.check.skip}</skip>
             </configuration>
           </execution>
         </executions>
@@ -399,7 +395,7 @@
             </goals>
             <phase>process-sources</phase>
             <configuration>
-              <skip>${license.skipFormat}</skip>
+              <skip>${format.perform.skip}</skip>
             </configuration>
           </execution>
           <execution>
@@ -411,7 +407,7 @@
             <configuration>
               <failIfMissing>true</failIfMissing>
               <failIfUnknown>true</failIfUnknown>
-              <skip>${license.skipCheck}</skip>
+              <skip>${format.check.skip}</skip>
             </configuration>
           </execution>
         </executions>
@@ -428,7 +424,7 @@
             </goals>
             <phase>process-sources</phase>
             <configuration>
-              <skip>${fmt.skipFormat}</skip>
+              <skip>${format.perform.skip}</skip>
             </configuration>
           </execution>
           <execution>
@@ -438,7 +434,7 @@
             </goals>
             <phase>validate</phase>
             <configuration>
-              <skip>${fmt.skipCheck}</skip>
+              <skip>${format.check.skip}</skip>
             </configuration>
           </execution>
         </executions>
@@ -641,32 +637,22 @@
     <profile>
       <id>ci</id>
       <properties>
-        <fmt.skipFormat>true</fmt.skipFormat>
-        <fmt.skipCheck>false</fmt.skipCheck>
-        <license.skipFormat>true</license.skipFormat>
-        <license.skipCheck>false</license.skipCheck>
-        <sortpom.skipSort>true</sortpom.skipSort>
-        <sortpom.skipCheck>false</sortpom.skipCheck>
+        <format.perform.skip>true</format.perform.skip>
+        <format.check.skip>false</format.check.skip>
       </properties>
     </profile>
     <profile>
       <id>fast</id>
       <properties>
-        <fmt.skipFormat>true</fmt.skipFormat>
-        <fmt.skipCheck>true</fmt.skipCheck>
-        <license.skipFormat>true</license.skipFormat>
-        <license.skipCheck>true</license.skipCheck>
-        <sortpom.skipSort>true</sortpom.skipSort>
-        <sortpom.skipCheck>true</sortpom.skipCheck>
+        <format.perform.skip>true</format.perform.skip>
+        <format.check.skip>true</format.check.skip>
         <enforcer.skip>true</enforcer.skip>
-        <maven.javadoc.skip>true</maven.javadoc.skip>
-        <maven.source.skip>true</maven.source.skip>
         <jacoco.skip>true</jacoco.skip>
         <mdep.analyze.skip>true</mdep.analyze.skip>
-
-        <!-- Skip tests -->
         <skipTests>true</skipTests>
         <maven.test.skip>true</maven.test.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <maven.source.skip>true</maven.source.skip>
       </properties>
     </profile>
   </profiles>
