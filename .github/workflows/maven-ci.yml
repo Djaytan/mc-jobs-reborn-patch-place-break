@@ -58,9 +58,6 @@ jobs:
           key: m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: m2
 
-      - name: Build & Test
-        run: mvn verify -Pci -B -C -U -ntp -fae -V -e
-
       - name: Cache SonarCloud packages
         uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3.3.2
         with:
@@ -73,7 +70,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn sonar:sonar \
+          mvn verify sonar:sonar -Pci -B -C -U -ntp -fae -e \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=djaytan \
             -Dsonar.projectKey=Djaytan_mc-jobs-reborn-patch-place-break
