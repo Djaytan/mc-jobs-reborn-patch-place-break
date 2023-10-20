@@ -308,7 +308,7 @@
   </repositories>
 
   <build>
-    <defaultGoal>clean verify</defaultGoal>
+    <defaultGoal>clean install</defaultGoal>
     <pluginManagement>
       <plugins>
         <plugin>
