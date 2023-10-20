@@ -62,7 +62,6 @@
 
   <properties>
     <!-- ==================== General ==================== -->
-    <skipUnitTests>false</skipUnitTests>
     <project.encoding>UTF-8</project.encoding>
     <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
     <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
@@ -585,7 +584,6 @@
             <!-- jboss-logging shall use SLF4J as logger provider -->
             <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
           </systemPropertyVariables>
-          <skipTests>${skipUnitTests}</skipTests>
         </configuration>
       </plugin>
       <plugin>
