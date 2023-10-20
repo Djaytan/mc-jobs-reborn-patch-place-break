@@ -37,10 +37,6 @@
   <name>Bukkit Patch Adapter</name>
   <description>API of the place-and-break patch adapted for Bukkit</description>
 
-  <properties>
-    <main.basedir>${project.basedir}/../../</main.basedir>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>fr.djaytan.mc.jrppb</groupId>

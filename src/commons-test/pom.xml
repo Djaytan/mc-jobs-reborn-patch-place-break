@@ -37,10 +37,6 @@
   <name>Commons Test</name>
   <description>Commons tools for tests</description>
 
-  <properties>
-    <main.basedir>${project.basedir}/../../</main.basedir>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>commons-io</groupId>

@@ -62,7 +62,6 @@
 
   <properties>
     <!-- ==================== General ==================== -->
-    <main.basedir>${project.basedir}</main.basedir>
     <skipUnitTests>false</skipUnitTests>
     <project.encoding>UTF-8</project.encoding>
     <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
