@@ -73,7 +73,7 @@ If you wish to use this plugin on a lower version of the server, you should inst
 following version:
 
 * [2.2.53](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/tag/v2.2.53) for
-  Minecraft versions from 1.11 tp 1.16 (included)
+  Minecraft versions from 1.11 to 1.16 (included)
 * [1.2.0](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/tag/v1.2.0) for
   Minecraft versions 1.8, 1.9 and 1.10
 
