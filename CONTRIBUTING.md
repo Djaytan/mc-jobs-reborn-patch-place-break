@@ -85,6 +85,11 @@ Working on this project requires the following dependencies installed in your lo
 * Docker v24.0+ (on Windows it's possible to use Docker Desktop, Podman Desktop or Rancher Desktop:
   choose whatever you want or any other alternative if you like)
   * _Required for running integration tests_
+* Testcontainers reusable containers feature enabled ([how to](https://java.testcontainers.org/features/reuse/))
+  * On Linux you can run the following command:
+  ```bash
+  echo 'testcontainers.reuse.enable=true' >> ~/.testcontainers.properties
+  ```
 
 ### 🔌 Installing
 

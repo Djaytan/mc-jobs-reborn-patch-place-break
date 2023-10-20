@@ -24,6 +24,8 @@ package fr.djaytan.mc.jrppb.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import fr.djaytan.mc.jrppb.api.PatchPlaceBreakApi;
 import fr.djaytan.mc.jrppb.commons.test.TestResourcesHelper;
@@ -31,15 +33,35 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Clock;
+import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.testcontainers.containers.JdbcDatabaseContainer;
+import org.testcontainers.containers.MariaDBContainer;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.lifecycle.Startables;
 
 class PatchPlaceBreakCoreIntegrationTest {
+
+  private static final int DATABASE_ORIGINAL_PORT = 3306;
+  private static final String DATABASE_NAME = "patch_place_break";
+
+  @SuppressWarnings("resource") // Reusable containers feature enabled: do not clean-up containers!
+  private static final MySQLContainer<?> MYSQL_CONTAINER =
+      new MySQLContainer<>("mysql:8.1.0-oracle").withDatabaseName(DATABASE_NAME).withReuse(true);
+
+  @SuppressWarnings("resource") // Reusable containers feature enabled: do not clean-up containers!
+  private static final MariaDBContainer<?> MARIADB_CONTAINER =
+      new MariaDBContainer<>("mariadb:11.1.2-jammy")
+          .withDatabaseName(DATABASE_NAME)
+          .withReuse(true);
 
   private static final String CONFIG_DATA_SOURCE_FILE_NAME = "dataSource.conf";
   private static final String RESTRICTED_BLOCKS_CONFIG_FILE_NAME = "restrictedBlocks.conf";
@@ -47,6 +69,11 @@ class PatchPlaceBreakCoreIntegrationTest {
 
   @TempDir private Path dataFolder;
   private final PatchPlaceBreakCore patchPlaceBreakCore = new PatchPlaceBreakCore();
+
+  @BeforeAll
+  static void beforeAll() {
+    Startables.deepStart(MYSQL_CONTAINER, MARIADB_CONTAINER).join();
+  }
 
   @AfterEach
   void afterEach() {
@@ -89,18 +116,23 @@ class PatchPlaceBreakCoreIntegrationTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {"mysql", "mariadb"})
+  @MethodSource
   @DisplayName("When enabling with custom setup")
-  void whenEnabling_withCustomSetup(@NotNull String dbmsType) throws IOException {
+  void whenEnabling_withCustomSetup(@NotNull JdbcDatabaseContainer<?> jdbcContainer)
+      throws IOException {
     // Given
-    int dbmsPort = Integer.parseInt(System.getProperty(String.format("%s.port", dbmsType)));
+    int dbmsPort = jdbcContainer.getMappedPort(DATABASE_ORIGINAL_PORT);
+    String username = jdbcContainer.getUsername();
+    String password = jdbcContainer.getPassword();
     String givenConfigFileContent =
         String.format(
             TestResourcesHelper.getClassResourceAsString(
                 this.getClass(),
                 "whenEnabling_withCustomSetup_givenDataSourceConfigFileTemplate.conf",
                 false),
-            dbmsPort);
+            dbmsPort,
+            username,
+            password);
     Path configFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
     Files.writeString(configFile, givenConfigFileContent);
 
@@ -116,5 +148,10 @@ class PatchPlaceBreakCoreIntegrationTest {
     assertAll(
         () -> assertThat(patchPlaceBreakApi).isNotNull(),
         () -> assertThat(actualConfDataSourceFile).exists().hasContent(givenConfigFileContent));
+  }
+
+  private static @NotNull Stream<Arguments> whenEnabling_withCustomSetup() {
+    return Stream.of(
+        arguments(named("MySQL", MYSQL_CONTAINER)), arguments(named("MariaDB", MARIADB_CONTAINER)));
   }
 }

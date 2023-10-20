@@ -129,6 +129,7 @@ Specifically for the tests:
 * [Mockito](https://site.mockito.org/)
 * [AssertJ](https://github.com/assertj/assertj)
 * [EqualsVerifier](https://jqno.nl/equalsverifier/) & [ToStringVerifier](https://github.com/jparams/to-string-verifier)
+* [Testcontainers](https://testcontainers.com/)
 * [Jimfs](https://github.com/google/jimfs)
 * [MockBukkit](https://github.com/MockBukkit/MockBukkit)
 * [Awaitability](https://github.com/awaitility/awaitility)

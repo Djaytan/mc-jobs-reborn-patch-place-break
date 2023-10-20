@@ -35,21 +35,39 @@ import java.util.Optional;
 import java.util.Random;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.Preconditions;
+import org.testcontainers.containers.MySQLContainer;
 
 class SqlTagRepositoryIntegrationTest {
+
+  private static final int DATABASE_ORIGINAL_PORT = 3306;
+  private static final String DATABASE_NAME = "patch_place_break";
+
+  @SuppressWarnings("resource") // Reusable containers feature enabled: do not clean-up containers!
+  private static final MySQLContainer<?> MYSQL_CONTAINER =
+      new MySQLContainer<>("mysql:8.1.0-oracle").withDatabaseName(DATABASE_NAME).withReuse(true);
 
   private BlockLocation randomBlockLocation;
   private final MysqlTagRepositoryFactory mysqlTagRepositoryFactory =
       new MysqlTagRepositoryFactory();
   private SqlTagRepository sqlTagRepository;
 
+  @BeforeAll
+  static void beforeAll() {
+    MYSQL_CONTAINER.start();
+  }
+
   @BeforeEach
   void beforeEach() {
-    sqlTagRepository = mysqlTagRepositoryFactory.create();
+    int dbmsPort = MYSQL_CONTAINER.getMappedPort(DATABASE_ORIGINAL_PORT);
+    String username = MYSQL_CONTAINER.getUsername();
+    String password = MYSQL_CONTAINER.getPassword();
+
+    sqlTagRepository = mysqlTagRepositoryFactory.create(dbmsPort, username, password);
     randomBlockLocation = createRandomBlockLocation();
   }
 

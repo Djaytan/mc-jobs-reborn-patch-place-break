@@ -117,6 +117,13 @@
         <scope>import</scope>
       </dependency>
       <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>testcontainers-bom</artifactId>
+        <version>1.19.1</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
         <groupId>com.github.Djaytan</groupId>
         <artifactId>bukkit-slf4j</artifactId>
         <version>1.0.29</version>
@@ -252,6 +259,11 @@
         <version>2.2.1.Final</version>
       </dependency>
       <dependency>
+        <groupId>org.mariadb.jdbc</groupId>
+        <artifactId>mariadb-java-client</artifactId>
+        <version>3.2.0</version>
+      </dependency>
+      <dependency>
         <groupId>org.threeten</groupId>
         <artifactId>threeten-extra</artifactId>
         <version>1.7.2</version>
@@ -299,67 +311,6 @@
     <defaultGoal>clean verify</defaultGoal>
     <pluginManagement>
       <plugins>
-        <plugin>
-          <groupId>io.fabric8</groupId>
-          <artifactId>docker-maven-plugin</artifactId>
-          <version>0.43.4</version>
-          <configuration>
-            <images>
-              <image>
-                <alias>mysql</alias>
-                <name>mysql:8.0.31-oracle</name>
-                <run>
-                  <ports>
-                    <!--suppress UnresolvedMavenProperty - Resolved dynamically -->
-                    <port>${mysql.port}:3306</port>
-                  </ports>
-                  <env>
-                    <MYSQL_ALLOW_EMPTY_PASSWORD>yes</MYSQL_ALLOW_EMPTY_PASSWORD>
-                    <MYSQL_DATABASE>patch_place_break</MYSQL_DATABASE>
-                  </env>
-                  <wait>
-                    <log>port: 3306  MySQL Community Server - GPL</log>
-                    <time>30000</time>
-                  </wait>
-                </run>
-              </image>
-              <image>
-                <alias>mariadb</alias>
-                <name>mariadb:10.10.2-jammy</name>
-                <run>
-                  <ports>
-                    <!--suppress UnresolvedMavenProperty - Resolved dynamically -->
-                    <port>${mariadb.port}:3306</port>
-                  </ports>
-                  <env>
-                    <MARIADB_ALLOW_EMPTY_ROOT_PASSWORD>yes</MARIADB_ALLOW_EMPTY_ROOT_PASSWORD>
-                    <MARIADB_DATABASE>patch_place_break</MARIADB_DATABASE>
-                  </env>
-                  <wait>
-                    <log>port: 3306  mariadb.org binary distribution</log>
-                    <time>30000</time>
-                  </wait>
-                </run>
-              </image>
-            </images>
-          </configuration>
-          <executions>
-            <execution>
-              <id>start</id>
-              <goals>
-                <goal>start</goal>
-              </goals>
-              <phase>pre-integration-test</phase>
-            </execution>
-            <execution>
-              <id>stop</id>
-              <goals>
-                <goal>stop</goal>
-              </goals>
-              <phase>post-integration-test</phase>
-            </execution>
-          </executions>
-        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
@@ -565,12 +516,9 @@
         <configuration>
           <!--suppress UnresolvedMavenProperty - Defined at runtime by JaCoCo -->
           <argLine>${failsafe.jacoco.args}</argLine>
-          <systemPropertyVariables>
-            <!--suppress UnresolvedMavenProperty - Resolved dynamically by docker-maven-plugin -->
-            <mariadb.port>${mariadb.port}</mariadb.port>
-            <!--suppress UnresolvedMavenProperty - Resolved dynamically by docker-maven-plugin -->
-            <mysql.port>${mysql.port}</mysql.port>
-          </systemPropertyVariables>
+          <includes>
+            <include>**/*IntegrationTest.java</include>
+          </includes>
         </configuration>
         <executions>
           <execution>
@@ -578,11 +526,6 @@
               <goal>integration-test</goal>
               <goal>verify</goal>
             </goals>
-            <configuration>
-              <includes>
-                <include>**/*IntegrationTest.java</include>
-              </includes>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -643,9 +586,6 @@
           <useUnlimitedThreads>true</useUnlimitedThreads>
           <!--suppress UnresolvedMavenProperty - Defined at runtime by JaCoCo -->
           <argLine>${surefire.jacoco.args}</argLine>
-          <includes>
-            <include>**/*Test.java</include>
-          </includes>
           <excludes>
             <exclude>**/*IntegrationTest.java</exclude>
           </excludes>

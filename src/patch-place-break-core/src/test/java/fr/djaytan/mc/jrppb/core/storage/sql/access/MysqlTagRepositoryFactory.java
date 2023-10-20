@@ -48,10 +48,11 @@ final class MysqlTagRepositoryFactory implements AutoCloseable {
   private DataSourceManager dataSourceManager;
 
   @NotNull
-  SqlTagRepository create() {
+  SqlTagRepository create(int dbmsPort, @NotNull String username, @NotNull String password) {
     Validate.validState(dataSourceManager == null, "Creation already requested.");
 
-    DataSourceProperties mysqlDataSourcePropertiesMock = createMysqlDataSourcePropertiesMock();
+    DataSourceProperties mysqlDataSourcePropertiesMock =
+        createMysqlDataSourcePropertiesMock(dbmsPort, username, password);
     HikariDataSource hikariDataSource = createHikariDataSource(mysqlDataSourcePropertiesMock);
     ConnectionPool connectionPool = new ConnectionPool(hikariDataSource);
 
@@ -68,11 +69,15 @@ final class MysqlTagRepositoryFactory implements AutoCloseable {
     dataSourceManager.disconnect();
   }
 
-  private static @NotNull DataSourceProperties createMysqlDataSourcePropertiesMock() {
+  private static @NotNull DataSourceProperties createMysqlDataSourcePropertiesMock(
+      int dbmsPort, @NotNull String username, @NotNull String password) {
     DataSourceProperties dataSourcePropertiesMock =
         DataSourcePropertiesMock.get(DataSourceType.MYSQL);
-    int dbmsPort = Integer.parseInt(System.getProperty("mysql.port"));
     given(dataSourcePropertiesMock.getDbmsServer().getHost().getPort()).willReturn(dbmsPort);
+    given(dataSourcePropertiesMock.getDbmsServer().getCredentials().getUsername())
+        .willReturn(username);
+    given(dataSourcePropertiesMock.getDbmsServer().getCredentials().getPassword())
+        .willReturn(password);
     return dataSourcePropertiesMock;
   }
 
