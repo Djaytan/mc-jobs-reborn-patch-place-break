@@ -26,19 +26,37 @@ import fr.djaytan.mc.jrppb.commons.test.TestResourcesHelper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.testcontainers.containers.MySQLContainer;
 
 class MysqlPatchPlaceBreakApiIntegrationTest extends BasePatchPlaceBreakApiIntegrationTest {
 
+  private static final int DATABASE_ORIGINAL_PORT = 3306;
+  private static final String DATABASE_NAME = "patch_place_break";
+
+  @SuppressWarnings("resource") // Reusable containers feature enabled: do not clean-up containers!
+  private static final MySQLContainer<?> MYSQL_CONTAINER =
+      new MySQLContainer<>("mysql:8.1.0-oracle").withDatabaseName(DATABASE_NAME).withReuse(true);
+
   private static final String CONFIG_DATA_SOURCE_FILE_NAME = "dataSource.conf";
+
+  @BeforeAll
+  static void beforeAll() {
+    MYSQL_CONTAINER.start();
+  }
 
   @BeforeEach
   void beforeEach() throws IOException {
-    int dbmsPort = Integer.parseInt(System.getProperty("mysql.port"));
+    int dbmsPort = MYSQL_CONTAINER.getMappedPort(DATABASE_ORIGINAL_PORT);
+    String username = MYSQL_CONTAINER.getUsername();
+    String password = MYSQL_CONTAINER.getPassword();
     String givenDataSourceConfFileContent =
         String.format(
             TestResourcesHelper.getClassResourceAsString(this.getClass(), "mysql.conf", false),
-            dbmsPort);
+            dbmsPort,
+            username,
+            password);
     Path dataSourceConf = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
     Files.writeString(dataSourceConf, givenDataSourceConfFileContent);
     super.beforeEach();

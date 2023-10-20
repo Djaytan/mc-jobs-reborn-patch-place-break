@@ -26,20 +26,40 @@ import fr.djaytan.mc.jrppb.commons.test.TestResourcesHelper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.testcontainers.containers.MariaDBContainer;
 
 class MariadbPatchPlaceBreakBukkitAdapterApiIntegrationTest
     extends BasePatchPlaceBreakBukkitAdapterApiIntegrationTest {
 
+  private static final int DATABASE_ORIGINAL_PORT = 3306;
+  private static final String DATABASE_NAME = "patch_place_break";
+
+  @SuppressWarnings("resource") // Reusable containers feature enabled: do not clean-up containers!
+  private static final MariaDBContainer<?> MARIADB_CONTAINER =
+      new MariaDBContainer<>("mariadb:11.1.2-jammy")
+          .withDatabaseName(DATABASE_NAME)
+          .withReuse(true);
+
   private static final String CONFIG_DATA_SOURCE_FILE_NAME = "dataSource.conf";
+
+  @BeforeAll
+  static void beforeAll() {
+    MARIADB_CONTAINER.start();
+  }
 
   @BeforeEach
   void beforeEach() throws IOException {
-    int dbmsPort = Integer.parseInt(System.getProperty("mariadb.port"));
+    int dbmsPort = MARIADB_CONTAINER.getMappedPort(DATABASE_ORIGINAL_PORT);
+    String username = MARIADB_CONTAINER.getUsername();
+    String password = MARIADB_CONTAINER.getPassword();
     String givenDataSourceConfFileContent =
         String.format(
             TestResourcesHelper.getClassResourceAsString(this.getClass(), "mariadb.conf", false),
-            dbmsPort);
+            dbmsPort,
+            username,
+            password);
     Path dataSourceConf = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
     Files.writeString(dataSourceConf, givenDataSourceConfFileContent);
     super.beforeEach();
