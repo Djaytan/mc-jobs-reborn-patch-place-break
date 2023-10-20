@@ -69,12 +69,6 @@
     <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
     <java.version>17</java.version>
 
-    <!-- ==================== Sonar ==================== -->
-    <!-- sonar.projectKey must be defined through CLI only -->
-    <sonar.organization>djaytan</sonar.organization>
-    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco-merged-test-coverage-report/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-
     <!-- ==================== Dependencies versions ==================== -->
     <version.flyway>9.22.3</version.flyway>
   </properties>
