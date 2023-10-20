@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * missing under the data folder. Then, {@link #readAndValidate(String, Class)} can be used to read
  * and validate it.
  *
- * <p>The data folder definition is let to the patch enabler (e.g. the Bukkit plugin enabling and
+ * <p>The data folder definition is let to the patch enabler (e.g. the Spigot plugin enabling and
  * calling the patch).
  */
 @Singleton
