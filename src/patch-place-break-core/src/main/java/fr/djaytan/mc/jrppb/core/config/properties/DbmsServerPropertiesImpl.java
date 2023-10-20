@@ -91,7 +91,7 @@ public final class DbmsServerPropertiesImpl implements DbmsServerProperties, Pro
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     DbmsServerPropertiesImpl that = (DbmsServerPropertiesImpl) o;
@@ -106,7 +106,7 @@ public final class DbmsServerPropertiesImpl implements DbmsServerProperties, Pro
   }
 
   @Override
-  public String toString() {
+  public @org.jetbrains.annotations.NotNull String toString() {
     return new StringJoiner(", ", DbmsServerPropertiesImpl.class.getSimpleName() + "[", "]")
         .add("host=" + host)
         .add("credentials=" + credentials)

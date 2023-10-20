@@ -117,7 +117,7 @@ public final class DataSourcePropertiesImpl implements DataSourceProperties, Pro
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     DataSourcePropertiesImpl that = (DataSourcePropertiesImpl) o;
@@ -133,7 +133,7 @@ public final class DataSourcePropertiesImpl implements DataSourceProperties, Pro
   }
 
   @Override
-  public String toString() {
+  public @org.jetbrains.annotations.NotNull String toString() {
     return new StringJoiner(", ", DataSourcePropertiesImpl.class.getSimpleName() + "[", "]")
         .add("type=" + type)
         .add("table='" + table + "'")

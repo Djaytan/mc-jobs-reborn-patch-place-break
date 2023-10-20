@@ -40,7 +40,7 @@ public final class ConfigApi {
   private final ConfigManager configManager;
 
   @Inject
-  public ConfigApi(@NotNull ConfigManager configManager) {
+  ConfigApi(@NotNull ConfigManager configManager) {
     this.configManager = configManager;
   }
 

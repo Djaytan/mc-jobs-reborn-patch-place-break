@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
  * @param y The block location in the y-axis of the world.
  * @param z The block location in the z-axis of the world.
  */
-public record BlockLocation(String worldName, int x, int y, int z) {
+public record BlockLocation(@NotNull String worldName, int x, int y, int z) {
 
   /**
    * Creates a block location from a specified one and a given direction.

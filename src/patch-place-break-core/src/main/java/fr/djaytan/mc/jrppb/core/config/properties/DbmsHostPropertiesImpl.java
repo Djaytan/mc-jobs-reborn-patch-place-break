@@ -103,7 +103,7 @@ public final class DbmsHostPropertiesImpl implements DbmsHostProperties, Propert
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     DbmsHostPropertiesImpl that = (DbmsHostPropertiesImpl) o;
@@ -118,7 +118,7 @@ public final class DbmsHostPropertiesImpl implements DbmsHostProperties, Propert
   }
 
   @Override
-  public String toString() {
+  public @NotNull String toString() {
     return new StringJoiner(", ", DbmsHostPropertiesImpl.class.getSimpleName() + "[", "]")
         .add("hostname='" + hostname + "'")
         .add("port=" + port)

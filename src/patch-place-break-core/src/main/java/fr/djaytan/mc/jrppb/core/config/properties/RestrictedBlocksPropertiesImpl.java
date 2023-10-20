@@ -87,7 +87,7 @@ public final class RestrictedBlocksPropertiesImpl
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     RestrictedBlocksPropertiesImpl that = (RestrictedBlocksPropertiesImpl) o;
@@ -100,7 +100,7 @@ public final class RestrictedBlocksPropertiesImpl
   }
 
   @Override
-  public String toString() {
+  public @org.jetbrains.annotations.NotNull String toString() {
     return new StringJoiner(", ", RestrictedBlocksPropertiesImpl.class.getSimpleName() + "[", "]")
         .add("materials=" + materials)
         .add("restrictionMode=" + restrictionMode)
