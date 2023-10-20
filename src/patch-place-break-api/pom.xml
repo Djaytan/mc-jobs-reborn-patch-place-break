@@ -37,10 +37,6 @@
   <name>PatchPlaceBreak API</name>
   <description>API of the place-break patch</description>
 
-  <properties>
-    <main.basedir>${project.basedir}/../../</main.basedir>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.jetbrains</groupId>

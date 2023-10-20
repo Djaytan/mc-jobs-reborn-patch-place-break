@@ -38,7 +38,6 @@
   <description>The Bukkit plugin of the place-and-break patch</description>
 
   <properties>
-    <main.basedir>${project.basedir}/../../</main.basedir>
     <package.root>${project.groupId}</package.root>
     <package.lib>${package.root}.lib</package.lib>
     <plugin.name>JobsReborn-PatchPlaceBreak</plugin.name>
@@ -163,7 +162,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <configuration>
-          <shadedArtifactAttached>false</shadedArtifactAttached>
           <createDependencyReducedPom>false</createDependencyReducedPom>
           <filters>
             <filter>
@@ -244,11 +242,11 @@
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
               <resource>META-INF/README.md</resource>
-              <file>${main.basedir}/README.md</file>
+              <file>${project.basedir}/../../README.md</file>
             </transformer>
             <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
               <resource>META-INF/LICENSE.md</resource>
-              <file>${main.basedir}/LICENSE.md</file>
+              <file>${project.basedir}/../../LICENSE.md</file>
             </transformer>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
             <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />
