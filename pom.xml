@@ -32,7 +32,7 @@
   <packaging>pom</packaging>
 
   <name>JobsReborn-PatchPlaceBreak</name>
-  <description>A place-break patch extension of JobsReborn plugin for Bukkit servers (Minecraft)</description>
+  <description>A place-break patch extension of JobsReborn plugin for Spigot servers (Minecraft)</description>
   <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break</url>
 
   <inceptionYear>2022</inceptionYear>
@@ -45,11 +45,11 @@
   </licenses>
 
   <modules>
-    <module>src/bukkit-patch-adapter</module>
-    <module>src/bukkit-plugin</module>
     <module>src/commons-test</module>
     <module>src/patch-place-break-api</module>
     <module>src/patch-place-break-core</module>
+    <module>src/spigot-patch-adapter</module>
+    <module>src/spigot-plugin</module>
   </modules>
 
   <issueManagement>
@@ -171,11 +171,6 @@
       </dependency>
       <dependency>
         <groupId>fr.djaytan.mc.jrppb</groupId>
-        <artifactId>bukkit-patch-adapter</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>fr.djaytan.mc.jrppb</groupId>
         <artifactId>commons-test</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -187,6 +182,11 @@
       <dependency>
         <groupId>fr.djaytan.mc.jrppb</groupId>
         <artifactId>patch-place-break-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.djaytan.mc.jrppb</groupId>
+        <artifactId>spigot-patch-adapter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

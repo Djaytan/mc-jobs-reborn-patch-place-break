@@ -8,7 +8,7 @@
 
 A place-and-break patch extension
 of [JobsReborn plugin](https://www.spigotmc.org/resources/jobs-reborn.4216/)
-for Bukkit servers.
+for Spigot servers.
 
 The resource is available
 on [Spigot](https://www.spigotmc.org/resources/jobsreborn-patchplacebreak.102779/),
@@ -62,9 +62,9 @@ As a comparison point, this behavior can have similarities with the one implemen
 
 Easy and efficient, this does the trick.
 
-## Setup of the Bukkit plugin
+## Setup of the Spigot plugin
 
-We expect here that you already have a Bukkit server already set up with the JobsReborn plugin
+We expect here that you already have a Spigot server already set up with the JobsReborn plugin
 installed on it.
 
 The server's version must be higher or equals to 1.17.x.

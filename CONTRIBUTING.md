@@ -101,7 +101,7 @@ this command at the root project:
     $ mvn
 
 This is the command you will run most of the time.
-You will find the packaged JAR file of the Bukkit plugin at `bukkit/bukkit-plugin/target`.
+You will find the packaged JAR file of the Spigot plugin at `src/spigot-plugin/target`.
 If you want to test it, copy it into your local Spigot server by taking care that the server
 version is compatible with the plugin.
 
