@@ -31,8 +31,6 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -40,7 +38,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 class BlockLocationTest {
 
   @Nested
-  @TestInstance(Lifecycle.PER_CLASS)
   class WhenInstantiating {
 
     @Test
@@ -83,7 +80,7 @@ class BlockLocationTest {
           () -> assertThat(movedBlockLocation).isEqualTo(expectedValue));
     }
 
-    private @NotNull Stream<Arguments>
+    private static @NotNull Stream<Arguments>
         withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue() {
       return Stream.of(
           arguments(

@@ -57,8 +57,6 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -71,11 +69,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class PatchPlaceBreakImplTest {
 
+  private static final Clock CLOCK = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+
   @Mock private TagRepository tagRepository;
   @Captor private ArgumentCaptor<Tag> tagCaptor;
   @Captor private ArgumentCaptor<OldNewBlockLocationPairSet> locationPairCaptor;
   @Captor private ArgumentCaptor<BlockLocation> blockLocationCaptor;
-  private final Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
   private final RestrictedBlocksProperties restrictedBlocksProperties =
       new RestrictedBlocksPropertiesImpl(
           new HashSet<>(Arrays.asList("STONE", "DIRT")), RestrictionMode.BLACKLIST);
@@ -86,7 +85,7 @@ class PatchPlaceBreakImplTest {
     BlocksFilter blocksFilter = new BlocksFilter(restrictedBlocksProperties);
 
     this.patchPlaceBreakImpl =
-        new PatchPlaceBreakImpl(blocksFilter, clock, restrictedBlocksProperties, tagRepository);
+        new PatchPlaceBreakImpl(blocksFilter, CLOCK, restrictedBlocksProperties, tagRepository);
   }
 
   @Nested
@@ -257,7 +256,6 @@ class PatchPlaceBreakImplTest {
   }
 
   @Nested
-  @TestInstance(Lifecycle.PER_CLASS)
   class WhenCheckingPlaceAndBreakExploit {
 
     @ParameterizedTest
@@ -275,18 +273,18 @@ class PatchPlaceBreakImplTest {
       assertThat(isExploit).isEqualTo(expectedValue);
     }
 
-    private @NotNull Stream<Arguments> whileBreakingUnrestrictedBlock() {
+    private static @NotNull Stream<Arguments> whileBreakingUnrestrictedBlock() {
       return Stream.of(
           arguments(
               named(
                   "With persistent tag",
-                  new Tag(new BlockLocation("world", 0, 0, 0), false, LocalDateTime.now(clock))),
+                  new Tag(new BlockLocation("world", 0, 0, 0), false, LocalDateTime.now(CLOCK))),
               named("Should be detected as exploit", true)),
           arguments(named("Without tag", null), false),
           arguments(
               named(
                   "With active ephemeral tag",
-                  new Tag(new BlockLocation("world", 0, 0, 0), true, LocalDateTime.now(clock))),
+                  new Tag(new BlockLocation("world", 0, 0, 0), true, LocalDateTime.now(CLOCK))),
               named("Should be detected as exploit", true)),
           arguments(
               named(
@@ -294,7 +292,7 @@ class PatchPlaceBreakImplTest {
                   new Tag(
                       new BlockLocation("world", 0, 0, 0),
                       true,
-                      LocalDateTime.now(clock).minusSeconds(10))),
+                      LocalDateTime.now(CLOCK).minusSeconds(10))),
               named("Should NOT be detected as exploit", false)));
     }
 

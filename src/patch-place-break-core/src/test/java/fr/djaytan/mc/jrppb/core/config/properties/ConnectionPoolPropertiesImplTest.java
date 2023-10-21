@@ -51,8 +51,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -160,7 +158,6 @@ class ConnectionPoolPropertiesImplTest {
     }
 
     @Nested
-    @TestInstance(Lifecycle.PER_CLASS)
     class ConnectionTimeoutField {
 
       @ParameterizedTest(name = "{index} - {0}")
@@ -178,7 +175,8 @@ class ConnectionPoolPropertiesImplTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private static @NotNull Stream<Arguments>
+          withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
             arguments(named("Highest allowed value", 600000)),
             arguments(named("Lowest allowed value", 1)));
@@ -210,14 +208,14 @@ class ConnectionPoolPropertiesImplTest {
                     constraintViolation.getPropertyPath().toString().equals("connectionTimeout"));
       }
 
-      private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private static @NotNull Stream<Arguments>
+          withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
             arguments(named("Null value", 0)), arguments(named("Too high value", 600001)));
       }
     }
 
     @Nested
-    @TestInstance(Lifecycle.PER_CLASS)
     class PoolSizeField {
 
       @ParameterizedTest(name = "{index} - {0}")
@@ -235,7 +233,8 @@ class ConnectionPoolPropertiesImplTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private static @NotNull Stream<Arguments>
+          withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
             arguments(named("Highest allowed value", 100)),
             arguments(named("Lowest allowed value", 1)));
@@ -267,7 +266,8 @@ class ConnectionPoolPropertiesImplTest {
                     constraintViolation.getPropertyPath().toString().equals("poolSize"));
       }
 
-      private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private static @NotNull Stream<Arguments>
+          withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
             arguments(named("Null value", 0)), arguments(named("Too high value", 101)));
       }
@@ -275,7 +275,6 @@ class ConnectionPoolPropertiesImplTest {
   }
 
   @Nested
-  @TestInstance(Lifecycle.PER_CLASS)
   class WhenSerializingToYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
@@ -297,7 +296,7 @@ class ConnectionPoolPropertiesImplTest {
       assertThat(actualYaml).containsIgnoringNewLines(expectedYaml);
     }
 
-    private @NotNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
+    private static @NotNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
           arguments(
               named("With default values", new ConnectionPoolPropertiesImpl()),
@@ -309,7 +308,6 @@ class ConnectionPoolPropertiesImplTest {
   }
 
   @Nested
-  @TestInstance(Lifecycle.PER_CLASS)
   class WhenDeserializingFromYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
@@ -328,7 +326,7 @@ class ConnectionPoolPropertiesImplTest {
       assertThat(actualValue).hasValue(expectedValue);
     }
 
-    private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
+    private static @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
           arguments(
               named("With valid values", "whenDeserializing_withValidValues.conf"),
@@ -361,7 +359,7 @@ class ConnectionPoolPropertiesImplTest {
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
-    private @NotNull Stream<Arguments> withInvalidContent_shouldThrowException() {
+    private static @NotNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
           arguments(
               named(
