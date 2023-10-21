@@ -23,7 +23,6 @@
 package fr.djaytan.mc.jrppb.core.storage.sql.provider;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.BDDMockito.given;
 
@@ -34,7 +33,6 @@ import fr.djaytan.mc.jrppb.core.storage.sql.impl.mysql.MysqlJdbcUrl;
 import fr.djaytan.mc.jrppb.core.storage.sql.impl.sqlite.SqliteJdbcUrl;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -49,11 +47,11 @@ class JdbcUrlProviderTest {
   @Mock private MysqlJdbcUrl mysqlJdbcUrl;
   @Mock private SqliteJdbcUrl sqliteJdbcUrl;
 
-  @ParameterizedTest(name = "{index} - With {0} data source type")
+  @ParameterizedTest
   @MethodSource
-  @DisplayName("When providing JDBC URL")
-  void whenProvidingJdbcUrl(
-      @NotNull DataSourceType dataSourceType, Class<? extends JdbcUrl> expectedJdbcUrlType) {
+  void whenProvidingJdbcUrl_shouldReturnTheExpectedOne(
+      @NotNull DataSourceType dataSourceType,
+      @NotNull Class<? extends JdbcUrl> expectedJdbcUrlType) {
     // Given
     given(dataSourceProperties.getType()).willReturn(dataSourceType);
     JdbcUrlProvider jdbcUrlProvider =
@@ -66,9 +64,9 @@ class JdbcUrlProviderTest {
     assertThat(jdbcUrl).isExactlyInstanceOf(expectedJdbcUrlType);
   }
 
-  private static @NotNull Stream<Arguments> whenProvidingJdbcUrl() {
+  private static @NotNull Stream<Arguments> whenProvidingJdbcUrl_shouldReturnTheExpectedOne() {
     return Stream.of(
-        arguments(named(DataSourceType.SQLITE.name(), DataSourceType.SQLITE), SqliteJdbcUrl.class),
-        arguments(named(DataSourceType.MYSQL.name(), DataSourceType.MYSQL), MysqlJdbcUrl.class));
+        arguments(DataSourceType.SQLITE, SqliteJdbcUrl.class),
+        arguments(DataSourceType.MYSQL, MysqlJdbcUrl.class));
   }
 }
