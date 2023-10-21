@@ -39,7 +39,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.Preconditions;
 import org.testcontainers.containers.MySQLContainer;
 
 class SqlTagRepositoryIntegrationTest {
@@ -87,10 +86,6 @@ class SqlTagRepositoryIntegrationTest {
     @Test
     void whenNoOneAlreadyExist_shouldThenBeRetrievable() {
       // Given
-      Preconditions.condition(
-          sqlTagRepository.findByLocation(randomBlockLocation).isEmpty(),
-          String.format("No tag must exist at the following location: %s", randomBlockLocation));
-
       Tag tag = new Tag(randomBlockLocation, true, LocalDateTime.now());
 
       // When
@@ -136,10 +131,6 @@ class SqlTagRepositoryIntegrationTest {
           new BlockLocation(
               oldLocation.worldName(), oldLocation.x() + 1, oldLocation.y(), oldLocation.z());
 
-      Preconditions.condition(
-          sqlTagRepository.findByLocation(newLocation).isEmpty(),
-          String.format("No tag must exist at the following location: %s", newLocation));
-
       sqlTagRepository.put(oldTag);
 
       OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
@@ -164,13 +155,6 @@ class SqlTagRepositoryIntegrationTest {
       BlockLocation newLocation =
           new BlockLocation(
               oldLocation.worldName(), oldLocation.x() + 1, oldLocation.y(), oldLocation.z());
-
-      Preconditions.condition(
-          sqlTagRepository.findByLocation(oldLocation).isEmpty(),
-          String.format("No tag must exist at the following location: %s", oldLocation));
-      Preconditions.condition(
-          sqlTagRepository.findByLocation(newLocation).isEmpty(),
-          String.format("No tag must exist at the following location: %s", newLocation));
 
       OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
           new OldNewBlockLocationPairSet(

@@ -54,7 +54,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.Preconditions;
 
 class ListenerRegisterTest {
 
@@ -109,10 +108,6 @@ class ListenerRegisterTest {
     BlockMock blockMock = new BlockMock(Material.STONE, location);
     PlayerMock playerMock = serverMock.addPlayer();
     ActionInfo actionInfo = new BlockActionInfo(blockMock, ActionType.PLACE);
-
-    Preconditions.condition(
-        !patchApi.isPlaceAndBreakExploit(actionInfo, blockMock),
-        "No tag is supposed to exist yet on the targeted block");
 
     // When
     listenerRegister.registerListeners();
