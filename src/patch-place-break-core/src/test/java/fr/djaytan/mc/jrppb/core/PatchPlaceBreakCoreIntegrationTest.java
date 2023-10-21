@@ -37,8 +37,10 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -80,78 +82,82 @@ class PatchPlaceBreakCoreIntegrationTest {
     patchPlaceBreakCore.disable();
   }
 
-  @Test
-  @DisplayName("When enabling with default setup (SQLite)")
-  void whenEnabling_withDefaultSetup() {
-    // Given
-    ClassLoader classLoader = PatchPlaceBreakCore.class.getClassLoader();
+  @Nested
+  @TestInstance(Lifecycle.PER_CLASS)
+  class WhenEnabling {
 
-    // When
-    PatchPlaceBreakApi patchPlaceBreakApi =
-        patchPlaceBreakCore.enable(classLoader, Clock.systemUTC(), dataFolder);
+    @Test
+    void withDefaultSqliteSetup() {
+      // Given
+      ClassLoader classLoader = PatchPlaceBreakCore.class.getClassLoader();
 
-    // Then
-    Path expectedConfDataSourceFile =
-        TestResourcesHelper.getClassResourceAsAbsolutePath(
-            this.getClass(), "whenEnabling_withDefaultSetup_expectedDataSourceConfigFile.conf");
-    Path actualConfDataSourceFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
+      // When
+      PatchPlaceBreakApi patchPlaceBreakApi =
+          patchPlaceBreakCore.enable(classLoader, Clock.systemUTC(), dataFolder);
 
-    Path expectedRestrictedBlocksConfigFile =
-        TestResourcesHelper.getClassResourceAsAbsolutePath(
-            this.getClass(),
-            "whenEnabling_withDefaultSetup_expectedRestrictedBlocksConfigFile.conf");
-    Path actualRestrictedBlocksConfigFile = dataFolder.resolve(RESTRICTED_BLOCKS_CONFIG_FILE_NAME);
+      // Then
+      Path expectedConfDataSourceFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(
+              this.getClass(), "whenEnabling_withDefaultSetup_expectedDataSourceConfigFile.conf");
+      Path actualConfDataSourceFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
 
-    Path sqliteDatabaseFile = dataFolder.resolve(SQLITE_DATABASE_FILE_NAME);
+      Path expectedRestrictedBlocksConfigFile =
+          TestResourcesHelper.getClassResourceAsAbsolutePath(
+              this.getClass(),
+              "whenEnabling_withDefaultSetup_expectedRestrictedBlocksConfigFile.conf");
+      Path actualRestrictedBlocksConfigFile =
+          dataFolder.resolve(RESTRICTED_BLOCKS_CONFIG_FILE_NAME);
 
-    assertAll(
-        () -> assertThat(patchPlaceBreakApi).isNotNull(),
-        () ->
-            assertThat(actualConfDataSourceFile)
-                .hasSameTextualContentAs(expectedConfDataSourceFile),
-        () ->
-            assertThat(actualRestrictedBlocksConfigFile)
-                .hasSameTextualContentAs(expectedRestrictedBlocksConfigFile),
-        () -> assertThat(sqliteDatabaseFile).isNotEmptyFile());
-  }
+      Path sqliteDatabaseFile = dataFolder.resolve(SQLITE_DATABASE_FILE_NAME);
 
-  @ParameterizedTest
-  @MethodSource
-  @DisplayName("When enabling with custom setup")
-  void whenEnabling_withCustomSetup(@NotNull JdbcDatabaseContainer<?> jdbcContainer)
-      throws IOException {
-    // Given
-    int dbmsPort = jdbcContainer.getMappedPort(DATABASE_ORIGINAL_PORT);
-    String username = jdbcContainer.getUsername();
-    String password = jdbcContainer.getPassword();
-    String givenConfigFileContent =
-        String.format(
-            TestResourcesHelper.getClassResourceAsString(
-                this.getClass(),
-                "whenEnabling_withCustomSetup_givenDataSourceConfigFileTemplate.conf",
-                false),
-            dbmsPort,
-            username,
-            password);
-    Path configFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
-    Files.writeString(configFile, givenConfigFileContent);
+      assertAll(
+          () -> assertThat(patchPlaceBreakApi).isNotNull(),
+          () ->
+              assertThat(actualConfDataSourceFile)
+                  .hasSameTextualContentAs(expectedConfDataSourceFile),
+          () ->
+              assertThat(actualRestrictedBlocksConfigFile)
+                  .hasSameTextualContentAs(expectedRestrictedBlocksConfigFile),
+          () -> assertThat(sqliteDatabaseFile).isNotEmptyFile());
+    }
 
-    ClassLoader classLoader = PatchPlaceBreakCore.class.getClassLoader();
+    @ParameterizedTest
+    @MethodSource
+    void withCustomSetup(@NotNull JdbcDatabaseContainer<?> jdbcContainer) throws IOException {
+      // Given
+      int dbmsPort = jdbcContainer.getMappedPort(DATABASE_ORIGINAL_PORT);
+      String username = jdbcContainer.getUsername();
+      String password = jdbcContainer.getPassword();
+      String givenConfigFileContent =
+          String.format(
+              TestResourcesHelper.getClassResourceAsString(
+                  this.getClass(),
+                  "whenEnabling_withCustomSetup_givenDataSourceConfigFileTemplate.conf",
+                  false),
+              dbmsPort,
+              username,
+              password);
+      Path configFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
+      Files.writeString(configFile, givenConfigFileContent);
 
-    // When
-    PatchPlaceBreakApi patchPlaceBreakApi =
-        patchPlaceBreakCore.enable(classLoader, Clock.systemUTC(), dataFolder);
+      ClassLoader classLoader = PatchPlaceBreakCore.class.getClassLoader();
 
-    // Then
-    Path actualConfDataSourceFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
+      // When
+      PatchPlaceBreakApi patchPlaceBreakApi =
+          patchPlaceBreakCore.enable(classLoader, Clock.systemUTC(), dataFolder);
 
-    assertAll(
-        () -> assertThat(patchPlaceBreakApi).isNotNull(),
-        () -> assertThat(actualConfDataSourceFile).exists().hasContent(givenConfigFileContent));
-  }
+      // Then
+      Path actualConfDataSourceFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
 
-  private static @NotNull Stream<Arguments> whenEnabling_withCustomSetup() {
-    return Stream.of(
-        arguments(named("MySQL", MYSQL_CONTAINER)), arguments(named("MariaDB", MARIADB_CONTAINER)));
+      assertAll(
+          () -> assertThat(patchPlaceBreakApi).isNotNull(),
+          () -> assertThat(actualConfDataSourceFile).exists().hasContent(givenConfigFileContent));
+    }
+
+    private static @NotNull Stream<Arguments> withCustomSetup() {
+      return Stream.of(
+          arguments(named("MySQL", MYSQL_CONTAINER)),
+          arguments(named("MariaDB", MARIADB_CONTAINER)));
+    }
   }
 }

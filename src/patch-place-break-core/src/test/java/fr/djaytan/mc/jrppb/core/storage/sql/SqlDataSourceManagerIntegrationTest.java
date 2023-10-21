@@ -45,7 +45,6 @@ import org.flywaydb.core.Flyway;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -85,7 +84,6 @@ class SqlDataSourceManagerIntegrationTest {
 
   @ParameterizedTest
   @MethodSource
-  @DisplayName("When connecting to existing database")
   void whenConnectingToExistingDatabase_shouldNotThrow(
       @NotNull SqlDataSourceManager sqlDataSourceManager) {
     // Given
@@ -121,15 +119,14 @@ class SqlDataSourceManagerIntegrationTest {
     DataMigrationExecutor dataMigrationExecutor = new DataMigrationExecutor(flyway);
 
     return arguments(
-        named("For SQLite", new SqlDataSourceManager(connectionPool, dataMigrationExecutor)));
+        named("SQLite", new SqlDataSourceManager(connectionPool, dataMigrationExecutor)));
   }
 
   private static @NotNull Arguments forMysql() {
     int dbmsPort = MYSQL_CONTAINER.getMappedPort(DATABASE_ORIGINAL_PORT);
     String username = MYSQL_CONTAINER.getUsername();
     String password = MYSQL_CONTAINER.getUsername();
-    return arguments(
-        named("For MySQL", createDbmsSqlDataSourceManager(dbmsPort, username, password)));
+    return arguments(named("MySQL", createDbmsSqlDataSourceManager(dbmsPort, username, password)));
   }
 
   private static @NotNull Arguments forMariadb() {
@@ -137,7 +134,7 @@ class SqlDataSourceManagerIntegrationTest {
     String username = MARIADB_CONTAINER.getUsername();
     String password = MARIADB_CONTAINER.getUsername();
     return arguments(
-        named("For MariaDB", createDbmsSqlDataSourceManager(dbmsPort, username, password)));
+        named("MariaDB", createDbmsSqlDataSourceManager(dbmsPort, username, password)));
   }
 
   private static @NotNull SqlDataSourceManager createDbmsSqlDataSourceManager(

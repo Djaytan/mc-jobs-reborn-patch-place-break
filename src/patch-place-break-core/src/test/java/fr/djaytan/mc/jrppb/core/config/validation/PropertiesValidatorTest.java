@@ -35,7 +35,7 @@ import fr.djaytan.mc.jrppb.core.config.testutils.ValidatorTestWrapper;
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceType;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class PropertiesValidatorTest {
@@ -47,47 +47,49 @@ class PropertiesValidatorTest {
     propertiesValidator = new PropertiesValidator(ValidatorTestWrapper.getValidator());
   }
 
-  @Test
-  @DisplayName("When validating with valid values")
-  void whenValidating_withValidValues_shouldSuccess() {
-    // Given
-    DataSourcePropertiesImpl dataSourcePropertiesImpl =
-        new DataSourcePropertiesImpl(
-            DataSourceType.MYSQL,
-            "patch_place_break",
-            new DbmsServerPropertiesImpl(
-                new DbmsHostPropertiesImpl("example.com", 1234, true),
-                new DbmsCredentialsPropertiesImpl("foo", "bar"),
-                "patch_database"),
-            new ConnectionPoolPropertiesImpl(60000, 10));
+  @Nested
+  class WhenValidating {
 
-    // When
-    ThrowingCallable throwingCallable =
-        () -> propertiesValidator.validate(dataSourcePropertiesImpl);
+    @Test
+    void withValidValues_shouldSuccess() {
+      // Given
+      DataSourcePropertiesImpl dataSourcePropertiesImpl =
+          new DataSourcePropertiesImpl(
+              DataSourceType.MYSQL,
+              "patch_place_break",
+              new DbmsServerPropertiesImpl(
+                  new DbmsHostPropertiesImpl("example.com", 1234, true),
+                  new DbmsCredentialsPropertiesImpl("foo", "bar"),
+                  "patch_database"),
+              new ConnectionPoolPropertiesImpl(60000, 10));
 
-    // Then
-    assertThatCode(throwingCallable).doesNotThrowAnyException();
-  }
+      // When
+      ThrowingCallable throwingCallable =
+          () -> propertiesValidator.validate(dataSourcePropertiesImpl);
 
-  @Test
-  @DisplayName("When validating with invalid values")
-  void whenValidating_withInvalidValues_shouldThrowException() {
-    // Given
-    DataSourcePropertiesImpl dataSourcePropertiesImpl =
-        new DataSourcePropertiesImpl(
-            DataSourceType.MYSQL,
-            "patch_place_break",
-            new DbmsServerPropertiesImpl(
-                new DbmsHostPropertiesImpl("example.com", -1, true),
-                new DbmsCredentialsPropertiesImpl("foo", "bar"),
-                "patch_database"),
-            new ConnectionPoolPropertiesImpl(60000, 10));
+      // Then
+      assertThatCode(throwingCallable).doesNotThrowAnyException();
+    }
 
-    // When
-    Exception exception =
-        catchException(() -> propertiesValidator.validate(dataSourcePropertiesImpl));
+    @Test
+    void withInvalidValues_shouldThrowException() {
+      // Given
+      DataSourcePropertiesImpl dataSourcePropertiesImpl =
+          new DataSourcePropertiesImpl(
+              DataSourceType.MYSQL,
+              "patch_place_break",
+              new DbmsServerPropertiesImpl(
+                  new DbmsHostPropertiesImpl("example.com", -1, true),
+                  new DbmsCredentialsPropertiesImpl("foo", "bar"),
+                  "patch_database"),
+              new ConnectionPoolPropertiesImpl(60000, 10));
 
-    // Then
-    assertThat(exception).isExactlyInstanceOf(PropertiesValidationException.class);
+      // When
+      Exception exception =
+          catchException(() -> propertiesValidator.validate(dataSourcePropertiesImpl));
+
+      // Then
+      assertThat(exception).isExactlyInstanceOf(PropertiesValidationException.class);
+    }
   }
 }

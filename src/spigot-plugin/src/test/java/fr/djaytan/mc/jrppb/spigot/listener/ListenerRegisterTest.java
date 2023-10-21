@@ -53,7 +53,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.Preconditions;
 
@@ -103,8 +102,7 @@ class ListenerRegisterTest {
   }
 
   @Test
-  @DisplayName("When registering listeners")
-  void whenRegisteringListeners() {
+  void whenRegisteringListeners_shouldDetectBlockPlaceEventWithoutFailureWithExpectedSideEffect() {
     // Given
     WorldMock worldMock = serverMock.addSimpleWorld("world");
     Location location = new Location(worldMock, 47, 64, -87);

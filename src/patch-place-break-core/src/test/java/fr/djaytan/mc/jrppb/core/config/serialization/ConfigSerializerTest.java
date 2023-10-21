@@ -36,7 +36,6 @@ import java.nio.file.Path;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -58,11 +57,9 @@ class ConfigSerializerTest {
   }
 
   @Nested
-  @DisplayName("When serializing")
   class WhenSerializing {
 
     @Test
-    @DisplayName("With nominal values")
     void withNominalValues_shouldCreateAndFillYamlFile() throws IOException {
       // Given
       Path targetFileLocation = imfs.getPath("test.conf");
@@ -82,11 +79,9 @@ class ConfigSerializerTest {
   }
 
   @Nested
-  @DisplayName("When deserializing")
   class WhenDeserializing {
 
     @Test
-    @DisplayName("With camelCase fields")
     void withCamelCaseFields_shouldSuccess() {
       // Given
       String confFileName = "whenDeserializing_withCamelCaseFields.conf";
@@ -102,7 +97,6 @@ class ConfigSerializerTest {
     }
 
     @Test
-    @DisplayName("With kebab-case fields")
     void withKebabCaseFields_shouldThrowException() {
       // Given
       String confFileName = "whenDeserializing_withKebabCaseFields.conf";

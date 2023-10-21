@@ -52,7 +52,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -77,13 +76,11 @@ class DataSourcePropertiesImplTest {
   }
 
   @Test
-  @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashcode_shouldMetContracts() {
     EqualsVerifier.forClass(DataSourcePropertiesImpl.class).verify();
   }
 
   @Test
-  @DisplayName("When calling toString()")
   void whenCallingToString_shouldMetContracts() {
     ToStringVerifier.forClass(DataSourcePropertiesImpl.class)
         .withClassName(NameStyle.SIMPLE_NAME)
@@ -91,11 +88,9 @@ class DataSourcePropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When instantiating")
   class WhenInstantiating {
 
     @Test
-    @DisplayName("With no args constructor")
     void withNoArgsConstructor_shouldMatchDefaultValues() {
       // Given
 
@@ -119,7 +114,6 @@ class DataSourcePropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With all args constructor")
     void withAllArgsConstructor_shouldMatchGivenArguments() {
       // Given
       DataSourceType dataSourceType = DataSourceType.MYSQL;
@@ -147,11 +141,9 @@ class DataSourcePropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When validating")
   class WhenValidating {
 
     @Test
-    @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
       DataSourcePropertiesImpl properties = new DataSourcePropertiesImpl();
@@ -165,7 +157,6 @@ class DataSourcePropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
       DataSourcePropertiesImpl properties =
@@ -187,7 +178,6 @@ class DataSourcePropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With only shallow invalid values")
     void withOnlyShallowInvalidValues_shouldGenerateConstraintViolations() {
       // Given
       DataSourcePropertiesImpl properties = new DataSourcePropertiesImpl(null, null, null, null);
@@ -201,7 +191,6 @@ class DataSourcePropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With only deep invalid values")
     void withOnlyDeepInvalidValues_shouldGenerateConstraintViolations() {
       // Given
       DataSourcePropertiesImpl properties =
@@ -223,13 +212,11 @@ class DataSourcePropertiesImplTest {
     }
 
     @Nested
-    @DisplayName("'table' field")
     @TestInstance(Lifecycle.PER_CLASS)
     class TableField {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
-      @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(@NotNull String validTable) {
         // Given
         DataSourcePropertiesImpl properties =
@@ -258,7 +245,6 @@ class DataSourcePropertiesImplTest {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
-      @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(@Nullable String invalidTable) {
         // Given
         DataSourcePropertiesImpl properties =
@@ -301,13 +287,11 @@ class DataSourcePropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When serializing to YAML")
   @TestInstance(Lifecycle.PER_CLASS)
   class WhenSerializingToYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With valid values")
     void withValidValues_shouldMatchExpectedYamlContent(
         @NotNull DataSourcePropertiesImpl givenValue, @NotNull String expectedYamlFileName)
         throws IOException {
@@ -346,13 +330,11 @@ class DataSourcePropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When deserializing from YAML")
   @TestInstance(Lifecycle.PER_CLASS)
   class WhenDeserializingFromYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With valid content")
     void withValidContent_shouldMatchExpectedValue(
         @NotNull String confFileName, @NotNull DataSourcePropertiesImpl expectedValue) {
       // Given
@@ -403,7 +385,6 @@ class DataSourcePropertiesImplTest {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With invalid content")
     void withInvalidContent_shouldThrowException(@NotNull String confFileName) {
       // Given
       Path confFile =
@@ -439,7 +420,6 @@ class DataSourcePropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With empty content")
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
       String confFileName = "whenDeserializing_withEmptyContent.conf";

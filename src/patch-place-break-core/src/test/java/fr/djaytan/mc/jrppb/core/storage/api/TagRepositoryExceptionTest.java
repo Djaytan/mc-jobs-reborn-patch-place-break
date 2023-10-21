@@ -29,14 +29,12 @@ import fr.djaytan.mc.jrppb.api.entities.Tag;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class TagRepositoryExceptionTest {
 
   @Test
-  @DisplayName("When instantiating put tag exception")
-  void whenInstantiatingPutTagException() {
+  void whenInstantiatingPutTagException_shouldContainsExpectedCauseAndMessage() {
     // Given
     Tag tag = new Tag(new BlockLocation("world", 123, 54, -762), false, LocalDateTime.now());
     Throwable cause = new IOException();
@@ -52,8 +50,7 @@ class TagRepositoryExceptionTest {
   }
 
   @Test
-  @DisplayName("When instantiating update tag exception")
-  void whenInstantiatingUpdateTagException() {
+  void whenInstantiatingUpdateTagException_shouldContainsExpectedCauseAndMessage() {
     // Given
     BlockLocation oldBlockLocation = new BlockLocation("world", 123, 54, -762);
     BlockLocation newBlockLocation = new BlockLocation("world", 124, 54, -762);
@@ -77,8 +74,7 @@ class TagRepositoryExceptionTest {
   }
 
   @Test
-  @DisplayName("When instantiating fetch tag exception")
-  void whenInstantiatingFetchTagException() {
+  void whenInstantiatingFetchTagException_shouldContainsExpectedCauseAndMessage() {
     // Given
     BlockLocation blockLocation = new BlockLocation("world", 123, 54, -762);
     Throwable cause = new IOException();
@@ -95,8 +91,7 @@ class TagRepositoryExceptionTest {
   }
 
   @Test
-  @DisplayName("When instantiating delete tag exception")
-  void whenInstantiatingDeleteTagException() {
+  void whenInstantiatingDeleteTagException_shouldContainsExpectedCauseAndMessage() {
     // Given
     BlockLocation blockLocation = new BlockLocation("world", 123, 54, -762);
     Throwable cause = new IOException();

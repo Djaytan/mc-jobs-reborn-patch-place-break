@@ -25,13 +25,11 @@ package fr.djaytan.mc.jrppb.spigot.adapter;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gamingmesh.jobs.container.ActionType;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class SpigotAdapterExceptionTest {
 
   @Test
-  @DisplayName("When instantiating invalid job type exception")
   void whenInstantiatingInvalidJobTypeException() {
     // Given
     ActionType invalidActionType = ActionType.CRAFT;

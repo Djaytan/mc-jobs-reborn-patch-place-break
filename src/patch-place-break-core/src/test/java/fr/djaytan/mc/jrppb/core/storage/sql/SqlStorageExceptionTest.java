@@ -26,25 +26,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceType;
 import java.io.IOException;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class SqlStorageExceptionTest {
 
   @Test
-  @DisplayName("When instantiating connection pool not setup exception")
   void whenInstantiatingConnectionPoolNotSetupException() {
-    // Given
-
-    // When
-    SqlStorageException sqlStorageException = SqlStorageException.connectionPoolNotSetup();
-
-    // Then
-    assertThat(sqlStorageException).hasMessage("The connection pool must be setup before using it");
+    assertThat(SqlStorageException.connectionPoolNotSetup())
+        .hasMessage("The connection pool must be setup before using it");
   }
 
   @Test
-  @DisplayName("When instantiating database connection lifecycle management exception")
   void whenInstantiatingDatabaseConnectionLifecycleManagementException() {
     // Given
     Throwable cause = new IOException();
@@ -62,7 +54,6 @@ class SqlStorageExceptionTest {
   }
 
   @Test
-  @DisplayName("When instantiating database creation exception")
   void whenInstantiatingDatabaseCreationException() {
     // Given
     String databaseName = "patch_place_break";
@@ -79,17 +70,8 @@ class SqlStorageExceptionTest {
   }
 
   @Test
-  @DisplayName("When instantiating unsupported data source type exception")
   void whenInstantiatingUnsupportedDataSourceTypeException() {
-    // Given
-    DataSourceType dataSourceType = DataSourceType.MYSQL;
-
-    // When
-    SqlStorageException sqlStorageException =
-        SqlStorageException.unsupportedDataSourceType(dataSourceType);
-
-    // Then
-    assertThat(sqlStorageException)
+    assertThat(SqlStorageException.unsupportedDataSourceType(DataSourceType.MYSQL))
         .hasMessage(
             "java.lang.UnsupportedOperationException: Unsupported data source type 'MYSQL'");
   }

@@ -33,7 +33,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,11 +43,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ConstraintViolationFormatterTest {
 
   @Nested
-  @DisplayName("When formatting")
   class WhenFormatting {
 
     @Test
-    @DisplayName("Without any constraint violation")
     void withoutAnyConstraintViolation_shouldThrowException() {
       // Given
       Collection<ConstraintViolation<Object>> constraintViolations = Collections.emptySet();
@@ -62,7 +59,6 @@ class ConstraintViolationFormatterTest {
     }
 
     @Test
-    @DisplayName("With one constraint violation")
     void withOneConstraintViolation_shouldMatchExpectations(
         @Mock @NotNull ConstraintViolation<Object> constraintViolationMocked,
         @Mock @NotNull Path propertyPathMocked) {
@@ -86,7 +82,6 @@ class ConstraintViolationFormatterTest {
     }
 
     @Test
-    @DisplayName("With several constraint violations")
     void withSeveralConstraintViolations_shouldMatchExpectations(
         @Mock @NotNull ConstraintViolation<Object> constraintViolationMocked1,
         @Mock @NotNull Path propertyPathMocked1,

@@ -24,62 +24,38 @@ package fr.djaytan.mc.jrppb.core.storage.sql.serializer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class BooleanIntegerSerializerTest {
 
   private final BooleanIntegerSerializer booleanIntegerSerializer = new BooleanIntegerSerializer();
 
-  @Test
-  @DisplayName("When serializing from 'true' boolean value")
-  void whenSerializing_fromTrueBooleanValue() {
-    // Given
-    boolean value = true;
+  @Nested
+  class WhenSerializing {
 
-    // When
-    int serializedValue = booleanIntegerSerializer.serialize(value);
+    @Test
+    void fromTrueBooleanValue() {
+      assertThat(booleanIntegerSerializer.serialize(true)).isEqualTo(1);
+    }
 
-    // Then
-    assertThat(serializedValue).isEqualTo(1);
+    @Test
+    void fromFalseBooleanValue() {
+      assertThat(booleanIntegerSerializer.serialize(false)).isZero();
+    }
   }
 
-  @Test
-  @DisplayName("When serializing from 'false' boolean value")
-  void whenSerializing_fromFalseBooleanValue() {
-    // Given
-    boolean value = false;
+  @Nested
+  class WhenDeserializing {
 
-    // When
-    int serializedValue = booleanIntegerSerializer.serialize(value);
+    @Test
+    void fromZeroIntegerValue() {
+      assertThat(booleanIntegerSerializer.deserialize(0)).isFalse();
+    }
 
-    // Then
-    assertThat(serializedValue).isZero();
-  }
-
-  @Test
-  @DisplayName("When deserializing from '0' integer value")
-  void whenDeserializing_fromZeroIntegerValue() {
-    // Given
-    int value = 0;
-
-    // When
-    boolean deserializedValue = booleanIntegerSerializer.deserialize(value);
-
-    // Then
-    assertThat(deserializedValue).isFalse();
-  }
-
-  @Test
-  @DisplayName("When deserializing from '1' integer value")
-  void whenDeserializing_fromOneIntegerValue() {
-    // Given
-    int value = 1;
-
-    // When
-    boolean deserializedValue = booleanIntegerSerializer.deserialize(value);
-
-    // Then
-    assertThat(deserializedValue).isTrue();
+    @Test
+    void fromOneIntegerValue() {
+      assertThat(booleanIntegerSerializer.deserialize(1)).isTrue();
+    }
   }
 }

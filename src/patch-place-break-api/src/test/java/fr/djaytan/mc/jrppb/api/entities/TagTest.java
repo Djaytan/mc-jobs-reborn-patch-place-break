@@ -26,13 +26,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class TagTest {
 
   @Test
-  @DisplayName("When instantiating with nominal values")
   void whenInstantiatingWithNominalValues() {
     // Given
     String worldName = "world";

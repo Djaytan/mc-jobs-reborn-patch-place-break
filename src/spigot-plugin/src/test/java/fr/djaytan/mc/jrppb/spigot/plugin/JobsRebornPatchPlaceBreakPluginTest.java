@@ -46,7 +46,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.Preconditions;
 import org.threeten.extra.MutableClock;
@@ -74,7 +73,6 @@ class JobsRebornPatchPlaceBreakPluginTest {
 
   /** Obviously relevant against place-break diamond ore exploit. */
   @Test
-  @DisplayName("When player place diamond ore")
   void whenPlayerPlaceDiamondOre_shouldDetectExploitIfBroken() {
     // Given
     PlayerMock playerMock = serverMock.addPlayer();
@@ -102,7 +100,6 @@ class JobsRebornPatchPlaceBreakPluginTest {
    * them.
    */
   @Test
-  @DisplayName("When player break sapling")
   void whenPlayerBreakSapling_shouldDetectExploitIfPutBackQuickly() {
     // Given
     PlayerMock player = serverMock.addPlayer();
@@ -130,7 +127,6 @@ class JobsRebornPatchPlaceBreakPluginTest {
    * test the patch under these conditions.
    */
   @Test
-  @DisplayName("When JobsReborn thinks AIR block has been broken")
   void whenJobsRebornThinksAirBlockHasBeenBroken_shouldNotConsiderItAsAnExploit() {
     // Given
     WorldMock worldMock = serverMock.addSimpleWorld("world");
@@ -159,7 +155,6 @@ class JobsRebornPatchPlaceBreakPluginTest {
    * test the patch under these conditions.
    */
   @Test
-  @DisplayName("When JobsReborn thinks WATER block has been broken")
   void whenJobsRebornThinksWaterBlockHasBeenBroken_shouldNotConsiderItAsAnExploit() {
     // Given
     WorldMock worldMock = serverMock.addSimpleWorld("world");

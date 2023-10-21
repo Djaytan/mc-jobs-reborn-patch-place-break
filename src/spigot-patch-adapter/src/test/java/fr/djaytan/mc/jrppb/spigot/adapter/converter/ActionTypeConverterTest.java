@@ -28,39 +28,41 @@ import static org.assertj.core.api.Assertions.catchException;
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.mc.jrppb.api.entities.BlockActionType;
 import fr.djaytan.mc.jrppb.spigot.adapter.SpigotAdapterException;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class ActionTypeConverterTest {
 
   private final ActionTypeConverter actionTypeConverter = new ActionTypeConverter();
 
-  @Test
-  @DisplayName("When converting with valid action type")
-  void whenConverting_withValidActionType_shouldReturnBlockActionType() {
-    // Given
-    ActionType validActionType = ActionType.BREAK;
+  @Nested
+  class WhenConverting {
 
-    // When
-    BlockActionType blockActionType = actionTypeConverter.convert(validActionType);
+    @Test
+    void withValidActionType_shouldReturnCorrespondingBlockActionType() {
+      // Given
+      ActionType validActionType = ActionType.BREAK;
 
-    // Then
-    assertThat(blockActionType).isEqualTo(BlockActionType.BREAK);
-  }
+      // When
+      BlockActionType blockActionType = actionTypeConverter.convert(validActionType);
 
-  @Test
-  @DisplayName("When converting with invalid action type")
-  void whenConverting_withInvalidActionType_shouldThrowException() {
-    // Given
-    ActionType invalidActionType = ActionType.BREED;
+      // Then
+      assertThat(blockActionType).isEqualTo(BlockActionType.BREAK);
+    }
 
-    // When
-    Exception exception = catchException(() -> actionTypeConverter.convert(invalidActionType));
+    @Test
+    void withInvalidActionType_shouldThrowException() {
+      // Given
+      ActionType invalidActionType = ActionType.BREED;
 
-    // Then
-    assertThat(exception)
-        .isExactlyInstanceOf(SpigotAdapterException.class)
-        .hasMessage(
-            "Invalid job action type 'BREED' specified. Expecting one of the following: BREAK, TNTBREAK, PLACE");
+      // When
+      Exception exception = catchException(() -> actionTypeConverter.convert(invalidActionType));
+
+      // Then
+      assertThat(exception)
+          .isExactlyInstanceOf(SpigotAdapterException.class)
+          .hasMessage(
+              "Invalid job action type 'BREED' specified. Expecting one of the following: BREAK, TNTBREAK, PLACE");
+    }
   }
 }

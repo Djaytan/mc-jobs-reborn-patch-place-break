@@ -36,7 +36,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class ConfigApiTest {
@@ -63,7 +62,6 @@ class ConfigApiTest {
   }
 
   @Test
-  @DisplayName("When retrieving data source properties")
   void whenRetrievingDataSourceProperties_shouldSuccess() throws IOException {
     // Given
 

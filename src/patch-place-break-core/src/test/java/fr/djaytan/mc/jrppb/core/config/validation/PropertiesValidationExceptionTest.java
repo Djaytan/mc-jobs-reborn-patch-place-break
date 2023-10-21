@@ -29,7 +29,6 @@ import jakarta.validation.ConstraintViolation;
 import java.util.Collections;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -39,7 +38,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class PropertiesValidationExceptionTest {
 
   @Test
-  @DisplayName("When instantiating constraint violations exception")
   void whenInstantiatingConstraintViolationsException(
       @Mock @NotNull ConstraintViolation<DataSourceProperties> constraintViolation) {
     // Given

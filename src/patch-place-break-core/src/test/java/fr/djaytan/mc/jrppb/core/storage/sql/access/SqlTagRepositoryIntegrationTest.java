@@ -37,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.Preconditions;
 import org.testcontainers.containers.MySQLContainer;
@@ -77,123 +77,119 @@ class SqlTagRepositoryIntegrationTest {
   }
 
   @Test
-  @DisplayName("When retrieving tag when it doesn't exist")
   void whenRetrievingTagWhenItDoesntExist_shouldGetEmptyValue() {
-    // Given
+    assertThat(sqlTagRepository.findByLocation(randomBlockLocation)).isEmpty();
+  }
 
-    // When
-    Optional<Tag> tag = sqlTagRepository.findByLocation(randomBlockLocation);
+  @Nested
+  class WhenPuttingTag {
 
-    // Then
-    assertThat(tag).isEmpty();
+    @Test
+    void whenNoOneAlreadyExist_shouldThenBeRetrievable() {
+      // Given
+      Preconditions.condition(
+          sqlTagRepository.findByLocation(randomBlockLocation).isEmpty(),
+          String.format("No tag must exist at the following location: %s", randomBlockLocation));
+
+      Tag tag = new Tag(randomBlockLocation, true, LocalDateTime.now());
+
+      // When
+      sqlTagRepository.put(tag);
+
+      // Then
+      Optional<Tag> retrievedTag = sqlTagRepository.findByLocation(randomBlockLocation);
+
+      assertThat(retrievedTag).isPresent().contains(tag);
+    }
+
+    @Test
+    void whenOneAlreadyExist_shouldOverrideIt() {
+      // Given
+      LocalDateTime firstDateTime = LocalDateTime.now();
+      Tag alreadyExistingTag = new Tag(randomBlockLocation, true, firstDateTime);
+
+      sqlTagRepository.put(alreadyExistingTag);
+
+      LocalDateTime secondDateTime = firstDateTime.plusSeconds(1);
+      Tag overrideTag = new Tag(randomBlockLocation, true, secondDateTime);
+
+      // When
+      sqlTagRepository.put(overrideTag);
+
+      // Then
+      Optional<Tag> retrievedTag = sqlTagRepository.findByLocation(randomBlockLocation);
+
+      assertThat(retrievedTag).isPresent().contains(overrideTag);
+    }
+  }
+
+  @Nested
+  class WhenUpdatingTagLocation {
+
+    @Test
+    void whenTagExists_shouldExistInNewLocationButNotInOldOne() {
+      // Given
+      BlockLocation oldLocation = randomBlockLocation;
+      Tag oldTag = new Tag(oldLocation, true, LocalDateTime.now());
+
+      BlockLocation newLocation =
+          new BlockLocation(
+              oldLocation.worldName(), oldLocation.x() + 1, oldLocation.y(), oldLocation.z());
+
+      Preconditions.condition(
+          sqlTagRepository.findByLocation(newLocation).isEmpty(),
+          String.format("No tag must exist at the following location: %s", newLocation));
+
+      sqlTagRepository.put(oldTag);
+
+      OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
+          new OldNewBlockLocationPairSet(
+              Collections.singletonList(new OldNewBlockLocationPair(oldLocation, newLocation)));
+
+      // When
+      sqlTagRepository.updateLocations(oldNewBlockLocationPairSet);
+
+      // Then
+      Optional<Tag> tagOldLocation = sqlTagRepository.findByLocation(oldLocation);
+      Optional<Tag> tagNewLocation = sqlTagRepository.findByLocation(newLocation);
+
+      assertAll(
+          () -> assertThat(tagOldLocation).isEmpty(), () -> assertThat(tagNewLocation).isPresent());
+    }
+
+    @Test
+    void whenTagDoesntExist_shouldNotCreateTagInAnyLocation() {
+      // Given
+      BlockLocation oldLocation = randomBlockLocation;
+      BlockLocation newLocation =
+          new BlockLocation(
+              oldLocation.worldName(), oldLocation.x() + 1, oldLocation.y(), oldLocation.z());
+
+      Preconditions.condition(
+          sqlTagRepository.findByLocation(oldLocation).isEmpty(),
+          String.format("No tag must exist at the following location: %s", oldLocation));
+      Preconditions.condition(
+          sqlTagRepository.findByLocation(newLocation).isEmpty(),
+          String.format("No tag must exist at the following location: %s", newLocation));
+
+      OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
+          new OldNewBlockLocationPairSet(
+              Collections.singletonList(new OldNewBlockLocationPair(oldLocation, newLocation)));
+
+      // When
+      sqlTagRepository.updateLocations(oldNewBlockLocationPairSet);
+
+      // Then
+      Optional<Tag> tagOldLocation = sqlTagRepository.findByLocation(oldLocation);
+      Optional<Tag> tagNewLocation = sqlTagRepository.findByLocation(newLocation);
+
+      assertAll(
+          () -> assertThat(tagOldLocation).isEmpty(), () -> assertThat(tagNewLocation).isEmpty());
+    }
   }
 
   @Test
-  @DisplayName("When putting tag when no one already exist")
-  void whenPuttingTagWhenNoOneAlreadyExist_shouldThenBeRetrievable() {
-    // Given
-    Preconditions.condition(
-        sqlTagRepository.findByLocation(randomBlockLocation).isEmpty(),
-        String.format("No tag must exist at the following location: %s", randomBlockLocation));
-
-    Tag tag = new Tag(randomBlockLocation, true, LocalDateTime.now());
-
-    // When
-    sqlTagRepository.put(tag);
-
-    // Then
-    Optional<Tag> retrievedTag = sqlTagRepository.findByLocation(randomBlockLocation);
-
-    assertThat(retrievedTag).isPresent().contains(tag);
-  }
-
-  @Test
-  @DisplayName("When putting tag when one already exist")
-  void whenPuttingTagWhenOneAlreadyExist_shouldOverrideIt() {
-    // Given
-    LocalDateTime firstDateTime = LocalDateTime.now();
-    Tag alreadyExistingTag = new Tag(randomBlockLocation, true, firstDateTime);
-
-    sqlTagRepository.put(alreadyExistingTag);
-
-    LocalDateTime secondDateTime = firstDateTime.plusSeconds(1);
-    Tag overrideTag = new Tag(randomBlockLocation, true, secondDateTime);
-
-    // When
-    sqlTagRepository.put(overrideTag);
-
-    // Then
-    Optional<Tag> retrievedTag = sqlTagRepository.findByLocation(randomBlockLocation);
-
-    assertThat(retrievedTag).isPresent().contains(overrideTag);
-  }
-
-  @Test
-  @DisplayName("When updating existing tag")
-  void whenUpdatingExistingTag_shouldExistInNewLocationButNotInOldOne() {
-    // Given
-    BlockLocation oldLocation = randomBlockLocation;
-    Tag oldTag = new Tag(oldLocation, true, LocalDateTime.now());
-
-    BlockLocation newLocation =
-        new BlockLocation(
-            oldLocation.worldName(), oldLocation.x() + 1, oldLocation.y(), oldLocation.z());
-
-    Preconditions.condition(
-        sqlTagRepository.findByLocation(newLocation).isEmpty(),
-        String.format("No tag must exist at the following location: %s", newLocation));
-
-    sqlTagRepository.put(oldTag);
-
-    OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
-        new OldNewBlockLocationPairSet(
-            Collections.singletonList(new OldNewBlockLocationPair(oldLocation, newLocation)));
-
-    // When
-    sqlTagRepository.updateLocations(oldNewBlockLocationPairSet);
-
-    // Then
-    Optional<Tag> tagOldLocation = sqlTagRepository.findByLocation(oldLocation);
-    Optional<Tag> tagNewLocation = sqlTagRepository.findByLocation(newLocation);
-
-    assertAll(
-        () -> assertThat(tagOldLocation).isEmpty(), () -> assertThat(tagNewLocation).isPresent());
-  }
-
-  @Test
-  @DisplayName("When updating non-existing tag")
-  void whenUpdatingNonExistingTag_shouldExistInNewLocationButNotInOldOne() {
-    // Given
-    BlockLocation oldLocation = randomBlockLocation;
-    BlockLocation newLocation =
-        new BlockLocation(
-            oldLocation.worldName(), oldLocation.x() + 1, oldLocation.y(), oldLocation.z());
-
-    Preconditions.condition(
-        sqlTagRepository.findByLocation(oldLocation).isEmpty(),
-        String.format("No tag must exist at the following location: %s", oldLocation));
-    Preconditions.condition(
-        sqlTagRepository.findByLocation(newLocation).isEmpty(),
-        String.format("No tag must exist at the following location: %s", newLocation));
-
-    OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
-        new OldNewBlockLocationPairSet(
-            Collections.singletonList(new OldNewBlockLocationPair(oldLocation, newLocation)));
-
-    // When
-    sqlTagRepository.updateLocations(oldNewBlockLocationPairSet);
-
-    // Then
-    Optional<Tag> tagOldLocation = sqlTagRepository.findByLocation(oldLocation);
-    Optional<Tag> tagNewLocation = sqlTagRepository.findByLocation(newLocation);
-
-    assertAll(
-        () -> assertThat(tagOldLocation).isEmpty(), () -> assertThat(tagNewLocation).isEmpty());
-  }
-
-  @Test
-  @DisplayName("When removing tag")
-  void whenRemovingTag_shouldThenNotExistAnymore() {
+  void whenRemovingTag_shouldNotExistAnymore() {
     // Given
     Tag alreadyExistingTag = new Tag(randomBlockLocation, true, LocalDateTime.now());
     sqlTagRepository.put(alreadyExistingTag);

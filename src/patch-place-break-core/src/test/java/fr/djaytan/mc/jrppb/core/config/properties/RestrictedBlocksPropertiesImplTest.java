@@ -53,7 +53,6 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -78,13 +77,11 @@ class RestrictedBlocksPropertiesImplTest {
   }
 
   @Test
-  @DisplayName("equals() & hashCode() - Verifications")
   void equalsAndHashcodeContractVerification() {
     EqualsVerifier.forClass(RestrictedBlocksPropertiesImpl.class).verify();
   }
 
   @Test
-  @DisplayName("toString() - Verifications")
   void toStringContractVerification() {
     ToStringVerifier.forClass(RestrictedBlocksPropertiesImpl.class)
         .withClassName(NameStyle.SIMPLE_NAME)
@@ -92,11 +89,9 @@ class RestrictedBlocksPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When instantiating")
   class WhenInstantiating {
 
     @Test
-    @DisplayName("With nominal values")
     void withNominalValues() {
       // Given
       Set<String> materials = new HashSet<>(Arrays.asList("COBBLESTONE", "STONE", "DIAMOND_BLOCK"));
@@ -114,7 +109,6 @@ class RestrictedBlocksPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With default values")
     void withDefaultValues() {
       // Given
 
@@ -128,11 +122,9 @@ class RestrictedBlocksPropertiesImplTest {
     }
 
     @Nested
-    @DisplayName("For immutability")
     class ForImmutability {
 
       @Test
-      @DisplayName("With element added from initial set")
       void withElementAddedFromInitialSet() {
         // Given
         Set<String> materials =
@@ -150,7 +142,6 @@ class RestrictedBlocksPropertiesImplTest {
       }
 
       @Test
-      @DisplayName("With element added from property set")
       void withElementAddedFromPropertySet() {
         // Given
         Set<String> materials =
@@ -171,7 +162,6 @@ class RestrictedBlocksPropertiesImplTest {
 
   @ParameterizedTest(name = "{index} - With {0} restriction mode")
   @MethodSource
-  @DisplayName("When checking block restriction")
   void whenCheckingBlockRestriction(
       @NotNull RestrictionMode restrictionMode,
       boolean isListedMaterialExpectedToBeRestricted,
@@ -204,11 +194,9 @@ class RestrictedBlocksPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When validating")
   class WhenValidating {
 
     @Test
-    @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
       RestrictedBlocksPropertiesImpl properties = new RestrictedBlocksPropertiesImpl();
@@ -222,7 +210,6 @@ class RestrictedBlocksPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
       RestrictedBlocksPropertiesImpl properties =
@@ -237,7 +224,6 @@ class RestrictedBlocksPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With only invalid values")
     void withOnlyInvalidValues_shouldGenerateConstraintViolations() {
       // Given
       RestrictedBlocksPropertiesImpl restrictedBlocksProperties =
@@ -253,13 +239,11 @@ class RestrictedBlocksPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When serializing to YAML")
   @TestInstance(Lifecycle.PER_CLASS)
   class WhenSerializingToYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With valid values")
     void withValidValues_shouldMatchExpectedYamlContent(
         @NotNull RestrictedBlocksPropertiesImpl givenValue, @NotNull String expectedYamlFileName)
         throws IOException {
@@ -291,13 +275,11 @@ class RestrictedBlocksPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When deserializing from YAML")
   @TestInstance(Lifecycle.PER_CLASS)
   class WhenDeserializingFromYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With valid content")
     void withValidContent_shouldMatchExpectedValue(
         @NotNull String confFileName, @NotNull RestrictedBlocksPropertiesImpl expectedValue) {
       // Given
@@ -324,7 +306,6 @@ class RestrictedBlocksPropertiesImplTest {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With invalid content")
     void withInvalidContent_shouldThrowException(@NotNull String confFileName) {
       // Given
       Path confFile =
@@ -356,7 +337,6 @@ class RestrictedBlocksPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With empty content")
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
       String confFileName = "whenDeserializing_withEmptyContent.conf";

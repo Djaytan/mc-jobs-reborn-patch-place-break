@@ -51,7 +51,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -76,13 +75,11 @@ class DbmsServerPropertiesImplTest {
   }
 
   @Test
-  @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashcode_shouldMetContracts() {
     EqualsVerifier.forClass(DbmsServerPropertiesImpl.class).verify();
   }
 
   @Test
-  @DisplayName("When calling toString()")
   void whenCallingToString_shouldMetContracts() {
     ToStringVerifier.forClass(DbmsServerPropertiesImpl.class)
         .withClassName(NameStyle.SIMPLE_NAME)
@@ -90,11 +87,9 @@ class DbmsServerPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When instantiating")
   class WhenInstantiating {
 
     @Test
-    @DisplayName("With no args constructor")
     void withNoArgsConstructor_shouldMatchDefaultValues() {
       // Given
 
@@ -113,7 +108,6 @@ class DbmsServerPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With all args constructor")
     void withAllArgsConstructor_shouldMatchGivenArguments() {
       // Given
       DbmsHostPropertiesImpl host = new DbmsHostPropertiesImpl("example.com", 1234, true);
@@ -133,11 +127,9 @@ class DbmsServerPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When validating")
   class WhenValidating {
 
     @Test
-    @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
       DbmsServerPropertiesImpl properties = new DbmsServerPropertiesImpl();
@@ -151,7 +143,6 @@ class DbmsServerPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
       DbmsServerPropertiesImpl properties =
@@ -169,7 +160,6 @@ class DbmsServerPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With only shallow invalid values")
     void withOnlyShallowInvalidValues_shouldGenerateConstraintViolations() {
       // Given
       DbmsServerPropertiesImpl properties = new DbmsServerPropertiesImpl(null, null, " ");
@@ -183,7 +173,6 @@ class DbmsServerPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With only deep invalid values")
     void withOnlyDeepInvalidValues_shouldGenerateConstraintViolations() {
       // Given
       DbmsHostPropertiesImpl invalidHost = new DbmsHostPropertiesImpl(" ", 0, false);
@@ -201,13 +190,11 @@ class DbmsServerPropertiesImplTest {
     }
 
     @Nested
-    @DisplayName("'database' field")
     @TestInstance(Lifecycle.PER_CLASS)
     class DatabaseField {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
-      @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(@NotNull String validDatabase) {
         // Given
         DbmsServerPropertiesImpl properties =
@@ -232,7 +219,6 @@ class DbmsServerPropertiesImplTest {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
-      @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(@Nullable String invalidDatabase) {
         // Given
         DbmsServerPropertiesImpl properties =
@@ -271,13 +257,11 @@ class DbmsServerPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When serializing to YAML")
   @TestInstance(Lifecycle.PER_CLASS)
   class WhenSerializingToYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With valid values")
     void withValidValues_shouldMatchExpectedYamlContent(
         @NotNull DbmsServerPropertiesImpl givenValue, @NotNull String expectedYamlFileName)
         throws IOException {
@@ -312,13 +296,11 @@ class DbmsServerPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When deserializing from YAML")
   @TestInstance(Lifecycle.PER_CLASS)
   class WhenDeserializingFromYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With valid content")
     void withValidContent_shouldMatchExpectedValue(
         @NotNull String confFileName, @NotNull DbmsServerPropertiesImpl expectedValue) {
       // Given
@@ -357,7 +339,6 @@ class DbmsServerPropertiesImplTest {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With invalid content")
     void withInvalidContent_shouldThrowException(@NotNull String confFileName) {
       // Given
       Path confFile =
@@ -391,7 +372,6 @@ class DbmsServerPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With empty content")
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
       String confFileName = "whenDeserializing_withEmptyContent.conf";

@@ -29,7 +29,6 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -41,12 +40,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 class BlockLocationTest {
 
   @Nested
-  @DisplayName("When instantiating")
   @TestInstance(Lifecycle.PER_CLASS)
   class WhenInstantiating {
 
     @Test
-    @DisplayName("With all args constructor and nominal values")
     void withAllArgsConstructorAndNominalValues_shouldSuccess() {
       // Given
       String worldName = "world";
@@ -68,7 +65,6 @@ class BlockLocationTest {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With copy constructor")
     void withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue(
         @NotNull Vector givenDirection, @NotNull BlockLocation expectedValue) {
       // Given

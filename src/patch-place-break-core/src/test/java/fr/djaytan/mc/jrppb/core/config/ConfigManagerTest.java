@@ -49,7 +49,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -80,11 +79,9 @@ class ConfigManagerTest {
   }
 
   @Nested
-  @DisplayName("When creating default config")
   class WhenCreatingDefaultConfig {
 
     @Test
-    @DisplayName("With already existing one")
     void withAlreadyExistingOne_shouldDoNothing() throws IOException {
       // Given
       String configFileName = "alreadyExisting.conf";
@@ -102,7 +99,6 @@ class ConfigManagerTest {
     }
 
     @Test
-    @DisplayName("With generic default properties")
     void withGenericDefaultProperties_shouldSerializeConfig() throws IOException {
       // Given
       String configFileName = "nominalCase.conf";
@@ -122,7 +118,6 @@ class ConfigManagerTest {
     }
 
     @Test
-    @DisplayName("With exception thrown at serialization time")
     void withExceptionThrownAtSerializationTime_shouldThrowWrapperException() {
       // Given
       String configFileName = "exception.conf";
@@ -141,7 +136,6 @@ class ConfigManagerTest {
     }
 
     @Test
-    @DisplayName("With invalid default properties")
     void withInvalidDefaultProperties_shouldThrowException() {
       // Given
       String configFileName = "exception.conf";
@@ -159,11 +153,9 @@ class ConfigManagerTest {
   }
 
   @Nested
-  @DisplayName("When reading and validating config")
   class WhenReadingAndValidatingConfig {
 
     @Test
-    @DisplayName("With nominal config file")
     void withNominalConfigFile_shouldSuccess() throws IOException {
       // Given
       String nominalConfigFileName = "whenReadingAndValidatingConfig_withNominalConfigFile.conf";
@@ -193,7 +185,6 @@ class ConfigManagerTest {
     }
 
     @Test
-    @DisplayName("With missing required fields in config file")
     void withMissingRequiredFieldsInConfigFile_shouldThrowException() throws IOException {
       // Given
       String invalidConfigFileName =
@@ -216,7 +207,6 @@ class ConfigManagerTest {
     }
 
     @Test
-    @DisplayName("With invalid config file")
     void withInvalidConfigFile_shouldThrowException() throws IOException {
       // Given
       String invalidConfigFileName = "whenReadingAndValidatingConfig_withInvalidConfigFile.conf";
@@ -238,7 +228,6 @@ class ConfigManagerTest {
     }
 
     @Test
-    @DisplayName("With empty config file")
     void withEmptyConfigFile_shouldThrowException() throws IOException {
       // Given
       String emptyConfigFileName = "whenReadingAndValidatingConfig_withEmptyConfigFile.conf";
@@ -259,7 +248,6 @@ class ConfigManagerTest {
     }
 
     @Test
-    @DisplayName("Without existing config file")
     void withoutExistingConfigFile_shouldThrowException() {
       // Given
       String configFileName = "test.conf";

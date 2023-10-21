@@ -31,7 +31,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,12 +49,11 @@ class BlockLocationConverterTest {
   }
 
   @Nested
-  @DisplayName("When converting")
   class WhenConverting {
 
     @Test
-    @DisplayName("From nominal block")
-    void fromNominalBlock(@Mock @NotNull Block block, @Mock @NotNull World world) {
+    void fromNominalBlock_shouldReturnExpectedBlockLocation(
+        @Mock @NotNull Block block, @Mock @NotNull World world) {
       // Given
       String worldName = "world";
       given(world.getName()).willReturn(worldName);
@@ -76,8 +74,7 @@ class BlockLocationConverterTest {
     }
 
     @Test
-    @DisplayName("From block without world value")
-    void fromLocationWithoutWorldValue(@Mock @NotNull Block block) {
+    void fromLocationWithoutWorldValue_shouldThrowException(@Mock @NotNull Block block) {
       // Given
 
       // When

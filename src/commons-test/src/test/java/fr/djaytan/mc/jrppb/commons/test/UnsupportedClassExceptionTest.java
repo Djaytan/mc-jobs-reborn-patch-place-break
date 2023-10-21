@@ -24,13 +24,11 @@ package fr.djaytan.mc.jrppb.commons.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class UnsupportedClassExceptionTest {
 
   @Test
-  @DisplayName("When instantiating unsupported class exception")
   void whenInstantiatingUnsupportedClassException() {
     // Given
     Class<Test> unsupportedClass = Test.class;
