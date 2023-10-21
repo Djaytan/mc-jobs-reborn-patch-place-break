@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class SqliteJdbcUrlTest {
@@ -43,8 +42,7 @@ class SqliteJdbcUrlTest {
   }
 
   @Test
-  @DisplayName("When getting JDBC URL from dummy path")
-  void whenGettingJdbcUrl_fromDummyPath() {
+  void whenGettingJdbcUrlFromDummyPath_shouldReturnExpectedSqliteJdbcUrl() {
     // Given
     Path dummySqliteDatabasePath = imfs.getPath("/dummy/sqlite-data.db");
     SqliteJdbcUrl sqliteJdbcUrl = new SqliteJdbcUrl(dummySqliteDatabasePath);

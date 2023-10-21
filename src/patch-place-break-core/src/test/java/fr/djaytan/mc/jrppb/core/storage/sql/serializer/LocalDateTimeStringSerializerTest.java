@@ -25,7 +25,6 @@ package fr.djaytan.mc.jrppb.core.storage.sql.serializer;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class LocalDateTimeStringSerializerTest {
@@ -34,28 +33,14 @@ class LocalDateTimeStringSerializerTest {
       new LocalDateTimeStringSerializer();
 
   @Test
-  @DisplayName("When serializing from nominal value")
   void whenSerializing_fromNominalValue() {
-    // Given
-    LocalDateTime localDateTime = LocalDateTime.of(2012, 6, 16, 12, 34, 56);
-
-    // When
-    String serializedValue = localDateTimeStringSerializer.serialize(localDateTime);
-
-    // Then
-    assertThat(serializedValue).isEqualTo("2012-06-16T12:34:56");
+    assertThat(localDateTimeStringSerializer.serialize(LocalDateTime.of(2012, 6, 16, 12, 34, 56)))
+        .isEqualTo("2012-06-16T12:34:56");
   }
 
   @Test
-  @DisplayName("When deserializing from nominal value")
   void whenDeserializing_fromNominalValue() {
-    // Given
-    String value = "2011-12-03T10:15:30";
-
-    // When
-    LocalDateTime deserializedValue = localDateTimeStringSerializer.deserialize(value);
-
-    // Then
-    assertThat(deserializedValue).isEqualTo(LocalDateTime.of(2011, 12, 3, 10, 15, 30));
+    assertThat(localDateTimeStringSerializer.deserialize("2011-12-03T10:15:30"))
+        .isEqualTo(LocalDateTime.of(2011, 12, 3, 10, 15, 30));
   }
 }

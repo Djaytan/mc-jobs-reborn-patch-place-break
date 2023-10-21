@@ -52,7 +52,6 @@ import org.bukkit.block.BlockFace;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
@@ -94,7 +93,6 @@ abstract class BasePatchPlaceBreakSpigotAdapterApiIntegrationTest {
    * particular block. Hence, we consider the action is not an exploit one.
    */
   @Test
-  @DisplayName("When checking exploit while 'actionInfo' is null")
   void whenCheckingExploitWhileActionInfoIsNull_shouldNotDetectExploit() {
     // Given
 
@@ -111,7 +109,6 @@ abstract class BasePatchPlaceBreakSpigotAdapterApiIntegrationTest {
    * particular block. Hence, we consider the action is not an exploit one.
    */
   @Test
-  @DisplayName("When checking exploit while 'block' is null")
   void whenCheckingExploitWhileBlockIsNull_shouldNotDetectExploit(@Mock ActionInfo actionInfo) {
     // Given
 
@@ -123,7 +120,6 @@ abstract class BasePatchPlaceBreakSpigotAdapterApiIntegrationTest {
   }
 
   @Test
-  @DisplayName("When tag doesn't exist")
   void whenTagDoesntExist_shouldNotDetectExploit() {
     // Given
     ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.PLACE);
@@ -138,7 +134,6 @@ abstract class BasePatchPlaceBreakSpigotAdapterApiIntegrationTest {
   }
 
   @Test
-  @DisplayName("When action is blacklisted")
   void whenActionIsBlacklisted_shouldNotDetectExploit() {
     // Given
     ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.BREAK);
@@ -154,7 +149,6 @@ abstract class BasePatchPlaceBreakSpigotAdapterApiIntegrationTest {
 
   @ParameterizedTest
   @MethodSource
-  @DisplayName("When putting tag")
   void whenPuttingTag(
       boolean isEphemeral, @NotNull TemporalAmount timeElapsedAfterPut, boolean isExploitExpected) {
     // Given
@@ -192,7 +186,6 @@ abstract class BasePatchPlaceBreakSpigotAdapterApiIntegrationTest {
   }
 
   @Test
-  @DisplayName("When moving tag")
   void whenMovingTag_shouldDetectExploitInNewLocationButNotInOldOne(@Mock @NotNull Block newBlock) {
     // Given
     Block oldBlock = randomBlockMocked;
@@ -229,7 +222,6 @@ abstract class BasePatchPlaceBreakSpigotAdapterApiIntegrationTest {
   }
 
   @Test
-  @DisplayName("When removing tag")
   void whenRemovingTag_shouldThenNotDetectExploit() {
     // Given
     patchPlaceBreakSpigotAdapterApi.putTag(randomBlockMocked, false).join();

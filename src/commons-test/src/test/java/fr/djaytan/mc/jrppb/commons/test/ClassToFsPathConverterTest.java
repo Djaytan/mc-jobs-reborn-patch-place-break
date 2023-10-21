@@ -34,7 +34,6 @@ import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -55,11 +54,9 @@ class ClassToFsPathConverterTest {
   }
 
   @Nested
-  @DisplayName("When converting")
   class WhenConverting {
 
     @Test
-    @DisplayName("With top-level class")
     void withTopLevelClass_shouldMatchExpectedPath() {
       // Given
       Class<?> clazz = ClassToFsPathConverterTest.class;
@@ -72,7 +69,6 @@ class ClassToFsPathConverterTest {
     }
 
     @Test
-    @DisplayName("With inner class")
     void withInnerClass_shouldMatchExpectedPath() {
       // Given
       Class<?> clazz = WhenConverting.class;
@@ -85,7 +81,6 @@ class ClassToFsPathConverterTest {
     }
 
     @Test
-    @DisplayName("With anonymous class")
     void withAnonymousClass_shouldMatchExpectedPath() {
       // Given
       Class<?> clazz = new Serializable() {}.getClass();
@@ -98,7 +93,6 @@ class ClassToFsPathConverterTest {
     }
 
     @Test
-    @DisplayName("With primitive class")
     void withPrimitiveClass_shouldThrowException() {
       // Given
       Class<?> clazz = int.class;
@@ -112,7 +106,6 @@ class ClassToFsPathConverterTest {
     }
 
     @Test
-    @DisplayName("With array class")
     void withArrayClass_shouldThrowException() {
       // Given
       Class<?> clazz = Object[].class;
@@ -126,7 +119,6 @@ class ClassToFsPathConverterTest {
     }
 
     @Test
-    @DisplayName("With annotation class")
     void withAnnotationClass_shouldThrowException() {
       // Given
       Class<?> clazz = Retention.class;

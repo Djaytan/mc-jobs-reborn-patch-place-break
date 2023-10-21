@@ -28,13 +28,11 @@ import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class ConfigSerializationExceptionTest {
 
   @Test
-  @DisplayName("When instantiating serialization exception")
   void whenInstantiatingSerializationException() {
     // Given
     Class<?> propertiesType = DataSourceProperties.class;
@@ -57,7 +55,6 @@ class ConfigSerializationExceptionTest {
   }
 
   @Test
-  @DisplayName("When instantiating deserialization exception")
   void whenInstantiatingDeserializationException() {
     // Given
     Class<?> propertiesType = DataSourceProperties.class;
@@ -80,7 +77,6 @@ class ConfigSerializationExceptionTest {
   }
 
   @Test
-  @DisplayName("When instantiating invalid loader configuration exception")
   void whenInstantiatingInvalidLoaderConfigurationException() {
     // Given
 

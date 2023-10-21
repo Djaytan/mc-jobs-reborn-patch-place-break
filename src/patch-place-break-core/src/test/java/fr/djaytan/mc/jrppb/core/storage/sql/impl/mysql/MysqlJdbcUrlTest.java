@@ -28,7 +28,6 @@ import static org.mockito.BDDMockito.given;
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DbmsHostProperties;
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DbmsServerProperties;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -42,8 +41,7 @@ class MysqlJdbcUrlTest {
   @Mock private DbmsHostProperties dbmsHostPropertiesMocked;
 
   @Test
-  @DisplayName("When getting JDBC URL from config")
-  void whenGettingJdbcUrl_fromConfig() {
+  void whenGettingJdbcUrlFromConfig_shouldReturnExpectedMySQLJdbcUrl() {
     // Given
     given(dataSourcePropertiesMocked.getDbmsServer()).willReturn(dbmsServerPropertiesMocked);
     given(dbmsServerPropertiesMocked.getHost()).willReturn(dbmsHostPropertiesMocked);
@@ -58,9 +56,7 @@ class MysqlJdbcUrlTest {
     String actualMysqlJdbcUrl = mysqlJdbcUrl.get();
 
     // Then
-    String expectedMysqlJdbcUrl =
-        "jdbc:mysql://localhost:12345/patch_place_break?useSSL=true&serverTimezone=UTC";
-
-    assertThat(actualMysqlJdbcUrl).isEqualTo(expectedMysqlJdbcUrl);
+    assertThat(actualMysqlJdbcUrl)
+        .isEqualTo("jdbc:mysql://localhost:12345/patch_place_break?useSSL=true&serverTimezone=UTC");
   }
 }

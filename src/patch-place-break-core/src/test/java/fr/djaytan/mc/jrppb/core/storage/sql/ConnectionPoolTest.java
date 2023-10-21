@@ -37,7 +37,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
@@ -68,8 +67,7 @@ class ConnectionPoolTest {
   }
 
   @Test
-  @DisplayName("When using connection for executing request successfully")
-  void whenUsingConnectionForExecutingRequestSuccessfully() {
+  void whenUsingConnectionForExecutingRequest_shouldExecuteCallbackSuccessfully() {
     // Given
     String testSystemPropertyName = "test-connection-pool";
     Consumer<Connection> callback =
@@ -84,8 +82,7 @@ class ConnectionPoolTest {
   }
 
   @Test
-  @DisplayName("When using connection for executing request with exception thrown")
-  void whenUsingConnectionForExecutingRequestWithExceptionThrown() {
+  void whenUsingConnectionForExecutingErrorProneRequest_shouldRethrowInitialException() {
     // Given
     Consumer<Connection> callback =
         connection -> {
@@ -100,8 +97,7 @@ class ConnectionPoolTest {
   }
 
   @Test
-  @DisplayName("When using connection for executing query successfully")
-  void whenUsingConnectionForExecutingQuerySuccessfully() {
+  void whenUsingConnectionForExecutingQuery_shouldExecuteCallbackSuccessfully() {
     // Given
     Function<Connection, Optional<Boolean>> callback = connection -> Optional.of(true);
 
@@ -113,8 +109,7 @@ class ConnectionPoolTest {
   }
 
   @Test
-  @DisplayName("When using connection for executing query with exception thrown")
-  void whenUsingConnectionForExecutingQueryWithExceptionThrown() {
+  void whenUsingConnectionForExecutingErrorProneQuery_shouldRethrowInitialException() {
     // Given
     Function<Connection, Optional<Boolean>> callback =
         connection -> {

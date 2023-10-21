@@ -43,7 +43,6 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -71,7 +70,6 @@ abstract class BasePatchPlaceBreakApiIntegrationTest {
   }
 
   @Test
-  @DisplayName("When tag doesn't exist")
   void whenTagDoesntExist_shouldNotDetectExploit() {
     // Given
     Block block = new Block(randomBlockLocation, "STONE");
@@ -85,7 +83,6 @@ abstract class BasePatchPlaceBreakApiIntegrationTest {
 
   @ParameterizedTest
   @MethodSource
-  @DisplayName("When putting tag")
   void whenPuttingTag(
       boolean isEphemeral, @NotNull TemporalAmount timeElapsedAfterPut, boolean isExploitExpected) {
     // Given
@@ -122,7 +119,6 @@ abstract class BasePatchPlaceBreakApiIntegrationTest {
   }
 
   @Test
-  @DisplayName("When moving tag")
   void whenMovingTag_shouldDetectExploitInNewLocationButNotInOldOne() {
     // Given
     BlockLocation oldBlockLocation = randomBlockLocation;
@@ -152,8 +148,7 @@ abstract class BasePatchPlaceBreakApiIntegrationTest {
   }
 
   @Test
-  @DisplayName("When removing tag")
-  void whenRemovingTag_shouldThenNotDetectExploit() {
+  void whenRemovingTag_shouldNotDetectExploit() {
     // Given
     Block block = new Block(randomBlockLocation, "STONE");
     patchPlaceBreakApi.putTag(block, false).join();

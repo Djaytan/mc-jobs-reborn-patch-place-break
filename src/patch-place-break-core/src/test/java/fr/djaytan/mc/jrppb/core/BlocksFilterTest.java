@@ -32,7 +32,6 @@ import fr.djaytan.mc.jrppb.core.config.properties.RestrictedBlocksPropertiesImpl
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class BlocksFilterTest {
@@ -43,7 +42,6 @@ class BlocksFilterTest {
   private final BlocksFilter blocksFilter = new BlocksFilter(restrictedBlocksProperties);
 
   @Test
-  @DisplayName("Filter with nominal values")
   void filterWithNominalValues() {
     // Given
     Block firstBlock = new Block(new BlockLocation("world", 0, 0, 0), "STONE");
@@ -61,7 +59,6 @@ class BlocksFilterTest {
   }
 
   @Test
-  @DisplayName("Filter with empty collection")
   void filterWithEmptyCollection() {
     // Given
     Set<Block> blocks = new HashSet<>();

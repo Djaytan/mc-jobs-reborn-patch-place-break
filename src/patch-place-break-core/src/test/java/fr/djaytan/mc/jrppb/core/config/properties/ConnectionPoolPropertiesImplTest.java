@@ -49,7 +49,6 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -74,13 +73,11 @@ class ConnectionPoolPropertiesImplTest {
   }
 
   @Test
-  @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashcode_shouldMetContracts() {
     EqualsVerifier.forClass(ConnectionPoolPropertiesImpl.class).verify();
   }
 
   @Test
-  @DisplayName("When calling toString()")
   void whenCallingToString_shouldMetContracts() {
     ToStringVerifier.forClass(ConnectionPoolPropertiesImpl.class)
         .withClassName(NameStyle.SIMPLE_NAME)
@@ -88,11 +85,9 @@ class ConnectionPoolPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When instantiating")
   class WhenInstantiating {
 
     @Test
-    @DisplayName("With no args constructor")
     void withNoArgsConstructor_shouldMatchDefaultValues() {
       // Given
 
@@ -106,7 +101,6 @@ class ConnectionPoolPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With all args constructor")
     void withAllArgsConstructor_shouldMatchGivenArguments() {
       // Given
       long connectionTimeout = 30000;
@@ -124,11 +118,9 @@ class ConnectionPoolPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When validating")
   class WhenValidating {
 
     @Test
-    @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
       ConnectionPoolPropertiesImpl properties = new ConnectionPoolPropertiesImpl();
@@ -142,7 +134,6 @@ class ConnectionPoolPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
       ConnectionPoolPropertiesImpl properties = new ConnectionPoolPropertiesImpl(30000, 10);
@@ -156,7 +147,6 @@ class ConnectionPoolPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With only invalid values")
     void withOnlyInvalidValues_shouldGenerateConstraintViolations() {
       // Given
       ConnectionPoolPropertiesImpl properties = new ConnectionPoolPropertiesImpl(-1, -1);
@@ -170,13 +160,11 @@ class ConnectionPoolPropertiesImplTest {
     }
 
     @Nested
-    @DisplayName("'connectionTimeout' field")
     @TestInstance(Lifecycle.PER_CLASS)
     class ConnectionTimeoutField {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
-      @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(long validConnectionTimeout) {
         // Given
         ConnectionPoolPropertiesImpl properties =
@@ -198,7 +186,6 @@ class ConnectionPoolPropertiesImplTest {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
-      @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(long invalidConnectionTimeout) {
         // Given
         ConnectionPoolPropertiesImpl properties =
@@ -230,13 +217,11 @@ class ConnectionPoolPropertiesImplTest {
     }
 
     @Nested
-    @DisplayName("'poolSize' field")
     @TestInstance(Lifecycle.PER_CLASS)
     class PoolSizeField {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
-      @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(int validPoolSize) {
         // Given
         ConnectionPoolPropertiesImpl properties =
@@ -258,7 +243,6 @@ class ConnectionPoolPropertiesImplTest {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
-      @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(int invalidPoolSize) {
         // Given
         ConnectionPoolPropertiesImpl properties =
@@ -291,13 +275,11 @@ class ConnectionPoolPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When serializing to YAML")
   @TestInstance(Lifecycle.PER_CLASS)
   class WhenSerializingToYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With valid values")
     void withValidValues_shouldMatchExpectedYamlContent(
         @NotNull ConnectionPoolPropertiesImpl givenValue, @NotNull String expectedYamlFileName)
         throws IOException {
@@ -327,13 +309,11 @@ class ConnectionPoolPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When deserializing from YAML")
   @TestInstance(Lifecycle.PER_CLASS)
   class WhenDeserializingFromYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With valid content")
     void withValidContent_shouldMatchExpectedValue(
         @NotNull String confFileName, @NotNull ConnectionPoolPropertiesImpl expectedValue) {
       // Given
@@ -363,7 +343,6 @@ class ConnectionPoolPropertiesImplTest {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With invalid content")
     void withInvalidContent_shouldThrowException(@NotNull String confFileName) {
       // Given
       Path confFile =
@@ -395,7 +374,6 @@ class ConnectionPoolPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With empty content")
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
       String confFileName = "whenDeserializing_withEmptyContent.conf";

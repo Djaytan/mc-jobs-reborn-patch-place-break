@@ -51,7 +51,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -76,7 +75,6 @@ class DbmsCredentialsPropertiesImplTest {
   }
 
   @Test
-  @DisplayName("When calling equals() & hashCode()")
   void whenCallingEqualsAndHashcode_shouldMetContracts() {
     EqualsVerifier.forClass(DbmsCredentialsPropertiesImpl.class)
         .withIgnoredFields("password")
@@ -84,7 +82,6 @@ class DbmsCredentialsPropertiesImplTest {
   }
 
   @Test
-  @DisplayName("When calling toString()")
   void whenCallingToString_shouldMetContracts() {
     ToStringVerifier.forClass(DbmsCredentialsPropertiesImpl.class)
         .withClassName(NameStyle.SIMPLE_NAME)
@@ -94,11 +91,9 @@ class DbmsCredentialsPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When instantiating")
   class WhenInstantiating {
 
     @Test
-    @DisplayName("With no args constructor")
     void withNoArgsConstructor_shouldMatchDefaultValues() {
       // Given
 
@@ -112,7 +107,6 @@ class DbmsCredentialsPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With all args constructor")
     void withAllArgsConstructor_shouldMatchGivenArguments() {
       // Given
       String username = "foo";
@@ -130,11 +124,9 @@ class DbmsCredentialsPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When validating")
   class WhenValidating {
 
     @Test
-    @DisplayName("With default values")
     void withDefaultValues_shouldNotGenerateConstraintViolations() {
       // Given
       DbmsCredentialsPropertiesImpl properties = new DbmsCredentialsPropertiesImpl();
@@ -148,7 +140,6 @@ class DbmsCredentialsPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With only valid values")
     void withOnlyValidValues_shouldNotGenerateConstraintViolations() {
       // Given
       DbmsCredentialsPropertiesImpl properties = new DbmsCredentialsPropertiesImpl("foo", "bar");
@@ -162,7 +153,6 @@ class DbmsCredentialsPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With only invalid values")
     void withOnlyInvalidValues_shouldGenerateConstraintViolations() {
       // Given
       DbmsCredentialsPropertiesImpl properties = new DbmsCredentialsPropertiesImpl("", null);
@@ -176,13 +166,11 @@ class DbmsCredentialsPropertiesImplTest {
     }
 
     @Nested
-    @DisplayName("'username' field")
     @TestInstance(Lifecycle.PER_CLASS)
     class UsernameField {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
-      @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(@NotNull String validUsername) {
         // Given
         DbmsCredentialsPropertiesImpl properties =
@@ -204,7 +192,6 @@ class DbmsCredentialsPropertiesImplTest {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
-      @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(@Nullable String invalidUsername) {
         // Given
         DbmsCredentialsPropertiesImpl properties =
@@ -239,13 +226,11 @@ class DbmsCredentialsPropertiesImplTest {
     }
 
     @Nested
-    @DisplayName("'password' field")
     @TestInstance(Lifecycle.PER_CLASS)
     class PasswordField {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
-      @DisplayName("With valid values")
       void withValidValues_shouldNotGenerateConstraintViolations(@NotNull String validPassword) {
         // Given
         DbmsCredentialsPropertiesImpl properties =
@@ -268,7 +253,6 @@ class DbmsCredentialsPropertiesImplTest {
 
       @ParameterizedTest(name = "{index} - {0}")
       @MethodSource
-      @DisplayName("With invalid values")
       void withInvalidValues_shouldGenerateConstraintViolations(@Nullable String invalidPassword) {
         // Given
         DbmsCredentialsPropertiesImpl properties =
@@ -302,13 +286,11 @@ class DbmsCredentialsPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When serializing to YAML")
   @TestInstance(Lifecycle.PER_CLASS)
   class WhenSerializingToYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With valid values")
     void withValidValues_shouldMatchExpectedYamlContent(
         @NotNull DbmsCredentialsPropertiesImpl givenValue, @NotNull String expectedYamlFileName)
         throws IOException {
@@ -338,13 +320,11 @@ class DbmsCredentialsPropertiesImplTest {
   }
 
   @Nested
-  @DisplayName("When deserializing from YAML")
   @TestInstance(Lifecycle.PER_CLASS)
   class WhenDeserializingFromYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With valid content")
     void withValidContent_shouldMatchExpectedValue(
         @NotNull String confFileName, @NotNull DbmsCredentialsPropertiesImpl expectedValue) {
       // Given
@@ -374,7 +354,6 @@ class DbmsCredentialsPropertiesImplTest {
 
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource
-    @DisplayName("With invalid content")
     void withInvalidContent_shouldThrowException(@NotNull String confFileName) {
       // Given
       Path confFile =
@@ -406,7 +385,6 @@ class DbmsCredentialsPropertiesImplTest {
     }
 
     @Test
-    @DisplayName("With empty content")
     void withEmptyContent_shouldGenerateNullValue() {
       // Given
       String confFileName = "whenDeserializing_withEmptyContent.conf";

@@ -55,7 +55,6 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -91,12 +90,10 @@ class PatchPlaceBreakImplTest {
   }
 
   @Nested
-  @DisplayName("When put tag")
-  class WhenPutTag {
+  class WhenPuttingTag {
 
     @Test
-    @DisplayName("With not restricted block")
-    void withNotRestrictedBlock() {
+    void withNotRestrictedBlock_shouldPutExpectedPersistentTag() {
       // Given
       BlockLocation blockLocation = new BlockLocation("world", 0, 0, 0);
       Block blockToTag = new Block(blockLocation, "BEACON");
@@ -114,8 +111,7 @@ class PatchPlaceBreakImplTest {
     }
 
     @Test
-    @DisplayName("With restricted block")
-    void withRestrictedBlock() {
+    void withRestrictedBlock_shouldNotAttemptToPutAnyTag() {
       // Given
       BlockLocation blockLocation = new BlockLocation("world", 0, 0, 0);
       Block blockToTag = new Block(blockLocation, "STONE");
@@ -128,8 +124,7 @@ class PatchPlaceBreakImplTest {
     }
 
     @Test
-    @DisplayName("With ephemeral tag")
-    void withEphemeralTag() {
+    void withEphemeralTag_shouldPutExpectedEphemeralTag() {
       // Given
       BlockLocation blockLocation = new BlockLocation("world", 0, 0, 0);
       Block blockToTag = new Block(blockLocation, "BEACON");
@@ -148,12 +143,10 @@ class PatchPlaceBreakImplTest {
   }
 
   @Nested
-  @DisplayName("When remove tag")
-  class WhenRemoveTag {
+  class WhenRemovingTag {
 
     @Test
-    @DisplayName("With not restricted block")
-    void withNotRestrictedBlock() {
+    void fromNotRestrictedBlock_shouldRemoveTag() {
       // Given
       BlockLocation newBlockLocation = new BlockLocation("world", 0, 0, 0);
       Block blockToRemoveTag = new Block(newBlockLocation, "BEACON");
@@ -168,8 +161,7 @@ class PatchPlaceBreakImplTest {
     }
 
     @Test
-    @DisplayName("With restricted block")
-    void withRestrictedBlock() {
+    void fromRestrictedBlock_shouldNotAttemptToRemoveAnyTag() {
       // Given
       BlockLocation blockLocation = new BlockLocation("world", 0, 0, 0);
       Block blockToTag = new Block(blockLocation, "STONE");
@@ -183,12 +175,10 @@ class PatchPlaceBreakImplTest {
   }
 
   @Nested
-  @DisplayName("When move tags")
-  class WhenMoveTags {
+  class WhenMovingTags {
 
     @Test
-    @DisplayName("With only unrestricted blocks")
-    void withOnlyUnrestrictedBlocks() {
+    void withOnlyUnrestrictedBlocks_shouldAttemptToMoveTagsAsExpected() {
       // Given
       Vector direction = new Vector(0, 0, 1);
       Block block1 = new Block(new BlockLocation("world", 0, 0, 0), "BEACON");
@@ -218,8 +208,7 @@ class PatchPlaceBreakImplTest {
     }
 
     @Test
-    @DisplayName("With only restricted block")
-    void withOnlyRestrictedBlock() {
+    void withOnlyRestrictedBlock_shouldNotTryToMoveAnyTag() {
       // Given
       Vector direction = new Vector(0, 0, 1);
       Block block1 = new Block(new BlockLocation("world", 0, 0, 0), "STONE");
@@ -236,8 +225,7 @@ class PatchPlaceBreakImplTest {
     }
 
     @Test
-    @DisplayName("With some restricted block")
-    void withSomeRestrictedBlock() {
+    void withSomeRestrictedBlock_shouldTryToMoveOnlyTagsFromUnrestrictedBlocks() {
       // Given
       Vector direction = new Vector(0, 0, 1);
       Block block1 = new Block(new BlockLocation("world", 0, 0, 0), "BEACON");
@@ -269,14 +257,12 @@ class PatchPlaceBreakImplTest {
   }
 
   @Nested
-  @DisplayName("Is place and break exploit")
   @TestInstance(Lifecycle.PER_CLASS)
-  class IsPlaceAndBreakExploit {
+  class WhenCheckingPlaceAndBreakExploit {
 
-    @ParameterizedTest(name = "{index} - {0}")
+    @ParameterizedTest
     @MethodSource
-    @DisplayName("With unrestricted block")
-    void withUnrestrictedBlock(@Nullable Tag givenTag, boolean expectedValue) {
+    void whileBreakingUnrestrictedBlock(@Nullable Tag givenTag, boolean expectedValue) {
       // Given
       Block unrestrictedBlock = new Block(new BlockLocation("world", 0, 0, 0), "BEACON");
       given(tagRepository.findByLocation(any())).willReturn(Optional.ofNullable(givenTag));
@@ -289,19 +275,19 @@ class PatchPlaceBreakImplTest {
       assertThat(isExploit).isEqualTo(expectedValue);
     }
 
-    private @NotNull Stream<Arguments> withUnrestrictedBlock() {
+    private @NotNull Stream<Arguments> whileBreakingUnrestrictedBlock() {
       return Stream.of(
           arguments(
               named(
                   "With persistent tag",
                   new Tag(new BlockLocation("world", 0, 0, 0), false, LocalDateTime.now(clock))),
-              true),
+              named("Should be detected as exploit", true)),
           arguments(named("Without tag", null), false),
           arguments(
               named(
                   "With active ephemeral tag",
                   new Tag(new BlockLocation("world", 0, 0, 0), true, LocalDateTime.now(clock))),
-              true),
+              named("Should be detected as exploit", true)),
           arguments(
               named(
                   "With inactive ephemeral tag",
@@ -309,12 +295,11 @@ class PatchPlaceBreakImplTest {
                       new BlockLocation("world", 0, 0, 0),
                       true,
                       LocalDateTime.now(clock).minusSeconds(10))),
-              false));
+              named("Should NOT be detected as exploit", false)));
     }
 
     @Test
-    @DisplayName("With restricted block")
-    void withRestrictedBlock() {
+    void whileBreakingRestrictedBlock_shouldNotConsiderActionAsExploitNorPerformDeepCheck() {
       // Given
       Block restrictedBlock = new Block(new BlockLocation("world", 0, 0, 0), "STONE");
 
