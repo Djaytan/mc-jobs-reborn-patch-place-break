@@ -73,7 +73,7 @@ public final class DbmsCredentialsPropertiesImpl implements DbmsCredentialsPrope
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     DbmsCredentialsPropertiesImpl that = (DbmsCredentialsPropertiesImpl) o;
@@ -86,7 +86,7 @@ public final class DbmsCredentialsPropertiesImpl implements DbmsCredentialsPrope
   }
 
   @Override
-  public String toString() {
+  public @org.jetbrains.annotations.NotNull String toString() {
     return new StringJoiner(", ", DbmsCredentialsPropertiesImpl.class.getSimpleName() + "[", "]")
         .add("username='" + username + "'")
         .toString();

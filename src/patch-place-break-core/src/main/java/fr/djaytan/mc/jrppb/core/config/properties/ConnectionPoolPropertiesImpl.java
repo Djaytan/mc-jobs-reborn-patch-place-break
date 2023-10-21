@@ -27,6 +27,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Positive;
 import java.util.Objects;
 import java.util.StringJoiner;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
@@ -78,7 +80,7 @@ public final class ConnectionPoolPropertiesImpl implements ConnectionPoolPropert
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ConnectionPoolPropertiesImpl that = (ConnectionPoolPropertiesImpl) o;
@@ -91,7 +93,7 @@ public final class ConnectionPoolPropertiesImpl implements ConnectionPoolPropert
   }
 
   @Override
-  public String toString() {
+  public @NotNull String toString() {
     return new StringJoiner(", ", ConnectionPoolPropertiesImpl.class.getSimpleName() + "[", "]")
         .add("connectionTimeout=" + connectionTimeout)
         .add("poolSize=" + poolSize)

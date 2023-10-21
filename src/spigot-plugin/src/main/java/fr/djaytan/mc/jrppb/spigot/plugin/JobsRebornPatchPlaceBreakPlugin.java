@@ -49,10 +49,10 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
   /** Required by MockBukkit. */
   public JobsRebornPatchPlaceBreakPlugin(
-      JavaPluginLoader loader,
-      PluginDescriptionFile description,
-      File dataFolder,
-      File file,
+      @NotNull JavaPluginLoader loader,
+      @NotNull PluginDescriptionFile description,
+      @NotNull File dataFolder,
+      @NotNull File file,
       @NotNull Clock clock) {
     super(loader, description, dataFolder, file);
     this.clock = clock;
