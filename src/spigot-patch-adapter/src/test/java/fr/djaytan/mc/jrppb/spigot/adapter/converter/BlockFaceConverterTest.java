@@ -23,12 +23,18 @@
 package fr.djaytan.mc.jrppb.spigot.adapter.converter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import fr.djaytan.mc.jrppb.api.entities.Vector;
+import java.util.stream.Stream;
 import org.bukkit.block.BlockFace;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class BlockFaceConverterTest {
 
@@ -39,55 +45,79 @@ class BlockFaceConverterTest {
     blockFaceConverter = new BlockFaceConverter();
   }
 
-  @Test
-  @DisplayName("Conversion from a north direction")
-  void shouldReturnNorthDirectionEquivalentVector() {
-    // Given
-    BlockFace blockFace = BlockFace.NORTH;
+  /**
+   * To better understand naming convention: <a
+   * href="https://en.wikipedia.org/wiki/Cardinal_direction">Cardinal direction - Wikipedia</a>.
+   *
+   * <ul>
+   *   <li>Cardinal points = NORTH, SOUTH, EAST, WEST
+   *   <li>Primary inter-cardinal points = NORTH_EAST, NORTH_WEST, SOUTH_WEST, SOUTH_WEST
+   *   <li>Secondary inter-cardinal points = WEST_NORTH_WEST, EAST_NORTH_EAST, ...
+   * </ul>
+   *
+   * However, since we are in a 3D, we refer to cartesian space concept instead but only for
+   * cardinal points.
+   */
+  @Nested
+  class WhenConverting {
 
-    // When
-    Vector vector = blockFaceConverter.convert(blockFace);
+    @ParameterizedTest
+    @MethodSource
+    void withCartesianBlockFace_shouldReturnTheEquivalentVector(
+        @NotNull BlockFace blockFace, @NotNull Vector expectedVector) {
+      assertThat(blockFaceConverter.convert(blockFace)).isEqualTo(expectedVector);
+    }
 
-    // Then
-    assertThat(vector).isEqualTo(new Vector(0, 0, -1));
-  }
+    private static @NotNull Stream<Arguments>
+        withCartesianBlockFace_shouldReturnTheEquivalentVector() {
+      return Stream.of(
+          arguments(BlockFace.EAST, new Vector(1, 0, 0)),
+          arguments(BlockFace.WEST, new Vector(-1, 0, 0)),
+          arguments(BlockFace.UP, new Vector(0, 1, 0)),
+          arguments(BlockFace.DOWN, new Vector(0, -1, 0)),
+          arguments(BlockFace.SOUTH, new Vector(0, 0, 1)),
+          arguments(BlockFace.NORTH, new Vector(0, 0, -1)));
+    }
 
-  @Test
-  @DisplayName("Conversion from a south-east direction")
-  void shouldReturnSouthEastDirectionEquivalentVector() {
-    // Given
-    BlockFace blockFace = BlockFace.SOUTH_EAST;
+    @ParameterizedTest
+    @MethodSource
+    void withPrimaryIntercardinalBlockFace_shouldReturnTheEquivalentVector(
+        @NotNull BlockFace blockFace, @NotNull Vector expectedVector) {
+      assertThat(blockFaceConverter.convert(blockFace)).isEqualTo(expectedVector);
+    }
 
-    // When
-    Vector vector = blockFaceConverter.convert(blockFace);
+    private static @NotNull Stream<Arguments>
+        withPrimaryIntercardinalBlockFace_shouldReturnTheEquivalentVector() {
+      return Stream.of(
+          arguments(BlockFace.NORTH_EAST, new Vector(1, 0, -1)),
+          arguments(BlockFace.NORTH_WEST, new Vector(-1, 0, -1)),
+          arguments(BlockFace.SOUTH_EAST, new Vector(1, 0, 1)),
+          arguments(BlockFace.SOUTH_WEST, new Vector(-1, 0, 1)));
+    }
 
-    // Then
-    assertThat(vector).isEqualTo(new Vector(1, 0, 1));
-  }
+    @ParameterizedTest
+    @MethodSource
+    void withSecondaryIntercardinalBlockFace_shouldReturnTheEquivalentVector(
+        @NotNull BlockFace blockFace, @NotNull Vector expectedVector) {
+      assertThat(blockFaceConverter.convert(blockFace)).isEqualTo(expectedVector);
+    }
 
-  @DisplayName("Conversion from a self-oriented direction")
-  @Test
-  void shouldReturnEastNorthEastDirectionEquivalentVector() {
-    // Given
-    BlockFace blockFace = BlockFace.EAST_NORTH_EAST;
+    private static @NotNull Stream<Arguments>
+        withSecondaryIntercardinalBlockFace_shouldReturnTheEquivalentVector() {
+      return Stream.of(
+          arguments(BlockFace.NORTH_NORTH_EAST, new Vector(1, 0, -2)),
+          arguments(BlockFace.NORTH_NORTH_WEST, new Vector(-1, 0, -2)),
+          arguments(BlockFace.SOUTH_SOUTH_EAST, new Vector(1, 0, 2)),
+          arguments(BlockFace.SOUTH_SOUTH_WEST, new Vector(-1, 0, 2)),
+          arguments(BlockFace.EAST_NORTH_EAST, new Vector(2, 0, -1)),
+          arguments(BlockFace.WEST_NORTH_WEST, new Vector(-2, 0, -1)),
+          arguments(BlockFace.EAST_SOUTH_EAST, new Vector(2, 0, 1)),
+          arguments(BlockFace.WEST_SOUTH_WEST, new Vector(-2, 0, 1)));
+    }
 
-    // When
-    Vector vector = blockFaceConverter.convert(blockFace);
-
-    // Then
-    assertThat(vector).isEqualTo(new Vector(2, 0, -1));
-  }
-
-  @DisplayName("Conversion from a self-oriented direction")
-  @Test
-  void shouldReturnSelfDirectionEquivalentVector() {
-    // Given
-    BlockFace blockFace = BlockFace.SELF;
-
-    // When
-    Vector vector = blockFaceConverter.convert(blockFace);
-
-    // Then
-    assertThat(vector).isEqualTo(new Vector(0, 0, 0));
+    @Test
+    void withSelfOrientedBlockFace_shouldReturnTheEquivalentVector() {
+      assertThat(blockFaceConverter.convert(BlockFace.SELF)).isEqualTo(new Vector(0, 0, 0));
+    }
   }
 }
