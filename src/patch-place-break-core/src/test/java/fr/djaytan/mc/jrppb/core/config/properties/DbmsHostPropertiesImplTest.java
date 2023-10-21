@@ -53,8 +53,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -167,7 +165,6 @@ class DbmsHostPropertiesImplTest {
     }
 
     @Nested
-    @TestInstance(Lifecycle.PER_CLASS)
     class HostnameField {
 
       @ParameterizedTest(name = "{index} - {0}")
@@ -188,7 +185,8 @@ class DbmsHostPropertiesImplTest {
        * We accept most of the invalid values here.
        * More details given in the DbmsHostValidatingProperties class.
        */
-      private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private static @NotNull Stream<Arguments>
+          withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
             arguments(named("Nominal IPv4 address", "92.0.2.146")),
             arguments(named("Nominal IPv6 address", "2001:db8:3333:4444:5555:6666:7777:8888")),
@@ -224,7 +222,8 @@ class DbmsHostPropertiesImplTest {
                     constraintViolation.getPropertyPath().toString().equals("hostname"));
       }
 
-      private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private static @NotNull Stream<Arguments>
+          withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
             arguments(named("Null value", null)),
             arguments(named("Empty value", "")),
@@ -234,7 +233,6 @@ class DbmsHostPropertiesImplTest {
     }
 
     @Nested
-    @TestInstance(Lifecycle.PER_CLASS)
     class PortField {
 
       @ParameterizedTest(name = "{index} - {0}")
@@ -252,7 +250,8 @@ class DbmsHostPropertiesImplTest {
         assertThat(constraintViolations).isEmpty();
       }
 
-      private @NotNull Stream<Arguments> withValidValues_shouldNotGenerateConstraintViolations() {
+      private static @NotNull Stream<Arguments>
+          withValidValues_shouldNotGenerateConstraintViolations() {
         return Stream.of(
             arguments(named("Highest possible value", 65535)),
             arguments(named("Lowest possible value", 1)));
@@ -284,7 +283,8 @@ class DbmsHostPropertiesImplTest {
                     constraintViolation.getPropertyPath().toString().equals("port"));
       }
 
-      private @NotNull Stream<Arguments> withInvalidValues_shouldGenerateConstraintViolations() {
+      private static @NotNull Stream<Arguments>
+          withInvalidValues_shouldGenerateConstraintViolations() {
         return Stream.of(
             arguments(named("Port n°0", 0)),
             arguments(named("Too high port", 65536)),
@@ -294,7 +294,6 @@ class DbmsHostPropertiesImplTest {
   }
 
   @Nested
-  @TestInstance(Lifecycle.PER_CLASS)
   class WhenSerializingToYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
@@ -316,7 +315,7 @@ class DbmsHostPropertiesImplTest {
       assertThat(actualYaml).containsIgnoringNewLines(expectedYaml);
     }
 
-    private @NotNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
+    private static @NotNull Stream<Arguments> withValidValues_shouldMatchExpectedYamlContent() {
       return Stream.of(
           arguments(
               named("With default values", new DbmsHostPropertiesImpl()),
@@ -328,7 +327,6 @@ class DbmsHostPropertiesImplTest {
   }
 
   @Nested
-  @TestInstance(Lifecycle.PER_CLASS)
   class WhenDeserializingFromYaml {
 
     @ParameterizedTest(name = "{index} - {0}")
@@ -347,7 +345,7 @@ class DbmsHostPropertiesImplTest {
       assertThat(optionalHostValidatingProperties).hasValue(expectedValue);
     }
 
-    private @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
+    private static @NotNull Stream<Arguments> withValidContent_shouldMatchExpectedValue() {
       return Stream.of(
           arguments(
               named("With valid values", "whenDeserializing_withValidValues.conf"),
@@ -379,7 +377,7 @@ class DbmsHostPropertiesImplTest {
           .hasCauseExactlyInstanceOf(SerializationException.class);
     }
 
-    private @NotNull Stream<Arguments> withInvalidContent_shouldThrowException() {
+    private static @NotNull Stream<Arguments> withInvalidContent_shouldThrowException() {
       return Stream.of(
           arguments(
               named(
