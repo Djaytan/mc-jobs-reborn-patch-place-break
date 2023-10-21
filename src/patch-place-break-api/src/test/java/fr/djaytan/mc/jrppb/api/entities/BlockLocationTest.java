@@ -24,74 +24,79 @@ package fr.djaytan.mc.jrppb.api.entities;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Named.named;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import java.util.stream.Stream;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 class BlockLocationTest {
+
+  private static final String WORLD_NAME = "world";
+  private static final int X = -54;
+  private static final int Y = 67;
+  private static final int Z = 4872;
+  private static final BlockLocation BLOCK_LOCATION = new BlockLocation(WORLD_NAME, X, Y, Z);
 
   @Nested
   class WhenInstantiating {
 
     @Test
     void withAllArgsConstructorAndNominalValues_shouldSuccess() {
-      // Given
-      String worldName = "world";
-      int x = -54;
-      int y = 67;
-      int z = 4872;
+      BlockLocation blockLocation = new BlockLocation(WORLD_NAME, X, Y, Z);
 
-      // When
-      BlockLocation blockLocation = new BlockLocation(worldName, x, y, z);
-
-      // Then
       assertAll(
-          "Verification of returned values from getters",
-          () -> assertThat(blockLocation.worldName()).isEqualTo(worldName),
-          () -> assertThat(blockLocation.x()).isEqualTo(x),
-          () -> assertThat(blockLocation.y()).isEqualTo(y),
-          () -> assertThat(blockLocation.z()).isEqualTo(z));
+          () -> assertThat(blockLocation.worldName()).isEqualTo(WORLD_NAME),
+          () -> assertThat(blockLocation.x()).isEqualTo(X),
+          () -> assertThat(blockLocation.y()).isEqualTo(Y),
+          () -> assertThat(blockLocation.z()).isEqualTo(Z));
     }
 
-    @ParameterizedTest(name = "{index} - {0}")
-    @MethodSource
-    void withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue(
-        @NotNull Vector givenDirection, @NotNull BlockLocation expectedValue) {
-      // Given
-      String worldName = "world";
-      int initX = 1;
-      int initY = -45;
-      int initZ = -1;
-      BlockLocation blockLocation = new BlockLocation(worldName, initX, initY, initZ);
+    /**
+     * For now, the tests make in evidence a limitation of the current implementation since we can't
+     * scale indefinitely in cartesian coordinates as designed initially in Minecraft. In practice,
+     * there is no real impact since limitations will start to occur when reaching very high
+     * coordinates near to {@link Integer#MAX_VALUE}. Tho, it remains cleaner to fix that (maybe
+     * thanks to {@link java.math.BigInteger}?). An interesting problem to solve, in fact.
+     */
+    @Nested
+    class WithCopyConstructor {
 
-      // When
-      BlockLocation movedBlockLocation = BlockLocation.from(blockLocation, givenDirection);
+      @Test
+      void andNominalValues_shouldCreateNewInstanceMatchingExpectedValue() {
+        // Given
+        Vector vector = new Vector(5, 0, -452);
 
-      // Then
-      assertAll(
-          () -> assertThat(movedBlockLocation).isNotSameAs(blockLocation),
-          () -> assertThat(movedBlockLocation).isEqualTo(expectedValue));
-    }
+        // When
+        BlockLocation movedBlockLocation = BlockLocation.from(BLOCK_LOCATION, vector);
 
-    private static @NotNull Stream<Arguments>
-        withCopyConstructor_shouldCreateNewInstanceMatchingExpectedValue() {
-      return Stream.of(
-          arguments(
-              named("With nominal values", new Vector(5, 0, -452)),
-              new BlockLocation("world", 6, -45, -453)),
-          arguments(
-              named("On overflow", new Vector(Integer.MAX_VALUE, 1, -1)),
-              new BlockLocation("world", Integer.MIN_VALUE, -44, -2)),
-          arguments(
-              named("On underflow", new Vector(10, -50, Integer.MIN_VALUE)),
-              new BlockLocation("world", 11, -95, Integer.MAX_VALUE)));
+        // Then
+        assertThat(movedBlockLocation).isEqualTo(new BlockLocation("world", -49, 67, 4420));
+      }
+
+      @Test
+      void onOverflow_shouldCreateNewInstanceMatchingExpectedValue() {
+        // Given
+        Vector vector = new Vector(Integer.MAX_VALUE, 1, -1);
+
+        // When
+        BlockLocation movedBlockLocation = BlockLocation.from(BLOCK_LOCATION, vector);
+
+        // Then
+        assertThat(movedBlockLocation)
+            .isEqualTo(new BlockLocation("world", Integer.MAX_VALUE - Math.abs(X), 68, 4871));
+      }
+
+      @Test
+      void onUnderflow_shouldCreateNewInstanceMatchingExpectedValue() {
+        // Given
+        Vector vector = new Vector(10, -50, Integer.MIN_VALUE);
+
+        // When
+        BlockLocation movedBlockLocation = BlockLocation.from(BLOCK_LOCATION, vector);
+
+        // Then
+        assertThat(movedBlockLocation)
+            .isEqualTo(new BlockLocation("world", -44, 17, Integer.MIN_VALUE + Math.abs(Z)));
+      }
     }
   }
 }
