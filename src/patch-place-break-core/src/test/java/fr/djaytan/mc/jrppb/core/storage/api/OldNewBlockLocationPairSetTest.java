@@ -31,101 +31,70 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class OldNewBlockLocationPairSetTest {
 
+  private static final BlockLocation OLD_BLOCK_LOCATION_1 = new BlockLocation("world", 12, 64, -35);
+  private static final BlockLocation NEW_BLOCK_LOCATION_1 = new BlockLocation("world", 12, 64, -36);
+  private static final OldNewBlockLocationPair OLD_NEW_BLOCK_LOCATION_PAIR_1 =
+      new OldNewBlockLocationPair(OLD_BLOCK_LOCATION_1, NEW_BLOCK_LOCATION_1);
+
+  private static final BlockLocation OLD_BLOCK_LOCATION_2 = new BlockLocation("world", 52, 30, -55);
+  private static final BlockLocation NEW_BLOCK_LOCATION_2 = new BlockLocation("world", 53, 30, -55);
+  private static final OldNewBlockLocationPair OLD_NEW_BLOCK_LOCATION_PAIR_2 =
+      new OldNewBlockLocationPair(OLD_BLOCK_LOCATION_2, NEW_BLOCK_LOCATION_2);
+
+  private static final Collection<OldNewBlockLocationPair> OLD_NEW_BLOCK_LOCATION_PAIR_COLLECTION =
+      Arrays.asList(OLD_NEW_BLOCK_LOCATION_PAIR_1, OLD_NEW_BLOCK_LOCATION_PAIR_2);
+
   @Nested
-  @DisplayName("When instantiating")
   class WhenInstantiating {
 
     @Test
-    @DisplayName("With nominal values")
     void withNominalValues_shouldSuccess() {
-      // Given
-      BlockLocation oldBlockLocation1 = new BlockLocation("world", 12, 64, -35);
-      BlockLocation newBlockLocation1 = new BlockLocation("world", 12, 64, -36);
-      OldNewBlockLocationPair oldNewBlockLocationPair1 =
-          new OldNewBlockLocationPair(oldBlockLocation1, newBlockLocation1);
-
-      BlockLocation oldBlockLocation2 = new BlockLocation("world", 562, 30, -55);
-      BlockLocation newBlockLocation2 = new BlockLocation("world", 563, 30, -55);
-      OldNewBlockLocationPair oldNewBlockLocationPair2 =
-          new OldNewBlockLocationPair(oldBlockLocation2, newBlockLocation2);
-
-      Collection<OldNewBlockLocationPair> oldNewBlockLocationPairs =
-          Arrays.asList(oldNewBlockLocationPair1, oldNewBlockLocationPair2);
-
-      // When
       OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
-          new OldNewBlockLocationPairSet(oldNewBlockLocationPairs);
+          new OldNewBlockLocationPairSet(OLD_NEW_BLOCK_LOCATION_PAIR_COLLECTION);
 
-      // Then
       assertThat(oldNewBlockLocationPairSet.oldNewBlockLocationPairs())
-          .containsExactlyInAnyOrderElementsOf(oldNewBlockLocationPairs);
+          .containsExactlyInAnyOrderElementsOf(OLD_NEW_BLOCK_LOCATION_PAIR_COLLECTION);
     }
 
     @Nested
-    @DisplayName("With mutable collection")
     class WithMutableCollection {
 
       @Test
-      @DisplayName("And by modifying initial reference")
       void andByModifyingInitialReference_shouldRemainsImmutable() {
         // Given
-        BlockLocation oldBlockLocation1 = new BlockLocation("world", 12, 64, -35);
-        BlockLocation newBlockLocation1 = new BlockLocation("world", 12, 64, -36);
-        OldNewBlockLocationPair oldNewBlockLocationPair1 =
-            new OldNewBlockLocationPair(oldBlockLocation1, newBlockLocation1);
-
         Collection<OldNewBlockLocationPair> mutableOldNewBlockLocationPairs =
-            new ArrayList<>(Collections.singletonList(oldNewBlockLocationPair1));
-
+            new ArrayList<>(Collections.singletonList(OLD_NEW_BLOCK_LOCATION_PAIR_1));
         OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
             new OldNewBlockLocationPairSet(mutableOldNewBlockLocationPairs);
 
         // When
-        BlockLocation oldBlockLocation2 = new BlockLocation("world", 562, 30, -55);
-        BlockLocation newBlockLocation2 = new BlockLocation("world", 563, 30, -55);
-        OldNewBlockLocationPair oldNewBlockLocationPair2 =
-            new OldNewBlockLocationPair(oldBlockLocation2, newBlockLocation2);
-
-        mutableOldNewBlockLocationPairs.add(oldNewBlockLocationPair2);
+        mutableOldNewBlockLocationPairs.add(OLD_NEW_BLOCK_LOCATION_PAIR_2);
 
         // Then
         assertThat(oldNewBlockLocationPairSet.oldNewBlockLocationPairs())
-            .containsExactlyInAnyOrder(oldNewBlockLocationPair1);
+            .containsExactly(OLD_NEW_BLOCK_LOCATION_PAIR_1);
       }
 
       @Test
-      @DisplayName("And by modifying reference returned by getter")
       void andByModifyingReferenceReturnedByGetter_shouldRemainsImmutable() {
         // Given
-        BlockLocation oldBlockLocation1 = new BlockLocation("world", 12, 64, -35);
-        BlockLocation newBlockLocation1 = new BlockLocation("world", 12, 64, -36);
-        OldNewBlockLocationPair oldNewBlockLocationPair1 =
-            new OldNewBlockLocationPair(oldBlockLocation1, newBlockLocation1);
-
         Collection<OldNewBlockLocationPair> mutableOldNewBlockLocationPairs =
-            new ArrayList<>(Collections.singletonList(oldNewBlockLocationPair1));
-
+            new ArrayList<>(Collections.singletonList(OLD_NEW_BLOCK_LOCATION_PAIR_1));
         OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
             new OldNewBlockLocationPairSet(mutableOldNewBlockLocationPairs);
 
         // When
-        BlockLocation oldBlockLocation2 = new BlockLocation("world", 562, 30, -55);
-        BlockLocation newBlockLocation2 = new BlockLocation("world", 563, 30, -55);
-        OldNewBlockLocationPair oldNewBlockLocationPair2 =
-            new OldNewBlockLocationPair(oldBlockLocation2, newBlockLocation2);
-
         Exception exception =
             catchException(
                 () ->
                     oldNewBlockLocationPairSet
                         .oldNewBlockLocationPairs()
-                        .add(oldNewBlockLocationPair2));
+                        .add(OLD_NEW_BLOCK_LOCATION_PAIR_2));
 
         // Then
         assertThat(exception).isExactlyInstanceOf(UnsupportedOperationException.class);
@@ -134,28 +103,13 @@ class OldNewBlockLocationPairSetTest {
   }
 
   @Nested
-  @DisplayName("When flattening block locations")
   class WhenFlatteningBlockLocations {
 
     @Test
-    @DisplayName("With nominal values")
     void withNominalValues_shouldSuccess() {
       // Given
-      BlockLocation oldBlockLocation1 = new BlockLocation("world", 12, 64, -35);
-      BlockLocation newBlockLocation1 = new BlockLocation("world", 12, 64, -36);
-      OldNewBlockLocationPair oldNewBlockLocationPair1 =
-          new OldNewBlockLocationPair(oldBlockLocation1, newBlockLocation1);
-
-      BlockLocation oldBlockLocation2 = new BlockLocation("world", 562, 30, -55);
-      BlockLocation newBlockLocation2 = new BlockLocation("world", 563, 30, -55);
-      OldNewBlockLocationPair oldNewBlockLocationPair2 =
-          new OldNewBlockLocationPair(oldBlockLocation2, newBlockLocation2);
-
-      Collection<OldNewBlockLocationPair> oldNewBlockLocationPairs =
-          Arrays.asList(oldNewBlockLocationPair1, oldNewBlockLocationPair2);
-
       OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
-          new OldNewBlockLocationPairSet(oldNewBlockLocationPairs);
+          new OldNewBlockLocationPairSet(OLD_NEW_BLOCK_LOCATION_PAIR_COLLECTION);
 
       // When
       Set<BlockLocation> blockLocations = oldNewBlockLocationPairSet.flattenBlockLocations();
@@ -164,27 +118,20 @@ class OldNewBlockLocationPairSetTest {
       assertThat(blockLocations)
           .hasSize(4)
           .containsExactlyInAnyOrder(
-              oldBlockLocation1, newBlockLocation1, oldBlockLocation2, newBlockLocation2);
+              OLD_BLOCK_LOCATION_1,
+              NEW_BLOCK_LOCATION_1,
+              OLD_BLOCK_LOCATION_2,
+              NEW_BLOCK_LOCATION_2);
     }
 
     @Test
-    @DisplayName("With duplicated locations")
     void withDuplicatedLocations_shouldSuccessWithoutDuplications() {
       // Given
-      BlockLocation oldBlockLocation1 = new BlockLocation("world", 12, 64, -35);
-      BlockLocation newBlockLocation1 = new BlockLocation("world", 12, 64, -36);
-      OldNewBlockLocationPair oldNewBlockLocationPair1 =
-          new OldNewBlockLocationPair(oldBlockLocation1, newBlockLocation1);
-
-      BlockLocation oldBlockLocation2 = new BlockLocation("world", 562, 30, -55);
-      OldNewBlockLocationPair oldNewBlockLocationPair2 =
-          new OldNewBlockLocationPair(oldBlockLocation2, newBlockLocation1);
-
-      Collection<OldNewBlockLocationPair> oldNewBlockLocationPairs =
-          Arrays.asList(oldNewBlockLocationPair1, oldNewBlockLocationPair2);
-
+      OldNewBlockLocationPair oldNewBlockLocationPairWithDuplication =
+          new OldNewBlockLocationPair(OLD_BLOCK_LOCATION_2, NEW_BLOCK_LOCATION_1);
       OldNewBlockLocationPairSet oldNewBlockLocationPairSet =
-          new OldNewBlockLocationPairSet(oldNewBlockLocationPairs);
+          new OldNewBlockLocationPairSet(
+              Arrays.asList(OLD_NEW_BLOCK_LOCATION_PAIR_1, oldNewBlockLocationPairWithDuplication));
 
       // When
       Set<BlockLocation> blockLocations = oldNewBlockLocationPairSet.flattenBlockLocations();
@@ -192,11 +139,11 @@ class OldNewBlockLocationPairSetTest {
       // Then
       assertThat(blockLocations)
           .hasSize(3)
-          .containsExactlyInAnyOrder(oldBlockLocation1, newBlockLocation1, oldBlockLocation2);
+          .containsExactlyInAnyOrder(
+              OLD_BLOCK_LOCATION_1, NEW_BLOCK_LOCATION_1, OLD_BLOCK_LOCATION_2);
     }
 
     @Test
-    @DisplayName("Without locations")
     void withoutLocations_shouldSuccessWithEmptySet() {
       // Given
       OldNewBlockLocationPairSet oldNewBlockLocationPairSet =

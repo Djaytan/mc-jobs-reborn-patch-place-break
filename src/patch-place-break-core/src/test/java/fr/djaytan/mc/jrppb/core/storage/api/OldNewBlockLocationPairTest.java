@@ -23,50 +23,35 @@
 package fr.djaytan.mc.jrppb.core.storage.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import fr.djaytan.mc.jrppb.api.entities.BlockLocation;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class OldNewBlockLocationPairTest {
 
   @Nested
-  @DisplayName("When instantiating")
   class WhenInstantiating {
 
+    private static final BlockLocation BLOCK_LOCATION_1 = new BlockLocation("world", -35, 8, 62);
+    private static final BlockLocation BLOCK_LOCATION_2 = new BlockLocation("world", -35, 8, 63);
+
     @Test
-    @DisplayName("With nominal values")
     void withNominalValues_shouldSuccess() {
-      // Given
-      BlockLocation oldBlockLocation = new BlockLocation("world", 12, 64, -35);
-      BlockLocation newBlockLocation = new BlockLocation("world", 12, 64, -36);
-
-      // When
       OldNewBlockLocationPair oldNewBlockLocationPair =
-          new OldNewBlockLocationPair(oldBlockLocation, newBlockLocation);
+          new OldNewBlockLocationPair(BLOCK_LOCATION_1, BLOCK_LOCATION_2);
 
-      // Then
       assertAll(
-          () -> assertThat(oldNewBlockLocationPair.oldBlockLocation()).isEqualTo(oldBlockLocation),
-          () -> assertThat(oldNewBlockLocationPair.newBlockLocation()).isEqualTo(newBlockLocation));
+          () -> assertThat(oldNewBlockLocationPair.oldBlockLocation()).isEqualTo(BLOCK_LOCATION_1),
+          () -> assertThat(oldNewBlockLocationPair.newBlockLocation()).isEqualTo(BLOCK_LOCATION_2));
     }
 
     @Test
-    @DisplayName("With same locations")
     void withSameLocations_shouldThrowException() {
-      // Given
-      BlockLocation oldBlockLocation = new BlockLocation("world", 12, 64, -35);
-      BlockLocation newBlockLocation = new BlockLocation("world", 12, 64, -35);
-
-      // When
-      Exception exception =
-          catchException(() -> new OldNewBlockLocationPair(oldBlockLocation, newBlockLocation));
-
-      // Then
-      assertThat(exception).isExactlyInstanceOf(IllegalStateException.class);
+      assertThatThrownBy(() -> new OldNewBlockLocationPair(BLOCK_LOCATION_1, BLOCK_LOCATION_1))
+          .isExactlyInstanceOf(IllegalStateException.class);
     }
   }
 }
