@@ -47,7 +47,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.Preconditions;
 import org.threeten.extra.MutableClock;
 
 class JobsRebornPatchPlaceBreakPluginTest {
@@ -79,11 +78,7 @@ class JobsRebornPatchPlaceBreakPluginTest {
     WorldMock worldMock = serverMock.addSimpleWorld("world");
     Location nominalLocation = new Location(worldMock, 112.1, 64, 45.87);
     BlockMock blockToPlace = new BlockMock(Material.DIAMOND_ORE, nominalLocation);
-
     ActionInfo actionInfo = new BlockActionInfo(blockToPlace, ActionType.BREAK);
-    Preconditions.condition(
-        !patchApi.isPlaceAndBreakExploit(actionInfo, blockToPlace),
-        "No tag is supposed to exist yet on the targeted block");
 
     BlockPlaceEvent blockPlaceEvent =
         new BlockPlaceEvent(blockToPlace, null, null, null, playerMock, true, EquipmentSlot.HAND);
@@ -132,11 +127,7 @@ class JobsRebornPatchPlaceBreakPluginTest {
     WorldMock worldMock = serverMock.addSimpleWorld("world");
     Location nominalLocation = new Location(worldMock, 5869.25, 72, 457.01);
     BlockMock airBlockToBreak = new BlockMock(Material.AIR, nominalLocation);
-
     ActionInfo actionInfo = new BlockActionInfo(airBlockToBreak, ActionType.BREAK);
-    Preconditions.condition(
-        !patchApi.isPlaceAndBreakExploit(actionInfo, airBlockToBreak),
-        "No tag is supposed to exist yet on the targeted block");
 
     BlockBreakEvent blockBreakEvent = new BlockBreakEvent(airBlockToBreak, null);
 
@@ -160,11 +151,7 @@ class JobsRebornPatchPlaceBreakPluginTest {
     WorldMock worldMock = serverMock.addSimpleWorld("world");
     Location nominalLocation = new Location(worldMock, 5414.6, 74.5, 449.1);
     BlockMock waterBlockToBreak = new BlockMock(Material.WATER, nominalLocation);
-
     ActionInfo actionInfo = new BlockActionInfo(waterBlockToBreak, ActionType.BREAK);
-    Preconditions.condition(
-        !patchApi.isPlaceAndBreakExploit(actionInfo, waterBlockToBreak),
-        "No tag is supposed to exist yet on the targeted block");
 
     BlockBreakEvent blockBreakEvent = new BlockBreakEvent(waterBlockToBreak, null);
 
