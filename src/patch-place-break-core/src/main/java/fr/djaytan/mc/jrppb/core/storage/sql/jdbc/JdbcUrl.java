@@ -20,39 +20,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.storage.sql.impl.sqlite;
+package fr.djaytan.mc.jrppb.core.storage.sql.jdbc;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.jetbrains.annotations.NotNull;
 
-import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.Jimfs;
-import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.Path;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
+/** Represents a JDBC URL required to establish connexion with the underlying data source. */
+public interface JdbcUrl {
 
-class SqliteJdbcUrlTest {
-
-  private final FileSystem imfs = Jimfs.newFileSystem(Configuration.unix());
-
-  @AfterEach
-  void afterEach() throws IOException {
-    imfs.close();
-  }
-
-  @Test
-  void whenGettingJdbcUrlFromDummyPath_shouldReturnExpectedSqliteJdbcUrl() {
-    // Given
-    Path dummySqliteDatabasePath = imfs.getPath("/dummy/sqlite-data.db");
-    SqliteJdbcUrl sqliteJdbcUrl = new SqliteJdbcUrl(dummySqliteDatabasePath);
-
-    // When
-    String actualSqliteJdbcUrl = sqliteJdbcUrl.get();
-
-    // Then
-    String expectedSqliteJdbcUrl = "jdbc:sqlite:/dummy/sqlite-data.db";
-
-    assertThat(actualSqliteJdbcUrl).isEqualTo(expectedSqliteJdbcUrl);
-  }
+  /**
+   * Returns the JDBC URL of the underlying data source.
+   *
+   * @return The JDBC URL of the underlying data source.
+   */
+  @NotNull
+  String get();
 }

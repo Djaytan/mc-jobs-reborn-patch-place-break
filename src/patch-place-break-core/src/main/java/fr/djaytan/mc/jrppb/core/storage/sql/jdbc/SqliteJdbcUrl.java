@@ -20,9 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.storage.sql.impl.sqlite;
+package fr.djaytan.mc.jrppb.core.storage.sql.jdbc;
 
-import fr.djaytan.mc.jrppb.core.storage.sql.JdbcUrl;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;

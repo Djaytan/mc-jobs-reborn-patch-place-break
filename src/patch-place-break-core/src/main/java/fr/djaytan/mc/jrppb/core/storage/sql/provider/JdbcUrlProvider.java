@@ -23,9 +23,9 @@
 package fr.djaytan.mc.jrppb.core.storage.sql.provider;
 
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
-import fr.djaytan.mc.jrppb.core.storage.sql.JdbcUrl;
-import fr.djaytan.mc.jrppb.core.storage.sql.impl.mysql.MysqlJdbcUrl;
-import fr.djaytan.mc.jrppb.core.storage.sql.impl.sqlite.SqliteJdbcUrl;
+import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.JdbcUrl;
+import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.MysqlJdbcUrl;
+import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.SqliteJdbcUrl;
 import jakarta.inject.Inject;
 import jakarta.inject.Provider;
 import org.jetbrains.annotations.NotNull;

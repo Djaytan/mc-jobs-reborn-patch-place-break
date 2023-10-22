@@ -25,7 +25,7 @@ package fr.djaytan.mc.jrppb.core.storage.sql.provider;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
-import fr.djaytan.mc.jrppb.core.storage.sql.JdbcUrl;
+import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.JdbcUrl;
 import jakarta.inject.Inject;
 import jakarta.inject.Provider;
 import jakarta.inject.Singleton;
