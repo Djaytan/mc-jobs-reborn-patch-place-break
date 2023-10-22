@@ -20,11 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.storage.sql.impl.mysql;
+package fr.djaytan.mc.jrppb.core.storage.sql.jdbc;
 
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DbmsServerProperties;
-import fr.djaytan.mc.jrppb.core.storage.sql.JdbcUrl;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
