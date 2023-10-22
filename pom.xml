@@ -48,6 +48,7 @@
     <module>src/commons-test</module>
     <module>src/patch-place-break-api</module>
     <module>src/patch-place-break-core</module>
+    <module>src/patch-place-break-cts</module>
     <module>src/spigot-patch-adapter</module>
     <module>src/spigot-plugin</module>
   </modules>
