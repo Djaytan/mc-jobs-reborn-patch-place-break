@@ -20,13 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.api;
+package fr.djaytan.mc.jrppb.cts;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+import fr.djaytan.mc.jrppb.api.PatchPlaceBreakApi;
 import fr.djaytan.mc.jrppb.api.entities.Block;
 import fr.djaytan.mc.jrppb.api.entities.BlockActionType;
 import fr.djaytan.mc.jrppb.api.entities.BlockLocation;
