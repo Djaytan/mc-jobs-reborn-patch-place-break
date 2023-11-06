@@ -9,7 +9,7 @@
   ],
   "prHourlyLimit": 10,
   "schedule": [
-    "before 5am on monday"
+    "before 6am on the first day of the month"
   ],
   "packageRules": [
     {
