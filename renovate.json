@@ -7,9 +7,9 @@
   "labels": [
     "t:dependencies"
   ],
-  "prHourlyLimit": 10,
+  "prHourlyLimit": 25,
   "schedule": [
-    "before 6am on the first day of the month"
+    "before 6am every 3 months on the first day of the month"
   ],
   "packageRules": [
     {
