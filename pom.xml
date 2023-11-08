@@ -73,7 +73,7 @@
     <format.check.skip>true</format.check.skip>
 
     <!-- ==================== Dependencies versions ==================== -->
-    <version.flyway>9.22.3</version.flyway>
+    <version.flyway>10.0.0</version.flyway>
   </properties>
 
   <dependencyManagement>
