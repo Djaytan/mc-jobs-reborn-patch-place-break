@@ -53,7 +53,7 @@ public class PatchPlaceBreakImpl implements PatchPlaceBreakApi {
   private final TagRepository tagRepository;
 
   @Inject
-  public PatchPlaceBreakImpl(
+  PatchPlaceBreakImpl(
       @NotNull BlocksFilter blocksFilter,
       @NotNull Clock clock,
       @NotNull RestrictedBlocksProperties restrictedBlocksProperties,
