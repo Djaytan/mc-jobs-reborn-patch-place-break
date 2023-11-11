@@ -93,6 +93,13 @@
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers</artifactId>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-annotations</artifactId>
+          <!-- Prevent conflicts with Flyway -->
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.threeten</groupId>
