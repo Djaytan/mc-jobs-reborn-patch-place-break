@@ -41,7 +41,7 @@ jobs:
   # and secure way.
   #
   # Project setup recommendations:
-  # * The version located in the pom.xml file must be 'DEV-SNAPSHOT'
+  # * The version located in the pom.xml file must be '0.0.1-DEV-SNAPSHOT'
   # * Release branches should only diverge from the default one
   # * Any commit made at release branch level must be made at default branch level as well
   #   (except if otherwise required)
