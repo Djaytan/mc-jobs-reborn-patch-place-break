@@ -28,7 +28,7 @@
 
   <groupId>fr.djaytan.mc.jrppb</groupId>
   <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
-  <version>3.0.0</version>
+  <version>0.0.1-DEV-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>JobsReborn-PatchPlaceBreak</name>
