@@ -33,7 +33,7 @@ permissions: read-all
 
 jobs:
   analyze:
-    name: Analyze
+    name: Scorecard - Analyze
     runs-on: ubuntu-latest
     permissions:
       # Needed to upload the results to code-scanning dashboard.
