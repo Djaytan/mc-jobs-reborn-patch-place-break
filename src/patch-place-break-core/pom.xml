@@ -39,6 +39,10 @@
 
   <dependencies>
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>patch-place-break-api</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
     </dependency>
@@ -49,10 +53,6 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>fr.djaytan.mc.jrppb</groupId>
-      <artifactId>patch-place-break-api</artifactId>
     </dependency>
     <dependency>
       <groupId>jakarta.inject</groupId>
@@ -118,6 +118,11 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>commons-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.google.jimfs</groupId>
       <artifactId>jimfs</artifactId>
       <scope>test</scope>
@@ -125,11 +130,6 @@
     <dependency>
       <groupId>com.jparams</groupId>
       <artifactId>to-string-verifier</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>fr.djaytan.mc.jrppb</groupId>
-      <artifactId>commons-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

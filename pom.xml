@@ -121,6 +121,26 @@
         <scope>import</scope>
       </dependency>
       <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>commons-test</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>patch-place-break-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>patch-place-break-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>spigot-patch-adapter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.github.Djaytan</groupId>
         <artifactId>bukkit-slf4j</artifactId>
         <version>1.0.30</version>
@@ -169,26 +189,6 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>2.15.0</version>
-      </dependency>
-      <dependency>
-        <groupId>fr.djaytan.mc.jrppb</groupId>
-        <artifactId>commons-test</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>fr.djaytan.mc.jrppb</groupId>
-        <artifactId>patch-place-break-api</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>fr.djaytan.mc.jrppb</groupId>
-        <artifactId>patch-place-break-core</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>fr.djaytan.mc.jrppb</groupId>
-        <artifactId>spigot-patch-adapter</artifactId>
-        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>net.bytebuddy</groupId>

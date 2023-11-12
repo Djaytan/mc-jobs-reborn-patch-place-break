@@ -39,7 +39,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>fr.djaytan.mc.jrppb</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>patch-place-break-api</artifactId>
     </dependency>
     <dependency>
@@ -66,12 +66,12 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>fr.djaytan.mc.jrppb</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>commons-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>fr.djaytan.mc.jrppb</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>patch-place-break-core</artifactId>
       <scope>test</scope>
     </dependency>
