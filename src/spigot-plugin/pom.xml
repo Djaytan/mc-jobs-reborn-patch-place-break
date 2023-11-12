@@ -28,7 +28,7 @@
   <parent>
     <groupId>fr.djaytan.mc.jrppb</groupId>
     <artifactId>mc-jobs-reborn-patch-place-break</artifactId>
-    <version>0.0.1-DEV-SNAPSHOT</version>
+    <version>3.0.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
