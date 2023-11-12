@@ -44,17 +44,17 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>fr.djaytan.mc.jrppb</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>commons-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>fr.djaytan.mc.jrppb</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>patch-place-break-api</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>fr.djaytan.mc.jrppb</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>patch-place-break-core</artifactId>
       <!-- TODO: rely on SPI so that scope can be set to "runtime" instead -->
       <scope>test</scope>
