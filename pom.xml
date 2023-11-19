@@ -338,20 +338,20 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>sort-pom</id>
+                        <id>format</id>
                         <goals>
                             <goal>sort</goal>
                         </goals>
-                        <phase>initialize</phase>
                         <configuration>
                             <skip>${format.perform.skip}</skip>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>pom-sorting-check</id>
+                        <id>check</id>
                         <goals>
                             <goal>verify</goal>
                         </goals>
+                        <!-- Force "validate" phase to fail fast -->
                         <phase>validate</phase>
                         <configuration>
                             <skip>${format.check.skip}</skip>
@@ -366,20 +366,20 @@
                 <version>2.21.1</version>
                 <executions>
                     <execution>
-                        <id>format-code</id>
+                        <id>format</id>
                         <goals>
                             <goal>format</goal>
                         </goals>
-                        <phase>process-sources</phase>
                         <configuration>
                             <skip>${format.perform.skip}</skip>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>code-formatting-check</id>
+                        <id>check</id>
                         <goals>
                             <goal>check</goal>
                         </goals>
+                        <!-- Force "validate" phase to fail fast -->
                         <phase>validate</phase>
                         <configuration>
                             <skip>${format.check.skip}</skip>
@@ -411,20 +411,20 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>format-header-copyright</id>
+                        <id>format</id>
                         <goals>
                             <goal>format</goal>
                         </goals>
-                        <phase>process-sources</phase>
                         <configuration>
                             <skip>${format.perform.skip}</skip>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>check-header-copyright</id>
+                        <id>check</id>
                         <goals>
                             <goal>check</goal>
                         </goals>
+                        <!-- Force "validate" phase to fail fast -->
                         <phase>validate</phase>
                         <configuration>
                             <failIfMissing>true</failIfMissing>
@@ -447,19 +447,17 @@
                     <ignoredUnusedDeclaredDependencies>
                         <ignoredUnusedDeclaredDependency>
                             org.slf4j:slf4j-nop
-                            <!-- Required for deactivating logs during tests execution -->
+                            <!-- Required for deactivating logs during test execution -->
                         </ignoredUnusedDeclaredDependency>
                     </ignoredUnusedDeclaredDependencies>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>analyse</id>
                         <goals>
                             <goal>analyze-only</goal>
                             <goal>analyze-dep-mgt</goal>
                             <goal>analyze-duplicate</goal>
                         </goals>
-                        <phase>test-compile</phase>
                     </execution>
                 </executions>
             </plugin>
@@ -504,7 +502,7 @@
                         <!-- jboss-logging shall use SLF4J as logger provider -->
                         <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
                     </systemPropertyVariables>
-                    <!-- Make JVM warning go away when using Mockito: https://github.com/mockito/mockito/issues/3111 -->
+                    <!-- Make JVM warning goes away when using Mockito: https://github.com/mockito/mockito/issues/3111 -->
                     <argLine>-Xshare:off</argLine>
                 </configuration>
             </plugin>
@@ -516,7 +514,7 @@
                     <includes>
                         <include>**/*IntegrationTest.java</include>
                     </includes>
-                    <!-- Make JVM warning go away when using Mockito: https://github.com/mockito/mockito/issues/3111 -->
+                    <!-- Make JVM warning goes away when using Mockito: https://github.com/mockito/mockito/issues/3111 -->
                     <argLine>-Xshare:off</argLine>
                 </configuration>
                 <executions>
@@ -572,11 +570,9 @@
                 <version>3.3.0</version>
                 <executions>
                     <execution>
-                        <id>attach-sources</id>
                         <goals>
                             <goal>jar-no-fork</goal>
                         </goals>
-                        <phase>verify</phase>
                     </execution>
                 </executions>
             </plugin>
@@ -592,7 +588,6 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>maven-javadocs</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>

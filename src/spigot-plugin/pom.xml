@@ -171,20 +171,6 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>clean-uber-jar</id>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                        <!-- Force clean-up to prevent conflicts with already existing Jar file -->
-                        <phase>initialize</phase>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -286,7 +272,6 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <phase>package</phase>
                     </execution>
                 </executions>
             </plugin>
