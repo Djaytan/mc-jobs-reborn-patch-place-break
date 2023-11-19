@@ -1,5 +1,3 @@
-name: Maven - CD
-
 # All release branches are supposed to follow SemVer convention while being restricted
 # to only the major.minor part.
 # Filtering performed based on recommended RegEx from semver.org:
@@ -57,7 +55,7 @@ jobs:
   # * The approach is generic enough to be easily re-exploited for other languages
   #   and build tools (e.g. JavaScript/TypeScript, Java with Gradle, ...)
   cd:
-    name: CD
+    name: Maven - CD
     if: ${{ contains(github.ref, 'refs/heads/release/v') }}
     runs-on: ubuntu-latest
 

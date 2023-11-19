@@ -1,5 +1,3 @@
-name: Security Scan - Scorecard
-
 # All release branches are supposed to follow SemVer convention while being restricted
 # to only the major.minor part.
 # Filtering performed based on recommended RegEx from semver.org:
@@ -33,7 +31,7 @@ permissions: read-all
 
 jobs:
   analyze:
-    name: Scorecard - Analyze
+    name: Security Scan - Scorecard
     runs-on: ubuntu-latest
     permissions:
       # Needed to upload the results to code-scanning dashboard.

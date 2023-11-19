@@ -1,5 +1,3 @@
-name: Security Scan - CodeQL
-
 # All release branches are supposed to follow SemVer convention while being restricted
 # to only the major.minor part.
 # Filtering performed based on recommended RegEx from semver.org:
@@ -30,7 +28,7 @@ on:
 
 jobs:
   analyze:
-    name: CodeQL - Analyze
+    name: Security Scan - CodeQL
     permissions:
       actions: read
       contents: read
