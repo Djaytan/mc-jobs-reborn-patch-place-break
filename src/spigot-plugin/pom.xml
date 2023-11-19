@@ -169,126 +169,124 @@
             </resource>
         </resources>
         <plugins>
-            <?SORTPOM IGNORE?>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <configuration>
-          <createDependencyReducedPom>false</createDependencyReducedPom>
-          <filters>
-            <filter>
-              <artifact>*:*</artifact>
-              <excludes>
-                <exclude>**/module-info.class</exclude>
-                <exclude>assets/**/*</exclude>
-                <exclude>META-INF/*.SF</exclude>
-                <exclude>META-INF/*.DSA</exclude>
-                <exclude>META-INF/*.RSA</exclude>
-                <exclude>META-INF/MANIFEST*</exclude>
-                <exclude>META-INF/README.txt</exclude>
-                <exclude>META-INF/maven/**/*</exclude>
-              </excludes>
-            </filter>
-          </filters>
-          <!-- Prevent libraries versions collisions with other Bukkit plugins if loaded as is in classpath -->
-          <relocations>
-            <relocation>
-              <pattern>com</pattern>
-              <shadedPattern>${package.lib}.com</shadedPattern>
-              <includes>
-                <include>com.djaytan.bukkit.slf4j.**</include>
-                <include>com.fasterxml.jackson.**</include>
-                <include>com.fasterxml.classmate.**</include>
-                <include>com.google.common.**</include>
-                <include>com.google.errorprone.**</include>
-                <include>com.google.gson.**</include>
-                <include>com.google.inject.**</include>
-                <include>com.google.j2objc.**</include>
-                <include>com.google.thirdparty.**</include>
-                <include>com.sun.el.**</include>
-                <include>com.typesafe.config.**</include>
-                <include>com.zaxxer.hikari.**</include>
-              </includes>
-            </relocation>
-            <relocation>
-              <pattern>io</pattern>
-              <shadedPattern>${package.lib}.io</shadedPattern>
-              <includes>
-                <include>io.leangen.geantyref.**</include>
-              </includes>
-            </relocation>
-            <relocation>
-              <pattern>jakarta</pattern>
-              <shadedPattern>${package.lib}.jakarta</shadedPattern>
-              <includes>
-                <include>jakarta.el.**</include>
-                <include>jakarta.inject.**</include>
-                <include>jakarta.validation.**</include>
-              </includes>
-            </relocation>
-            <relocation>
-              <pattern>javax</pattern>
-              <shadedPattern>${package.lib}.javax</shadedPattern>
-              <includes>
-                <include>javax.annotation.**</include>
-              </includes>
-            </relocation>
-            <relocation>
-              <pattern>org</pattern>
-              <shadedPattern>${package.lib}.org</shadedPattern>
-              <includes>
-                <include>org.aopalliance.**</include>
-                <include>org.apache.commons.io.**</include>
-                <include>org.apache.commons.lang3.**</include>
-                <include>org.bstats.**</include>
-                <include>org.checkerframework.**</include>
-                <include>org.flywaydb.**</include>
-                <include>org.hibernate.validator.**</include>
-                <include>org.jboss.logging.**</include>
-                <include>org.sqlite.**</include>
-                <include>org.slf4j.**</include>
-                <include>org.spongepowered.configurate.**</include>
-              </includes>
-            </relocation>
-          </relocations>
-          <transformers>
-            <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-              <resource>META-INF/README.md</resource>
-              <file>${project.basedir}/../../README.md</file>
-            </transformer>
-            <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-              <resource>META-INF/LICENSE.md</resource>
-              <file>${project.basedir}/../../LICENSE.md</file>
-            </transformer>
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
-              <addHeader>true</addHeader>
-            </transformer>
-          </transformers>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <phase>package</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <?SORTPOM RESUME?>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <executions>
                     <execution>
-                        <!-- Prevent conflicts with already existing Jar file -->
                         <id>clean-uber-jar</id>
                         <goals>
                             <goal>clean</goal>
                         </goals>
+                        <!-- Force clean-up to prevent conflicts with already existing Jar file -->
                         <phase>initialize</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>**/module-info.class</exclude>
+                                <exclude>assets/**/*</exclude>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                                <exclude>META-INF/MANIFEST*</exclude>
+                                <exclude>META-INF/README.txt</exclude>
+                                <exclude>META-INF/maven/**/*</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                    <!-- Prevent libraries versions collisions with other Bukkit plugins if loaded as is in classpath -->
+                    <relocations>
+                        <relocation>
+                            <pattern>com</pattern>
+                            <shadedPattern>${package.lib}.com</shadedPattern>
+                            <includes>
+                                <include>com.djaytan.bukkit.slf4j.**</include>
+                                <include>com.fasterxml.jackson.**</include>
+                                <include>com.fasterxml.classmate.**</include>
+                                <include>com.google.common.**</include>
+                                <include>com.google.errorprone.**</include>
+                                <include>com.google.gson.**</include>
+                                <include>com.google.inject.**</include>
+                                <include>com.google.j2objc.**</include>
+                                <include>com.google.thirdparty.**</include>
+                                <include>com.sun.el.**</include>
+                                <include>com.typesafe.config.**</include>
+                                <include>com.zaxxer.hikari.**</include>
+                            </includes>
+                        </relocation>
+                        <relocation>
+                            <pattern>io</pattern>
+                            <shadedPattern>${package.lib}.io</shadedPattern>
+                            <includes>
+                                <include>io.leangen.geantyref.**</include>
+                            </includes>
+                        </relocation>
+                        <relocation>
+                            <pattern>jakarta</pattern>
+                            <shadedPattern>${package.lib}.jakarta</shadedPattern>
+                            <includes>
+                                <include>jakarta.el.**</include>
+                                <include>jakarta.inject.**</include>
+                                <include>jakarta.validation.**</include>
+                            </includes>
+                        </relocation>
+                        <relocation>
+                            <pattern>javax</pattern>
+                            <shadedPattern>${package.lib}.javax</shadedPattern>
+                            <includes>
+                                <include>javax.annotation.**</include>
+                            </includes>
+                        </relocation>
+                        <relocation>
+                            <pattern>org</pattern>
+                            <shadedPattern>${package.lib}.org</shadedPattern>
+                            <includes>
+                                <include>org.aopalliance.**</include>
+                                <include>org.apache.commons.io.**</include>
+                                <include>org.apache.commons.lang3.**</include>
+                                <include>org.bstats.**</include>
+                                <include>org.checkerframework.**</include>
+                                <include>org.flywaydb.**</include>
+                                <include>org.hibernate.validator.**</include>
+                                <include>org.jboss.logging.**</include>
+                                <include>org.sqlite.**</include>
+                                <include>org.slf4j.**</include>
+                                <include>org.spongepowered.configurate.**</include>
+                            </includes>
+                        </relocation>
+                    </relocations>
+                    <transformers>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                            <resource>META-INF/README.md</resource>
+                            <file>${project.basedir}/../../README.md</file>
+                        </transformer>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                            <resource>META-INF/LICENSE.md</resource>
+                            <file>${project.basedir}/../../LICENSE.md</file>
+                        </transformer>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
+                            <addHeader>true</addHeader>
+                        </transformer>
+                    </transformers>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <phase>package</phase>
                     </execution>
                 </executions>
             </plugin>

@@ -116,6 +116,7 @@
 
     <build>
         <plugins>
+            <!-- TODO: to be removed -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
