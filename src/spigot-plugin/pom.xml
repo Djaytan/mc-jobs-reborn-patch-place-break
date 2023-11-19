@@ -45,6 +45,7 @@
     </properties>
 
     <dependencies>
+        <!-- Internal dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>patch-place-break-api</artifactId>
@@ -57,29 +58,41 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>spigot-patch-adapter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.github.Djaytan</groupId>
-            <artifactId>bukkit-slf4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-        </dependency>
+
+        <!-- Jakarta API dependencies -->
         <dependency>
             <groupId>jakarta.inject</groupId>
             <artifactId>jakarta.inject-api</artifactId>
         </dependency>
+
+        <!-- Jakarta implementation dependencies -->
         <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+        </dependency>
+
+        <!-- General dependencies -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.Zrips</groupId>
-            <artifactId>Jobs</artifactId>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <!-- CraftBukkit's Guava version is incompatible with Guice: must shade another one in plugin -->
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Database-related dependencies -->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <!-- Provided by CraftBukkit at runtime -->
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -89,36 +102,38 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
             <!-- Do not shade it: we already rely on mysql-connector-j -->
             <scope>provided</scope>
         </dependency>
+
+        <!-- Spigot-specific dependencies -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.xerial</groupId>
-            <artifactId>sqlite-jdbc</artifactId>
-            <!-- Provided by CraftBukkit at runtime -->
+            <groupId>com.github.Djaytan</groupId>
+            <artifactId>bukkit-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.Zrips</groupId>
+            <artifactId>Jobs</artifactId>
             <scope>provided</scope>
         </dependency>
+
+        <!-- ==================== TEST  ==================== -->
+
+        <!-- General test dependencies -->
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <scope>runtime</scope>
-            <!-- Guava version of CraftBukkit is incompatible with Guice: must shade it in plugin -->
-        </dependency>
-        <dependency>
-            <groupId>com.github.seeseemelk</groupId>
-            <artifactId>MockBukkit-v1.17</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -132,13 +147,15 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.threeten</groupId>
             <artifactId>threeten-extra</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Spigot-specific test dependencies -->
+        <dependency>
+            <groupId>com.github.seeseemelk</groupId>
+            <artifactId>MockBukkit-v1.17</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
