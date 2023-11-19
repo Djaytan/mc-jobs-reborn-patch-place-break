@@ -65,7 +65,7 @@ jobs:
           key: sonar
           restore-keys: sonar
 
-      - name: SonarCloud Quality Scan
+      - name: Maven build & SonarCloud quality scan
         env:
           GITHUB_TOKEN: ${{ github.token }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
