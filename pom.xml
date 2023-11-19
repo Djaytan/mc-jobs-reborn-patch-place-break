@@ -33,16 +33,6 @@
 
     <name>JobsReborn-PatchPlaceBreak</name>
     <description>A place-break patch extension of JobsReborn plugin for Spigot servers (Minecraft)</description>
-    <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break</url>
-
-    <inceptionYear>2022</inceptionYear>
-
-    <licenses>
-        <license>
-            <name>MIT</name>
-            <url>https://opensource.org/licenses/MIT</url>
-        </license>
-    </licenses>
 
     <modules>
         <module>src/commons-test</module>
@@ -52,14 +42,6 @@
         <module>src/spigot-patch-adapter</module>
         <module>src/spigot-plugin</module>
     </modules>
-
-    <issueManagement>
-        <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues</url>
-    </issueManagement>
-
-    <ciManagement>
-        <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions</url>
-    </ciManagement>
 
     <properties>
         <!-- ==================== General ==================== -->
@@ -293,17 +275,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <repositories>
-        <repository>
-            <id>papermc</id>
-            <url>https://repo.papermc.io/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-
     <build>
         <defaultGoal>clean install</defaultGoal>
         <pluginManagement>
@@ -333,7 +304,7 @@
                     <ignoreLineSeparators>false</ignoreLineSeparators>
 
                     <!-- Sorting properties -->
-                    <predefinedSortOrder>recommended_2008_06</predefinedSortOrder>
+                    <predefinedSortOrder>custom_1</predefinedSortOrder>
                     <sortModules>true</sortModules>
                 </configuration>
                 <executions>
@@ -630,6 +601,36 @@
             </plugin>
         </plugins>
     </build>
+
+    <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break</url>
+
+    <inceptionYear>2022</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <issueManagement>
+        <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions</url>
+    </ciManagement>
+
+    <repositories>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
     <profiles>
         <profile>
