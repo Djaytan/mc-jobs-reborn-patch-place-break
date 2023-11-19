@@ -56,7 +56,6 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>patch-place-break-core</artifactId>
-      <!-- TODO: rely on SPI so that scope can be set to "runtime" instead -->
       <scope>test</scope>
     </dependency>
     <dependency>

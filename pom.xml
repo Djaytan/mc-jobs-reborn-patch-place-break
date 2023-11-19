@@ -321,25 +321,20 @@
         <artifactId>sortpom-maven-plugin</artifactId>
         <version>3.3.0</version>
         <configuration>
+          <!-- General properties -->
           <createBackupFile>false</createBackupFile>
           <encoding>${project.encoding}</encoding>
+
+          <!-- Formatting properties -->
           <expandEmptyElements>false</expandEmptyElements>
-          <ignoreLineSeparators>false</ignoreLineSeparators>
-          <indentBlankLines>false</indentBlankLines>
-          <indentSchemaLocation>false</indentSchemaLocation>
-          <keepBlankLines>true</keepBlankLines>
-          <keepTimestamp>false</keepTimestamp>
+          <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
           <lineSeparator>\n</lineSeparator>
           <nrOfIndentSpace>2</nrOfIndentSpace>
+          <ignoreLineSeparators>false</ignoreLineSeparators>
+
+          <!-- Sorting properties -->
           <predefinedSortOrder>recommended_2008_06</predefinedSortOrder>
-          <sortDependencies>scope,groupId,artifactId</sortDependencies>
-          <sortDependencyExclusions>groupId,artifactId</sortDependencyExclusions>
-          <sortExecutions>false</sortExecutions>
           <sortModules>true</sortModules>
-          <sortPlugins>groupId,artifactId</sortPlugins>
-          <sortProperties>false</sortProperties>
-          <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
-          <verifyFail>stop</verifyFail>
         </configuration>
         <executions>
           <execution>
@@ -360,6 +355,7 @@
             <phase>validate</phase>
             <configuration>
               <skip>${format.check.skip}</skip>
+              <verifyFail>Stop</verifyFail>
             </configuration>
           </execution>
         </executions>
