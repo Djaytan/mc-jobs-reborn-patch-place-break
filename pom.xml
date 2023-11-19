@@ -510,6 +510,8 @@
           <includes>
             <include>**/*IntegrationTest.java</include>
           </includes>
+          <!-- Make JVM warning go away when using Mockito: https://github.com/mockito/mockito/issues/3111 -->
+          <argLine>-Xshare:off</argLine>
         </configuration>
         <executions>
           <execution>
@@ -581,6 +583,8 @@
             <!-- jboss-logging shall use SLF4J as logger provider -->
             <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
           </systemPropertyVariables>
+          <!-- Make JVM warning go away when using Mockito: https://github.com/mockito/mockito/issues/3111 -->
+          <argLine>-Xshare:off</argLine>
         </configuration>
       </plugin>
       <plugin>
