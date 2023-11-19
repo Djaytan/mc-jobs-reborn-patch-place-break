@@ -24,7 +24,7 @@ module jrppb.core {
   // Internal dependencies
   requires jrppb.api;
 
-  // Third-party dependencies
+  // General dependencies
   requires com.google.guice;
   requires com.zaxxer.hikari;
   requires flyway.core;
