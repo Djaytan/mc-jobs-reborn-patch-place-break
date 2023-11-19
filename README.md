@@ -69,6 +69,11 @@ installed on it.
 
 The server's version must be higher or equals to 1.17.x.
 
+Download the latest `.jar` file from the
+[release section](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/) of this
+repository and put it into the `plugins/` folder, and you'll be done! After restarting the server,
+the plugin should now appear green in the list displayed by the `/plugins` command.
+
 If you wish to use this plugin on a lower version of the server, you should instead use the
 following version:
 
@@ -76,11 +81,6 @@ following version:
   Minecraft versions from 1.11 to 1.16 (included)
 * [1.2.0](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/tag/v1.2.0) for
   Minecraft versions 1.8, 1.9 and 1.10
-
-Download the latest `.jar` file from the
-[release section](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/) of this
-repository and put it into the `plugins/` folder, and you'll be done! After restarting the server,
-the plugin should now appear green in the list displayed by the `/plugins` command.
 
 At this point, you should turn off all options of the "PlaceAndBreak" config part of JobsReborn.
 This would lead to a similar result as the following one:
