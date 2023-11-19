@@ -17,13 +17,6 @@
         "maven"
       ],
       "groupName": "Maven plugins"
-    },
-    {
-      "matchUpdateTypes": [
-        "patch"
-      ],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true
     }
   ]
 }
