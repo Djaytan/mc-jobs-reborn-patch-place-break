@@ -139,6 +139,11 @@ Specifically for the tests:
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the
 [tags on this repository](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/tags).
 
+## Security Policy
+
+In case you think having found a security vulnerability, please consult
+our [Security Policy](SECURITY.md).
+
 ## Licence
 
-This project is under the [MIT](https://opensource.org/licenses/MIT) license.
+This project is under the [MIT license](LICENSE.md).
