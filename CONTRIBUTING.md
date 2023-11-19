@@ -85,7 +85,8 @@ Working on this project requires the following dependencies installed in your lo
 * Docker v24.0+ (on Windows it's possible to use Docker Desktop, Podman Desktop or Rancher Desktop:
   choose whatever you want or any other alternative if you like)
   * _Required for running integration tests_
-* Testcontainers reusable containers feature enabled ([how to](https://java.testcontainers.org/features/reuse/))
+* Testcontainers reusable containers feature
+  enabled ([how to](https://java.testcontainers.org/features/reuse/))
   * On Linux you can run the following command:
   ```bash
   echo 'testcontainers.reuse.enable=true' >> ~/.testcontainers.properties
@@ -119,6 +120,17 @@ The only thing we ask when contributing to the code is to apply
 
 To help respect this, an automatic formatter has been configured through Maven to be dispatched
 automatically when building the project and running tests.
+
+### ⭕ Conventional Commits
+
+Following a standard for commit message provides several benefits:
+
+* Human **and** machine readable
+* Automatic version bump
+* Automatic release note creation/update
+
+This is why we strive to follow
+the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) one.
 
 #### IntelliJ IDEA plugin
 
