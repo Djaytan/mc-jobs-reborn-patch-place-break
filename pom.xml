@@ -284,73 +284,204 @@
 
         <pluginManagement>
             <plugins>
+                <!-- Basic Maven plugins -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.3.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.3.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.11.0</version>
+                    <configuration>
+                        <release>${java.version}</release>
+                        <failOnWarning>true</failOnWarning>
+                        <showDeprecation>true</showDeprecation>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>3.1.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.1.1</version>
+                </plugin>
+
+                <!-- Formatting-related plugins -->
+                <plugin>
+                    <groupId>com.github.ekryd.sortpom</groupId>
+                    <artifactId>sortpom-maven-plugin</artifactId>
+                    <version>3.3.0</version>
+                    <configuration>
+                        <!-- General properties -->
+                        <createBackupFile>false</createBackupFile>
+                        <encoding>${project.encoding}</encoding>
+
+                        <!-- Formatting properties -->
+                        <expandEmptyElements>false</expandEmptyElements>
+                        <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
+                        <lineSeparator>\n</lineSeparator>
+                        <nrOfIndentSpace>4</nrOfIndentSpace>
+                        <ignoreLineSeparators>false</ignoreLineSeparators>
+
+                        <!-- Sorting properties -->
+                        <predefinedSortOrder>custom_1</predefinedSortOrder>
+                        <sortModules>true</sortModules>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.spotify.fmt</groupId>
+                    <artifactId>fmt-maven-plugin</artifactId>
+                    <version>2.21.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.mycila</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>4.3</version>
+                    <configuration>
+                        <properties>
+                            <owner>Loïc DUBOIS-TERMOZ (alias Djaytan)</owner>
+                        </properties>
+                        <useDefaultExcludes>true</useDefaultExcludes>
+                        <licenseSets>
+                            <licenseSet>
+                                <header>com/mycila/maven/plugin/license/templates/MIT.txt</header>
+                                <excludes>
+                                    <exclude>src/main/resources/**</exclude>
+                                    <exclude>src/test/resources/**</exclude>
+                                    <exclude>**/dir.empty</exclude>
+                                    <exclude>.editorconfig</exclude>
+                                    <exclude>renovate.json</exclude>
+                                </excludes>
+                            </licenseSet>
+                        </licenseSets>
+                    </configuration>
+                </plugin>
+
+                <!-- Enforcement-related plugins -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.6.1</version>
+                    <configuration>
+                        <failBuild>true</failBuild>
+                        <failOnWarning>true</failOnWarning>
+                        <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
+                        <ignoredUnusedDeclaredDependencies>
+                            <ignoredUnusedDeclaredDependency>
+                                org.slf4j:slf4j-nop
+                                <!-- Required for deactivating logs during test execution -->
+                            </ignoredUnusedDeclaredDependency>
+                        </ignoredUnusedDeclaredDependencies>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.4.1</version>
+                    <configuration>
+                        <fail>true</fail>
+                        <failFast>true</failFast>
+                        <rules>
+                            <banDuplicatePomDependencyVersions />
+                            <dependencyConvergence />
+                            <reactorModuleConvergence />
+                            <requireJavaVersion>
+                                <version>[17,18)</version>
+                            </requireJavaVersion>
+                            <requireMavenVersion>
+                                <version>[3.8,)</version>
+                            </requireMavenVersion>
+                            <requirePluginVersions>
+                                <message>Best Practice is to always define plugin versions!</message>
+                                <!-- "site" phase is not applicable for this project -->
+                                <unCheckedPluginList>org.apache.maven.plugins:maven-site-plugin</unCheckedPluginList>
+                            </requirePluginVersions>
+                            <requireUpperBoundDeps />
+                        </rules>
+                    </configuration>
+                </plugin>
+
+                <!-- Test-related plugins -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.2.1</version>
+                    <configuration>
+                        <parallel>all</parallel>
+                        <systemPropertyVariables>
+                            <!-- Required to redirect Hibernate Validator's logs to SLF4J -->
+                            <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>3.2.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.11</version>
+                </plugin>
+
+                <!-- Release-related plugins -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>2.16.1</version>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
                     <version>3.5.1</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.6.0</version>
+                    <configuration>
+                        <quiet>true</quiet>
+                        <additionalJOptions>
+                            <additionalJOption>-Xdoclint:none</additionalJOption>
+                        </additionalJOptions>
+                    </configuration>
+                </plugin>
+
+                <!-- SonarCloud code quality scans -->
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.10.0.2594</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
         <plugins>
-            <!-- Basic Maven plugins -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.3.2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <release>${java.version}</release>
-                    <failOnWarning>true</failOnWarning>
-                    <showDeprecation>true</showDeprecation>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>3.1.1</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.1.1</version>
-            </plugin>
-
             <!-- Formatting-related plugins -->
             <plugin>
                 <groupId>com.github.ekryd.sortpom</groupId>
                 <artifactId>sortpom-maven-plugin</artifactId>
-                <version>3.3.0</version>
-                <configuration>
-                    <!-- General properties -->
-                    <createBackupFile>false</createBackupFile>
-                    <encoding>${project.encoding}</encoding>
-
-                    <!-- Formatting properties -->
-                    <expandEmptyElements>false</expandEmptyElements>
-                    <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
-                    <lineSeparator>\n</lineSeparator>
-                    <nrOfIndentSpace>4</nrOfIndentSpace>
-                    <ignoreLineSeparators>false</ignoreLineSeparators>
-
-                    <!-- Sorting properties -->
-                    <predefinedSortOrder>custom_1</predefinedSortOrder>
-                    <sortModules>true</sortModules>
-                </configuration>
                 <executions>
                     <execution>
                         <id>format</id>
@@ -378,7 +509,6 @@
             <plugin>
                 <groupId>com.spotify.fmt</groupId>
                 <artifactId>fmt-maven-plugin</artifactId>
-                <version>2.21.1</version>
                 <executions>
                     <execution>
                         <id>format</id>
@@ -405,25 +535,6 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>4.3</version>
-                <configuration>
-                    <properties>
-                        <owner>Loïc DUBOIS-TERMOZ (alias Djaytan)</owner>
-                    </properties>
-                    <useDefaultExcludes>true</useDefaultExcludes>
-                    <licenseSets>
-                        <licenseSet>
-                            <header>com/mycila/maven/plugin/license/templates/MIT.txt</header>
-                            <excludes>
-                                <exclude>src/main/resources/**</exclude>
-                                <exclude>src/test/resources/**</exclude>
-                                <exclude>**/dir.empty</exclude>
-                                <exclude>.editorconfig</exclude>
-                                <exclude>renovate.json</exclude>
-                            </excludes>
-                        </licenseSet>
-                    </licenseSets>
-                </configuration>
                 <executions>
                     <execution>
                         <id>format</id>
@@ -454,18 +565,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.6.1</version>
-                <configuration>
-                    <failBuild>true</failBuild>
-                    <failOnWarning>true</failOnWarning>
-                    <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
-                    <ignoredUnusedDeclaredDependencies>
-                        <ignoredUnusedDeclaredDependency>
-                            org.slf4j:slf4j-nop
-                            <!-- Required for deactivating logs during test execution -->
-                        </ignoredUnusedDeclaredDependency>
-                    </ignoredUnusedDeclaredDependencies>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -479,28 +578,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.4.1</version>
-                <configuration>
-                    <fail>true</fail>
-                    <failFast>true</failFast>
-                    <rules>
-                        <banDuplicatePomDependencyVersions />
-                        <dependencyConvergence />
-                        <reactorModuleConvergence />
-                        <requireJavaVersion>
-                            <version>[17,18)</version>
-                        </requireJavaVersion>
-                        <requireMavenVersion>
-                            <version>[3.8,)</version>
-                        </requireMavenVersion>
-                        <requirePluginVersions>
-                            <message>Best Practice is to always define plugin versions!</message>
-                            <!-- "site" phase is not applicable for this project -->
-                            <unCheckedPluginList>org.apache.maven.plugins:maven-site-plugin</unCheckedPluginList>
-                        </requirePluginVersions>
-                        <requireUpperBoundDeps />
-                    </rules>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -513,20 +590,7 @@
             <!-- Test-related plugins -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.1</version>
-                <configuration>
-                    <parallel>all</parallel>
-                    <systemPropertyVariables>
-                        <!-- jboss-logging shall use SLF4J as logger provider -->
-                        <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -539,7 +603,6 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.11</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -558,14 +621,8 @@
 
             <!-- Release-related plugins -->
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <version>2.16.1</version>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -577,13 +634,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration>
-                    <quiet>true</quiet>
-                    <additionalJOptions>
-                        <additionalJOption>-Xdoclint:none</additionalJOption>
-                    </additionalJOptions>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -591,13 +641,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-
-            <!-- SonarCloud code quality scans -->
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.10.0.2594</version>
             </plugin>
         </plugins>
     </build>
