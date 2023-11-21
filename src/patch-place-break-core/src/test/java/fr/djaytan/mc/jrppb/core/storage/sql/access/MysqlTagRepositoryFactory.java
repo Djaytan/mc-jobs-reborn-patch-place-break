@@ -28,9 +28,9 @@ import com.zaxxer.hikari.HikariDataSource;
 import fr.djaytan.mc.jrppb.core.storage.api.DataSourceManager;
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceType;
-import fr.djaytan.mc.jrppb.core.storage.sql.ConnectionPool;
 import fr.djaytan.mc.jrppb.core.storage.sql.DataMigrationExecutor;
 import fr.djaytan.mc.jrppb.core.storage.sql.DataSourcePropertiesMock;
+import fr.djaytan.mc.jrppb.core.storage.sql.DatabaseMediator;
 import fr.djaytan.mc.jrppb.core.storage.sql.SqlDataSourceManager;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.JdbcUrl;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.MysqlJdbcUrl;
@@ -54,14 +54,14 @@ final class MysqlTagRepositoryFactory implements AutoCloseable {
     DataSourceProperties mysqlDataSourcePropertiesMock =
         createMysqlDataSourcePropertiesMock(dbmsPort, username, password);
     HikariDataSource hikariDataSource = createHikariDataSource(mysqlDataSourcePropertiesMock);
-    ConnectionPool connectionPool = new ConnectionPool(hikariDataSource);
+    DatabaseMediator databaseMediator = new DatabaseMediator(hikariDataSource);
 
     dataSourceManager =
-        createDataSourceManager(connectionPool, hikariDataSource, mysqlDataSourcePropertiesMock);
+        createDataSourceManager(databaseMediator, hikariDataSource, mysqlDataSourcePropertiesMock);
     dataSourceManager.connect();
 
     TagSqlDao tagSqlDao = createTagSqlDao(mysqlDataSourcePropertiesMock);
-    return new SqlTagRepository(connectionPool, tagSqlDao);
+    return new SqlTagRepository(databaseMediator, tagSqlDao);
   }
 
   @Override
@@ -90,12 +90,12 @@ final class MysqlTagRepositoryFactory implements AutoCloseable {
   }
 
   private static @NotNull DataSourceManager createDataSourceManager(
-      @NotNull ConnectionPool connectionPool,
+      @NotNull DatabaseMediator databaseMediator,
       @NotNull DataSource dataSource,
       @NotNull DataSourceProperties dataSourceProperties) {
     DataMigrationExecutor dataMigrationExecutor =
         createDataMigrationExecutor(dataSource, dataSourceProperties);
-    return new SqlDataSourceManager(connectionPool, dataMigrationExecutor);
+    return new SqlDataSourceManager(databaseMediator, dataMigrationExecutor);
   }
 
   private static @NotNull DataMigrationExecutor createDataMigrationExecutor(

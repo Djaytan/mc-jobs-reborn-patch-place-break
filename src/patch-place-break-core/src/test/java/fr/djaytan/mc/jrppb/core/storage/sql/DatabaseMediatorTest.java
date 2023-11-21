@@ -44,10 +44,10 @@ import org.junit.jupiter.api.io.TempDir;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ConnectionPoolTest {
+class DatabaseMediatorTest {
 
   @TempDir private Path dataFolder;
-  private ConnectionPool connectionPool;
+  private DatabaseMediator databaseMediator;
 
   @BeforeEach
   void beforeEach() {
@@ -59,12 +59,12 @@ class ConnectionPoolTest {
         new HikariDataSourceProvider(dataSourceProperties, jdbcUrl);
     HikariDataSource hikariDataSource = hikariDataSourceProvider.get();
 
-    connectionPool = new ConnectionPool(hikariDataSource);
+    databaseMediator = new DatabaseMediator(hikariDataSource);
   }
 
   @AfterEach
   void afterEach() {
-    connectionPool.close();
+    databaseMediator.close();
   }
 
   @Test
@@ -75,7 +75,7 @@ class ConnectionPoolTest {
         connection -> System.setProperty(testSystemPropertyName, "Lambda executed successfully");
 
     // When
-    connectionPool.dispatchRequest(callback);
+    databaseMediator.dispatchRequest(callback);
 
     // Then
     assertThat(System.getProperty(testSystemPropertyName))
@@ -91,7 +91,7 @@ class ConnectionPoolTest {
         };
 
     // When
-    Exception exception = catchException(() -> connectionPool.dispatchRequest(callback));
+    Exception exception = catchException(() -> databaseMediator.dispatchRequest(callback));
 
     // Then
     assertThat(exception).isExactlyInstanceOf(IllegalStateException.class).hasMessage("test");
@@ -103,7 +103,7 @@ class ConnectionPoolTest {
     Function<Connection, Optional<Boolean>> callback = connection -> Optional.of(true);
 
     // When
-    Optional<Boolean> retrievedValue = connectionPool.dispatchQuery(callback);
+    Optional<Boolean> retrievedValue = databaseMediator.dispatchQuery(callback);
 
     // Then
     assertThat(retrievedValue).contains(true);
@@ -118,7 +118,7 @@ class ConnectionPoolTest {
         };
 
     // When
-    Exception exception = catchException(() -> connectionPool.dispatchQuery(callback));
+    Exception exception = catchException(() -> databaseMediator.dispatchQuery(callback));
 
     // Then
     assertThat(exception).isExactlyInstanceOf(IllegalStateException.class).hasMessage("test");
