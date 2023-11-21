@@ -356,16 +356,13 @@
                         <properties>
                             <owner>Loïc DUBOIS-TERMOZ (alias Djaytan)</owner>
                         </properties>
-                        <useDefaultExcludes>true</useDefaultExcludes>
                         <licenseSets>
                             <licenseSet>
                                 <header>com/mycila/maven/plugin/license/templates/MIT.txt</header>
                                 <excludes>
                                     <exclude>src/main/resources/**</exclude>
                                     <exclude>src/test/resources/**</exclude>
-                                    <exclude>**/dir.empty</exclude>
                                     <exclude>.editorconfig</exclude>
-                                    <exclude>renovate.json</exclude>
                                 </excludes>
                             </licenseSet>
                         </licenseSets>
