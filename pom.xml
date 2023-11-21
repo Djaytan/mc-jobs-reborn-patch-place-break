@@ -541,6 +541,8 @@
                         <goals>
                             <goal>format</goal>
                         </goals>
+                        <!-- Not hooked to any lifecycle phase by default -->
+                        <phase>process-sources</phase>
                         <configuration>
                             <skip>${format.perform.skip}</skip>
                         </configuration>
