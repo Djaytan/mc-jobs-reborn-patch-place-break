@@ -28,7 +28,7 @@ import fr.djaytan.mc.jrppb.core.storage.api.OldNewBlockLocationPair;
 import fr.djaytan.mc.jrppb.core.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.mc.jrppb.core.storage.api.TagRepository;
 import fr.djaytan.mc.jrppb.core.storage.api.TagRepositoryException;
-import fr.djaytan.mc.jrppb.core.storage.sql.ConnectionPool;
+import fr.djaytan.mc.jrppb.core.storage.sql.DatabaseMediator;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import java.sql.Connection;
@@ -41,18 +41,19 @@ import org.jetbrains.annotations.NotNull;
 @Singleton
 public class SqlTagRepository implements TagRepository {
 
-  private final ConnectionPool connectionPool;
+  private final DatabaseMediator databaseMediator;
   private final TagSqlDao tagSqlDao;
 
   @Inject
-  public SqlTagRepository(@NotNull ConnectionPool connectionPool, @NotNull TagSqlDao tagSqlDao) {
-    this.connectionPool = connectionPool;
+  public SqlTagRepository(
+      @NotNull DatabaseMediator databaseMediator, @NotNull TagSqlDao tagSqlDao) {
+    this.databaseMediator = databaseMediator;
     this.tagSqlDao = tagSqlDao;
   }
 
   @Override
   public void put(@NotNull Tag tag) {
-    connectionPool.dispatchRequest(
+    databaseMediator.dispatchRequest(
         connection -> {
           try {
             connection.setAutoCommit(false);
@@ -67,7 +68,7 @@ public class SqlTagRepository implements TagRepository {
 
   @Override
   public void updateLocations(@NotNull OldNewBlockLocationPairSet oldNewLocationPairs) {
-    connectionPool.dispatchRequest(
+    databaseMediator.dispatchRequest(
         connection -> {
           try {
             connection.setAutoCommit(false);
@@ -126,7 +127,7 @@ public class SqlTagRepository implements TagRepository {
 
   @Override
   public @NotNull Optional<Tag> findByLocation(@NotNull BlockLocation blockLocation) {
-    return connectionPool.dispatchQuery(
+    return databaseMediator.dispatchQuery(
         connection -> {
           try {
             return tagSqlDao.findByLocation(connection, blockLocation);
@@ -138,7 +139,7 @@ public class SqlTagRepository implements TagRepository {
 
   @Override
   public void delete(@NotNull BlockLocation blockLocation) {
-    connectionPool.dispatchRequest(
+    databaseMediator.dispatchRequest(
         connection -> {
           try {
             tagSqlDao.delete(connection, blockLocation);

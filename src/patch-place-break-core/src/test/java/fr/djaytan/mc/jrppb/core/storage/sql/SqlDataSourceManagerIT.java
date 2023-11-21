@@ -111,7 +111,7 @@ class SqlDataSourceManagerIT {
     HikariDataSourceProvider hikariDataSourceProvider =
         new HikariDataSourceProvider(dataSourcePropertiesMocked, jdbcUrl);
     HikariDataSource hikariDataSource = hikariDataSourceProvider.get();
-    ConnectionPool connectionPool = new ConnectionPool(hikariDataSource);
+    DatabaseMediator databaseMediator = new DatabaseMediator(hikariDataSource);
 
     ClassLoader classLoader = SqlDataSourceManager.class.getClassLoader();
     FlywayProvider flywayProvider =
@@ -120,7 +120,7 @@ class SqlDataSourceManagerIT {
     DataMigrationExecutor dataMigrationExecutor = new DataMigrationExecutor(flyway);
 
     return arguments(
-        named("SQLite", new SqlDataSourceManager(connectionPool, dataMigrationExecutor)));
+        named("SQLite", new SqlDataSourceManager(databaseMediator, dataMigrationExecutor)));
   }
 
   private static @NotNull Arguments forMysql() {
@@ -154,7 +154,7 @@ class SqlDataSourceManagerIT {
     HikariDataSourceProvider hikariDataSourceProvider =
         new HikariDataSourceProvider(dataSourcePropertiesMocked, jdbcUrl);
     HikariDataSource hikariDataSource = hikariDataSourceProvider.get();
-    ConnectionPool connectionPool = new ConnectionPool(hikariDataSource);
+    DatabaseMediator databaseMediator = new DatabaseMediator(hikariDataSource);
 
     ClassLoader classLoader = SqlDataSourceManager.class.getClassLoader();
     FlywayProvider flywayProvider =
@@ -162,6 +162,6 @@ class SqlDataSourceManagerIT {
     Flyway flyway = flywayProvider.get();
     DataMigrationExecutor dataMigrationExecutor = new DataMigrationExecutor(flyway);
 
-    return new SqlDataSourceManager(connectionPool, dataMigrationExecutor);
+    return new SqlDataSourceManager(databaseMediator, dataMigrationExecutor);
   }
 }

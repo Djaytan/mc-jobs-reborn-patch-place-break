@@ -30,14 +30,14 @@ import org.jetbrains.annotations.NotNull;
 @Singleton
 public class SqlDataSourceManager implements DataSourceManager {
 
-  private final ConnectionPool connectionPool;
+  private final DatabaseMediator databaseMediator;
   private final DataMigrationExecutor dataMigrationExecutor;
 
   @Inject
   public SqlDataSourceManager(
-      @NotNull ConnectionPool connectionPool,
+      @NotNull DatabaseMediator databaseMediator,
       @NotNull DataMigrationExecutor dataMigrationExecutor) {
-    this.connectionPool = connectionPool;
+    this.databaseMediator = databaseMediator;
     this.dataMigrationExecutor = dataMigrationExecutor;
   }
 
@@ -48,6 +48,6 @@ public class SqlDataSourceManager implements DataSourceManager {
 
   @Override
   public void disconnect() {
-    connectionPool.close();
+    databaseMediator.close();
   }
 }

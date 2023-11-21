@@ -44,14 +44,14 @@ import org.slf4j.LoggerFactory;
  * connection pool by releasing all remaining opened connections and related resources.
  */
 @Singleton
-public class ConnectionPool implements AutoCloseable {
+public class DatabaseMediator implements AutoCloseable {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ConnectionPool.class);
+  private static final Logger LOG = LoggerFactory.getLogger(DatabaseMediator.class);
 
   private final HikariDataSource hikariDataSource;
 
   @Inject
-  public ConnectionPool(@NotNull HikariDataSource hikariDataSource) {
+  public DatabaseMediator(@NotNull HikariDataSource hikariDataSource) {
     this.hikariDataSource = hikariDataSource;
   }
 
