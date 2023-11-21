@@ -22,4 +22,4 @@
  */
 package fr.djaytan.mc.jrppb.cts;
 
-class SqlitePatchPlaceBreakApiTest extends BasePatchPlaceBreakApiIT {}
+class SqlitePatchPlaceBreakApiTest extends PatchPlaceBreakApiBaseTest {}
