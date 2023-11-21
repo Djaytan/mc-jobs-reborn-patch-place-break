@@ -30,7 +30,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.testcontainers.containers.MariaDBContainer;
 
-class MariadbPatchPlaceBreakApiIT extends BasePatchPlaceBreakApiIT {
+class MariadbPatchPlaceBreakApiIT extends PatchPlaceBreakApiBaseTest {
 
   private static final int DATABASE_ORIGINAL_PORT = 3306;
   private static final String DATABASE_NAME = "patch_place_break";
