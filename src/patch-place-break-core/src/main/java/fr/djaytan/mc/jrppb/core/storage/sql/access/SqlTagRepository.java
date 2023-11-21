@@ -52,7 +52,7 @@ public class SqlTagRepository implements TagRepository {
 
   @Override
   public void put(@NotNull Tag tag) {
-    connectionPool.useConnection(
+    connectionPool.dispatchRequest(
         connection -> {
           try {
             connection.setAutoCommit(false);
@@ -67,7 +67,7 @@ public class SqlTagRepository implements TagRepository {
 
   @Override
   public void updateLocations(@NotNull OldNewBlockLocationPairSet oldNewLocationPairs) {
-    connectionPool.useConnection(
+    connectionPool.dispatchRequest(
         connection -> {
           try {
             connection.setAutoCommit(false);
@@ -126,7 +126,7 @@ public class SqlTagRepository implements TagRepository {
 
   @Override
   public @NotNull Optional<Tag> findByLocation(@NotNull BlockLocation blockLocation) {
-    return connectionPool.useConnection(
+    return connectionPool.dispatchQuery(
         connection -> {
           try {
             return tagSqlDao.findByLocation(connection, blockLocation);
@@ -138,7 +138,7 @@ public class SqlTagRepository implements TagRepository {
 
   @Override
   public void delete(@NotNull BlockLocation blockLocation) {
-    connectionPool.useConnection(
+    connectionPool.dispatchRequest(
         connection -> {
           try {
             tagSqlDao.delete(connection, blockLocation);
