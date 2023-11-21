@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Represents the connection pool used by the program to manage all connections with DBMS server.
  *
- * <p>To use it, {@link #useConnection(Consumer)} and {@link #useConnection(Function)} methods can
+ * <p>To use it, {@link #dispatchRequest(Consumer)} and {@link #dispatchQuery(Function)} methods can
  * be used to execute requests and queries.
  *
  * <p>When stopping the program, the method {@link #close()} must be called to cleanly stop the
@@ -56,11 +56,11 @@ public class ConnectionPool implements AutoCloseable {
   }
 
   /**
-   * Uses connection for executing request.
+   * Uses connection for dispatching a request.
    *
-   * @param consumer The callback to execute request.
+   * @param consumer The callback dispatching a request based on a provided connection.
    */
-  public void useConnection(@NotNull Consumer<Connection> consumer) {
+  public void dispatchRequest(@NotNull Consumer<Connection> consumer) {
     try (Connection connection = hikariDataSource.getConnection()) {
       consumer.accept(connection);
     } catch (SQLException e) {
@@ -69,13 +69,13 @@ public class ConnectionPool implements AutoCloseable {
   }
 
   /**
-   * Uses connection for executing query.
+   * Uses connection for dispatching a query.
    *
-   * @param function The callback to execute query.
+   * @param function The callback dispatching a query based on a provided connection.
    * @return The value obtained after executing the query.
    * @param <T> The type of the value to be retrieved.
    */
-  public <T> @NotNull Optional<T> useConnection(
+  public <T> @NotNull Optional<T> dispatchQuery(
       @NotNull Function<Connection, Optional<T>> function) {
     try (Connection connection = hikariDataSource.getConnection()) {
       return function.apply(connection);

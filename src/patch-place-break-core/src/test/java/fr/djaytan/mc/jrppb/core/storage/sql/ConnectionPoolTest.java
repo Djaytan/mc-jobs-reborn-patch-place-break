@@ -75,7 +75,7 @@ class ConnectionPoolTest {
         connection -> System.setProperty(testSystemPropertyName, "Lambda executed successfully");
 
     // When
-    connectionPool.useConnection(callback);
+    connectionPool.dispatchRequest(callback);
 
     // Then
     assertThat(System.getProperty(testSystemPropertyName))
@@ -91,7 +91,7 @@ class ConnectionPoolTest {
         };
 
     // When
-    Exception exception = catchException(() -> connectionPool.useConnection(callback));
+    Exception exception = catchException(() -> connectionPool.dispatchRequest(callback));
 
     // Then
     assertThat(exception).isExactlyInstanceOf(IllegalStateException.class).hasMessage("test");
@@ -103,7 +103,7 @@ class ConnectionPoolTest {
     Function<Connection, Optional<Boolean>> callback = connection -> Optional.of(true);
 
     // When
-    Optional<Boolean> retrievedValue = connectionPool.useConnection(callback);
+    Optional<Boolean> retrievedValue = connectionPool.dispatchQuery(callback);
 
     // Then
     assertThat(retrievedValue).contains(true);
@@ -118,7 +118,7 @@ class ConnectionPoolTest {
         };
 
     // When
-    Exception exception = catchException(() -> connectionPool.useConnection(callback));
+    Exception exception = catchException(() -> connectionPool.dispatchQuery(callback));
 
     // Then
     assertThat(exception).isExactlyInstanceOf(IllegalStateException.class).hasMessage("test");
