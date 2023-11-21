@@ -41,7 +41,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MySQLContainer;
 
-class SqlTagRepositoryIntegrationTest {
+class SqlTagRepositoryIT {
 
   private static final int DATABASE_ORIGINAL_PORT = 3306;
   private static final String DATABASE_NAME = "patch_place_break";

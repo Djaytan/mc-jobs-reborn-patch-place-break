@@ -22,5 +22,4 @@
  */
 package fr.djaytan.mc.jrppb.spigot.adapter;
 
-class SqlitePatchPlaceBreakSpigotAdapterApiTest
-    extends BasePatchPlaceBreakSpigotAdapterApiIntegrationTest {}
+class SqlitePatchPlaceBreakSpigotAdapterApiTest extends BasePatchPlaceBreakSpigotAdapterApiIT {}

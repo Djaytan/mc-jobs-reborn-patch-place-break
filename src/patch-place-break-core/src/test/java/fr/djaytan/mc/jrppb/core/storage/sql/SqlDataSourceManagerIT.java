@@ -56,7 +56,7 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.lifecycle.Startables;
 
 @ExtendWith(MockitoExtension.class)
-class SqlDataSourceManagerIntegrationTest {
+class SqlDataSourceManagerIT {
 
   private static final int DATABASE_ORIGINAL_PORT = 3306;
   private static final String DATABASE_NAME = "patch_place_break";

@@ -51,7 +51,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.threeten.extra.MutableClock;
 
-abstract class BasePatchPlaceBreakApiIntegrationTest {
+// TODO: rename to PatchPlaceBreakApiBaseTest
+abstract class BasePatchPlaceBreakApiIT {
 
   private final BlockLocation randomBlockLocation = generateRandomBlockLocation();
   private final MutableClock mutableClock = MutableClock.epochUTC();

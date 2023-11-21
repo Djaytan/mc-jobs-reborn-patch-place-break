@@ -64,7 +64,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.threeten.extra.MutableClock;
 
 @ExtendWith(MockitoExtension.class)
-abstract class BasePatchPlaceBreakSpigotAdapterApiIntegrationTest {
+// TODO: rename to PatchPlaceBreakSpigotAdapterApiBaseTest
+abstract class BasePatchPlaceBreakSpigotAdapterApiIT {
 
   private final MutableClock mutableClock = MutableClock.epochUTC();
   private final PatchPlaceBreakCore patchPlaceBreakCore = new PatchPlaceBreakCore();

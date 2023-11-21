@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.cts;
+package fr.djaytan.mc.jrppb.spigot.adapter;
 
 import fr.djaytan.mc.jrppb.commons.test.TestResourcesHelper;
 import java.io.IOException;
@@ -30,7 +30,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.testcontainers.containers.MariaDBContainer;
 
-class MariadbPatchPlaceBreakApiIntegrationTest extends BasePatchPlaceBreakApiIntegrationTest {
+class MariadbPatchPlaceBreakSpigotAdapterApiIT extends BasePatchPlaceBreakSpigotAdapterApiIT {
 
   private static final int DATABASE_ORIGINAL_PORT = 3306;
   private static final String DATABASE_NAME = "patch_place_break";
