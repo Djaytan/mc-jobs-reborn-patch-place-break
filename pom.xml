@@ -517,9 +517,6 @@
                 <version>3.2.1</version>
                 <configuration>
                     <parallel>all</parallel>
-                    <excludes>
-                        <exclude>**/*IntegrationTest.java</exclude>
-                    </excludes>
                     <systemPropertyVariables>
                         <!-- jboss-logging shall use SLF4J as logger provider -->
                         <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
@@ -530,11 +527,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.2.1</version>
-                <configuration>
-                    <includes>
-                        <include>**/*IntegrationTest.java</include>
-                    </includes>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
