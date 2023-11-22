@@ -10,10 +10,6 @@ on:
     # Re-execute the CI only for status and ensure the default branch remains stable in any circumstances
     branches:
       - 'main'
-    paths:
-      - '**/pom.xml'
-      - '.github/workflows/*'
-      - 'src/**'
   pull_request:
     branches:
       - 'main'
@@ -21,10 +17,6 @@ on:
       - 'release/v0.[1-9][0-9]*'
       - 'release/v[1-9][0-9]*.0'
       - 'release/v[1-9][0-9]*.[1-9][0-9]*'
-    paths:
-      - '**/pom.xml'
-      - '.github/workflows/*'
-      - 'src/**'
   schedule:
     - cron: '24 3 * * 6'
   branch_protection_rule:
