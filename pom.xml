@@ -303,6 +303,13 @@
                         <release>${java.version}</release>
                         <failOnWarning>true</failOnWarning>
                         <showDeprecation>true</showDeprecation>
+                        <compilerArgs>
+                            <arg>-Xlint:all</arg>
+                            <arg>-Xlint:-exports</arg>
+                            <arg>-Xlint:-requires-automatic</arg>
+                            <arg>-Xlint:-requires-transitive-automatic</arg>
+                            <arg>-Xlint:-serial</arg>
+                        </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>
