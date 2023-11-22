@@ -1,4 +1,4 @@
-# jobs-reborn-patch-place-break
+# JobsReborn-PatchPlaceBreak \[Addon]
 
 ![Target](https://img.shields.io/badge/plugin-Minecraft-blueviolet)
 ![Compatibility](https://img.shields.io/badge/compatibility-v1.17.x%20-->%20v1.20.x-blue)  
