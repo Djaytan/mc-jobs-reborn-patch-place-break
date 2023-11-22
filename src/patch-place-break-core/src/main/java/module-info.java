@@ -25,6 +25,7 @@ module jrppb.core {
   requires jrppb.api;
 
   // General dependencies
+  requires static org.jetbrains.annotations;
   requires com.google.guice;
   requires com.zaxxer.hikari;
   requires flyway.core;
@@ -33,7 +34,6 @@ module jrppb.core {
   requires java.sql;
   requires org.apache.commons.lang3;
   requires org.apache.commons.io;
-  requires org.jetbrains.annotations;
   requires org.slf4j;
   requires org.spongepowered.configurate;
   requires org.spongepowered.configurate.hocon;
