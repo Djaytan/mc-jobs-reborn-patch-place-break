@@ -4,8 +4,9 @@
 ![Compatibility](https://img.shields.io/badge/compatibility-v1.17.x%20-->%20v1.20.x-blue)  
 [![Maven - CI](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions/workflows/maven-ci.yml/badge.svg?branch=main)](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions/workflows/maven-ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)  
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/8112/badge)](https://www.bestpractices.dev/projects/8112)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Djaytan/mc-jobs-reborn-patch-place-break/badge)](https://securityscorecards.dev/viewer/?uri=github.com/Djaytan/mc-jobs-reborn-patch-place-break)
 
 A place-and-break patch extension
 of [JobsReborn plugin](https://www.spigotmc.org/resources/jobs-reborn.4216/)
