@@ -1,25 +1,12 @@
 name: Security Scan - Scorecard
 
-# All release branches are supposed to follow SemVer convention while being restricted
-# to only the major.minor part.
-# Filtering performed based on recommended RegEx from semver.org:
-# https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
-# The pattern has been adapted since workflow syntax doesn't support RegEx.
 on:
+  branch_protection_rule:
   push:
-    # Re-execute the CI only for status and ensure the default branch remains stable in any circumstances
     branches:
       - 'main'
-  pull_request:
-    branches:
-      - 'main'
-      - 'release/v0.0'
-      - 'release/v0.[1-9][0-9]*'
-      - 'release/v[1-9][0-9]*.0'
-      - 'release/v[1-9][0-9]*.[1-9][0-9]*'
   schedule:
     - cron: '24 3 * * *' # At 03:24 every day
-  branch_protection_rule:
 
 permissions: read-all
 
