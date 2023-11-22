@@ -113,6 +113,18 @@ If you want to quickly package the Jar file without running tests and other time
 However, it's recommended to use it as little as possible.
 Never use it for validating changes before committing.
 
+### 📋 Test-Driven Development (TDD)
+
+The [TDD](https://en.wikipedia.org/wiki/Test-driven_development) is a great way to improve software
+quality and maintainability by writing tests first.
+
+A good way to adopt this approach is by relying on
+the ["red, green, refactor"](https://www.codecademy.com/article/tdd-red-green-refactor) framework.
+
+Each source code change must add, update or remove tests while ensuring a minimal code coverage of
+80% is respected.
+Meeting these requirements is required for each PR before being merged.
+
 ### ✏️ Code Formatting
 
 The only thing we ask when contributing to the code is to apply
