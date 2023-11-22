@@ -18,7 +18,7 @@ on:
       - 'release/v[1-9][0-9]*.0'
       - 'release/v[1-9][0-9]*.[1-9][0-9]*'
   schedule:
-    - cron: '28 14 * * 5'
+    - cron: '28 14 * * *' # At 14:28 every day
 
 permissions:
   contents: read
