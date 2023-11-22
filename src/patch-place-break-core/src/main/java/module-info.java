@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-module jrppb.core {
+module fr.djaytan.mc.jrppb.core {
   // Internal dependencies
-  requires jrppb.api;
+  requires fr.djaytan.mc.jrppb.api;
 
   // General dependencies
   requires static org.jetbrains.annotations;
