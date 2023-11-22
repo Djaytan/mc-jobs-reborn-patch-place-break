@@ -21,7 +21,7 @@ on:
   create:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   # For this workflow, the following assumptions have been made and thus should be reality:
@@ -60,6 +60,8 @@ jobs:
     name: CD
     if: ${{ contains(github.ref, 'refs/heads/release/v') }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository

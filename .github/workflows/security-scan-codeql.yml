@@ -28,12 +28,14 @@ on:
   schedule:
     - cron: '28 14 * * 5'
 
+permissions:
+  contents: read
+
 jobs:
   analyze:
     name: CodeQL - Analyze
     permissions:
       actions: read
-      contents: read
       security-events: write
     runs-on: ubuntu-latest
 
