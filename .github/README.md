@@ -146,4 +146,4 @@ our [Security Policy](SECURITY.md).
 
 ## Licence
 
-This project is under the [MIT license](LICENSE.md).
+This project is under the [MIT license](../LICENSE.md).
