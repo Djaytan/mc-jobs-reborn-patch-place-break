@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-module commons.test {
+module fr.djaytan.mc.jrppb.commons.test {
   requires static org.jetbrains.annotations;
   requires org.apache.commons.lang3;
   requires org.apache.commons.io;

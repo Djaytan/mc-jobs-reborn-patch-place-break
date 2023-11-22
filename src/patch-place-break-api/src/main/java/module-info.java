@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-module jrppb.api {
+module fr.djaytan.mc.jrppb.api {
   requires static org.jetbrains.annotations;
 
   exports fr.djaytan.mc.jrppb.api;
