@@ -14,10 +14,6 @@ on:
       - 'release/v0.[1-9][0-9]*'
       - 'release/v[1-9][0-9]*.0'
       - 'release/v[1-9][0-9]*.[1-9][0-9]*'
-    paths:
-      - '**/pom.xml'
-      - '.github/workflows/*'
-      - 'src/**'
   create:
 
 permissions:
