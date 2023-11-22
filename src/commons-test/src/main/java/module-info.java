@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 module commons.test {
+  requires static org.jetbrains.annotations;
   requires org.apache.commons.lang3;
   requires org.apache.commons.io;
-  requires org.jetbrains.annotations;
 }

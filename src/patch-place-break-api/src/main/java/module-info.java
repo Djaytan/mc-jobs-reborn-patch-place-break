@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 module jrppb.api {
-  requires org.jetbrains.annotations;
+  requires static org.jetbrains.annotations;
 
   exports fr.djaytan.mc.jrppb.api;
   exports fr.djaytan.mc.jrppb.api.entities;
