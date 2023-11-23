@@ -114,7 +114,13 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on ways to help us.
 
 Take care to always follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
-## Built With
+## How to support us?
+
+If you appreciate the project and want to support us, then you can consider putting a star on the
+GitHub repository.
+This will show us your interest in the project, and we will be grateful for that!
+
+## Built with
 
 * Java 8
 * [Maven](https://maven.apache.org/)
