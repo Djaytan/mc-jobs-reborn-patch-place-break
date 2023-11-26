@@ -187,7 +187,8 @@ class PatchPlaceBreakImplTest {
      * change will works only if the tags moving mechanism is flawless.
      *
      * <p>TODO: Review and eventually improve the tags moving behavior (does it works completely as
-     * intended, even for corner cases?)
+     * intended, even for corner cases?). What about moving tags associated to air blocks (i.e.
+     * ephemeral tags and "ghost" ones?)
      */
     @Test
     void fromRestrictedBlock_shouldNotAttemptToRemoveAnyTag() {
@@ -290,7 +291,8 @@ class PatchPlaceBreakImplTest {
 
     @ParameterizedTest
     @MethodSource
-    void whileBreakingUnrestrictedBlock(@Nullable Tag givenTag, boolean expectedValue) {
+    void whileBreakingUnrestrictedBlock_shouldMatchExpectedValue(
+        @Nullable Tag givenTag, boolean expectedValue) {
       // Given
       Block unrestrictedBlock = new Block(new BlockLocation("world", 0, 0, 0), "BEACON");
       given(tagRepository.findByLocation(any())).willReturn(Optional.ofNullable(givenTag));
@@ -303,7 +305,8 @@ class PatchPlaceBreakImplTest {
       assertThat(isExploit).isEqualTo(expectedValue);
     }
 
-    private static @NotNull Stream<Arguments> whileBreakingUnrestrictedBlock() {
+    private static @NotNull Stream<Arguments>
+        whileBreakingUnrestrictedBlock_shouldMatchExpectedValue() {
       return Stream.of(
           arguments(
               named(

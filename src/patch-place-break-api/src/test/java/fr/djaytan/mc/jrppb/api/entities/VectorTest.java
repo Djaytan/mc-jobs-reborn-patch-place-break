@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 class VectorTest {
 
   @Test
-  void whenInstantiatingWithNominalValues() {
+  void whenInstantiatingWithNominalValues_shouldMatchExpectedValues() {
     // Given
     int modX = 152;
     int modY = -2;
@@ -41,7 +41,6 @@ class VectorTest {
 
     // Then
     assertAll(
-        "Verification of returned values from getters",
         () -> assertThat(vector.modX()).isEqualTo(modX),
         () -> assertThat(vector.modY()).isEqualTo(modY),
         () -> assertThat(vector.modZ()).isEqualTo(modZ));

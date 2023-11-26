@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 class UnsupportedClassExceptionTest {
 
   @Test
-  void whenInstantiatingUnsupportedClassException() {
+  void whenInstantiatingUnsupportedClassException_shouldMatchExpectedValues() {
     // Given
     Class<Test> unsupportedClass = Test.class;
 

@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 class TagTest {
 
   @Test
-  void whenInstantiatingWithNominalValues() {
+  void whenInstantiatingWithNominalValues_shouldMatchExpectedValues() {
     // Given
     String worldName = "world";
     int x = 52;
@@ -47,7 +47,6 @@ class TagTest {
 
     // Then
     assertAll(
-        "Verification of returned values from getters",
         () -> assertThat(tag.createdAt()).isEqualTo(localDateTime),
         () -> assertThat(tag.isEphemeral()).isEqualTo(isEphemeral),
         () -> assertThat(tag.blockLocation()).isEqualTo(blockLocation));

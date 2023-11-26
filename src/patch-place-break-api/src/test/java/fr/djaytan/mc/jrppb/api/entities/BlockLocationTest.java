@@ -40,7 +40,7 @@ class BlockLocationTest {
   class WhenInstantiating {
 
     @Test
-    void withAllArgsConstructorAndNominalValues_shouldSuccess() {
+    void withAllArgsConstructorAndNominalValues_shouldMatchExpectedValues() {
       BlockLocation blockLocation = new BlockLocation(WORLD_NAME, X, Y, Z);
 
       assertAll(
@@ -61,7 +61,7 @@ class BlockLocationTest {
     class WithCopyConstructor {
 
       @Test
-      void andNominalValues_shouldCreateNewInstanceMatchingExpectedValue() {
+      void andNominalValues_shouldMatchExpectedValues() {
         // Given
         Vector vector = new Vector(5, 0, -452);
 
@@ -73,7 +73,7 @@ class BlockLocationTest {
       }
 
       @Test
-      void onOverflow_shouldCreateNewInstanceMatchingExpectedValue() {
+      void onOverflow_shouldMatchExpectedValues() {
         // Given
         Vector vector = new Vector(Integer.MAX_VALUE, 1, -1);
 
@@ -86,7 +86,7 @@ class BlockLocationTest {
       }
 
       @Test
-      void onUnderflow_shouldCreateNewInstanceMatchingExpectedValue() {
+      void onUnderflow_shouldMatchExpectedValues() {
         // Given
         Vector vector = new Vector(10, -50, Integer.MIN_VALUE);
 
