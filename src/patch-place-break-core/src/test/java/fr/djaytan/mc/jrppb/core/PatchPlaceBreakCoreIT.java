@@ -84,7 +84,7 @@ class PatchPlaceBreakCoreIT {
   class WhenEnabling {
 
     @Test
-    void withDefaultSqliteSetup() {
+    void withDefaultSqliteSetup_shouldDefaultFilesCreatedAsExpected() {
       // Given
       ClassLoader classLoader = PatchPlaceBreakCore.class.getClassLoader();
 

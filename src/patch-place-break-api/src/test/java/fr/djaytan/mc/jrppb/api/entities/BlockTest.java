@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 class BlockTest {
 
   @Test
-  void whenInstantiatingWithNominalValues() {
+  void whenInstantiatingWithNominalValues_shouldMatchExpectedValues() {
     // Given
     String worldName = "world";
     int x = -54;
@@ -43,7 +43,6 @@ class BlockTest {
 
     // Then
     assertAll(
-        "Verification of returned values from getters",
         () -> assertThat(block.blockLocation()).isEqualTo(blockLocation),
         () -> assertThat(block.material()).isEqualTo("STONE"));
   }
