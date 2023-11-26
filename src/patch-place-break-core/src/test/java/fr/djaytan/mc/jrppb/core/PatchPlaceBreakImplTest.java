@@ -159,6 +159,36 @@ class PatchPlaceBreakImplTest {
       assertThat(capturedBlockLocation).isEqualTo(newBlockLocation);
     }
 
+    /**
+     * Here we don't want to attempt any removal of tags from restricted blocks for performance
+     * purposes. Furthermore, we can make the assumption that no tag is supposed to exist for a
+     * given restricted block. This assumption will be verified most of the time.
+     *
+     * <p>It remains situations for which a tag may exist for a restricted block, and thus it would
+     * be better to remove it if possible. These situations are only possible after changes in
+     * configurations by server owners. This is the case when restricting a given block type after
+     * having generated tags for some of them in database first.
+     *
+     * <p><i>Example: A server owner installs the plugin on his server. Then, a player starts
+     * placing STONE blocks at some places. Later on, while the initially placed blocks remain
+     * untouched, if the server owner decides to restrict the STONE block in the configuration file
+     * (and then apply the changes to the server), then the persistent tags associated to these
+     * placed blocks will not be removed even after breaking them, leading to "ghost" tags leading
+     * to potentially weird behaviors.
+     *
+     * <p>Not removing tags associated to restricted blocks at break time could have rare
+     * consequences. For example, if later on a sugarcane grows and reaches this location where a
+     * tag remains, then breaking this sugarcane will not provide any income to the player whereas
+     * it is a legitimate Jobs action.
+     *
+     * <p>TODO: Associate to each tag a block type. Then, at PPB exploit check time, if the tag's
+     * block type doesn't match currently broken one (e.g. a sugarcane is broken whereas the tag
+     * initially apply to a stone block) then do not consider the action as an exploit one. This
+     * change will works only if the tags moving mechanism is flawless.
+     *
+     * <p>TODO: Review and eventually improve the tags moving behavior (does it works completely as
+     * intended, even for corner cases?)
+     */
     @Test
     void fromRestrictedBlock_shouldNotAttemptToRemoveAnyTag() {
       // Given
