@@ -23,7 +23,7 @@
 package fr.djaytan.mc.jrppb.spigot.adapter.converter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.assertj.core.api.Assertions.catchException;
 import static org.mockito.BDDMockito.given;
 
 import fr.djaytan.mc.jrppb.api.entities.BlockLocation;
@@ -34,12 +34,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class BlockLocationConverterTest {
+class LocationConverterTest {
 
   private LocationConverter locationConverter;
 
@@ -76,12 +75,15 @@ class BlockLocationConverterTest {
     @Test
     void fromLocationWithoutWorldValue_shouldThrowException(@Mock @NotNull Block block) {
       // Given
+      given(block.getWorld()).willReturn(null);
 
       // When
-      Executable executable = () -> locationConverter.convert(block);
+      Exception exception = catchException(() -> locationConverter.convert(block));
 
       // Then
-      assertThrowsExactly(NullPointerException.class, executable);
+      assertThat(exception)
+          .isExactlyInstanceOf(NullPointerException.class)
+          .hasMessage("The associated world to a Bukkit block can't be null");
     }
   }
 }
