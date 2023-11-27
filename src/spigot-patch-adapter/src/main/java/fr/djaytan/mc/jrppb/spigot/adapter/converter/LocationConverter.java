@@ -24,6 +24,7 @@ package fr.djaytan.mc.jrppb.spigot.adapter.converter;
 
 import fr.djaytan.mc.jrppb.api.entities.BlockLocation;
 import jakarta.inject.Singleton;
+import org.apache.commons.lang3.Validate;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,6 +43,8 @@ public class LocationConverter implements UnidirectionalConverter<Block, BlockLo
    */
   @Override
   public @NotNull BlockLocation convert(@NotNull Block block) {
+    Validate.notNull(block.getWorld(), "The associated world to a Bukkit block can't be null");
+
     String worldName = block.getWorld().getName();
     int x = block.getX();
     int y = block.getY();
