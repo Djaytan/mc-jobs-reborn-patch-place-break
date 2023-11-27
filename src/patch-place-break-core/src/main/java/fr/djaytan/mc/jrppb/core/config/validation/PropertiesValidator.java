@@ -49,7 +49,7 @@ public final class PropertiesValidator {
    * Validates the specified properties.
    *
    * @param properties The properties to validate.
-   * @throws PropertiesValidationException If {@link ConstraintViolation}s are detected.
+   * @throws IllegalStateException If {@link ConstraintViolation}s are detected.
    */
   public void validate(@NotNull Properties properties) {
     String propertiesTypeName = properties.getClass().getSimpleName();
@@ -59,8 +59,11 @@ public final class PropertiesValidator {
 
     if (!constraintViolations.isEmpty()) {
       String formatted = ConstraintViolationFormatter.format(constraintViolations);
+      // TODO: normalize line separator (i.e. always use \n)
+      // TODO: weird to log an error + throw an exception: to be reworked
       LOG.atError().log("Detected constraint violations:{}{}", LINE_SEPARATOR, formatted);
-      throw PropertiesValidationException.constraintViolations(constraintViolations);
+      throw new IllegalStateException(
+          String.format("Detected config constraint violations: %s", constraintViolations));
     }
 
     LOG.atInfo().log("Properties of type '{}' validated.", propertiesTypeName);

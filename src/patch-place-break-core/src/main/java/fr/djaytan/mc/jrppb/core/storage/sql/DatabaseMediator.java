@@ -64,7 +64,9 @@ public class DatabaseMediator implements AutoCloseable {
     try (Connection connection = hikariDataSource.getConnection()) {
       consumer.accept(connection);
     } catch (SQLException e) {
-      throw SqlStorageException.databaseConnectionLifecycleManagement(e);
+      throw new IllegalStateException(
+          "Something went wrong when managing a database connection "
+              + "(i.e. during connection establishment/releasing or request execution)");
     }
   }
 
@@ -80,7 +82,9 @@ public class DatabaseMediator implements AutoCloseable {
     try (Connection connection = hikariDataSource.getConnection()) {
       return function.apply(connection);
     } catch (SQLException e) {
-      throw SqlStorageException.databaseConnectionLifecycleManagement(e);
+      throw new IllegalStateException(
+          "Something went wrong when managing database connection lifecycle "
+              + "(i.e. during connection establishment/releasing or query execution)");
     }
   }
 

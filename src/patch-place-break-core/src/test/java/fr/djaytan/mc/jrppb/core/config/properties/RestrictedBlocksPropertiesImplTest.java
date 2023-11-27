@@ -34,11 +34,11 @@ import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
 import fr.djaytan.mc.jrppb.api.properties.RestrictionMode;
 import fr.djaytan.mc.jrppb.commons.test.TestResourcesHelper;
-import fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializationException;
 import fr.djaytan.mc.jrppb.core.config.testutils.ConfigSerializerTestWrapper;
 import fr.djaytan.mc.jrppb.core.config.testutils.ValidatorTestWrapper;
 import jakarta.validation.ConstraintViolation;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -316,8 +316,12 @@ class RestrictedBlocksPropertiesImplTest {
 
       // Then
       assertThat(exception)
-          .isInstanceOf(ConfigSerializationException.class)
-          .hasCauseExactlyInstanceOf(SerializationException.class);
+          .isInstanceOf(UncheckedIOException.class)
+          .hasMessageStartingWith("Fail to deserialize config properties")
+          .hasMessageContainingAll(
+              "fr.djaytan.mc.jrppb.core.config.properties.RestrictedBlocksPropertiesImpl",
+              confFileName)
+          .hasRootCauseExactlyInstanceOf(SerializationException.class);
     }
 
     private static @NotNull Stream<Arguments> withInvalidContent_shouldThrowException() {

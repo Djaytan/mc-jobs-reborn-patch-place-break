@@ -24,10 +24,10 @@ package fr.djaytan.mc.jrppb.spigot.adapter.converter;
 
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.mc.jrppb.api.entities.BlockActionType;
-import fr.djaytan.mc.jrppb.spigot.adapter.SpigotAdapterException;
 import jakarta.inject.Singleton;
 import java.util.Arrays;
 import java.util.Collection;
+import org.apache.commons.lang3.Validate;
 import org.jetbrains.annotations.NotNull;
 
 @Singleton
@@ -35,9 +35,12 @@ public class ActionTypeConverter implements UnidirectionalConverter<ActionType, 
 
   @Override
   public @NotNull BlockActionType convert(@NotNull ActionType jobActionType) {
-    if (!isValidJobActionType(jobActionType)) {
-      throw SpigotAdapterException.invalidJobType(jobActionType);
-    }
+    Validate.isTrue(
+        isValidJobActionType(jobActionType),
+        "Invalid job action type '%s' specified. Expecting one of the following: %s",
+        jobActionType,
+        getValidJobActionTypes());
+
     return BlockActionType.valueOf(jobActionType.name());
   }
 

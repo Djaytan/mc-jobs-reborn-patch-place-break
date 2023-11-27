@@ -102,20 +102,24 @@ class ClassToFsPathConverterTest {
           catchException(() -> classToFsPathConverter.convertClassToFsPath(clazz));
 
       // Then
-      assertThat(exception).isExactlyInstanceOf(UnsupportedClassException.class);
+      assertThat(exception)
+          .isExactlyInstanceOf(UnsupportedOperationException.class)
+          .hasMessage("The class 'int' isn't supported for resource conversion.");
     }
 
     @Test
     void withArrayClass_shouldThrowException() {
       // Given
-      Class<?> clazz = Object[].class;
+      Class<?> clazz = Object[][].class;
 
       // When
       Exception exception =
           catchException(() -> classToFsPathConverter.convertClassToFsPath(clazz));
 
       // Then
-      assertThat(exception).isExactlyInstanceOf(UnsupportedClassException.class);
+      assertThat(exception)
+          .isExactlyInstanceOf(UnsupportedOperationException.class)
+          .hasMessage("The class 'java.lang.Object[][]' isn't supported for resource conversion.");
     }
 
     @Test
@@ -128,7 +132,10 @@ class ClassToFsPathConverterTest {
           catchException(() -> classToFsPathConverter.convertClassToFsPath(clazz));
 
       // Then
-      assertThat(exception).isExactlyInstanceOf(UnsupportedClassException.class);
+      assertThat(exception)
+          .isExactlyInstanceOf(UnsupportedOperationException.class)
+          .hasMessage(
+              "The class 'java.lang.annotation.Retention' isn't supported for resource conversion.");
     }
   }
 }

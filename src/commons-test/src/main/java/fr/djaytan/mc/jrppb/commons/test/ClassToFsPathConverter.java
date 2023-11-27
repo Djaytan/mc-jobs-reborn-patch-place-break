@@ -49,7 +49,7 @@ final class ClassToFsPathConverter {
    *
    * @param clazz The class with name to be converted to a filesystem path.
    * @return The converted class name to a filesystem path.
-   * @throws UnsupportedClassException If a primary, array, collection or any generic class is
+   * @throws UnsupportedOperationException If a primary, array, collection or any generic class is
    *     specified.
    */
   @NotNull
@@ -71,7 +71,9 @@ final class ClassToFsPathConverter {
 
   private static void checkIfClassIsSupported(@NotNull Class<?> clazz) {
     if (clazz.isArray() || clazz.isPrimitive() || clazz.isAnnotation()) {
-      throw UnsupportedClassException.unsupportedClass(clazz);
+      throw new UnsupportedOperationException(
+          String.format(
+              "The class '%s' isn't supported for resource conversion.", clazz.getTypeName()));
     }
   }
 }

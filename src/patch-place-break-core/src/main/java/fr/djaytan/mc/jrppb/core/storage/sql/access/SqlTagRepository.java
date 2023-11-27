@@ -27,7 +27,6 @@ import fr.djaytan.mc.jrppb.api.entities.Tag;
 import fr.djaytan.mc.jrppb.core.storage.api.OldNewBlockLocationPair;
 import fr.djaytan.mc.jrppb.core.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.mc.jrppb.core.storage.api.TagRepository;
-import fr.djaytan.mc.jrppb.core.storage.api.TagRepositoryException;
 import fr.djaytan.mc.jrppb.core.storage.sql.DatabaseMediator;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -61,7 +60,8 @@ public class SqlTagRepository implements TagRepository {
             tagSqlDao.insert(connection, tag);
             connection.commit();
           } catch (SQLException e) {
-            throw TagRepositoryException.put(tag, e);
+            throw new IllegalStateException(
+                String.format("Failed to put the following tag: %s", tag), e);
           }
         });
   }
@@ -77,7 +77,11 @@ public class SqlTagRepository implements TagRepository {
             putNewTags(connection, newTags);
             connection.commit();
           } catch (SQLException e) {
-            throw TagRepositoryException.update(oldNewLocationPairs, e);
+            throw new IllegalStateException(
+                String.format(
+                    "Failed to update the tags for the following old-new location pairs: %s",
+                    oldNewLocationPairs),
+                e);
           }
         });
   }
@@ -132,7 +136,10 @@ public class SqlTagRepository implements TagRepository {
           try {
             return tagSqlDao.findByLocation(connection, blockLocation);
           } catch (SQLException e) {
-            throw TagRepositoryException.fetch(blockLocation, e);
+            throw new IllegalStateException(
+                String.format(
+                    "Failed to fetch the tag with the following location: %s", blockLocation),
+                e);
           }
         });
   }
@@ -144,7 +151,10 @@ public class SqlTagRepository implements TagRepository {
           try {
             tagSqlDao.delete(connection, blockLocation);
           } catch (SQLException e) {
-            throw TagRepositoryException.delete(blockLocation, e);
+            throw new IllegalStateException(
+                String.format(
+                    "Failed to delete the tag with the following location: %s", blockLocation),
+                e);
           }
         });
   }
