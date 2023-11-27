@@ -27,7 +27,6 @@ import static org.assertj.core.api.Assertions.catchException;
 
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.mc.jrppb.api.entities.BlockActionType;
-import fr.djaytan.mc.jrppb.spigot.adapter.SpigotAdapterException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -60,9 +59,9 @@ class ActionTypeConverterTest {
 
       // Then
       assertThat(exception)
-          .isExactlyInstanceOf(SpigotAdapterException.class)
+          .isExactlyInstanceOf(IllegalArgumentException.class)
           .hasMessage(
-              "Invalid job action type 'BREED' specified. Expecting one of the following: BREAK, TNTBREAK, PLACE");
+              "Invalid job action type 'BREED' specified. Expecting one of the following: [BREAK, TNTBREAK, PLACE]");
     }
   }
 }

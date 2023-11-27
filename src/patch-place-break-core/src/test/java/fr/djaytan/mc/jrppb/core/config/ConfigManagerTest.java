@@ -36,14 +36,13 @@ import fr.djaytan.mc.jrppb.core.config.properties.DbmsCredentialsPropertiesImpl;
 import fr.djaytan.mc.jrppb.core.config.properties.DbmsHostPropertiesImpl;
 import fr.djaytan.mc.jrppb.core.config.properties.DbmsServerPropertiesImpl;
 import fr.djaytan.mc.jrppb.core.config.properties.Properties;
-import fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializationException;
 import fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializer;
 import fr.djaytan.mc.jrppb.core.config.testutils.ValidatorTestWrapper;
-import fr.djaytan.mc.jrppb.core.config.validation.PropertiesValidationException;
 import fr.djaytan.mc.jrppb.core.config.validation.PropertiesValidator;
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceType;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -122,9 +121,7 @@ class ConfigManagerTest {
       // Given
       String configFileName = "exception.conf";
       DataSourcePropertiesImpl defaultProperties = new DataSourcePropertiesImpl();
-      doThrow(ConfigSerializationException.class)
-          .when(configSerializerSpied)
-          .serialize(any(), any());
+      doThrow(UncheckedIOException.class).when(configSerializerSpied).serialize(any(), any());
 
       // When
       Exception exception =
@@ -132,7 +129,7 @@ class ConfigManagerTest {
               () -> configManager.createDefaultIfNotExists(configFileName, defaultProperties));
 
       // Then
-      assertThat(exception).isExactlyInstanceOf(ConfigSerializationException.class);
+      assertThat(exception).isExactlyInstanceOf(UncheckedIOException.class);
     }
 
     @Test
@@ -148,7 +145,9 @@ class ConfigManagerTest {
               () -> configManager.createDefaultIfNotExists(configFileName, defaultProperties));
 
       // Then
-      assertThat(exception).isExactlyInstanceOf(PropertiesValidationException.class);
+      assertThat(exception)
+          .isExactlyInstanceOf(IllegalStateException.class)
+          .hasMessageStartingWith("Detected config constraint violations");
     }
   }
 
@@ -203,7 +202,12 @@ class ConfigManagerTest {
               () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class));
 
       // Then
-      assertThat(exception).isExactlyInstanceOf(ConfigSerializationException.class);
+      assertThat(exception)
+          .isExactlyInstanceOf(UncheckedIOException.class)
+          .hasMessage(
+              "Fail to deserialize config properties of type "
+                  + "'fr.djaytan.mc.jrppb.core.config.properties.DataSourcePropertiesImpl' "
+                  + "from 'test.conf' file");
     }
 
     @Test
@@ -224,7 +228,9 @@ class ConfigManagerTest {
               () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class));
 
       // Then
-      assertThat(exception).isExactlyInstanceOf(PropertiesValidationException.class);
+      assertThat(exception)
+          .isExactlyInstanceOf(IllegalStateException.class)
+          .hasMessageStartingWith("Detected config constraint violations");
     }
 
     @Test
@@ -244,7 +250,10 @@ class ConfigManagerTest {
               () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class));
 
       // Then
-      assertThat(exception).isExactlyInstanceOf(ConfigException.class);
+      assertThat(exception)
+          .isExactlyInstanceOf(IllegalStateException.class)
+          .hasMessageStartingWith(
+              "Failed to read config file 'test.conf'. Is the file absent or empty?");
     }
 
     @Test
@@ -258,7 +267,10 @@ class ConfigManagerTest {
               () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class));
 
       // Then
-      assertThat(exception).isExactlyInstanceOf(ConfigException.class);
+      assertThat(exception)
+          .isExactlyInstanceOf(IllegalStateException.class)
+          .hasMessageStartingWith(
+              "Failed to read config file 'test.conf'. Is the file absent or empty?");
     }
   }
 }

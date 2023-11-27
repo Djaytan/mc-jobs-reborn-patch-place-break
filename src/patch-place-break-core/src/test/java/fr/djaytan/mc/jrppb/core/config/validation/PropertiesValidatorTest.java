@@ -89,7 +89,12 @@ class PropertiesValidatorTest {
           catchException(() -> propertiesValidator.validate(dataSourcePropertiesImpl));
 
       // Then
-      assertThat(exception).isExactlyInstanceOf(PropertiesValidationException.class);
+      assertThat(exception)
+          .isExactlyInstanceOf(IllegalStateException.class)
+          .hasMessageStartingWith("Detected config constraint violations:")
+          .hasMessageContainingAll(
+              "dbmsServer.host.port",
+              "fr.djaytan.mc.jrppb.core.config.properties.DataSourcePropertiesImpl");
     }
   }
 }

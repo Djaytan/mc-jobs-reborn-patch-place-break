@@ -112,7 +112,9 @@ final class ConfigManager {
     Optional<T> properties = configSerializer.deserialize(configFile, propertiesType);
 
     if (properties.isEmpty()) {
-      throw ConfigException.failedReadingConfig(configFileName);
+      throw new IllegalStateException(
+          String.format(
+              "Failed to read config file '%s'. Is the file absent or empty?", configFile));
     }
 
     LOG.atInfo().log("File '{}' read successfully.", configFileName);

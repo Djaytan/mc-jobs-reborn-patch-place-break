@@ -30,6 +30,7 @@ import com.google.common.jimfs.Jimfs;
 import fr.djaytan.mc.jrppb.commons.test.TestResourcesHelper;
 import fr.djaytan.mc.jrppb.core.config.properties.DbmsHostPropertiesImpl;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -110,8 +111,14 @@ class ConfigSerializerTest {
 
       // Then
       assertThat(exception)
-          .isExactlyInstanceOf(ConfigSerializationException.class)
-          .hasCauseExactlyInstanceOf(SerializationException.class);
+          .isExactlyInstanceOf(UncheckedIOException.class)
+          .hasMessageMatching(
+              "Fail to deserialize config properties of type "
+                  + "'fr\\.djaytan\\.mc\\.jrppb\\.core\\.config\\.properties\\.DbmsHostPropertiesImpl' from "
+                  + "'.*whenDeserializing_withKebabCaseFields\\.conf' file")
+          .hasRootCauseExactlyInstanceOf(SerializationException.class)
+          .hasRootCauseMessage(
+              "[isSslEnabled] of type boolean: A value is required for this field");
     }
   }
 }

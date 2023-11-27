@@ -48,7 +48,6 @@ public interface TagRepository {
    * existing tag is overridden.
    *
    * @param tag The tag to be put at the targeted location.
-   * @throws TagRepositoryException If something prevents the tag to be put into the storage.
    */
   void put(@NotNull Tag tag);
 
@@ -67,7 +66,6 @@ public interface TagRepository {
    *
    * @param blockLocation The location where the sought tag may be.
    * @return The tag which matches with the given location if exists.
-   * @throws TagRepositoryException If something prevents the search to be done.
    */
   @NotNull
   Optional<Tag> findByLocation(@NotNull BlockLocation blockLocation);
@@ -78,8 +76,6 @@ public interface TagRepository {
    * <p>If no tag exists at the given location, then nothing is done.
    *
    * @param blockLocation The location of the tag to be deleted.
-   * @throws TagRepositoryException If something prevents the tag to be deleted (except the case
-   *     where it doesn't exist).
    */
   void delete(@NotNull BlockLocation blockLocation);
 }

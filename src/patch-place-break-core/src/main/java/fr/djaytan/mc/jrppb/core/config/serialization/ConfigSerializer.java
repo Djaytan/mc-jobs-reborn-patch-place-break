@@ -25,6 +25,7 @@ package fr.djaytan.mc.jrppb.core.config.serialization;
 import fr.djaytan.mc.jrppb.core.config.properties.Properties;
 import jakarta.inject.Singleton;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
@@ -45,22 +46,35 @@ public final class ConfigSerializer {
    *
    * @param destConfigFile The destination config file into which serialize properties.
    * @param properties The properties to serialize.
-   * @throws ConfigSerializationException If something prevents the serialization.
    */
   public void serialize(@NotNull Path destConfigFile, @NotNull Properties properties) {
     try {
-      ConfigurationLoader<? extends ConfigurationNode> loader =
-          ConfigLoaderFactory.createLoader(destConfigFile);
-
-      if (!loader.canSave()) {
-        throw ConfigSerializationException.invalidLoaderConfiguration();
-      }
-
-      ConfigurationNode configurationNode = loader.createNode(node -> node.set(properties));
-      loader.save(configurationNode);
+      ConfigurationLoader<? extends ConfigurationNode> serializer =
+          createSerializer(destConfigFile);
+      ConfigurationNode configurationNode = serializer.createNode(node -> node.set(properties));
+      serializer.save(configurationNode);
     } catch (IOException e) {
-      throw ConfigSerializationException.serialization(destConfigFile, properties.getClass(), e);
+      throw new UncheckedIOException(
+          String.format(
+              "Fail to serialize config properties of type '%s' in '%s' file",
+              properties.getClass().getTypeName(), destConfigFile),
+          e);
     }
+  }
+
+  private @NotNull ConfigurationLoader<? extends ConfigurationNode> createSerializer(
+      @NotNull Path destConfigFile) throws IOException {
+    ConfigurationLoader<? extends ConfigurationNode> loader =
+        ConfigLoaderFactory.createLoader(destConfigFile);
+
+    // TODO: really useful? And what about tests?
+    if (!loader.canSave()) {
+      throw new IllegalStateException(
+          "The loader configuration is invalid and thus prevent processing serialization "
+              + "of config files");
+    }
+
+    return loader;
   }
 
   /**
@@ -70,21 +84,34 @@ public final class ConfigSerializer {
    * @param propertiesType The targeted properties type of YAML deserialization.
    * @return The deserialized value if present and of valid properties type.
    * @param <T> The expected properties type to be obtained from deserialization.
-   * @throws ConfigSerializationException If something prevents the deserialization.
    */
   public <T extends Properties> @NotNull Optional<T> deserialize(
       @NotNull Path srcConfigFile, @NotNull Class<T> propertiesType) {
     try {
-      ConfigurationLoader<?> loader = ConfigLoaderFactory.createLoader(srcConfigFile);
-
-      if (!loader.canLoad()) {
-        throw ConfigSerializationException.invalidLoaderConfiguration();
-      }
-
-      ConfigurationNode rootNode = loader.load();
+      ConfigurationLoader<?> deserializer = createDeserializer(srcConfigFile);
+      ConfigurationNode rootNode = deserializer.load();
       return Optional.ofNullable(rootNode.get(propertiesType));
     } catch (IOException e) {
-      throw ConfigSerializationException.deserialization(srcConfigFile, propertiesType, e);
+      throw new UncheckedIOException(
+          String.format(
+              "Fail to deserialize config properties of type '%s' from '%s' file",
+              propertiesType.getTypeName(), srcConfigFile),
+          e);
     }
+  }
+
+  private @NotNull ConfigurationLoader<? extends ConfigurationNode> createDeserializer(
+      @NotNull Path srcConfigFile) throws IOException {
+    ConfigurationLoader<? extends ConfigurationNode> loader =
+        ConfigLoaderFactory.createLoader(srcConfigFile);
+
+    // TODO: really useful? And what about tests?
+    if (!loader.canLoad()) {
+      throw new IllegalStateException(
+          "The loader configuration is invalid and thus prevent processing deserialization "
+              + "of config files");
+    }
+
+    return loader;
   }
 }
