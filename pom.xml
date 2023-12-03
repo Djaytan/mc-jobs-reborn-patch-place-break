@@ -560,7 +560,7 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <!-- Force "validate" phase to fail fast -->
+                        <!-- Force "validate" phase to raise error as early as possible -->
                         <phase>validate</phase>
                         <configuration>
                             <failIfMissing>true</failIfMissing>
