@@ -505,7 +505,7 @@
                         <goals>
                             <goal>verify</goal>
                         </goals>
-                        <!-- Force "validate" phase to fail fast -->
+                        <!-- Force "validate" phase to raise error as early as possible -->
                         <phase>validate</phase>
                         <configuration>
                             <skip>${format.check.skip}</skip>
@@ -532,7 +532,7 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <!-- Force "validate" phase to fail fast -->
+                        <!-- Force "validate" phase to raise error as early as possible -->
                         <phase>validate</phase>
                         <configuration>
                             <skip>${format.check.skip}</skip>
@@ -549,7 +549,7 @@
                         <goals>
                             <goal>format</goal>
                         </goals>
-                        <!-- Not hooked to any lifecycle phase by default -->
+                        <!-- Required since plugins is not hooked to any lifecycle phase by default -->
                         <phase>process-sources</phase>
                         <configuration>
                             <skip>${format.perform.skip}</skip>
@@ -560,7 +560,7 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <!-- Force "validate" phase to fail fast -->
+                        <!-- Force "validate" phase to raise error as early as possible -->
                         <phase>validate</phase>
                         <configuration>
                             <failIfMissing>true</failIfMissing>
