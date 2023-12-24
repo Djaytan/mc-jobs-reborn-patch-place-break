@@ -51,7 +51,7 @@ jobs:
           restore-keys: m2
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@74483a38d39275f33fcff5f35b679b5ca4a26a99 # v2.22.5
+        uses: github/codeql-action/init@1500a131381b66de0c52ac28abb13cd79f4b7ecc # v2.22.12
         with:
           languages: java
 
@@ -59,6 +59,6 @@ jobs:
         run: mvn package -Pfast -B -C -U -ntp -fae -V -e
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@74483a38d39275f33fcff5f35b679b5ca4a26a99 # v2.22.5
+        uses: github/codeql-action/analyze@1500a131381b66de0c52ac28abb13cd79f4b7ecc # v2.22.12
         with:
           category: /language:java
