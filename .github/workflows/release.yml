@@ -26,6 +26,13 @@ jobs:
           java-version: 17
           distribution: temurin
 
+      - name: Cache local Maven repository
+        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3.3.2
+        with:
+          path: ~/.m2/repository
+          key: m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: m2
+
       - name: Perform SemVer release
         id: release
         uses: cocogitto/cocogitto-action@ac6260150ee57e3164cd95b47fc84cdee9e3444c # v3.5
