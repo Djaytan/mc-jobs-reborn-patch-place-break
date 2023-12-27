@@ -1,0 +1,38 @@
+tag_prefix = "v"
+branch_whitelist = [
+  "main"
+]
+
+pre_bump_hooks = [
+  "mvn versions:set -DnewVersion='{{version}}' -DgenerateBackupPoms=false --batch-mode --errors",
+  "mvn clean package -Pci -DskipTests --batch-mode --errors --strict-checksums --update-snapshots --fail-fast"
+]
+post_bump_hooks = [
+  "mvn versions:set -DnewVersion='0.0.1-DEV-SNAPSHOT' -DgenerateBackupPoms=false --batch-mode --errors",
+  "git commit -m 'chore: prepare for next development iteration [ci skip]'",
+  "git push",
+  "git push origin {{version}}"
+]
+
+[commit_types]
+fix = { changelog_title = "🐛 Bug Fixes" }
+feat = { changelog_title = "🌟 Features" }
+build = { changelog_title = "🏗️ Build System" }
+ci = { changelog_title = "📦 Continuous Integration" }
+docs = { changelog_title = "📖 Documentation" }
+chore = { changelog_title = "🧹 Miscellaneous Chores" }
+refactor = { changelog_title = "🛠️ Refactoring" }
+revert = { changelog_title = "↩️ Revert" }
+style = { changelog_title = "🖌️ Style" }
+test = { changelog_title = "✅ Tests" }
+perf = { changelog_title = "⚡ Performances" }
+
+[changelog]
+path = ".github/CHANGELOG.md"
+template = "remote"
+remote = "github.com"
+owner = "Djaytan"
+repository = "mc-jobs-reborn-patch-place-break"
+authors = [
+  { signature = "Djaytan", username = "Djaytan" }
+]
