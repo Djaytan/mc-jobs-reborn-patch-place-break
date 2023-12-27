@@ -16,6 +16,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          persist-credentials: false
+          # Required by Cocogitto
+          fetch-depth: 0
 
       - name: Set up JDK 17
         uses: actions/setup-java@0ab4596768b603586c0de567f2430c30f5b0d2b0 # v3.13.0
@@ -23,20 +27,14 @@ jobs:
           java-version: 17
           distribution: temurin
 
-      - name: Config Git user as release bot
-        env:
-          # https://github.com/orgs/community/discussions/26560#discussioncomment-3252339
-          RELEASE_BOT_NAME: 'github-actions[bot]'
-          RELEASE_BOT_EMAIL: '41898282+github-actions[bot]@users.noreply.github.com'
-        run: |
-          git config --global user.name "${RELEASE_BOT_NAME}"
-          git config --global user.email "${RELEASE_BOT_EMAIL}"
-
       - name: Perform SemVer release
         id: release
         uses: cocogitto/cocogitto-action@ac6260150ee57e3164cd95b47fc84cdee9e3444c # v3.5
         with:
           release: true
+          # https://github.com/orgs/community/discussions/26560#discussioncomment-3252339
+          git-user: 'github-actions[bot]'
+          git-user-email: '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Publish GitHub release
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
