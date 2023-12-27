@@ -31,6 +31,7 @@ jobs:
         id: release
         uses: cocogitto/cocogitto-action@ac6260150ee57e3164cd95b47fc84cdee9e3444c # v3.5
         with:
+          check-latest-tag-only: true
           release: true
           # https://github.com/orgs/community/discussions/26560#discussioncomment-3252339
           git-user: 'github-actions[bot]'
