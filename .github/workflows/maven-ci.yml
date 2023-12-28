@@ -30,16 +30,10 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
+          cache: maven
 
       - name: Testcontainers - Enable reusable containers
         run: echo 'testcontainers.reuse.enable=true' >> ~/.testcontainers.properties
-
-      - name: Cache local Maven repository
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3.3.2
-        with:
-          path: ~/.m2/repository
-          key: m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: m2
 
       - name: Cache SonarCloud packages
         uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3.3.2
