@@ -1,22 +1,13 @@
 name: Maven - CI
 
-# All release branches are supposed to follow SemVer convention while being restricted
-# to only the major.minor part.
-# Filtering performed based on recommended RegEx from semver.org:
-# https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
-# The pattern has been adapted since workflow syntax doesn't support RegEx.
 on:
   push:
-    # Re-execute the CI only for status and ensure the default branch remains stable in any circumstances
+    # Re-execute the CI on default branch only for status while ensuring it remains stable in any circumstances
     branches:
       - 'main'
   pull_request:
     branches:
       - 'main'
-      - 'release/v0.0'
-      - 'release/v0.[1-9][0-9]*'
-      - 'release/v[1-9][0-9]*.0'
-      - 'release/v[1-9][0-9]*.[1-9][0-9]*'
 
 permissions:
   contents: read
