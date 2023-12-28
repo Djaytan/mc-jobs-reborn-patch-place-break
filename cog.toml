@@ -11,7 +11,7 @@ post_bump_hooks = [
   "mvn versions:set -DnewVersion='0.0.1-DEV-SNAPSHOT' -DgenerateBackupPoms=false --batch-mode --errors",
   "git commit --all --message='chore: prepare for next development iteration [ci skip]'",
   "git push",
-  "git push origin {{version}}"
+  "git push origin {{version_tag}}"
 ]
 
 [commit_types]
