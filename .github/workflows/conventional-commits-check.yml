@@ -1,0 +1,29 @@
+name: Conventional Commits
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          persist-credentials: false
+          # Required by Cocogitto
+          fetch-depth: 0
+          # Pick the PR HEAD instead of the merge commit
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Check compliance
+        uses: cocogitto/cocogitto-action@ac6260150ee57e3164cd95b47fc84cdee9e3444c # v3.5
+        with:
+          check-latest-tag-only: true
