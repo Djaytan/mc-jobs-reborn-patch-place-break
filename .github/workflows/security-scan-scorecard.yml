@@ -1,4 +1,4 @@
-name: Security Scan - Scorecard
+name: Scorecard - Security Scan
 
 on:
   branch_protection_rule:
@@ -12,7 +12,7 @@ permissions: read-all
 
 jobs:
   analyze:
-    name: Scorecard - Analyze
+    name: Analyze
     runs-on: ubuntu-latest
 
     permissions:
