@@ -26,10 +26,11 @@ permissions:
 jobs:
   analyze:
     name: CodeQL - Analyze
+    runs-on: ubuntu-latest
+
     permissions:
       actions: read
       security-events: write
-    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
