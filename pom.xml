@@ -704,8 +704,6 @@
                 <mdep.analyze.skip>true</mdep.analyze.skip>
                 <skipTests>true</skipTests>
                 <maven.test.skip>true</maven.test.skip>
-                <maven.javadoc.skip>true</maven.javadoc.skip>
-                <maven.source.skip>true</maven.source.skip>
             </properties>
         </profile>
     </profiles>
