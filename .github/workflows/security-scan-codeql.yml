@@ -42,7 +42,7 @@ jobs:
           languages: java
 
       - name: Build
-        run: mvn package -Pfast -B -C -U -ntp -fae -V -e
+        run: mvn package --activate-profiles fast --batch-mode --errors --strict-checksums --update-snapshots --fail-fast
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@1500a131381b66de0c52ac28abb13cd79f4b7ecc # v2.22.12
