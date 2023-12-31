@@ -4,11 +4,11 @@ branch_whitelist = [
 ]
 
 pre_bump_hooks = [
-  "mvn versions:set -DnewVersion='{{version}}' -DgenerateBackupPoms=false --batch-mode --errors",
-  "mvn clean package -DskipTests --activate-profiles fast --batch-mode --errors --strict-checksums --update-snapshots --fail-fast"
+  "mvn versions:set -DnewVersion='{{version}}' -DgenerateBackupPoms=false --errors",
+  "mvn clean package -DskipTests --activate-profiles fast --errors --strict-checksums --update-snapshots --fail-fast"
 ]
 post_bump_hooks = [
-  "mvn versions:set -DnewVersion='0.0.1-DEV-SNAPSHOT' -DgenerateBackupPoms=false --batch-mode --errors",
+  "mvn versions:set -DnewVersion='0.0.1-DEV-SNAPSHOT' -DgenerateBackupPoms=false --errors",
   "git commit --all --message='chore: prepare for next development iteration [ci skip]'",
   "git push",
   "git push origin {{version_tag}}"

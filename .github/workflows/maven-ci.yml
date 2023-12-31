@@ -47,7 +47,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn verify sonar:sonar --activate-profiles ci --batch-mode --errors --strict-checksums --update-snapshots \
+          mvn verify sonar:sonar --activate-profiles ci --errors --strict-checksums --update-snapshots \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=djaytan \
             -Dsonar.projectKey=Djaytan_mc-jobs-reborn-patch-place-break
