@@ -3,13 +3,19 @@ branch_whitelist = [
   "main"
 ]
 
+# Perform the following steps:
+# 1. Update pom.xml files with the new version being prepared
+# 2. Generate the Spigot plugin & associated sources and Javadoc JAR files
+# 3. Reset the Git working tree. Generated JAR files at step 2 will be kept
+# 4. Let Cocogitto generate the CHANGELOG file, commit it, and create a tag above it
+# 5. Push the commit on remote
+# 6. Push the tag on remote
 pre_bump_hooks = [
-  "mvn versions:set -DnewVersion='{{version}}' -DgenerateBackupPoms=false --batch-mode --errors",
-  "mvn clean package -DskipTests --activate-profiles fast --batch-mode --errors --strict-checksums --update-snapshots --fail-fast"
+  "mvn versions:set -DnewVersion='{{version}}' --batch-mode --errors",
+  "mvn clean package --activate-profiles fast --batch-mode --errors --strict-checksums --update-snapshots --fail-fast",
+  "git restore ."
 ]
 post_bump_hooks = [
-  "mvn versions:set -DnewVersion='0.0.1-DEV-SNAPSHOT' -DgenerateBackupPoms=false --batch-mode --errors",
-  "git commit --all --message='chore: prepare for next development iteration [ci skip]'",
   "git push",
   "git push origin {{version_tag}}"
 ]
