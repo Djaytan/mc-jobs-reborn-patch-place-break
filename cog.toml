@@ -11,8 +11,7 @@ branch_whitelist = [
 # 5. Let Cocogitto generate the CHANGELOG file and commit it
 # 6. Push the commit and the associated release branch to the remote
 pre_bump_hooks = [
-  "git branch release/{{version_tag}}",
-  "git switch release/{{version_tag}}",
+  "git switch --create release/{{version_tag}}",
   "mvn versions:set -DnewVersion='{{version}}' --batch-mode --errors",
   "mvn clean package --activate-profiles fast --batch-mode --errors --strict-checksums --update-snapshots --fail-fast",
   "mvn versions:set -DnewVersion='0.0.1-DEV-SNAPSHOT' --batch-mode --errors"
