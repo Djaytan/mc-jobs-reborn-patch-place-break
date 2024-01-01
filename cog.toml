@@ -1,20 +1,7 @@
 tag_prefix = "v"
-branch_whitelist = [
-  "main"
-]
 
-# Perform the following steps:
-# 1. Create the release branch and switch on it
-# 2. Update pom.xml files with the new version being prepared
-# 3. Generate the Spigot plugin
-# 4. Update back pom.xml files to a DEV version
-# 5. Let Cocogitto generate the CHANGELOG file and commit it
-# 6. Push the commit and the associated release branch to the remote
 pre_bump_hooks = [
   "git switch --create release/{{version_tag}}",
-  "mvn versions:set -DnewVersion='{{version}}' --batch-mode --errors",
-  "mvn clean package --activate-profiles fast --batch-mode --errors --strict-checksums --update-snapshots --fail-fast",
-  "mvn versions:set -DnewVersion='0.0.1-DEV-SNAPSHOT' --batch-mode --errors"
 ]
 post_bump_hooks = [
   "git push --set-upstream origin release/{{version_tag}}"

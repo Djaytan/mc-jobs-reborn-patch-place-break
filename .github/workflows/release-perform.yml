@@ -28,6 +28,13 @@ jobs:
           # Required for tag existence check
           fetch-depth: 0
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: maven
+
       - name: Verify compliant commit message and extract release version
         id: extract
         run: |
@@ -40,7 +47,6 @@ jobs:
           fi
 
           echo "The following commit message is compliant: '${COMMIT_MESSAGE}'"
-          echo 'Continuing...'
 
           RELEASE_VERSION="${BASH_REMATCH[1]}"
           UNPREFIXED_RELEASE_VERSION="${BASH_REMATCH[2]}"
@@ -50,8 +56,26 @@ jobs:
           echo "version=${RELEASE_VERSION}" >> "${GITHUB_OUTPUT}"
           echo "unprefixed-version=${UNPREFIXED_RELEASE_VERSION}" >> "${GITHUB_OUTPUT}"
 
-      - name: Create and push tag
+      - name: Generate plugin file
         run: |
+          mvn versions:set -DnewVersion='${{ steps.extract.outputs.unprefixed-version }}' --batch-mode --errors
+          mvn clean package --activate-profiles fast --batch-mode --errors --strict-checksums --update-snapshots --fail-fast
+          mvn versions:set -DnewVersion='0.0.1-DEV-SNAPSHOT' --batch-mode --errors
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PLUGIN_FILE='${{ github.workspace }}/src/spigot-plugin/target/JobsReborn-PatchPlaceBreak-${{ steps.extract.outputs.unprefixed-version }}.jar'
+
+          if [[ ! -f "${PLUGIN_FILE}" ]]; then
+            echo 'The plugin file does not exist or is invalid'
+            echo 'Aborting...'
+            exit 1
+          fi
+
+          echo "The plugin file which is going to be uploaded is '${PLUGIN_FILE}'"
+
           RELEASE_VERSION='${{ steps.extract.outputs.version }}'
 
           if [[ -n "$(git tag -l "${RELEASE_VERSION}")" ]]; then
@@ -60,16 +84,13 @@ jobs:
             exit 1
           fi
 
-          echo "The tag '${RELEASE_VERSION}' does not exist yet"
-          echo 'Continuing...'
+          echo "The tag which is going to be created is '${RELEASE_VERSION}'"
 
           git tag "${RELEASE_VERSION}"
           git push origin refs/tags/"${RELEASE_VERSION}"
 
-      - name: Publish GitHub release
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
-        with:
-          files: src/spigot-plugin/target/JobsReborn-PatchPlaceBreak-${{ steps.extract.outputs.unprefixed-version }}.jar
-          fail_on_unmatched_files: true
-          body_path: .github/CHANGELOG.md
-          tag_name: ${{ steps.extract.outputs.version }}
+          gh release create "${RELEASE_VERSION}" "${PLUGIN_FILE}" \
+            --title ${{ steps.extract.outputs.version }} \
+            --notes-file .github/CHANGELOG.md \
+            --target ${{ github.ref }} \
+            --verify-tag
