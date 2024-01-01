@@ -6,8 +6,8 @@ branch_whitelist = [
 # Perform the following steps:
 # 1. Create the release branch and switch on it
 # 2. Update pom.xml files with the new version being prepared
-# 3. Generate the Spigot plugin & associated sources and Javadoc JAR files
-# 4. Reset the Git working tree. Generated JAR files during the previous step will be kept
+# 3. Generate the Spigot plugin
+# 4. Reset the Git working tree. The generated plugin JAR file during the previous step will be kept
 # 5. Let Cocogitto generate the CHANGELOG file and commit it
 # 6. Push the commit on remote
 pre_bump_hooks = [
