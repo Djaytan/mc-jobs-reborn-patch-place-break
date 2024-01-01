@@ -9,13 +9,13 @@ branch_whitelist = [
 # 3. Generate the Spigot plugin
 # 4. Reset the Git working tree. The generated plugin JAR file during the previous step will be kept
 # 5. Let Cocogitto generate the CHANGELOG file and commit it
-# 6. Push the commit on remote
+# 6. Update back pom.xml files to a DEV version
 pre_bump_hooks = [
   "git branch release/{{version_tag}}",
   "git switch release/{{version_tag}}",
   "mvn versions:set -DnewVersion='{{version}}' --batch-mode --errors",
   "mvn clean package --activate-profiles fast --batch-mode --errors --strict-checksums --update-snapshots --fail-fast",
-  "git restore ."
+  "mvn versions:set -DnewVersion='0.0.1-DEV-SNAPSHOT' --batch-mode --errors"
 ]
 post_bump_hooks = [
   "git push --set-upstream origin release/{{version_tag}}"
