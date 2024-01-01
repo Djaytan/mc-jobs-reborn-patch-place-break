@@ -49,6 +49,7 @@ jobs:
         uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38 # v5.0.2
         with:
           title: 'chore: release ${{ steps.cocogitto.outputs.version }}'
+          base: 'main'
           branch: 'release/${{ steps.cocogitto.outputs.version }}'
           committer: '${{ env.BOT_NAME }} <${{ env.BOT_EMAIL }}>'
           author: '${{ env.BOT_NAME }} <${{ env.BOT_EMAIL }}>'
