@@ -1,6 +1,7 @@
 name: Security Scan - Scorecard
 
 on:
+  workflow_dispatch:
   branch_protection_rule:
   push:
     branches:
@@ -25,6 +26,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
+          ref: main
           persist-credentials: false
 
       - name: Perform Scorecard Analysis

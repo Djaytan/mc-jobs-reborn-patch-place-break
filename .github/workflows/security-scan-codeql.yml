@@ -1,6 +1,7 @@
 name: Security scan - CodeQL
 
 on:
+  workflow_dispatch:
   push:
     # Re-execute the CI on default branch only for status while ensuring it remains stable in any circumstances
     branches:
