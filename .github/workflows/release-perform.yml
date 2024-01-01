@@ -1,0 +1,62 @@
+name: Release - Perform
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - .github/CHANGELOG.md
+
+permissions:
+  contents: read
+
+jobs:
+  release-perform:
+    name: Release - Perform
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          # PAT required for bypassing tag protection
+          token: ${{ secrets.PUSH_TOKEN }}
+
+      - name: Verify compliant commit message
+        run: |
+          COMMIT_MESSAGE="$(git show --pretty=format:"%s" -s "${{ github.sha }}")"
+          [[ "${COMMIT_MESSAGE}" =~ '^chore: release v\d+\.\d+\.\d+$' ]] ||
+            (echo "Non-expected commit message '${COMMIT_MESSAGE}': aborting release" &&
+            exit 1)
+
+      - name: Extract release version
+        id: extract
+        run: |
+          RELEASE_VERSION="$(
+            git show --pretty=format:"%s" -s "${{ github.sha }}" |
+            awk '{print $NF}'
+            )"
+          echo "Extracted release version: ${RELEASE_VERSION}"
+          echo "version=${RELEASE_VERSION}" >> "${GITHUB_OUTPUT}"
+
+      - name: Check tag existence
+        run: |
+          [[ -z "$(git tag -l ${{ steps.extract.outputs.version }})" ]] ||
+            (echo "The tag '${{ steps.extract.outputs.version }}' already exist: aborting release" &&
+            exit 1)
+
+      - name: Tag release
+        run: |
+          git tag ${{ steps.extract.outputs.version }}
+          git push origin refs/tags/${{ steps.extract.outputs.version }}
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
+        with:
+          files: src/spigot-plugin/target/JobsReborn-PatchPlaceBreak-*.jar
+          fail_on_unmatched_files: true
+          body_path: .github/CHANGELOG.md
+          tag_name: ${{ steps.extract.outputs.version }}

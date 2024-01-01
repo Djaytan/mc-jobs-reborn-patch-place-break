@@ -1,0 +1,55 @@
+name: Release - Prepare
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-prepare:
+    name: Release - Prepare
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    # https://github.com/orgs/community/discussions/26560#discussioncomment-3252339
+    env:
+      BOT_NAME: 'github-actions[bot]'
+      BOT_EMAIL: '41898282+github-actions[bot]@users.noreply.github.com'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          # Required by Cocogitto
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@0ab4596768b603586c0de567f2430c30f5b0d2b0 # v3.13.0
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: maven
+
+      - name: Prepare SemVer release
+        id: cocogitto
+        uses: cocogitto/cocogitto-action@ac6260150ee57e3164cd95b47fc84cdee9e3444c # v3.5
+        with:
+          check-latest-tag-only: true
+          release: true
+          git-user: ${{ env.BOT_NAME }}
+          git-user-email: ${{ env.BOT_EMAIL }}
+
+      # For this action to work, you must explicitly allow GitHub Actions to create pull requests.
+      # This setting can be found in a repository's settings under Actions > General > Workflow permissions.
+      - name: Create a PR for the new version
+        uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38 # v5.0.2
+        with:
+          title: 'chore: release ${{ steps.cocogitto.outputs.version }}'
+          branch: 'release/${{ steps.cocogitto.outputs.version }}'
+          committer: '${{ env.BOT_NAME }} <${{ env.BOT_EMAIL }}>'
+          author: '${{ env.BOT_NAME }} <${{ env.BOT_EMAIL }}>'
+          body-path: .github/CHANGELOG.md # TODO: extract changelog part specific to the version
