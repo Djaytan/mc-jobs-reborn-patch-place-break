@@ -39,8 +39,10 @@ jobs:
             git show --pretty=format:"%s" -s "${{ github.sha }}" |
             awk '{print $NF}'
             )"
+          UNPREFIXED_RELEASE_VERSION="$(echo "${RELEASE_VERSION}" | cut -d 'v' -f 2)"
           echo "Extracted release version: ${RELEASE_VERSION}"
           echo "version=${RELEASE_VERSION}" >> "${GITHUB_OUTPUT}"
+          echo "unprefixed-version=${UNPREFIXED_RELEASE_VERSION}" >> "${GITHUB_OUTPUT}"
 
       - name: Check tag existence
         run: |
@@ -56,7 +58,7 @@ jobs:
       - name: Publish GitHub release
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
         with:
-          files: src/spigot-plugin/target/JobsReborn-PatchPlaceBreak-*.jar
+          files: src/spigot-plugin/target/JobsReborn-PatchPlaceBreak-${{ steps.extract.outputs.unprefixed-version }}.jar
           fail_on_unmatched_files: true
           body_path: .github/CHANGELOG.md
           tag_name: ${{ steps.extract.outputs.version }}
