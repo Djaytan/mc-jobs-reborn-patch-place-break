@@ -2,6 +2,50 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v3.0.2](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/compare/v3.0.1..v3.0.2) - 2024-01-02
+#### 🏗️ Build System
+- stop auto-generating uselessly sources and Javadoc JAR files (#450) - ([15a1f35](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/15a1f35a33196d0722e3fb328ba560bfa66ff0f9)) - [@Djaytan](https://github.com/Djaytan)
+- Maven "fast" profile no longer skip source and Javadoc auto-generation (#433) - ([f32a11b](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/f32a11b905fa4d3a77dfd96521cdd35159e3293a)) - [@Djaytan](https://github.com/Djaytan)
+#### 🐛 Bug Fixes
+- **(deps)** update dependency com.google.guava:guava to v33 (#446) - ([d86e7d3](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/d86e7d3afeccbccd7291dc94ba972dad5af17c03)) - renovate[bot]
+- **(deps)** update version.flyway to v10.4.1 (#442) - ([2cf5e25](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/2cf5e251cbc7cf06205d9ec421b3a270c4fb2d76)) - renovate[bot]
+- **(deps)** update dependency org.mockito:mockito-bom to v5.8.0 (#441) - ([b354437](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/b354437b2f6ef34af6ae6a24b4b37d29fff77c58)) - renovate[bot]
+- **(deps)** update dependency com.google.errorprone:error_prone_annotations to v2.24.0 (#439) - ([fbab03b](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/fbab03b7917d2fed12c34e4a3c574e94738d0f3f)) - renovate[bot]
+- **(deps)** update dependency org.assertj:assertj-core to v3.25.0 (#440) - ([43e8354](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/43e83541ccfb55afb2dc00d34151e5e27cda06b2)) - renovate[bot]
+- **(deps)** update dependency org.slf4j:slf4j-bom to v2.0.10 (#438) - ([b410d08](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/b410d0820c6465d3eddf8e0184f33a21780d2a0c)) - renovate[bot]
+#### 📦 Continuous Integration
+- **(actions)** replace 'softprops/action-gh-release' action by GitHub CLI (#459) - ([3e54680](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/3e5468053e20f652318885773a2880b8487825e6)) - [@Djaytan](https://github.com/Djaytan)
+- **(cocogitto)** simplify branch switch step (#458) - ([4ab80b8](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/4ab80b8de12497ccace0a20e384eba92681b2ad8)) - [@Djaytan](https://github.com/Djaytan)
+- **(github)** activate release PR auto-merge once prerequisites are met - ([3cb16c2](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/3cb16c2d5a4ea188fa4db92ee1d266eee0946641)) - [@Djaytan](https://github.com/Djaytan)
+- **(github)** rewrite cocogitto commit by updating the message header (#466) - ([b46978d](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/b46978d0f02bdfb007ffcdb4759ac7e6780451df)) - [@Djaytan](https://github.com/Djaytan)
+- **(github)** extract the release changelog before publishing the release (#463) - ([837d359](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/837d359b13f5f826976badd76586a94e8c31c2ad)) - [@Djaytan](https://github.com/Djaytan)
+- **(github)** associate a label to the created release PR (#462) - ([4862866](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/48628668e12f33d063c7e452b54f052aa8a7e522)) - [@Djaytan](https://github.com/Djaytan)
+- **(github-actions)** fix release perform workflow (#457) - ([c0b5580](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/c0b55806c7b1195979f2404137a061e82e8b773d)) - [@Djaytan](https://github.com/Djaytan)
+- **(renovate)** follow Renovate team's recommendations for configs (#461) - ([09e20d3](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/09e20d38b81cb179c1a633abdb63295055116e4d)) - [@Djaytan](https://github.com/Djaytan)
+- activate manual workflow triggering (#456) - ([c59b6b8](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/c59b6b817e629693f06da1e37f81c20cb64d06bb)) - [@Djaytan](https://github.com/Djaytan)
+- rely on the GitHub CLI for creating the PR at releasing time (#453) - ([e304166](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/e304166e63e3e184aa78c2d2c18481aea1fb80c7)) - [@Djaytan](https://github.com/Djaytan)
+- explicit base branch at PR creation time (#452) - ([8c231a6](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/8c231a643bf44b4f7729a641ead88fcc15048700)) - [@Djaytan](https://github.com/Djaytan)
+- fix releasing preparation by updating back pom.xml files with DEV version (#451) - ([ce32e59](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/ce32e59a7397e9f2cae4c9182c4c45040e3ac11e)) - [@Djaytan](https://github.com/Djaytan)
+- rebase Renovate PRs only when conflicting with default branch (#449) - ([0fe58d0](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/0fe58d0e66435145604f73e18a7e16e6e58aa4d8)) - [@Djaytan](https://github.com/Djaytan)
+- upload only the Spigot plugin JAR file at release publishing time (#448) - ([d20b763](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/d20b763e7ee9514007b123fcc08c0fb9d3ec76b2)) - [@Djaytan](https://github.com/Djaytan)
+- rework releasing process by going though a PR before publishing (#447) - ([285e1a4](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/285e1a432adf2673a0e0fb576adb51c06c1373a0)) - [@Djaytan](https://github.com/Djaytan)
+- simplify releasing process (#437) - ([c4ffb82](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/c4ffb825a30c500549fff596ecc941cd5338f498)) - [@Djaytan](https://github.com/Djaytan)
+- use "fast" Maven profile at releasing time (#435) - ([306559c](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/306559c2944f67bddc61f3902efea7ea4f797b78)) - [@Djaytan](https://github.com/Djaytan)
+- rename some GitHub Actions workflows (#434) - ([c3eb518](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/c3eb5182932ab43e8fd97b33d5f6bd9e87671b60)) - [@Djaytan](https://github.com/Djaytan)
+- use long formats for commands arguments (#432) - ([1b1b334](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/1b1b3346bc4d8403a8b7857ecd3deebfc387400a)) - [@Djaytan](https://github.com/Djaytan)
+- simplify Maven cache setup in GitHub Actions workflows (#431) - ([0367edb](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/0367edb36a8e624a4e02f6196e39e3b55244da09)) - [@Djaytan](https://github.com/Djaytan)
+- rename some workflows and jobs (#430) - ([6c6ce9e](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/6c6ce9ea9ce67d45bbb0850c4294932241a3c297)) - [@Djaytan](https://github.com/Djaytan)
+- no longer rely on release branches at releasing time (#429) - ([9876020](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/987602056414345bd5871df40c9a5a5339365ef7)) - [@Djaytan](https://github.com/Djaytan)
+- reorganize GitHub Actions fields in workflows (#428) - ([29f9b6d](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/29f9b6d9ea411785950ea5f8393e0383607a6a27)) - [@Djaytan](https://github.com/Djaytan)
+- check automatically conventional commits compliance (#427) - ([677b430](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/677b4301379e3cce9503b8dae6642eb918dbc5ce)) - [@Djaytan](https://github.com/Djaytan)
+#### 🧹 Miscellaneous Chores
+- **(deps)** update github/codeql-action action to v3 (#445) - ([6dca907](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/6dca907a008d570e650236cd35f7e3da6949c561)) - renovate[bot]
+- **(deps)** update actions/upload-artifact action to v4 (#444) - ([d7ff3c6](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/d7ff3c6a9260dce9b873a5f28dfb1f367c9006c2)) - renovate[bot]
+- **(deps)** update actions/setup-java action to v4 (#443) - ([04c6d39](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/04c6d39ea2cb0408aa4967370e5b3192c26a98f9)) - renovate[bot]
+- prepare for next development iteration [ci skip] - ([3f295f9](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/3f295f9ece9d32a7c77539b9f6ff5f285f18b91d)) - github-actions[bot]
+
+- - -
+
 ## [v3.0.1](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/compare/v3.0.0..v3.0.1) - 2023-12-28
 #### ↩️ Revert
 - **(renovate)** abort automerge activation for patchs (#354) - ([fede303](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/fede30325b485d782e4b69201e75c71bc2bda72a)) - [@Djaytan](https://github.com/Djaytan)
