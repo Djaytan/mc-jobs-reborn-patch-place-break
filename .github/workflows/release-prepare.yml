@@ -15,30 +15,20 @@ jobs:
       contents: write
       pull-requests: write
 
-    env:
-      GH_TOKEN: ${{ github.token }}
-      # https://github.com/orgs/community/discussions/26560#discussioncomment-3252339
-      BOT_NAME: 'github-actions[bot]'
-      BOT_EMAIL: '41898282+github-actions[bot]@users.noreply.github.com'
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
-          ref: main
           # Required by Cocogitto
           fetch-depth: 0
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
-        with:
-          java-version: 17
-          distribution: temurin
-          cache: maven
 
       - name: Prepare SemVer release
         id: cocogitto
         uses: cocogitto/cocogitto-action@ac6260150ee57e3164cd95b47fc84cdee9e3444c # v3.5
+        # https://github.com/orgs/community/discussions/26560#discussioncomment-3252339
+        env:
+          BOT_NAME: 'github-actions[bot]'
+          BOT_EMAIL: '41898282+github-actions[bot]@users.noreply.github.com'
         with:
           check-latest-tag-only: true
           release: true
@@ -49,6 +39,10 @@ jobs:
       # This setting can be found in a repository's settings under Actions > General > Workflow permissions.
       # TODO: extract changelog part specific to the version
       - name: Create a PR for the new version
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          gh pr create --fill --body-file .github/CHANGELOG.md \
-            --base main --head release/${{ steps.cocogitto.outputs.version }}
+          gh pr create --fill \
+            --body-file .github/CHANGELOG.md \
+            --base ${{ github.ref_name }} \
+            --head release/${{ steps.cocogitto.outputs.version }}
