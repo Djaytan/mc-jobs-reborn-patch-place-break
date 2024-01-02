@@ -40,7 +40,7 @@ jobs:
         run: |
           COMMIT_MESSAGE="$(git show --pretty=format:"%s" -s "${{ github.sha }}")"
 
-          if [[ ! "${COMMIT_MESSAGE}" =~ ^chore\(version\):\ (v([0-9]+\.[0-9]+\.[0-9]+))$ ]]; then
+          if [[ ! "${COMMIT_MESSAGE}" =~ ^docs\(changelog\):\ release (v([0-9]+\.[0-9]+\.[0-9]+))$ ]]; then
             echo "Non-expected commit message: '${COMMIT_MESSAGE}'"
             echo 'Aborting...'
             exit 1
