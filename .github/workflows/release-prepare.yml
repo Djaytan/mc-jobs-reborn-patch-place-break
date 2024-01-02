@@ -46,3 +46,11 @@ jobs:
             --label 't:release' \
             --base ${{ github.ref_name }} \
             --head release/${{ steps.cocogitto.outputs.version }}
+
+      - name: Activate PR auto-merge once prerequisites are met
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr merge release/${{ steps.cocogitto.outputs.version }} \
+            --author-email ${{ env.BOT_EMAIL }} \
+            --auto --squash --delete-branch
