@@ -11,11 +11,6 @@ jobs:
     name: Release - Prepare
     runs-on: ubuntu-latest
 
-    # https://github.com/orgs/community/discussions/26560#discussioncomment-3252339
-    env:
-      BOT_NAME: 'github-actions[bot]'
-      BOT_EMAIL: '41898282+github-actions[bot]@users.noreply.github.com'
-
     permissions:
       contents: write
       pull-requests: write
@@ -30,6 +25,10 @@ jobs:
       - name: Prepare SemVer release
         id: cocogitto
         uses: cocogitto/cocogitto-action@ac6260150ee57e3164cd95b47fc84cdee9e3444c # v3.5
+        # https://github.com/orgs/community/discussions/26560#discussioncomment-3252339
+        env:
+          BOT_NAME: 'github-actions[bot]'
+          BOT_EMAIL: '41898282+github-actions[bot]@users.noreply.github.com'
         with:
           check-latest-tag-only: true
           release: true
@@ -46,3 +45,11 @@ jobs:
             --label 't:release' \
             --base ${{ github.ref_name }} \
             --head release/${{ steps.cocogitto.outputs.version }}
+
+      - name: Activate PR auto-merge once prerequisites are met
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr merge release/${{ steps.cocogitto.outputs.version }} \
+            --author-email ${{ github.event.sender.id }}+${{ github.event.sender.login }}@users.noreply.github.com \
+            --auto --squash --delete-branch
