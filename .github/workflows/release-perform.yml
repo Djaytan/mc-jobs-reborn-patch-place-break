@@ -56,6 +56,24 @@ jobs:
           echo "version=${RELEASE_VERSION}" >> "${GITHUB_OUTPUT}"
           echo "unprefixed-version=${UNPREFIXED_RELEASE_VERSION}" >> "${GITHUB_OUTPUT}"
 
+      - name: Extract release changelog
+        run: |
+          RELEASE_CHANGELOG="$(
+            cat ${{ github.workspace }}/.github/CHANGELOG.md |
+            awk -v RS='\n\n- - -\n' '/^## \[${{ steps.extract.outputs.version }}]/'
+            )"
+
+          if [[ -z "${RELEASE_CHANGELOG}" ]]; then
+            echo 'Unexpected empty content for the extracted changelog'
+            echo 'Aborting...'
+            exit 1
+          fi
+
+          echo 'The following release changelog has been extracted from the CHANGELOG.md file:'
+          echo "${RELEASE_CHANGELOG}"
+
+          echo "RELEASE_CHANGELOG=${RELEASE_CHANGELOG}" >> "${GITHUB_ENV}"
+
       - name: Generate plugin file
         run: |
           mvn versions:set -DnewVersion='${{ steps.extract.outputs.unprefixed-version }}' --batch-mode --errors
@@ -91,6 +109,6 @@ jobs:
 
           gh release create "${RELEASE_VERSION}" "${PLUGIN_FILE}" \
             --title ${{ steps.extract.outputs.version }} \
-            --notes-file .github/CHANGELOG.md \
+            --notes "${RELEASE_CHANGELOG}" \
             --target ${{ github.ref }} \
             --verify-tag
