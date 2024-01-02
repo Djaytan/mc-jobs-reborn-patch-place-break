@@ -38,13 +38,11 @@ jobs:
 
       # For this action to work, you must explicitly allow GitHub Actions to create pull requests.
       # This setting can be found in a repository's settings under Actions > General > Workflow permissions.
-      # TODO: extract changelog part specific to the version
       - name: Create a PR for the new version
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh pr create --fill \
-            --body-file .github/CHANGELOG.md \
             --label 't:release' \
             --base ${{ github.ref_name }} \
             --head release/${{ steps.cocogitto.outputs.version }}

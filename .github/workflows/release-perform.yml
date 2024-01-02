@@ -36,7 +36,7 @@ jobs:
           cache: maven
 
       - name: Verify compliant commit message and extract release version
-        id: extract
+        id: version
         run: |
           COMMIT_MESSAGE="$(git show --pretty=format:"%s" -s "${{ github.sha }}")"
 
@@ -53,12 +53,32 @@ jobs:
 
           echo "Extracted release version: ${RELEASE_VERSION} (without prefix: ${UNPREFIXED_RELEASE_VERSION})"
 
-          echo "version=${RELEASE_VERSION}" >> "${GITHUB_OUTPUT}"
-          echo "unprefixed-version=${UNPREFIXED_RELEASE_VERSION}" >> "${GITHUB_OUTPUT}"
+          echo "prefixed=${RELEASE_VERSION}" >> "${GITHUB_OUTPUT}"
+          echo "unprefixed=${UNPREFIXED_RELEASE_VERSION}" >> "${GITHUB_OUTPUT}"
+
+      - name: Extract release changelog
+        id: changelog
+        run: |
+          RELEASE_CHANGELOG_FILE='${{ runner.temp }}/release-changelog.md'
+
+          cat ${{ github.workspace }}/.github/CHANGELOG.md |
+            awk -v RS='\n\n- - -\n' '/^## \[${{ steps.version.outputs.prefixed }}]/' \
+            > "${RELEASE_CHANGELOG_FILE}"
+
+          if [[ -z "$(cat "${RELEASE_CHANGELOG_FILE}")" ]]; then
+            echo 'Unexpected empty content for the extracted changelog'
+            echo 'Aborting...'
+            exit 1
+          fi
+
+          echo 'The following release changelog has been extracted from the CHANGELOG.md file:'
+          echo "$(cat "${RELEASE_CHANGELOG_FILE}")"
+
+          echo "file=${RELEASE_CHANGELOG_FILE}" >> "${GITHUB_OUTPUT}"
 
       - name: Generate plugin file
         run: |
-          mvn versions:set -DnewVersion='${{ steps.extract.outputs.unprefixed-version }}' --batch-mode --errors
+          mvn versions:set -DnewVersion='${{ steps.version.outputs.unprefixed }}' --batch-mode --errors
           mvn clean package --activate-profiles fast --batch-mode --errors --strict-checksums --update-snapshots --fail-fast
           mvn versions:set -DnewVersion='0.0.1-DEV-SNAPSHOT' --batch-mode --errors
 
@@ -66,7 +86,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          PLUGIN_FILE='${{ github.workspace }}/src/spigot-plugin/target/JobsReborn-PatchPlaceBreak-${{ steps.extract.outputs.unprefixed-version }}.jar'
+          PLUGIN_FILE='${{ github.workspace }}/src/spigot-plugin/target/JobsReborn-PatchPlaceBreak-${{ steps.version.outputs.unprefixed }}.jar'
 
           if [[ ! -f "${PLUGIN_FILE}" ]]; then
             echo 'The plugin file does not exist or is invalid'
@@ -76,7 +96,7 @@ jobs:
 
           echo "The plugin file which is going to be uploaded is '${PLUGIN_FILE}'"
 
-          RELEASE_VERSION='${{ steps.extract.outputs.version }}'
+          RELEASE_VERSION='${{ steps.version.outputs.prefixed }}'
 
           if [[ -n "$(git tag -l "${RELEASE_VERSION}")" ]]; then
             echo "The tag '${RELEASE_VERSION}' already exists"
@@ -90,7 +110,7 @@ jobs:
           git push origin refs/tags/"${RELEASE_VERSION}"
 
           gh release create "${RELEASE_VERSION}" "${PLUGIN_FILE}" \
-            --title ${{ steps.extract.outputs.version }} \
-            --notes-file .github/CHANGELOG.md \
+            --title ${{ steps.version.outputs.prefixed }} \
+            --notes-file ${{ steps.changelog.outputs.file }} \
             --target ${{ github.ref }} \
             --verify-tag
