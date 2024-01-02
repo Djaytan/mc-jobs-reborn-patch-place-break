@@ -4,6 +4,7 @@ pre_bump_hooks = [
   "git switch --create release/{{version_tag}}",
 ]
 post_bump_hooks = [
+  "git commit --amend --message 'docs(changelog): release {{version_tag}}'",
   "git push --set-upstream origin release/{{version_tag}}"
 ]
 
@@ -12,11 +13,11 @@ feat = { changelog_title = "🌟 Features" }
 fix = { changelog_title = "🐛 Bug Fixes" }
 perf = { changelog_title = "⚡ Performances" }
 revert = { changelog_title = "↩️ Revert" }
+refactor = { changelog_title = "🛠️ Refactoring" }
 docs = { changelog_title = "📖 Documentation" }
 test = { changelog_title = "✅ Tests" }
 build = { changelog_title = "🏗️ Build System" }
 ci = { changelog_title = "📦 Continuous Integration" }
-refactor = { changelog_title = "🛠️ Refactoring" }
 chore = { changelog_title = "🧹 Miscellaneous Chores" }
 style = { changelog_title = "🖌️ Style" }
 
