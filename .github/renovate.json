@@ -1,23 +1,17 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "configMigration": true,
   "extends": [
-    "config:base",
-    "helpers:pinGitHubActionDigests"
+    "config:best-practices",
+    "config:semverAllMonthly"
   ],
   "labels": [
     "t:dependencies"
   ],
-  "prHourlyLimit": 25,
-  "schedule": [
-    "before 8am on the first day of the month"
-  ],
-  "rebaseWhen": "conflicted",
-  "packageRules": [
-    {
-      "matchPackagePatterns": [
-        "maven"
-      ],
-      "groupName": "Maven plugins"
-    }
-  ]
+  "vulnerabilityAlerts": {
+    "labels": ["t:security"]
+  },
+  "osvVulnerabilityAlerts": true,
+  "semanticCommits": "enabled",
+  "semanticCommitType": "build"
 }
