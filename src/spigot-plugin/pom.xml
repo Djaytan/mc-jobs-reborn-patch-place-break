@@ -40,8 +40,8 @@
     <properties>
         <package.root>${project.groupId}</package.root>
         <package.lib>${package.root}.lib</package.lib>
-        <plugin.name>JobsReborn-PatchPlaceBreak</plugin.name>
-        <plugin.finalName>${plugin.name}-${project.version}</plugin.finalName>
+        <spigotPlugin.name>JobsReborn-PatchPlaceBreak</spigotPlugin.name>
+        <spigotPlugin.finalName>${spigotPlugin.name}-${project.version}</spigotPlugin.finalName>
     </properties>
 
     <dependencies>
@@ -161,7 +161,7 @@
     </dependencies>
 
     <build>
-        <finalName>${plugin.finalName}</finalName>
+        <finalName>${spigotPlugin.finalName}</finalName>
         <resources>
             <resource>
                 <filtering>true</filtering>
