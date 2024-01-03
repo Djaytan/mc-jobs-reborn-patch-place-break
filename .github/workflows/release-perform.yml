@@ -88,16 +88,13 @@ jobs:
           echo "file=${RELEASE_CHANGELOG_FILE}" >> "${GITHUB_OUTPUT}"
 
       - name: Generate plugin file
+        id: plugin
         run: |
-          mvn versions:set -DnewVersion='${{ steps.version.outputs.unprefixed }}' --batch-mode --errors
+          mvn versions:set -DnewVersion='${{ steps.version.outputs.unprefixed }}' --batch-mode --errors > /dev/null
           mvn clean package --activate-profiles fast --batch-mode --errors --strict-checksums --update-snapshots --fail-fast
-          mvn versions:set -DnewVersion='0.0.1-DEV-SNAPSHOT' --batch-mode --errors
 
-      - name: Create GitHub release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          PLUGIN_FILE='${{ github.workspace }}/src/spigot-plugin/target/JobsReborn-PatchPlaceBreak-${{ steps.version.outputs.unprefixed }}.jar'
+          PLUGIN_FILE_NAME="$(mvn help:evaluate -Dexpression=spigotPlugin.finalName -DforceStdout --projects :spigot-plugin --quiet)"
+          PLUGIN_FILE="${{ github.workspace }}/src/spigot-plugin/target/${PLUGIN_FILE_NAME}.jar"
 
           if [[ ! -f "${PLUGIN_FILE}" ]]; then
             echo 'The plugin file does not exist or is invalid'
@@ -107,6 +104,14 @@ jobs:
 
           echo "The plugin file which is going to be uploaded is '${PLUGIN_FILE}'"
 
+          mvn versions:set -DnewVersion='0.0.1-DEV-SNAPSHOT' --batch-mode --errors > /dev/null
+
+          echo "file=${PLUGIN_FILE}" >> "${GITHUB_OUTPUT}"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
           RELEASE_VERSION='${{ steps.version.outputs.prefixed }}'
 
           if [[ -n "$(git tag -l "${RELEASE_VERSION}")" ]]; then
@@ -117,7 +122,7 @@ jobs:
 
           echo "The tag which is going to be created is '${RELEASE_VERSION}'"
 
-          gh release create "${RELEASE_VERSION}" "${PLUGIN_FILE}" \
+          gh release create "${RELEASE_VERSION}" ${{ steps.plugin.outputs.file }} \
             --title ${{ steps.version.outputs.prefixed }} \
             --notes-file ${{ steps.changelog.outputs.file }} \
             --target ${{ github.ref }}
