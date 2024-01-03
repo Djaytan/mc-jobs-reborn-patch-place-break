@@ -26,8 +26,9 @@ jobs:
           disable-sudo: true
           egress-policy: block
           allowed-endpoints: >
-            api.github.com:443
             github.com:443
+            api.github.com:443
+            repo.maven.apache.org:443
             jitpack.io:443
             repo.papermc.io:443
 
