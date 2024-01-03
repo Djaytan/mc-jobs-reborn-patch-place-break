@@ -34,8 +34,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
-          # PAT required for bypassing tag protection
-          token: ${{ secrets.PUSH_TOKEN }}
           # Required for tag existence check
           fetch-depth: 0
 
@@ -73,7 +71,7 @@ jobs:
           RELEASE_CHANGELOG_FILE='${{ runner.temp }}/release-changelog.md'
 
           cat ${{ github.workspace }}/.github/CHANGELOG.md |
-            awk -v RS='\n\n- - -\n' '/^## \[${{ steps.version.outputs.prefixed }}]/' \
+            awk -v RS='\n\n- - -\n' '/^## \[v3.0.2]/' \
             > "${RELEASE_CHANGELOG_FILE}"
 
           if [[ -z "$(cat "${RELEASE_CHANGELOG_FILE}")" ]]; then
@@ -107,21 +105,7 @@ jobs:
 
           echo "The plugin file which is going to be uploaded is '${PLUGIN_FILE}'"
 
-          RELEASE_VERSION='${{ steps.version.outputs.prefixed }}'
-
-          if [[ -n "$(git tag -l "${RELEASE_VERSION}")" ]]; then
-            echo "The tag '${RELEASE_VERSION}' already exists"
-            echo 'Aborting...'
-            exit 1
-          fi
-
-          echo "The tag which is going to be created is '${RELEASE_VERSION}'"
-
-          git tag "${RELEASE_VERSION}"
-          git push origin refs/tags/"${RELEASE_VERSION}"
-
-          gh release create "${RELEASE_VERSION}" "${PLUGIN_FILE}" \
+          gh release create ${{ steps.version.outputs.prefixed }} "${PLUGIN_FILE}" \
             --title ${{ steps.version.outputs.prefixed }} \
             --notes-file ${{ steps.changelog.outputs.file }} \
-            --target ${{ github.ref }} \
-            --verify-tag
+            --target ${{ github.ref }}

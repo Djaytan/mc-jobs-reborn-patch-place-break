@@ -52,7 +52,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          git switch --create release/v3.0.3
+          touch test
+          git add test
+          git commit --all --message 'docs(changelog): release v3.0.3'
+          git push --set-upstream origin release/v3.0.3
           gh pr create --fill \
             --label 't:release' \
             --base ${{ github.ref_name }} \
-            --head release/${{ steps.cocogitto.outputs.version }}
+            --head release/v3.0.3
