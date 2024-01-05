@@ -1,0 +1,121 @@
+name: Sign
+
+on:
+  workflow_dispatch:
+    inputs:
+      blob-file-name:
+        required: true
+        description: The name to be associated with the blob file once signed before upload
+      blob-file-base64-content:
+        required: true
+        description: The blob file's base64 encoded content to be signed
+      blob-file-sha256-checksum:
+        required: true
+        description: The blob file' SHA256 checksum for integrity check
+
+permissions: {}
+
+jobs:
+  sign:
+    name: Sign
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+
+    env:
+      BLOB_FILE_NAME: ${{ inputs.blob-file-name }}
+      BLOB_FILE_BASE64_CONTENT: ${{ inputs.blob-file-base64-content }}
+      BLOB_FILE_SHA256_CHECKSUM: ${{ inputs.blob-file-sha256-checksum }}
+
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443
+            objects.githubusercontent.com:443
+            fulcio.sigstore.dev:443
+            rekor.sigstore.dev:443
+            tuf-repo-cdn.sigstore.dev:443
+
+      - name: Input validation
+        run: |
+          echo "BLOB_FILE_NAME=${BLOB_FILE_NAME}"
+          echo "BLOB_FILE_BASE64_CONTENT=${BLOB_FILE_BASE64_CONTENT}"
+          echo "BLOB_FILE_SHA256_CHECKSUM=${BLOB_FILE_SHA256_CHECKSUM}"
+
+          if [[ ! "${BLOB_FILE_NAME}" =~ ^[A-Za-z0-9_-][A-Za-z0-9._-]+$ ]]; then
+            echo 'Blob file name seems to be invalid'
+            echo 'Aborting...'
+            exit 1
+          fi
+
+          if [[ ! "${BLOB_FILE_BASE64_CONTENT}" =~ ^[A-Za-z0-9+/]+={0,2}$ ]]; then
+            echo 'Invalid blob file base64 content'
+            echo 'Aborting...'
+            exit 1
+          fi
+
+          if [[ ! "${BLOB_FILE_SHA256_CHECKSUM}" =~ ^[0-9a-f]+$ ]]; then
+            echo 'Invalid blob file SHA256 checksum'
+            echo 'Aborting...'
+            exit 1
+          fi
+
+          echo 'Provided inputs seem to be valid'
+
+      - name: Blob file recreation
+        run: |
+          echo "${BLOB_FILE_BASE64_CONTENT}" | base64 --decode > "${BLOB_FILE_NAME}"
+          COMPUTED_SHA256_CHECKSUM=$(sha256sum "${BLOB_FILE_NAME}" | cut --delimiter=' ' --fields=1)
+
+          if [[ "${BLOB_FILE_SHA256_CHECKSUM}" != "${COMPUTED_SHA256_CHECKSUM}" ]]; then
+            echo 'Blob file integrity check failed: computed checksum is different than the expected one'
+            echo "Expected: ${BLOB_FILE_SHA256_CHECKSUM}"
+            echo "Actual: ${COMPUTED_SHA256_CHECKSUM}"
+            echo 'Aborting...'
+            exit 1
+          fi
+
+          echo 'The blob file has been recreated successfully'
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@9614fae9e5c5eddabb09f90a270fcb487c9f7149 # v3.3.0
+
+      - name: Sign blob file
+        run: |
+          cosign sign-blob "${BLOB_FILE_NAME}" --yes \
+            --output-certificate="${BLOB_FILE_NAME}-keyless.pem" \
+            --output-signature="${BLOB_FILE_NAME}-keyless.sig"
+
+      - name: Verify signature
+        env:
+          CERTIFICATE_IDENTITY: ${{ github.server_url }}/${{ github.workflow_ref }}
+          CERTIFICATE_OIDC_ISSUER: https://token.actions.githubusercontent.com
+        run: |
+          echo "GITHUB_WORKFLOW=${GITHUB_WORKFLOW}"
+          echo "GITHUB_REF=${GITHUB_REF}"
+          echo "GITHUB_REPOSITORY=${GITHUB_REPOSITORY}"
+          echo "GITHUB_SHA=${GITHUB_SHA}"
+          echo "GITHUB_EVENT_NAME=${GITHUB_EVENT_NAME}"
+
+          cosign verify-blob "${BLOB_FILE_NAME}" \
+            --signature="${BLOB_FILE_NAME}-keyless.sig" \
+            --certificate="${BLOB_FILE_NAME}-keyless.pem" \
+            --certificate-identity-regexp="${CERTIFICATE_IDENTITY}" \
+            --certificate-oidc-issuer="${CERTIFICATE_OIDC_ISSUER}" \
+            --certificate-github-workflow-name="${GITHUB_WORKFLOW}" \
+            --certificate-github-workflow-ref="${GITHUB_REF}" \
+            --certificate-github-workflow-repository="${GITHUB_REPOSITORY}" \
+            --certificate-github-workflow-sha="${GITHUB_SHA}" \
+            --certificate-github-workflow-trigger="${GITHUB_EVENT_NAME}"
+
+      - name: Upload the signature and the associated certificate
+        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        with:
+          name: ${{ env.BLOB_FILE_NAME }}-signed
+          path: ${{ env.BLOB_FILE_NAME }}-keyless.*
+          if-no-files-found: error
