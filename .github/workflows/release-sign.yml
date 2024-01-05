@@ -1,0 +1,106 @@
+name: Release - Sign
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag-name:
+        required: true
+        description: The tag name associated to a release containing assets to be signed
+  release:
+    types:
+      - published
+
+permissions: {}
+
+jobs:
+  sign:
+    name: Sign
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    env:
+      ASSETS_DIR: ${{ github.workspace }}/assets/
+      SIGNATURES_DIR: ${{ github.workspace }}/signatures/
+
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443
+            api.github.com:443
+            objects.githubusercontent.com:443
+            fulcio.sigstore.dev:443
+            rekor.sigstore.dev:443
+            tuf-repo-cdn.sigstore.dev:443
+
+      - name: Retrieve tag name
+        id: tag
+        run: |
+          if [[ "${GITHUB_EVENT_NAME}" == 'workflow_dispatch' ]]; then
+            TAG_NAME=${{ inputs.tag-name }}
+          else
+            TAG_NAME=${{ github.event.release.tag_name }}
+          fi
+
+          echo "name=${TAG_NAME}" >> "${GITHUB_OUTPUT}"
+
+      - name: Input validation
+        run: |
+          if [[ ! '${{ steps.tag.outputs.name }}' =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo 'Invalid tag name'
+            echo 'Aborting...'
+            exit 1
+          fi
+
+          echo 'The provided tag name is valid'
+
+      - name: Download release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download ${{ steps.tag.outputs.name }} --dir "${ASSETS_DIR}"
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@9614fae9e5c5eddabb09f90a270fcb487c9f7149 # v3.3.0
+
+      - name: Sign blob files
+        run: |
+          for asset in "${ASSETS_DIR}"/*; do
+            cosign sign-blob "${asset}" --yes \
+              --output-certificate="${SIGNATURES_DIR}/${asset}-keyless.pem" \
+              --output-signature="${SIGNATURES_DIR}/${asset}-keyless.sig"
+          done
+
+      - name: Verify signatures
+        env:
+          CERTIFICATE_IDENTITY: ${{ github.server_url }}/${{ github.workflow_ref }}
+          CERTIFICATE_OIDC_ISSUER: https://token.actions.githubusercontent.com
+        run: |
+          echo "GITHUB_WORKFLOW=${GITHUB_WORKFLOW}"
+          echo "GITHUB_REF=${GITHUB_REF}"
+          echo "GITHUB_REPOSITORY=${GITHUB_REPOSITORY}"
+          echo "GITHUB_SHA=${GITHUB_SHA}"
+          echo "GITHUB_EVENT_NAME=${GITHUB_EVENT_NAME}"
+
+          for asset in "${ASSETS_DIR}"/*; do
+            cosign verify-blob "${asset}" \
+              --signature="${SIGNATURES_DIR}/${asset}-keyless.sig" \
+              --certificate="${SIGNATURES_DIR}/${asset}-keyless.pem" \
+              --certificate-identity-regexp="${CERTIFICATE_IDENTITY}" \
+              --certificate-oidc-issuer="${CERTIFICATE_OIDC_ISSUER}" \
+              --certificate-github-workflow-name="${GITHUB_WORKFLOW}" \
+              --certificate-github-workflow-ref="${GITHUB_REF}" \
+              --certificate-github-workflow-repository="${GITHUB_REPOSITORY}" \
+              --certificate-github-workflow-sha="${GITHUB_SHA}" \
+              --certificate-github-workflow-trigger="${GITHUB_EVENT_NAME}"
+          done
+
+      - name: Upload signature assets in release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload ${{ steps.tag.outputs.name }} "${SIGNATURES_DIR}"/*
