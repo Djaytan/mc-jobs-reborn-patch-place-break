@@ -144,7 +144,7 @@ jobs:
             cosign verify-blob "${ASSET_FILE}" \
               --signature="${SIGNATURES_DIR}/${SIG_FILE_NAME}" \
               --certificate="${SIGNATURES_DIR}/${CERT_FILE_NAME}" \
-              --certificate-identity-regexp="${CERTIFICATE_IDENTITY}" \
+              --certificate-identity="${CERTIFICATE_IDENTITY}" \
               --certificate-oidc-issuer="${CERTIFICATE_OIDC_ISSUER}" \
               --certificate-github-workflow-name="${GITHUB_WORKFLOW}" \
               --certificate-github-workflow-ref="${GITHUB_REF}" \
