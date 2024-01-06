@@ -7,11 +7,7 @@ on:
         required: true
         description: The tag name associated to a release containing assets to be signed
   release:
-    types:
-      - created
-      - published
-      - prereleased
-      - released
+    types: [published]
 
 permissions: {}
 
