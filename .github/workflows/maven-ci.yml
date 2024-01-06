@@ -10,13 +10,15 @@ on:
     branches:
       - 'main'
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   ci:
     name: CI
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     steps:
       - name: Harden runner

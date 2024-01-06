@@ -3,8 +3,7 @@ name: Release - Prepare
 on:
   workflow_dispatch:
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   prepare:

@@ -6,13 +6,15 @@ on:
     branches:
       - 'main'
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   check:
     name: Check
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     steps:
       - name: Harden runner
