@@ -8,18 +8,15 @@ on:
     paths:
       - .github/CHANGELOG.md
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
-  build:
-    name: Build
+  perform:
+    name: Perform
     runs-on: ubuntu-latest
 
-    outputs:
-      version: ${{ steps.version.outputs.prefixed }}
-      changelog-file: ${{ steps.changelog.outputs.file }}
-      plugin-file: ${{ steps.plugin.outputs.file }}
+    permissions:
+      contents: write
 
     steps:
       - name: Harden runner
@@ -29,6 +26,8 @@ jobs:
           egress-policy: block
           allowed-endpoints: >
             github.com:443
+            api.github.com:443
+            uploads.github.com:443
             repo.maven.apache.org:443
             jitpack.io:443
             repo.papermc.io:443
@@ -36,7 +35,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
-          persist-credentials: false
+          # Required for tag existence check
+          fetch-depth: 0
 
       - name: Set up JDK 17
         uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
@@ -107,38 +107,11 @@ jobs:
 
           echo "file=${PLUGIN_FILE}" >> "${GITHUB_OUTPUT}"
 
-  release:
-    name: Release
-    runs-on: ubuntu-latest
-
-    needs:
-      - build
-
-    permissions:
-      contents: write
-
-    steps:
-      - name: Harden runner
-        uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
-        with:
-          disable-sudo: true
-          egress-policy: block
-          allowed-endpoints: >
-            github.com:443
-            api.github.com:443
-            uploads.github.com:443
-
-      - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-        with:
-          # Required for tag existence check
-          fetch-depth: 0
-
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          RELEASE_VERSION='${{ needs.build.outputs.version }}'
+          RELEASE_VERSION='${{ steps.version.outputs.prefixed }}'
 
           if [[ -n "$(git tag -l "${RELEASE_VERSION}")" ]]; then
             echo "The tag '${RELEASE_VERSION}' already exists"
@@ -148,7 +121,7 @@ jobs:
 
           echo "The tag which is going to be created is '${RELEASE_VERSION}'"
 
-          gh release create "${RELEASE_VERSION}" ${{ needs.build.outputs.plugin-file }} \
+          gh release create "${RELEASE_VERSION}" ${{ steps.plugin.outputs.file }} \
             --title "${RELEASE_VERSION}" \
-            --notes-file ${{ needs.build.outputs.changelog-file }} \
+            --notes-file ${{ steps.changelog.outputs.file }} \
             --target ${{ github.ref }}
