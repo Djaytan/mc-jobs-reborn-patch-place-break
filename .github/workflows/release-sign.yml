@@ -8,7 +8,10 @@ on:
         description: The tag name associated to a release containing assets to be signed
   release:
     types:
+      - created
       - published
+      - prereleased
+      - released
 
 permissions: {}
 
