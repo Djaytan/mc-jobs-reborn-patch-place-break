@@ -6,8 +6,9 @@ on:
       tag-name:
         required: true
         description: The tag name associated to a release containing assets to be signed
-  release:
-    types: [published]
+  workflow_run:
+    workflows: [Release - Perform]
+    types: [completed]
 
 permissions: {}
 
