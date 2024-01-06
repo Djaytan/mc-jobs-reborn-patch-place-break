@@ -32,6 +32,7 @@ jobs:
             repo.maven.apache.org:443
             jitpack.io:443
             repo.papermc.io:443
+            api.nuget.org:443
             auth.docker.io:443
             registry-1.docker.io:443
             production.cloudflare.docker.com:443
