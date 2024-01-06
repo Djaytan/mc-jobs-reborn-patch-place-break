@@ -71,18 +71,35 @@ installed on it.
 
 The server's version must be higher or equals to 1.17.x.
 
+### Download
+
 Download the latest `.jar` file from the
 [release section](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/) of this
-repository and put it into the `plugins/` folder, and you'll be done! After restarting the server,
-the plugin should now appear green in the list displayed by the `/plugins` command.
+repository.
 
-If you wish to use this plugin on a lower version of the server, you should instead use the
-following version:
+#### Signature verification (optional)
 
-* [2.2.53](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/tag/v2.2.53) for
-  Minecraft versions from 1.11 to 1.16 (included)
-* [1.2.0](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/tag/v1.2.0) for
-  Minecraft versions 1.8, 1.9 and 1.10
+In case you wish to verify the plugin's signature to ensure that the file is trustworthy, you can follow these steps:
+* Install the [Cosign CLI](https://github.com/sigstore/cosign?tab=readme-ov-file#installation)
+* Install the `.sig` and `.pem` alongside the plugin file
+* Execute the following Bash commands (you will have to adapt them if necessary):
+
+```shell
+PLUGIN_VERSION=''
+cosign verify-blob "JobsReborn-PatchPlaceBreak-${PLUGIN_VERSION}.jar" \
+  --signature="JobsReborn-PatchPlaceBreak-${PLUGIN_VERSION}.jar-keyless.sig" \
+  --certificate="JobsReborn-PatchPlaceBreak-${PLUGIN_VERSION}.jar-keyless.pem" \
+  --certificate-identity=https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/.github/workflows/release-sign.yml@refs/heads/main \
+  --certificate-oidc-issuer=https://token.actions.githubusercontent.com
+```
+
+Well think about filling the `PLUGIN_VERSION` variable.
+
+### Installation
+
+Put the plugin JAR file into the `plugins/` folder, and you'll be done!
+After restarting the server, the plugin should now appear green in the list displayed by
+the `/plugins` command.
 
 At this point, you should turn off all options of the "PlaceAndBreak" config part of JobsReborn.
 This would lead to a similar result as the following one:
