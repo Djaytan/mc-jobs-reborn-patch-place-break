@@ -159,6 +159,14 @@ Specifically for the tests:
 * [MockBukkit](https://github.com/MockBukkit/MockBukkit)
 * [Awaitability](https://github.com/awaitility/awaitility)
 
+Specifically for the CI:
+
+* [GitHub Actions](https://github.com/features/actions)
+* [CodeQL](https://codeql.github.com/)
+* [OpenSSF Scorecard](https://github.com/ossf/scorecard)
+* [Cocogitto](https://docs.cocogitto.io/)
+* [Sigstore](https://www.sigstore.dev/)
+
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the
