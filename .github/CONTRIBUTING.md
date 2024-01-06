@@ -133,19 +133,75 @@ The only thing we ask when contributing to the code is to apply
 To help respect this, an automatic formatter has been configured through Maven to be dispatched
 automatically when building the project and running tests.
 
+#### IntelliJ IDEA plugin
+
+If you are using IntelliJ IDEA, you can install the
+[google-java-format plugin](https://plugins.jetbrains.com/plugin/8527-google-java-format) which will
+replace the default IDE code formatting behavior.
+
 ### ⭕ Conventional Commits
 
 Following a standard for commit message provides several benefits:
 
-* Human **and** machine readable
+* Readable for both humans **and** machines
 * Automatic version bump
 * Automatic release note creation/update
 
 This is why we strive to follow
 the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) one.
 
-#### IntelliJ IDEA plugin
+#### Types
 
-If you are using IntelliJ IDEA, you can install the
-[google-java-format plugin](https://plugins.jetbrains.com/plugin/8527-google-java-format) which will
-replace the default IDE code formatting behavior.
+The allowed types for this project are the ones specified by
+the [Angular project](https://github.com/angular/angular/blob/main/CONTRIBUTING.md#type):
+
+* **feat**: A new feature
+* **fix**: A bug fix
+* **perf**: A code change that improves performance
+* **refactor**: A code change that neither fixes a bug nor adds a feature
+* **docs**: Documentation only changes
+* **test**: Adding missing tests or correcting existing tests
+* **build**: Changes that affect the build system or external dependencies (e.g. Spigot API, Guice, Flyway, ...)
+* **ci**: Changes to our CI configuration files and scripts (e.g. GitHub Actions, Renovate, ...)
+
+#### Scopes
+
+Most of the time, you should try to stick with the following scopes:
+
+* **core**: used for changes related to the `patch-place-break-api`, `patch-place-break-core`and `patch-place-break-cts` modules
+* **spigot-adapter**: used for changes related to the `spigot-patch-adapter` module
+* **spigot-plugin**: used for changes related to the `spigot-plugin` module
+
+But there are exceptions that shall be considered as well depending mostly on the change type.
+
+##### Special scope
+
+* **_none/empty string_**: useful for test and refactor changes that are done across all packages
+  (e.g. test: add missing unit tests) and for docs changes that are not related 
+  to a specific package (e.g. docs: fix typo in tutorial)
+
+##### Specific to the `docs` type
+
+* **readme**: used for changes updating the `README.md` file
+* **contributing**: used for changes updating the contribution-related files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md` & `SECURITY.md`
+* **changelog**: used for changes updating the `CHANGELOG.md` file
+
+##### Specific to the `build` type
+
+* **packaging**: used for changes updating the Maven layout in all of our modules (e.g. groupId change, inherited plugins changes, ...)
+* **deps**: used for changes updating the project dependencies
+* **other**: used for changes affecting the following files: `.gitignore` `.gitattributes` & `.editorconfig`
+
+##### Specific to the `ci` type
+
+* **github**: used for updating GitHub Actions workflows, issues/PRs templates and `CODEOWNERS` file(s)
+* **renovate**: used for updating Renovate configuration
+* **cocogitto**: used for updating Cocogitto configuration
+
+#### Short description / Summary
+
+The summary must provide a succinct description of the change:
+
+* Use the imperative, present tense: "change" not "changed" nor "changes"
+* Don't capitalize on the first letter
+* No dot (.) at the end
