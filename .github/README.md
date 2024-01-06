@@ -147,6 +147,9 @@ This will show us your interest in the project, and we will be grateful for that
 * [Jakarta Beans Validator](https://beanvalidation.org/)
   (with [Hibernate Validator](https://github.com/hibernate/hibernate-validator) as implementation)
 * [Configurate](https://github.com/SpongePowered/Configurate)
+* [Spigot API](https://hub.spigotmc.org/javadocs/spigot/)
+* [JobsReborn API](https://github.com/Zrips/Jobs/wiki/API)
+* [bStats](https://bstats.org/)
 
 Specifically for the tests:
 
