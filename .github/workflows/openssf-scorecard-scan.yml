@@ -1,4 +1,4 @@
-name: Security Scan - Scorecard
+name: OpenSSF Scorecard - Scan
 
 on:
   workflow_dispatch:
