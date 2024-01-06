@@ -9,6 +9,7 @@ jobs:
   prepare:
     name: Release - Prepare
     runs-on: ubuntu-latest
+    timeout-minutes: 120
 
     # https://github.com/orgs/community/discussions/26560#discussioncomment-3252339
     env:
