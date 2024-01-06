@@ -159,9 +159,11 @@ jobs:
         run: |
           if [[ -z "$(ls --almost-all "${SIGNATURES_DIR}" 2>/dev/null)" ]]; then
             echo 'No asset to be uploaded in the GitHub release'
-          else
-            echo "Uploading the following files in the GitHub release '${{ steps.tag.outputs.name }}'"
-            ls --almost-all "${SIGNATURES_DIR}"
-            gh release upload ${{ steps.tag.outputs.name }} "${SIGNATURES_DIR}"/*
-            echo 'Files uploaded successfully'
+            echo 'Aborting...'
+            exit 1
           fi
+
+          echo "Uploading the following files in the GitHub release '${{ steps.tag.outputs.name }}'"
+          ls --almost-all "${SIGNATURES_DIR}"
+          gh release upload ${{ steps.tag.outputs.name }} "${SIGNATURES_DIR}"/*
+          echo 'Files uploaded successfully'
