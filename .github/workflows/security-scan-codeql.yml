@@ -12,8 +12,7 @@ on:
   schedule:
     - cron: '28 14 * * *' # At 14:28 every day
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   analyze:
@@ -22,6 +21,7 @@ jobs:
 
     permissions:
       actions: read
+      contents: read
       security-events: write
 
     steps:
