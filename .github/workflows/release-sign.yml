@@ -60,7 +60,7 @@ jobs:
 
       - name: Input validation
         run: |
-          if [[ ! '${{ steps.tag.outputs.name }}' =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          if [[ ! '${{ steps.tag.outputs.name }}' =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
             echo 'Invalid tag name'
             echo 'Aborting...'
             exit 1
