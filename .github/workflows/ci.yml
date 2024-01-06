@@ -3,11 +3,9 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches:
-      - 'main'
+    branches: [main]
   pull_request:
-    branches:
-      - 'main'
+    branches: [main]
   schedule:
     - cron: '28 14 * * *' # At 14:28 every day
 

@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
   branch_protection_rule:
   push:
-    branches:
-      - 'main'
+    branches: [main]
   schedule:
     - cron: '24 3 * * *' # At 03:24 every day
 

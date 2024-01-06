@@ -3,8 +3,7 @@ name: Release - Perform
 on:
   workflow_dispatch:
   push:
-    branches:
-      - 'main'
+    branches: [main]
     paths:
       - .github/CHANGELOG.md
 
