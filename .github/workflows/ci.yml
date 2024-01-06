@@ -15,6 +15,7 @@ jobs:
   build-and-test:
     name: Build & Test
     runs-on: ubuntu-latest
+    timeout-minutes: 300
 
     permissions:
       contents: read
@@ -88,6 +89,7 @@ jobs:
   security-scan:
     name: Security scan
     runs-on: ubuntu-latest
+    timeout-minutes: 300
 
     permissions:
       actions: read
