@@ -77,11 +77,13 @@ Download the latest `.jar` file from the
 [release section](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/) of this
 repository.
 
-#### Signature verification (optional)
+#### Signature verification
 
-In case you wish to verify the plugin's signature to ensure that the file is trustworthy, you can follow these steps:
+In case you wish to verify the plugin's signature to ensure that the file is trustworthy, you can
+follow these steps:
+
 * Install the [Cosign CLI](https://github.com/sigstore/cosign?tab=readme-ov-file#installation)
-* Install the `.sig` and `.pem` alongside the plugin file
+* Install the `.sig` and `.pem` files alongside the plugin one
 * Execute the following Bash commands (you will have to adapt them if necessary):
 
 ```shell
