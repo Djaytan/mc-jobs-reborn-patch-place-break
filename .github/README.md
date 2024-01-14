@@ -5,6 +5,7 @@
 [![CI](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions/workflows/ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
+[![semantic-release: conventional-commits](https://img.shields.io/badge/semantic--release-conventional--commits-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/8112/badge)](https://www.bestpractices.dev/projects/8112)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Djaytan/mc-jobs-reborn-patch-place-break/badge)](https://securityscorecards.dev/viewer/?uri=github.com/Djaytan/mc-jobs-reborn-patch-place-break)
 
@@ -169,7 +170,8 @@ Specifically for the CI:
 * [GitHub Actions](https://github.com/features/actions)
 * [CodeQL](https://codeql.github.com/)
 * [OpenSSF Scorecard](https://github.com/ossf/scorecard)
-* [Cocogitto](https://docs.cocogitto.io/)
+* [semantic-release](https://github.com/semantic-release/semantic-release)
+* [commitlint](https://github.com/conventional-changelog/commitlint)
 * [Sigstore](https://www.sigstore.dev/)
 
 ## Versioning

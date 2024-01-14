@@ -161,7 +161,7 @@ from [Angular project](https://github.com/angular/angular/blob/main/CONTRIBUTING
   │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
   │       │
   │       └─⫸ Commit Scope: core|spigot-adapter|spigot-plugin|readme|contributing|changelog|  
-  │                          packaging|deps|other|github|renovate|cocogitto
+  │                          packaging|deps|other|github|renovate|release
   │
   └─⫸ Commit Type: feat|fix|perf|refactor|docs|test|build|ci
 ```
@@ -213,7 +213,7 @@ But there are exceptions that shall be considered as well depending mostly on th
 * **github**: used for updating GitHub Actions workflows, issues/PRs templates and `CODEOWNERS`
   file(s)
 * **renovate**: used for updating Renovate configuration
-* **cocogitto**: used for updating Cocogitto configuration
+* **release**: used for updating release-related configuration
 
 ###### Special scope
 

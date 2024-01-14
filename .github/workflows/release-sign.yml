@@ -6,9 +6,12 @@ on:
       tag-name:
         required: true
         description: The tag name associated to a release containing assets to be signed
-  workflow_run:
-    workflows: [Release - Perform]
-    types: [completed]
+  workflow_call:
+    inputs:
+      tag-name:
+        required: true
+        type: string
+        description: The tag name associated to a release containing assets to be signed
 
 permissions: {}
 
@@ -23,8 +26,10 @@ jobs:
       id-token: write
 
     env:
+      TAG_NAME: ${{ inputs.tag-name }}
       ASSETS_DIR: ${{ github.workspace }}/assets
       SIGNATURES_DIR: ${{ github.workspace }}/signatures
+      GH_TOKEN: ${{ github.token }}
 
     steps:
       - name: Harden runner
@@ -46,33 +51,18 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Retrieve tag name
-        id: tag
-        run: |
-          if [[ "${GITHUB_EVENT_NAME}" == 'workflow_dispatch' ]]; then
-            TAG_NAME=${{ inputs.tag-name }}
-          else
-            TAG_NAME=${{ github.event.release.tag_name }}
-          fi
-
-          echo "The retrieved tag name is '${TAG_NAME}'"
-
-          echo "name=${TAG_NAME}" >> "${GITHUB_OUTPUT}"
-
       - name: Input validation
         run: |
-          if [[ ! '${{ steps.tag.outputs.name }}' =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
-            echo 'Invalid tag name'
+          if [[ ! "${TAG_NAME}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+.*$ ]]; then
+            echo "Invalid tag name '${TAG_NAME}'"
             echo 'Aborting...'
             exit 1
           fi
 
-          echo 'The provided tag name is valid'
+          echo "The provided tag name '${TAG_NAME}' is valid"
 
       - name: Download release assets
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh release download ${{ steps.tag.outputs.name }} --dir "${ASSETS_DIR}"
+        run: gh release download "${TAG_NAME}" --dir "${ASSETS_DIR}"
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@9614fae9e5c5eddabb09f90a270fcb487c9f7149 # v3.3.0
@@ -155,8 +145,6 @@ jobs:
           done
 
       - name: Upload signature assets in release
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           if [[ -z "$(ls --almost-all "${SIGNATURES_DIR}" 2>/dev/null)" ]]; then
             echo 'No asset to be uploaded in the GitHub release'
@@ -164,7 +152,7 @@ jobs:
             exit 1
           fi
 
-          echo "Uploading the following files in the GitHub release '${{ steps.tag.outputs.name }}'"
+          echo "Uploading the following files in the GitHub release '${TAG_NAME}'"
           ls --almost-all "${SIGNATURES_DIR}"
-          gh release upload ${{ steps.tag.outputs.name }} "${SIGNATURES_DIR}"/*
+          gh release upload "${TAG_NAME}" "${SIGNATURES_DIR}"/*
           echo 'Files uploaded successfully'
