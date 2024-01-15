@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+
+    permissions:
+      contents: write # To be able to publish a GitHub release
+      issues: write # To be able to comment on released issues
+      pull-requests: write # To be able to comment on released pull requests
+
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443
+            api.github.com:443
+            objects.githubusercontent.com:443
+            uploads.github.com:443
+            repo.maven.apache.org:443
+            jitpack.io:443
+            repo.papermc.io:443
+            api.nuget.org:443
+            registry.npmjs.org:443
+
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          fetch-depth: 0 # Required by semantic-release
+
+      - name: Setup Node.js
+        uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4.0.1
+        with:
+          node-version: 20
+
+      - name: Install semantic-release
+        run: |
+          npm install --global \
+            semantic-release@23.0.0 \
+            @semantic-release/changelog@6.0.3 \
+            @semantic-release/exec@6.0.3 \
+            semantic-release-github-pullrequest@1.3.0
+
+      - name: Release
+        id: release
+        run: |
+          set -Eeuo pipefail
+          semantic-release --ci
+          echo "tag=${TAG_NAME}" >> "${GITHUB_OUTPUT}"
+
+      - name: Sign
+        uses: ${{ github.repository }}/.github/workflows/release-sign.yml@refs/heads/main
+        with:
+          tag-name: ${{ steps.release.outputs.tag }}

@@ -5,13 +5,27 @@
     "config:best-practices",
     "config:semverAllMonthly"
   ],
-  "labels": [
-    "t:dependencies"
-  ],
+  "labels": ["t:dependencies"],
   "vulnerabilityAlerts": {
     "labels": ["t:security"]
   },
   "osvVulnerabilityAlerts": true,
   "semanticCommits": "enabled",
-  "semanticCommitType": "build"
+  "semanticCommitType": "build",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "semantic-release dependencies",
+      "fileMatch": ["^\\.github/workflows/[^/]+\\.ya?ml$"],
+      "matchStrings": ["(?<depName>[@]?semantic-release.*)@(?<currentValue>[^\\s]*)"],
+      "datasourceTemplate": "npm"
+    },
+    {
+      "customType": "regex",
+      "description": "commitlint dependencies",
+      "fileMatch": ["^\\.github/workflows/[^/]+\\.ya?ml$"],
+      "matchStrings": ["(?<depName>@commitlint/.*)@(?<currentValue>[^\\s]*)"],
+      "datasourceTemplate": "npm"
+    }
+  ]
 }

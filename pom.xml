@@ -369,8 +369,9 @@
                                 <excludes>
                                     <exclude>src/main/resources/**</exclude>
                                     <exclude>src/test/resources/**</exclude>
+                                    <exclude>scripts/**</exclude>
                                     <exclude>.editorconfig</exclude>
-                                    <exclude>cog.toml</exclude>
+                                    <exclude>release.config.js</exclude>
                                 </excludes>
                             </licenseSet>
                         </licenseSets>

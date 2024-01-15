@@ -3,9 +3,9 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, 'release/v*', beta, alpha]
   pull_request:
-    branches: [main]
+    branches: [main, 'release/v*', beta, alpha]
   schedule:
     - cron: '28 14 * * *' # At 14:28 every day
 
@@ -20,6 +20,9 @@ jobs:
     permissions:
       contents: read
 
+    env:
+      COMMITLINT_CONFIG_FILE: ${{ github.workspace }}/.github/commitlint.config.js
+
     steps:
       - name: Harden runner
         uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
@@ -28,11 +31,13 @@ jobs:
           egress-policy: block
           allowed-endpoints: >
             github.com:443
+            api.github.com:443
             objects.githubusercontent.com:443
             repo.maven.apache.org:443
             jitpack.io:443
             repo.papermc.io:443
             api.nuget.org:443
+            registry.npmjs.org:443
             auth.docker.io:443
             registry-1.docker.io:443
             production.cloudflare.docker.com:443
@@ -45,17 +50,31 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           persist-credentials: false
-          # Required by SonarCloud & Cocogitto
-          fetch-depth: 0
-          # Pick the PR HEAD instead of the merge commit (required by Cocogitto)
-          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0 # Required by SonarCloud and commitlint
 
-      - name: Conventional commits check
-        uses: cocogitto/cocogitto-action@ac6260150ee57e3164cd95b47fc84cdee9e3444c # v3.5
+      - name: Setup Node.js
+        uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4.0.1
         with:
-          check-latest-tag-only: true
+          node-version: 20
 
-      - name: Set up JDK 17
+      - name: Install commitlint
+        run: |
+          npm install --global \
+            @commitlint/config-conventional@18.4.4 \
+            @commitlint/cli@18.4.4
+
+      - name: Validate current commit (last commit) with commitlint
+        if: ${{ github.event_name != 'pull_request' }}
+        run: commitlint --config "${COMMITLINT_CONFIG_FILE}" --verbose --from HEAD~1 --to HEAD
+
+      - name: Validate PR commits with commitlint
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          commitlint --config "${COMMITLINT_CONFIG_FILE}" --verbose \
+            --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} \
+            --to ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Java
         uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
         with:
           java-version: 17
@@ -110,13 +129,14 @@ jobs:
             repo.maven.apache.org:443
             jitpack.io:443
             repo.papermc.io:443
+            api.nuget.org:443
 
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           persist-credentials: false
 
-      - name: Set up JDK 17
+      - name: Setup Java
         uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
         with:
           java-version: 17
