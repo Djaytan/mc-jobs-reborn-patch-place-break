@@ -100,7 +100,7 @@ jobs:
           SONAR_ORGANIZATION="$(echo '${{ github.repository_owner }}' | awk '{print tolower($0)}')"
           SONAR_PROJECT_KEY="$(echo '${{ github.repository }}' | sed 's/\//_/')"
 
-          mvn verify sonar:sonar --activate-profiles ci \
+          mvn verify sonar:sonar --activate-profiles ci -Dstyle.color=always \
             --batch-mode --errors --strict-checksums --update-snapshots \
             -Dsonar.host.url="${SONAR_HOST_URL}" \
             -Dsonar.organization="${SONAR_ORGANIZATION}" \
@@ -150,7 +150,7 @@ jobs:
 
       - name: Build
         run: |
-          mvn package --activate-profiles fast \
+          mvn package --activate-profiles fast -Dstyle.color=always \
             --batch-mode --errors --strict-checksums --update-snapshots --fail-fast
 
       - name: Perform CodeQL Analysis
