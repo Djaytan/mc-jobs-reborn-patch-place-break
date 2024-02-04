@@ -55,22 +55,24 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4.0.1
         with:
-          node-version: 20
+          node-version: lts/iron
+          cache: npm
+          cache-dependency-path: .github/package-lock.json
 
       - name: Install commitlint
-        run: |
-          npm install --global \
-            @commitlint/config-conventional@18.4.4 \
-            @commitlint/cli@18.4.4
+        working-directory: .github/
+        run: npm clean-install
 
       - name: Validate current commit (last commit) with commitlint
         if: ${{ github.event_name != 'pull_request' }}
-        run: commitlint --config "${COMMITLINT_CONFIG_FILE}" --verbose --from HEAD~1 --to HEAD
+        working-directory: .github/
+        run: npx --no-install commitlint --config "${COMMITLINT_CONFIG_FILE}" --verbose --from HEAD~1 --to HEAD
 
       - name: Validate PR commits with commitlint
         if: ${{ github.event_name == 'pull_request' }}
+        working-directory: .github/
         run: |
-          commitlint --config "${COMMITLINT_CONFIG_FILE}" --verbose \
+          npx --no-install commitlint --config "${COMMITLINT_CONFIG_FILE}" --verbose \
             --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} \
             --to ${{ github.event.pull_request.head.sha }}
 
