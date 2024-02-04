@@ -54,6 +54,8 @@ jobs:
 
       - name: Release
         id: release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         working-directory: .github/
         run: |
           npx --no-install semantic-release --ci
@@ -74,7 +76,6 @@ jobs:
       TAG_NAME: ${{ needs.release-perform.outputs.release-tag }}
       ASSETS_DIR: ${{ github.workspace }}/assets
       SIGNATURES_DIR: ${{ github.workspace }}/signatures
-      GH_TOKEN: ${{ github.token }}
 
     steps:
       - name: Harden runner
@@ -107,12 +108,16 @@ jobs:
           echo "The provided tag name '${TAG_NAME}' is valid"
 
       - name: Download release assets
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: gh release download "${TAG_NAME}" --dir "${ASSETS_DIR}"
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@9614fae9e5c5eddabb09f90a270fcb487c9f7149 # v3.3.0
 
       - name: Sign blob files
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           mkdir --parents "${SIGNATURES_DIR}"
 
@@ -190,6 +195,8 @@ jobs:
           done
 
       - name: Upload signature assets in release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           if [[ -z "$(ls --almost-all "${SIGNATURES_DIR}" 2>/dev/null)" ]]; then
             echo 'No asset to be uploaded in the GitHub release'
