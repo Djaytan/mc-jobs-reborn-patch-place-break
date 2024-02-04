@@ -41,21 +41,19 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4.0.1
         with:
-          node-version: 20
+          node-version: lts/iron
+          cache: npm
+          cache-dependency-path: .github/package-lock.json
 
       - name: Install semantic-release
-        run: |
-          npm install --global \
-            semantic-release@23.0.0 \
-            @semantic-release/changelog@6.0.3 \
-            @semantic-release/exec@6.0.3 \
-            semantic-release-github-pullrequest@1.3.0
+        working-directory: .github/
+        run: npm clean-install
 
       - name: Release
         id: release
+        working-directory: .github/
         run: |
-          set -Eeuo pipefail
-          semantic-release --ci
+          npx --no-install semantic-release --ci
           echo "tag=${TAG_NAME}" >> "${GITHUB_OUTPUT}"
 
       - name: Sign

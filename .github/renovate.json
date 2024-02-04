@@ -11,21 +11,5 @@
   },
   "osvVulnerabilityAlerts": true,
   "semanticCommits": "enabled",
-  "semanticCommitType": "build",
-  "customManagers": [
-    {
-      "customType": "regex",
-      "description": "semantic-release dependencies",
-      "fileMatch": ["^\\.github/workflows/[^/]+\\.ya?ml$"],
-      "matchStrings": ["(?<depName>[@]?semantic-release.*)@(?<currentValue>[^\\s]*)"],
-      "datasourceTemplate": "npm"
-    },
-    {
-      "customType": "regex",
-      "description": "commitlint dependencies",
-      "fileMatch": ["^\\.github/workflows/[^/]+\\.ya?ml$"],
-      "matchStrings": ["(?<depName>@commitlint/.*)@(?<currentValue>[^\\s]*)"],
-      "datasourceTemplate": "npm"
-    }
-  ]
+  "semanticCommitType": "build"
 }
