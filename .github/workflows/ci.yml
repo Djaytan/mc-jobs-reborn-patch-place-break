@@ -126,6 +126,7 @@ jobs:
             github.com:443
             api.github.com:443
             uploads.github.com:443
+            objects.githubusercontent.com
             repo.maven.apache.org:443
             jitpack.io:443
             repo.papermc.io:443
