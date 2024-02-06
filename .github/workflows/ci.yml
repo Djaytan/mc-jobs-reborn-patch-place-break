@@ -108,8 +108,8 @@ jobs:
             -Dsonar.organization="${SONAR_ORGANIZATION}" \
             -Dsonar.projectKey="${SONAR_PROJECT_KEY}"
 
-  security-scan:
-    name: Security scan
+  codeql-sast:
+    name: CodeQL - Static Application Security Testing (SAST)
     runs-on: ubuntu-22.04
     timeout-minutes: 300
 
