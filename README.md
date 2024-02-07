@@ -130,9 +130,9 @@ PlaceAndBreak:
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on ways to help us.
+Please read [CONTRIBUTING.md](docs/CONTRIBUTING.md) for details on ways to help us.
 
-Take care to always follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+Take care to always follow our [CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md).
 
 ## How to support us?
 
@@ -182,8 +182,8 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## Security Policy
 
 In case you think having found a security vulnerability, please consult
-our [Security Policy](SECURITY.md).
+our [Security Policy](docs/SECURITY.md).
 
 ## Licence
 
-This project is under the [MIT license](../LICENSE).
+This project is under the [MIT license](LICENSE).
