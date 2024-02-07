@@ -92,7 +92,7 @@ PLUGIN_VERSION=''
 cosign verify-blob "JobsReborn-PatchPlaceBreak-${PLUGIN_VERSION}.jar" \
   --signature="JobsReborn-PatchPlaceBreak-${PLUGIN_VERSION}.jar-keyless.sig" \
   --certificate="JobsReborn-PatchPlaceBreak-${PLUGIN_VERSION}.jar-keyless.pem" \
-  --certificate-identity=https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/.github/workflows/release-sign.yml@refs/heads/main \
+  --certificate-identity=https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/.github/workflows/release.yml@refs/heads/main \
   --certificate-oidc-issuer=https://token.actions.githubusercontent.com
 ```
 
