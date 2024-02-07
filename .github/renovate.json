@@ -9,7 +9,7 @@
     ":enableVulnerabilityAlertsWithLabel(t:security)",
     ":label(t:dependencies)",
     ":semanticCommits",
-    ":semanticCommitType(build)"
+    ":semanticCommitTypeAll(build)"
   ],
   "configMigration": true,
   "osvVulnerabilityAlerts": true
