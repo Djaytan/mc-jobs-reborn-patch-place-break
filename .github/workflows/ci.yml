@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: [main, 'release/v*', next, next-major, beta, alpha]
   schedule:
-    - cron: '28 14 * * *' # At 14:28 every day
+    - cron: '5 4 * * *' # Every day at 04:05
 
 permissions: {}
 
