@@ -36,8 +36,7 @@ module.exports = {
             {type: 'test', section: '✅ Tests'},
             {type: 'ci', section: '📦 Continuous Integration'},
             {type: 'docs', section: '📖 Documentation'}
-          ],
-          releaseCommitMessageFormat: 'docs(changelog): release {{currentTag}}',
+          ]
         }
       }
     ],
