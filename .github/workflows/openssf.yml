@@ -1,4 +1,4 @@
-name: OpenSSF Scorecard - Scan
+name: OpenSSF
 
 on:
   workflow_dispatch:
@@ -11,8 +11,8 @@ on:
 permissions: read-all
 
 jobs:
-  analyze:
-    name: Analyze
+  scorecard-secure-supply-chain-analysis:
+    name: Scorecard - Secure supply-chain analysis
     runs-on: ubuntu-22.04
     timeout-minutes: 120
 
