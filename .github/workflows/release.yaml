@@ -158,12 +158,6 @@ jobs:
           CERTIFICATE_IDENTITY: ${{ github.server_url }}/${{ github.workflow_ref }}
           CERTIFICATE_OIDC_ISSUER: https://token.actions.githubusercontent.com
         run: |
-          echo "GITHUB_WORKFLOW=${GITHUB_WORKFLOW}"
-          echo "GITHUB_REF=${GITHUB_REF}"
-          echo "GITHUB_REPOSITORY=${GITHUB_REPOSITORY}"
-          echo "GITHUB_SHA=${GITHUB_SHA}"
-          echo "GITHUB_EVENT_NAME=${GITHUB_EVENT_NAME}"
-
           for ASSET_FILE in "${ASSETS_DIR}"/*; do
             ASSET_NAME="$(basename "${ASSET_FILE}")"
             ASSET_FILE_NAME="${ASSETS_DIR}/${ASSET_NAME}"
@@ -186,12 +180,7 @@ jobs:
               --signature="${SIGNATURES_DIR}/${SIG_FILE_NAME}" \
               --certificate="${SIGNATURES_DIR}/${CERT_FILE_NAME}" \
               --certificate-identity="${CERTIFICATE_IDENTITY}" \
-              --certificate-oidc-issuer="${CERTIFICATE_OIDC_ISSUER}" \
-              --certificate-github-workflow-name="${GITHUB_WORKFLOW}" \
-              --certificate-github-workflow-ref="${GITHUB_REF}" \
-              --certificate-github-workflow-repository="${GITHUB_REPOSITORY}" \
-              --certificate-github-workflow-sha="${GITHUB_SHA}" \
-              --certificate-github-workflow-trigger="${GITHUB_EVENT_NAME}"
+              --certificate-oidc-issuer="${CERTIFICATE_OIDC_ISSUER}"
           done
 
       - name: Upload signature assets in release
