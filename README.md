@@ -164,6 +164,7 @@ Specifically for the tests:
 * [Jimfs](https://github.com/google/jimfs)
 * [MockBukkit](https://github.com/MockBukkit/MockBukkit)
 * [Awaitability](https://github.com/awaitility/awaitility)
+* [ShellSpec](https://github.com/shellspec/shellspec)
 
 Specifically for the CI:
 

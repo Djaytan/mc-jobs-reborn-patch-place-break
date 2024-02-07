@@ -1,0 +1,6 @@
+# Allows overriding options for localdev purposes
+.shellspec-local
+
+# Shall never be commited
+report/
+/coverage/

@@ -12,8 +12,8 @@ on:
 permissions: {}
 
 jobs:
-  build-and-test:
-    name: Build & Test
+  build-and-test-product:
+    name: Build & Test product
     runs-on: ubuntu-22.04
     timeout-minutes: 300
 
@@ -107,6 +107,35 @@ jobs:
             -Dsonar.host.url="${SONAR_HOST_URL}" \
             -Dsonar.organization="${SONAR_ORGANIZATION}" \
             -Dsonar.projectKey="${SONAR_PROJECT_KEY}"
+
+  test-scripts:
+    name: Test scripts
+    runs-on: ubuntu-22.04
+    timeout-minutes: 300
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443
+            auth.docker.io:443
+            registry-1.docker.io:443
+            gcr.io:443
+
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          persist-credentials: false
+
+      - name: Test Bash scripts
+        working-directory: .github/scripts
+        run: ./shellspec --color
 
   codeql-sast:
     name: CodeQL - Static Application Security Testing (SAST)
