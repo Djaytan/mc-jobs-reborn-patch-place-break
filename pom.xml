@@ -55,7 +55,7 @@
         <format.check.skip>true</format.check.skip>
 
         <!-- ==================== Dependencies versions ==================== -->
-        <version.flyway>10.7.1</version.flyway>
+        <version.flyway>10.7.2</version.flyway>
     </properties>
 
     <dependencyManagement>
@@ -265,7 +265,7 @@
             <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>testcontainers-bom</artifactId>
-                <version>1.19.4</version>
+                <version>1.19.5</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
