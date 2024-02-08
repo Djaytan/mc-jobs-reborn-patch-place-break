@@ -55,7 +55,7 @@
         <format.check.skip>true</format.check.skip>
 
         <!-- ==================== Dependencies versions ==================== -->
-        <version.flyway>10.4.1</version.flyway>
+        <version.flyway>10.7.1</version.flyway>
     </properties>
 
     <dependencyManagement>
