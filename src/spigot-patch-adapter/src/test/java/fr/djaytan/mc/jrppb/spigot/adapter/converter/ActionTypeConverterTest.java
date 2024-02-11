@@ -23,45 +23,76 @@
 package fr.djaytan.mc.jrppb.spigot.adapter.converter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.mc.jrppb.api.entities.BlockActionType;
+import java.util.stream.Stream;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class ActionTypeConverterTest {
 
   private final ActionTypeConverter actionTypeConverter = new ActionTypeConverter();
 
   @Nested
-  class WhenConverting {
+  @DisplayName("convert()")
+  class Convert {
 
-    @Test
-    void withValidActionType_shouldReturnCorrespondingBlockActionType() {
-      // Given
-      ActionType validActionType = ActionType.BREAK;
-
-      // When
-      BlockActionType blockActionType = actionTypeConverter.convert(validActionType);
-
-      // Then
-      assertThat(blockActionType).isEqualTo(BlockActionType.BREAK);
+    @ParameterizedTest
+    @MethodSource
+    void whenConvertingSupportedActionType_shallProcessSuccessfully(
+        @NotNull ActionType actionType, @NotNull BlockActionType expectedValue) {
+      assertThat(actionTypeConverter.convert(actionType)).isEqualTo(expectedValue);
     }
 
-    @Test
-    void withInvalidActionType_shouldThrowException() {
-      // Given
-      ActionType invalidActionType = ActionType.BREED;
+    private static @NotNull Stream<Arguments>
+        whenConvertingSupportedActionType_shallProcessSuccessfully() {
+      return Stream.of(
+          arguments(ActionType.PLACE, BlockActionType.PLACE),
+          arguments(ActionType.BREAK, BlockActionType.BREAK),
+          arguments(ActionType.TNTBREAK, BlockActionType.TNTBREAK));
+    }
 
-      // When
-      Exception exception = catchException(() -> actionTypeConverter.convert(invalidActionType));
-
-      // Then
-      assertThat(exception)
+    @ParameterizedTest
+    @MethodSource
+    void whenConvertingUnsupportedActionType_shallThrowException(@NotNull ActionType actionType) {
+      assertThatThrownBy(() -> actionTypeConverter.convert(actionType))
           .isExactlyInstanceOf(IllegalArgumentException.class)
           .hasMessage(
-              "Invalid job action type 'BREED' specified. Expecting one of the following: [BREAK, TNTBREAK, PLACE]");
+              String.format(
+                  "Unsupported job action type '%s' specified. Only the following ones are supported: [BREAK, TNTBREAK, PLACE]",
+                  actionType.name()));
+    }
+
+    private static @NotNull Stream<Arguments>
+        whenConvertingUnsupportedActionType_shallThrowException() {
+      return Stream.of(
+          arguments(ActionType.STRIPLOGS),
+          arguments(ActionType.KILL),
+          arguments(ActionType.MMKILL),
+          arguments(ActionType.FISH),
+          arguments(ActionType.CRAFT),
+          arguments(ActionType.VTRADE),
+          arguments(ActionType.SMELT),
+          arguments(ActionType.BREW),
+          arguments(ActionType.ENCHANT),
+          arguments(ActionType.REPAIR),
+          arguments(ActionType.BREED),
+          arguments(ActionType.TAME),
+          arguments(ActionType.DYE),
+          arguments(ActionType.SHEAR),
+          arguments(ActionType.MILK),
+          arguments(ActionType.EXPLORE),
+          arguments(ActionType.EAT),
+          arguments(ActionType.CUSTOMKILL),
+          arguments(ActionType.COLLECT),
+          arguments(ActionType.BAKE));
     }
   }
 }
