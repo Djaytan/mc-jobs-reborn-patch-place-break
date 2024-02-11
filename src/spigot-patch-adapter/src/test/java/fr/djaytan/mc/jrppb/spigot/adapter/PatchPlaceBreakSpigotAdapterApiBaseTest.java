@@ -52,6 +52,8 @@ import org.bukkit.block.BlockFace;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
@@ -88,154 +90,206 @@ abstract class PatchPlaceBreakSpigotAdapterApiBaseTest {
     patchPlaceBreakCore.disable();
   }
 
-  /**
-   * If the block is not specified, then we consider that the given action doesn't target any
-   * particular block. Hence, we consider the action is not an exploit one.
-   */
-  @Test
-  void whenCheckingExploitWhileActionInfoIsNull_shouldNotDetectExploit() {
-    // Given
+  @Nested
+  @DisplayName("isPlaceAndBreakExploit()")
+  class IsPlaceAndBreakExploit {
 
-    // When
-    boolean isExploit =
-        patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(null, randomBlockMocked);
+    /**
+     * If the action type is not specified, then we consider no action has been dispatched and thus
+     * no exploit report is expected.
+     *
+     * <p>We would like to apply stricter enforcement here (i.e. throwing a warning/error).
+     * Unfortunately, JobsReborn doesn't seem predictable nor have clear specifications about the
+     * expected behaviors. Typically, some situations have been observed where events without any
+     * action info were dispatched. It may be a bug. Unfortunately, we ignore that. Neither we have
+     * contacted the JobsReborn team about that. Thus, it's better (at least for now) to ignore such
+     * situations instead of throwing a warning/error which will just end up being considered as
+     * noises and nothing else otherwise.
+     */
+    @Test
+    void whenActionInfoIsNull_shallNotReportExploit() {
+      assertThat(patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(null, randomBlockMocked))
+          .isFalse();
+    }
 
-    // Then
-    assertThat(isExploit).isFalse();
+    /**
+     * If the block is not specified, then we consider that the given action doesn't target any
+     * particular block. Hence, we consider the action is not an exploit one.
+     *
+     * <p>We would like to apply stricter enforcement here (i.e. throwing a warning/error).
+     * Unfortunately, JobsReborn doesn't seem predictable nor have clear specifications about the
+     * expected behaviors. Typically, some situations have been observed where events without any
+     * block were dispatched. It may be a bug. Unfortunately, we ignore that. Neither we have
+     * contacted the JobsReborn team about that. Thus, it's better (at least for now) to ignore such
+     * situations instead of throwing a warning/error which will just end up being considered as
+     * noises and nothing else otherwise.
+     */
+    @Test
+    void whenBlockIsNull_shallNotReportExploit(@Mock ActionInfo actionInfo) {
+      assertThat(patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, null))
+          .isFalse();
+    }
+
+    /**
+     * A job action type unsupported/covered by the patch shall never report exploit.
+     *
+     * <p>A bug was reported regarding this behavior before being fixed:
+     * https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/570.
+     */
+    @ParameterizedTest
+    @MethodSource
+    void whenActionTypeIsUnsupported_shallNotReportExploit(ActionType actionType) {
+      // Given
+      ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, actionType);
+
+      // When
+      boolean isExploit =
+          patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
+
+      // Then
+      assertThat(isExploit).isFalse();
+    }
+
+    private static @NotNull Stream<Arguments> whenActionTypeIsUnsupported_shallNotReportExploit() {
+      return JobActionTypeSupportChecker.getUnsupportedJobActionTypes().stream().map(Arguments::of);
+    }
+
+    @Test
+    void whenTagDoesNotExist_shallNotReportExploit() {
+      // Given
+      ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.PLACE);
+      given(randomBlockMocked.getType()).willReturn(Material.STONE);
+
+      // When
+      boolean isExploit =
+          patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
+
+      // Then
+      assertThat(isExploit).isFalse();
+    }
+
+    @Test
+    void whenActionIsBlacklisted_shallNotReportExploit() {
+      // Given
+      ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.BREAK);
+      given(randomBlockMocked.getType()).willReturn(Material.AIR);
+
+      // When
+      boolean isExploit =
+          patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
+
+      // Then
+      assertThat(isExploit).isFalse();
+    }
   }
 
-  /**
-   * If the block is not specified, then we consider that the given action doesn't target any
-   * particular block. Hence, we consider the action is not an exploit one.
-   */
-  @Test
-  void whenCheckingExploitWhileBlockIsNull_shouldNotDetectExploit(@Mock ActionInfo actionInfo) {
-    // Given
+  @Nested
+  @DisplayName("putTag()")
+  class PutTag {
 
-    // When
-    boolean isExploit = patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, null);
+    @ParameterizedTest
+    @MethodSource
+    void whenPuttingTag(
+        boolean isEphemeral,
+        @NotNull TemporalAmount timeElapsedAfterPut,
+        boolean isExploitExpected) {
+      // Given
+      ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.PLACE);
 
-    // Then
-    assertThat(isExploit).isFalse();
+      // When
+      patchPlaceBreakSpigotAdapterApi.putTag(randomBlockMocked, isEphemeral).join();
+      mutableClock.add(timeElapsedAfterPut);
+
+      // Then
+      boolean isExploit =
+          patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
+
+      assertThat(isExploit).isEqualTo(isExploitExpected);
+    }
+
+    private static @NotNull Stream<Arguments> whenPuttingTag() {
+      return Stream.of(
+          arguments(
+              named("Being persistent and put less than 3 seconds before check", false),
+              Duration.ofSeconds(1),
+              true),
+          arguments(
+              named("Being persistent and put more than 3 seconds before check", false),
+              Duration.ofSeconds(4),
+              true),
+          arguments(
+              named("Being ephemeral and put less than 3 seconds before check", true),
+              Duration.ofSeconds(1),
+              true),
+          arguments(
+              named("Being ephemeral and put more than 3 seconds before check", true),
+              Duration.ofSeconds(4),
+              false));
+    }
   }
 
-  @Test
-  void whenTagDoesntExist_shouldNotDetectExploit() {
-    // Given
-    ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.PLACE);
-    given(randomBlockMocked.getType()).willReturn(Material.STONE);
+  @Nested
+  @DisplayName("moveTags()")
+  class MoveTags {
 
-    // When
-    boolean isExploit =
-        patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
+    @Test
+    void afterMovingTag_shouldDetectExploitInNewLocationButNotInOldOne(
+        @Mock @NotNull Block newBlock) {
+      // Given
+      Block oldBlock = randomBlockMocked;
+      patchPlaceBreakSpigotAdapterApi.putTag(oldBlock, true).join();
 
-    // Then
-    assertThat(isExploit).isFalse();
+      BlockFace blockFace = BlockFace.EAST;
+      Set<Block> blocks = Collections.singleton(oldBlock);
+
+      // When
+      patchPlaceBreakSpigotAdapterApi.moveTags(blocks, blockFace).join();
+
+      // Then
+      World oldWorld = oldBlock.getWorld();
+      int oldX = oldBlock.getX();
+      int oldY = oldBlock.getY();
+      int oldZ = oldBlock.getZ();
+
+      when(newBlock.getWorld()).thenReturn(oldWorld);
+      when(newBlock.getX()).thenReturn(oldX + 1);
+      when(newBlock.getY()).thenReturn(oldY);
+      when(newBlock.getZ()).thenReturn(oldZ);
+      when(newBlock.getType()).thenReturn(Material.STONE);
+
+      ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.PLACE);
+
+      boolean isOnOldBlockAnExploit =
+          patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, oldBlock);
+      boolean isOnNewBlockAnExploit =
+          patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, newBlock);
+
+      assertAll(
+          () -> assertThat(isOnOldBlockAnExploit).isFalse(),
+          () -> assertThat(isOnNewBlockAnExploit).isTrue());
+    }
   }
 
-  @Test
-  void whenActionIsBlacklisted_shouldNotDetectExploit() {
-    // Given
-    ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.BREAK);
-    given(randomBlockMocked.getType()).willReturn(Material.AIR);
+  @Nested
+  @DisplayName("removeTag()")
+  class RemoveTag {
 
-    // When
-    boolean isExploit =
-        patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
+    @Test
+    void afterRemovingTag_shallNotDetectExploit() {
+      // Given
+      patchPlaceBreakSpigotAdapterApi.putTag(randomBlockMocked, false).join();
 
-    // Then
-    assertThat(isExploit).isFalse();
-  }
+      // When
+      patchPlaceBreakSpigotAdapterApi.removeTag(randomBlockMocked).join();
 
-  @ParameterizedTest
-  @MethodSource
-  void whenPuttingTag(
-      boolean isEphemeral, @NotNull TemporalAmount timeElapsedAfterPut, boolean isExploitExpected) {
-    // Given
-    ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.PLACE);
+      // Then
+      ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.PLACE);
 
-    // When
-    patchPlaceBreakSpigotAdapterApi.putTag(randomBlockMocked, isEphemeral).join();
-    mutableClock.add(timeElapsedAfterPut);
+      boolean isExploit =
+          patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
 
-    // Then
-    boolean isExploit =
-        patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
-
-    assertThat(isExploit).isEqualTo(isExploitExpected);
-  }
-
-  private static @NotNull Stream<Arguments> whenPuttingTag() {
-    return Stream.of(
-        arguments(
-            named("Being persistent and put less than 3 seconds before check", false),
-            Duration.ofSeconds(1),
-            true),
-        arguments(
-            named("Being persistent and put more than 3 seconds before check", false),
-            Duration.ofSeconds(4),
-            true),
-        arguments(
-            named("Being ephemeral and put less than 3 seconds before check", true),
-            Duration.ofSeconds(1),
-            true),
-        arguments(
-            named("Being ephemeral and put more than 3 seconds before check", true),
-            Duration.ofSeconds(4),
-            false));
-  }
-
-  @Test
-  void whenMovingTag_shouldDetectExploitInNewLocationButNotInOldOne(@Mock @NotNull Block newBlock) {
-    // Given
-    Block oldBlock = randomBlockMocked;
-    patchPlaceBreakSpigotAdapterApi.putTag(oldBlock, true).join();
-
-    BlockFace blockFace = BlockFace.EAST;
-    Set<Block> blocks = Collections.singleton(oldBlock);
-
-    // When
-    patchPlaceBreakSpigotAdapterApi.moveTags(blocks, blockFace).join();
-
-    // Then
-    World oldWorld = oldBlock.getWorld();
-    int oldX = oldBlock.getX();
-    int oldY = oldBlock.getY();
-    int oldZ = oldBlock.getZ();
-
-    when(newBlock.getWorld()).thenReturn(oldWorld);
-    when(newBlock.getX()).thenReturn(oldX + 1);
-    when(newBlock.getY()).thenReturn(oldY);
-    when(newBlock.getZ()).thenReturn(oldZ);
-    when(newBlock.getType()).thenReturn(Material.STONE);
-
-    ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.PLACE);
-
-    boolean isOnOldBlockAnExploit =
-        patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, oldBlock);
-    boolean isOnNewBlockAnExploit =
-        patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, newBlock);
-
-    assertAll(
-        () -> assertThat(isOnOldBlockAnExploit).isFalse(),
-        () -> assertThat(isOnNewBlockAnExploit).isTrue());
-  }
-
-  @Test
-  void whenRemovingTag_shouldThenNotDetectExploit() {
-    // Given
-    patchPlaceBreakSpigotAdapterApi.putTag(randomBlockMocked, false).join();
-
-    // When
-    patchPlaceBreakSpigotAdapterApi.removeTag(randomBlockMocked).join();
-
-    // Then
-    ActionInfo actionInfo = new BlockActionInfo(randomBlockMocked, ActionType.PLACE);
-
-    boolean isExploit =
-        patchPlaceBreakSpigotAdapterApi.isPlaceAndBreakExploit(actionInfo, randomBlockMocked);
-
-    assertThat(isExploit).isFalse();
+      assertThat(isExploit).isFalse();
+    }
   }
 
   /* Helpers */

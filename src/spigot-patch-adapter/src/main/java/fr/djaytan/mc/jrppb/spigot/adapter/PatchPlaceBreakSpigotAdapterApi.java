@@ -22,6 +22,8 @@
  */
 package fr.djaytan.mc.jrppb.spigot.adapter;
 
+import static fr.djaytan.mc.jrppb.spigot.adapter.JobActionTypeSupportChecker.isUnsupportedJobActionType;
+
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.mc.jrppb.api.PatchPlaceBreakApi;
@@ -79,6 +81,44 @@ public class PatchPlaceBreakSpigotAdapterApi {
   }
 
   /**
+   * Checks if the specified job action for the specified block is a patch-and-break exploit or not.
+   *
+   * @param actionInfo The job action recorded.
+   * @param bukkitBlock The targeted block by job action which has been recorded.
+   * @return <code>true</code> if the specified job action for the specified block is a
+   *     patch-and-break exploit or not.
+   * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, Block)
+   */
+  public boolean isPlaceAndBreakExploit(
+      @Nullable ActionInfo actionInfo, @Nullable org.bukkit.block.Block bukkitBlock) {
+    if (actionInfo == null || bukkitBlock == null) {
+      return false;
+    }
+
+    ActionType actionType = actionInfo.getType();
+
+    if (isUnsupportedJobActionType(actionInfo.getType())) {
+      return false;
+    }
+
+    if (isBlacklistedAction(actionType, bukkitBlock)) {
+      return false;
+    }
+
+    BlockActionType patchActionType = actionTypeConverter.convert(actionType);
+    Block block = new Block(locationConverter.convert(bukkitBlock), bukkitBlock.getType().name());
+    return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, block);
+  }
+
+  private static boolean isBlacklistedAction(
+      @NotNull ActionType actionType, @NotNull org.bukkit.block.Block bukkitBlock) {
+    if (Arrays.asList(ActionType.BREAK, ActionType.TNTBREAK).contains(actionType)) {
+      return BLACKLISTED_MATERIALS_ON_BREAK.contains(bukkitBlock.getType());
+    }
+    return false;
+  }
+
+  /**
    * Puts a tag on the specified location.
    *
    * @param bukkitBlock The block where to put tag.
@@ -126,37 +166,5 @@ public class PatchPlaceBreakSpigotAdapterApi {
   public @NotNull CompletableFuture<Void> removeTag(@NotNull org.bukkit.block.Block bukkitBlock) {
     BlockLocation blockLocation = locationConverter.convert(bukkitBlock);
     return patchPlaceBreakApi.removeTag(new Block(blockLocation, bukkitBlock.getType().name()));
-  }
-
-  /**
-   * Checks if the specified job action for the specified block is a patch-and-break exploit or not.
-   *
-   * @param actionInfo The job action recorded.
-   * @param bukkitBlock The targeted block by job action which has been recorded.
-   * @return <code>true</code> if the specified job action for the specified block is a
-   *     patch-and-break exploit or not.
-   * @see PatchPlaceBreakApi#isPlaceAndBreakExploit(BlockActionType, Block)
-   */
-  public boolean isPlaceAndBreakExploit(
-      @Nullable ActionInfo actionInfo, @Nullable org.bukkit.block.Block bukkitBlock) {
-    if (actionInfo == null || bukkitBlock == null) {
-      return false;
-    }
-
-    if (isBlacklistedAction(actionInfo.getType(), bukkitBlock)) {
-      return false;
-    }
-
-    BlockActionType patchActionType = actionTypeConverter.convert(actionInfo.getType());
-    Block block = new Block(locationConverter.convert(bukkitBlock), bukkitBlock.getType().name());
-    return patchPlaceBreakApi.isPlaceAndBreakExploit(patchActionType, block);
-  }
-
-  private static boolean isBlacklistedAction(
-      @NotNull ActionType actionType, @NotNull org.bukkit.block.Block bukkitBlock) {
-    if (Arrays.asList(ActionType.BREAK, ActionType.TNTBREAK).contains(actionType)) {
-      return BLACKLISTED_MATERIALS_ON_BREAK.contains(bukkitBlock.getType());
-    }
-    return false;
   }
 }

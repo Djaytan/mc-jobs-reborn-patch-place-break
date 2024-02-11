@@ -20,28 +20,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.spigot.adapter.converter;
-
-import static fr.djaytan.mc.jrppb.spigot.adapter.JobActionTypeSupportChecker.getSupportedJobActionTypes;
-import static fr.djaytan.mc.jrppb.spigot.adapter.JobActionTypeSupportChecker.isSupportedJobActionType;
+package fr.djaytan.mc.jrppb.spigot.adapter;
 
 import com.gamingmesh.jobs.container.ActionType;
 import fr.djaytan.mc.jrppb.api.entities.BlockActionType;
-import jakarta.inject.Singleton;
-import org.apache.commons.lang3.Validate;
+import java.util.Arrays;
+import java.util.Collection;
 import org.jetbrains.annotations.NotNull;
 
-@Singleton
-public class ActionTypeConverter implements UnidirectionalConverter<ActionType, BlockActionType> {
+public final class JobActionTypeSupportChecker {
 
-  @Override
-  public @NotNull BlockActionType convert(@NotNull ActionType jobActionType) {
-    Validate.isTrue(
-        isSupportedJobActionType(jobActionType),
-        "Unsupported job action type '%s' specified. Only the following ones are supported: %s",
-        jobActionType,
-        getSupportedJobActionTypes());
+  private JobActionTypeSupportChecker() {
+    // Static class
+  }
 
-    return BlockActionType.valueOf(jobActionType.name());
+  public static boolean isSupportedJobActionType(@NotNull ActionType jobActionType) {
+    Collection<ActionType> supportedJobActionTypes = getSupportedJobActionTypes();
+    return supportedJobActionTypes.contains(jobActionType);
+  }
+
+  public static boolean isUnsupportedJobActionType(@NotNull ActionType jobActionType) {
+    Collection<ActionType> unsupportedJobActionTypes = getUnsupportedJobActionTypes();
+    return unsupportedJobActionTypes.contains(jobActionType);
+  }
+
+  public static @NotNull Collection<ActionType> getSupportedJobActionTypes() {
+    return Arrays.stream(BlockActionType.values())
+        .map(BlockActionType::name)
+        .map(ActionType::valueOf)
+        .toList();
+  }
+
+  public static @NotNull Collection<ActionType> getUnsupportedJobActionTypes() {
+    Collection<ActionType> supportedTypes = getSupportedJobActionTypes();
+    return Arrays.stream(ActionType.values())
+        .filter(actionType -> !supportedTypes.contains(actionType))
+        .toList();
   }
 }
