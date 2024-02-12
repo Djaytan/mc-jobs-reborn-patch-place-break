@@ -48,6 +48,12 @@ jobs:
           cache: npm
           cache-dependency-path: .github/package-lock.json
 
+      - name: Setup Java
+        uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
+        with:
+          java-version: 17
+          distribution: temurin
+
       - name: Install semantic-release
         working-directory: .github/
         run: npm clean-install
