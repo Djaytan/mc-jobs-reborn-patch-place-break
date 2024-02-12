@@ -1,5 +1,3 @@
-const CHANGELOG_FILE = '.github/CHANGELOG.md';
-
 module.exports = {
   preset: 'conventionalcommits',
 
@@ -43,15 +41,7 @@ module.exports = {
     [
       '@semantic-release/changelog',
       {
-        changelogFile: CHANGELOG_FILE
-      }
-    ],
-    [
-      'semantic-release-github-pullrequest',
-      {
-        assets: [CHANGELOG_FILE],
-        pullrequestTitle: 'docs(changelog): release {{currentTag}}',
-        labels: ['t:release']
+        changelogFile: process.env.CHANGELOG_FILE
       }
     ],
     [
