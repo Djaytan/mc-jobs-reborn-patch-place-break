@@ -49,8 +49,8 @@ module.exports = {
       {
         prepareCmd: './scripts/generate-plugin.sh ${nextRelease.version}',
         publishCmd: 'echo "Printing tag version name in temporary file..." && '
-          + 'touch "${TMP_TAG_VERSION_NAME_FILE}" && '
-          + 'echo "${nextRelease.gitTag}" > ${TMP_TAG_VERSION_NAME_FILE}'
+          + `touch '${process.env.TMP_TAG_VERSION_NAME_FILE}' && `
+          + `echo '$\{nextRelease.gitTag}' > '${process.env.TMP_TAG_VERSION_NAME_FILE}'`
       }
     ],
     [
