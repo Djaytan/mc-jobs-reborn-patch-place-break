@@ -4,7 +4,7 @@ set -Eeuo pipefail
 trap 'echo Error encountered while executing the script.' ERR
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
-ROOT_REPOSITORY_DIR="${SCRIPT_DIR}/../.."
+ROOT_REPOSITORY_DIR="$(realpath "${SCRIPT_DIR}/../..")"
 
 NEW_VERSION="$1"
 DEV_VERSION='0.0.1-DEV-SNAPSHOT'

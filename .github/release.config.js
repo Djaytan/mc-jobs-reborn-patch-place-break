@@ -48,7 +48,9 @@ module.exports = {
       '@semantic-release/exec',
       {
         prepareCmd: './scripts/generate-plugin.sh ${nextRelease.version}',
-        publishCmd: 'export TAG_NAME=${nextRelease.gitTag}'
+        publishCmd: 'echo "Printing tag version name in temporary file..." && '
+          + 'touch "${TMP_TAG_VERSION_NAME_FILE}" && '
+          + 'echo "${nextRelease.gitTag}" > ${TMP_TAG_VERSION_NAME_FILE}'
       }
     ],
     [
@@ -56,7 +58,7 @@ module.exports = {
       {
         assets: [
           {
-            path: 'src/spigot-plugin/target/JobsReborn-PatchPlaceBreak-${nextRelease.version}.jar',
+            path: '../src/spigot-plugin/target/JobsReborn-PatchPlaceBreak-*.*.*.jar',
             label: 'Spigot plugin for Minecraft servers'
           }
         ],
