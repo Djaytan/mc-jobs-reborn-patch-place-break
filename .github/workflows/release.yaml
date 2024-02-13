@@ -19,6 +19,9 @@ jobs:
     outputs:
       release-tag: ${{ steps.release.outputs.tag }}
 
+    env:
+      CHANGELOG_FILE: ${{ github.workspace }}/docs/CHANGELOG.md
+
     steps:
       - name: Harden runner
         uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
@@ -40,6 +43,15 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           fetch-depth: 0 # Required by semantic-release
+
+      - name: Config Git user as release bot
+        env:
+          # https://github.com/orgs/community/discussions/26560#discussioncomment-3252339
+          RELEASE_BOT_NAME: 'github-actions[bot]'
+          RELEASE_BOT_EMAIL: '41898282+github-actions[bot]@users.noreply.github.com'
+        run: |
+          git config --global user.name "${RELEASE_BOT_NAME}"
+          git config --global user.email "${RELEASE_BOT_EMAIL}"
 
       - name: Setup Node.js
         uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
@@ -66,6 +78,20 @@ jobs:
         run: |
           npx --no-install semantic-release --ci
           echo "tag=${TAG_NAME}" >> "${GITHUB_OUTPUT}"
+
+      - name: Create a PR for creating/updating the CHANGELOG file
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CHANGELOG_BRANCH_NAME: changelog/${{ steps.release.outputs.tag }}
+        run: |
+          git switch --create "${CHANGELOG_BRANCH_NAME}"
+          git commit --message='docs(changelog): release ${{ steps.release.outputs.tag }}' "${CHANGELOG_FILE}"
+          git push --set-upstream origin "${CHANGELOG_BRANCH_NAME}"
+
+          gh pr create --fill \
+            --label 't:release' \
+            --base ${{ github.ref_name }} \
+            --head "${CHANGELOG_BRANCH_NAME}"
 
   release-sign:
     name: Release - Sign
