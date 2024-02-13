@@ -74,10 +74,11 @@ jobs:
         id: release
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          TMP_TAG_VERSION_NAME_FILE: ${{ runner.temp }}/tag_version_name
         working-directory: .github/
         run: |
           npx --no-install semantic-release --ci
-          echo "tag=${TAG_NAME}" >> "${GITHUB_OUTPUT}"
+          echo "tag=$(cat "${TMP_TAG_VERSION_NAME_FILE}")" >> "${GITHUB_OUTPUT}"
 
       - name: Create a PR for creating/updating the CHANGELOG file
         env:
