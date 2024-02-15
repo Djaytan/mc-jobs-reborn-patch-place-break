@@ -12,9 +12,9 @@ jobs:
     timeout-minutes: 300
 
     permissions:
-      contents: write # To be able to publish a GitHub release
-      issues: write # To be able to comment on released issues
-      pull-requests: write # To be able to comment on released pull requests
+      contents: write # Required to publish a GitHub release
+      issues: write # Required to comment on released issues
+      pull-requests: write # Required to comment on released pull requests
 
     outputs:
       release-tag: ${{ steps.release.outputs.tag }}
@@ -74,18 +74,20 @@ jobs:
         id: release
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          # Hacky way of retrieving the released version tag name through a temporary file
           TMP_TAG_VERSION_NAME_FILE: ${{ runner.temp }}/tag_version_name
         working-directory: .github/
         run: |
-          npx --no-install semantic-release --ci
+          npx --no-install semantic-release
           echo "tag=$(cat "${TMP_TAG_VERSION_NAME_FILE}")" >> "${GITHUB_OUTPUT}"
 
-      - name: Create a PR for creating/updating the CHANGELOG file
+      - name: Create a PR for creating/updating the changelog file
         env:
           GITHUB_TOKEN: ${{ github.token }}
           CHANGELOG_BRANCH_NAME: changelog/${{ steps.release.outputs.tag }}
         run: |
           git switch --create "${CHANGELOG_BRANCH_NAME}"
+          git add "${CHANGELOG_FILE}"
           git commit --message='docs(changelog): release ${{ steps.release.outputs.tag }}' "${CHANGELOG_FILE}"
           git push --set-upstream origin "${CHANGELOG_BRANCH_NAME}"
 
@@ -102,8 +104,8 @@ jobs:
     needs: release-perform
 
     permissions:
-      contents: write
-      id-token: write
+      contents: write # Required to add assets in existing GitHub release
+      id-token: write # Required for signing through Sigstore
 
     env:
       TAG_NAME: ${{ needs.release-perform.outputs.release-tag }}
