@@ -14,7 +14,7 @@ jobs:
   scorecard-secure-supply-chain-analysis:
     name: Scorecard - Secure supply-chain analysis
     runs-on: ubuntu-22.04
-    timeout-minutes: 120
+    timeout-minutes: 5
 
     permissions:
       security-events: write # Required to upload found security gaps
