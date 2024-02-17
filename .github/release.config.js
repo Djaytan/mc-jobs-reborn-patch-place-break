@@ -42,7 +42,7 @@ module.exports = {
     [
       '@semantic-release/exec',
       {
-        prepareCmd: './scripts/generate-plugin.sh ${nextRelease.version}',
+        prepareCmd: './scripts/generate_spigot_plugin.sh ${nextRelease.version}',
         successCmd: `echo '$\{nextRelease.gitTag}' > '${process.env.TMP_TAG_VERSION_NAME_FILE}'`
       }
     ],

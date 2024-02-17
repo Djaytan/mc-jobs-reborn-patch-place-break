@@ -107,11 +107,6 @@ jobs:
       contents: write # Required to add assets in existing GitHub release
       id-token: write # Required for signing through Sigstore
 
-    env:
-      TAG_NAME: ${{ needs.release-perform.outputs.release-tag }}
-      ASSETS_DIR: ${{ github.workspace }}/assets
-      SIGNATURES_DIR: ${{ github.workspace }}/signatures
-
     steps:
       - name: Harden runner
         uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
@@ -132,103 +127,12 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Input validation
-        run: |
-          if [[ ! "${TAG_NAME}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+.*$ ]]; then
-            echo "Invalid tag name '${TAG_NAME}'"
-            echo 'Aborting...'
-            exit 1
-          fi
-
-          echo "The provided tag name '${TAG_NAME}' is valid"
-
-      - name: Download release assets
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: gh release download "${TAG_NAME}" --dir "${ASSETS_DIR}"
-
       - name: Install Cosign
         uses: sigstore/cosign-installer@e1523de7571e31dbe865fd2e80c5c7c23ae71eb4 # v3.4.0
 
-      - name: Sign blob files
+      - name: Sign GitHub release assets
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          mkdir --parents "${SIGNATURES_DIR}"
-
-          for ASSET_FILE in "${ASSETS_DIR}"/*; do
-            ASSET_NAME="$(basename "${ASSET_FILE}")"
-            ASSET_FILE_NAME="${ASSETS_DIR}/${ASSET_NAME}"
-            CERT_FILE_NAME="${ASSET_NAME}-keyless.pem"
-            SIG_FILE_NAME="${ASSET_NAME}-keyless.sig"
-
-            if [[ "${ASSET_FILE_NAME}" =~ keyless\.(pem|sig)$ ]]; then
-              echo "Signature file '${ASSET_FILE_NAME}' found among assets"
-              echo 'Skipping asset...'
-              continue
-            fi
-
-            if [[ -f "${ASSETS_DIR}/${CERT_FILE_NAME}" && -f "${ASSETS_DIR}/${SIG_FILE_NAME}" ]]; then
-              echo "Signature files already exist for asset '${ASSET_FILE_NAME}'"
-              echo 'Skipping asset...'
-              continue
-            fi
-
-            if [[ -f "${ASSETS_DIR}/${CERT_FILE_NAME}" || -f "${ASSETS_DIR}/${SIG_FILE_NAME}" ]]; then
-              echo 'Error: only one signing file found over the two expected ones'
-              echo 'Manual investigation required, please check!'
-              echo 'Aborting...'
-              exit 1
-            fi
-
-            echo "The asset '${ASSET_FILE_NAME}' is going to be signed..."
-
-            cosign sign-blob "${ASSET_FILE}" --yes \
-              --output-certificate="${SIGNATURES_DIR}/${CERT_FILE_NAME}" \
-              --output-signature="${SIGNATURES_DIR}/${SIG_FILE_NAME}"
-          done
-
-      - name: Verify signatures
-        env:
           CERTIFICATE_IDENTITY: ${{ github.server_url }}/${{ github.workflow_ref }}
           CERTIFICATE_OIDC_ISSUER: https://token.actions.githubusercontent.com
-        run: |
-          for ASSET_FILE in "${ASSETS_DIR}"/*; do
-            ASSET_NAME="$(basename "${ASSET_FILE}")"
-            ASSET_FILE_NAME="${ASSETS_DIR}/${ASSET_NAME}"
-            CERT_FILE_NAME="${ASSET_NAME}-keyless.pem"
-            SIG_FILE_NAME="${ASSET_NAME}-keyless.sig"
-
-            if [[ "${ASSET_FILE_NAME}" =~ keyless\.(pem|sig)$ ]]; then
-              echo "Signature file '${ASSET_FILE_NAME}' found among assets"
-              echo 'Skipping asset...'
-              continue
-            fi
-
-            if [[ -f "${ASSETS_DIR}/${CERT_FILE_NAME}" && -f "${ASSETS_DIR}/${SIG_FILE_NAME}" ]]; then
-              echo "Signature files already exist for asset '${ASSET_FILE_NAME}'"
-              echo 'Skipping asset...'
-              continue
-            fi
-
-            cosign verify-blob "${ASSET_FILE}" \
-              --signature="${SIGNATURES_DIR}/${SIG_FILE_NAME}" \
-              --certificate="${SIGNATURES_DIR}/${CERT_FILE_NAME}" \
-              --certificate-identity="${CERTIFICATE_IDENTITY}" \
-              --certificate-oidc-issuer="${CERTIFICATE_OIDC_ISSUER}"
-          done
-
-      - name: Upload signature assets in release
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          if [[ -z "$(ls --almost-all "${SIGNATURES_DIR}" 2>/dev/null)" ]]; then
-            echo 'No asset to be uploaded in the GitHub release'
-            echo 'Aborting...'
-            exit 1
-          fi
-
-          echo "Uploading the following files in the GitHub release '${TAG_NAME}'"
-          ls --almost-all "${SIGNATURES_DIR}"
-          gh release upload "${TAG_NAME}" "${SIGNATURES_DIR}"/*
-          echo 'Files uploaded successfully'
+        run: .github/scripts/sign_gh_release_assets.sh ${{ needs.release-perform.outputs.release-tag }}
