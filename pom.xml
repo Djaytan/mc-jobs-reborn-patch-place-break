@@ -123,6 +123,11 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.5.0</version>
+            </dependency>
+            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>33.0.0-jre</version>
@@ -388,10 +393,7 @@
                         <failOnWarning>true</failOnWarning>
                         <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
                         <ignoredUnusedDeclaredDependencies>
-                            <ignoredUnusedDeclaredDependency>
-                                org.slf4j:slf4j-nop
-                                <!-- Required for deactivating logs during test execution -->
-                            </ignoredUnusedDeclaredDependency>
+                            <dependency>ch.qos.logback:logback-classic</dependency>
                         </ignoredUnusedDeclaredDependencies>
                     </configuration>
                 </plugin>
@@ -430,6 +432,7 @@
                     <configuration>
                         <argLine>@{argLine} -Xshare:off</argLine>
                         <parallel>all</parallel>
+                        <redirectTestOutputToFile>true</redirectTestOutputToFile>
                         <systemPropertyVariables>
                             <!-- Required to redirect Hibernate Validator's logs to SLF4J -->
                             <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
@@ -442,6 +445,7 @@
                     <version>3.2.5</version>
                     <configuration>
                         <argLine>@{argLine} -Xshare:off</argLine>
+                        <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     </configuration>
                 </plugin>
                 <plugin>
