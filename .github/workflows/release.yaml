@@ -9,7 +9,7 @@ jobs:
   release-perform:
     name: Release - Perform
     runs-on: ubuntu-22.04
-    timeout-minutes: 300
+    timeout-minutes: 15
 
     permissions:
       contents: write # Required to publish a GitHub release
@@ -99,7 +99,7 @@ jobs:
   release-sign:
     name: Release - Sign
     runs-on: ubuntu-22.04
-    timeout-minutes: 120
+    timeout-minutes: 5
 
     needs: release-perform
 
