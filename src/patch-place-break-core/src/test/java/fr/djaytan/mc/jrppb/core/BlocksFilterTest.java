@@ -60,13 +60,6 @@ class BlocksFilterTest {
 
   @Test
   void filterWithEmptyCollection() {
-    // Given
-    Set<Block> blocks = new HashSet<>();
-
-    // When
-    Set<Block> actualValue = blocksFilter.filter(blocks);
-
-    // Then
-    assertThat(actualValue).isEmpty();
+    assertThat(blocksFilter.filter(new HashSet<>())).isEmpty();
   }
 }

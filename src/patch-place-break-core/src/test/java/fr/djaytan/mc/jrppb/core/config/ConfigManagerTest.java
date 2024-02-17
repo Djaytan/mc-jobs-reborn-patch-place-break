@@ -23,6 +23,7 @@
 package fr.djaytan.mc.jrppb.core.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -258,16 +259,10 @@ class ConfigManagerTest {
 
     @Test
     void withoutExistingConfigFile_shouldThrowException() {
-      // Given
       String configFileName = "test.conf";
 
-      // When
-      Exception exception =
-          catchException(
-              () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class));
-
-      // Then
-      assertThat(exception)
+      assertThatThrownBy(
+              () -> configManager.readAndValidate(configFileName, DataSourcePropertiesImpl.class))
           .isExactlyInstanceOf(IllegalStateException.class)
           .hasMessageStartingWith(
               "Failed to read config file 'test.conf'. Is the file absent or empty?");

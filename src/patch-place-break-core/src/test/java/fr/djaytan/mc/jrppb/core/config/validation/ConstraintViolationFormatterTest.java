@@ -23,7 +23,7 @@
 package fr.djaytan.mc.jrppb.core.config.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 import fr.djaytan.mc.jrppb.commons.test.TestResourcesHelper;
@@ -32,6 +32,7 @@ import jakarta.validation.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -47,15 +48,10 @@ class ConstraintViolationFormatterTest {
 
     @Test
     void withoutAnyConstraintViolation_shouldThrowException() {
-      // Given
-      Collection<ConstraintViolation<Object>> constraintViolations = Collections.emptySet();
+      var emptySet = new HashSet<ConstraintViolation<Object>>();
 
-      // When
-      Exception exception =
-          catchException(() -> ConstraintViolationFormatter.format(constraintViolations));
-
-      // Then
-      assertThat(exception).isExactlyInstanceOf(IllegalArgumentException.class);
+      assertThatThrownBy(() -> ConstraintViolationFormatter.format(emptySet))
+          .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

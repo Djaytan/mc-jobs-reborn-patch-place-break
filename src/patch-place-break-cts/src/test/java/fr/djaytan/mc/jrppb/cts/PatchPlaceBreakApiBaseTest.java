@@ -72,14 +72,10 @@ abstract class PatchPlaceBreakApiBaseTest {
 
   @Test
   void whenTagDoesntExist_shouldNotDetectExploit() {
-    // Given
-    Block block = new Block(randomBlockLocation, "STONE");
-
-    // When
-    boolean isExploit = patchPlaceBreakApi.isPlaceAndBreakExploit(BlockActionType.BREAK, block);
-
-    // Then
-    assertThat(isExploit).isFalse();
+    assertThat(
+            patchPlaceBreakApi.isPlaceAndBreakExploit(
+                BlockActionType.BREAK, new Block(randomBlockLocation, "STONE")))
+        .isFalse();
   }
 
   @ParameterizedTest
@@ -94,9 +90,8 @@ abstract class PatchPlaceBreakApiBaseTest {
     mutableClock.add(timeElapsedAfterPut);
 
     // Then
-    boolean isExploit = patchPlaceBreakApi.isPlaceAndBreakExploit(BlockActionType.BREAK, block);
-
-    assertThat(isExploit).isEqualTo(isExploitExpected);
+    assertThat(patchPlaceBreakApi.isPlaceAndBreakExploit(BlockActionType.BREAK, block))
+        .isEqualTo(isExploitExpected);
   }
 
   private static @NotNull Stream<Arguments> whenPuttingTag() {

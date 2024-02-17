@@ -62,39 +62,19 @@ class BlockLocationTest {
 
       @Test
       void andNominalValues_shouldMatchExpectedValues() {
-        // Given
-        Vector vector = new Vector(5, 0, -452);
-
-        // When
-        BlockLocation movedBlockLocation = BlockLocation.from(BLOCK_LOCATION, vector);
-
-        // Then
-        assertThat(movedBlockLocation).isEqualTo(new BlockLocation("world", -49, 67, 4420));
+        assertThat(BlockLocation.from(BLOCK_LOCATION, new Vector(5, 0, -452)))
+            .isEqualTo(new BlockLocation("world", -49, 67, 4420));
       }
 
       @Test
       void onOverflow_shouldMatchExpectedValues() {
-        // Given
-        Vector vector = new Vector(Integer.MAX_VALUE, 1, -1);
-
-        // When
-        BlockLocation movedBlockLocation = BlockLocation.from(BLOCK_LOCATION, vector);
-
-        // Then
-        assertThat(movedBlockLocation)
+        assertThat(BlockLocation.from(BLOCK_LOCATION, new Vector(Integer.MAX_VALUE, 1, -1)))
             .isEqualTo(new BlockLocation("world", Integer.MAX_VALUE - Math.abs(X), 68, 4871));
       }
 
       @Test
       void onUnderflow_shouldMatchExpectedValues() {
-        // Given
-        Vector vector = new Vector(10, -50, Integer.MIN_VALUE);
-
-        // When
-        BlockLocation movedBlockLocation = BlockLocation.from(BLOCK_LOCATION, vector);
-
-        // Then
-        assertThat(movedBlockLocation)
+        assertThat(BlockLocation.from(BLOCK_LOCATION, new Vector(10, -50, Integer.MIN_VALUE)))
             .isEqualTo(new BlockLocation("world", -44, 17, Integer.MIN_VALUE + Math.abs(Z)));
       }
     }

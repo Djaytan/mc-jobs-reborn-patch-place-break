@@ -23,7 +23,7 @@
 package fr.djaytan.mc.jrppb.spigot.adapter.converter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 import fr.djaytan.mc.jrppb.api.entities.BlockLocation;
@@ -74,14 +74,9 @@ class LocationConverterTest {
 
     @Test
     void fromLocationWithoutWorldValue_shouldThrowException(@Mock @NotNull Block block) {
-      // Given
       given(block.getWorld()).willReturn(null);
 
-      // When
-      Exception exception = catchException(() -> locationConverter.convert(block));
-
-      // Then
-      assertThat(exception)
+      assertThatThrownBy(() -> locationConverter.convert(block))
           .isExactlyInstanceOf(NullPointerException.class)
           .hasMessage("The associated world to a Bukkit block can't be null");
     }
