@@ -180,15 +180,6 @@ class PatchPlaceBreakImplTest {
      * consequences. For example, if later on a sugarcane grows and reaches this location where a
      * tag remains, then breaking this sugarcane will not provide any income to the player whereas
      * it is a legitimate Jobs action.
-     *
-     * <p>TODO: Associate to each tag a block type. Then, at PPB exploit check time, if the tag's
-     * block type doesn't match currently broken one (e.g. a sugarcane is broken whereas the tag
-     * initially apply to a stone block) then do not consider the action as an exploit one. This
-     * change will works only if the tags moving mechanism is flawless.
-     *
-     * <p>TODO: Review and eventually improve the tags moving behavior (does it works completely as
-     * intended, even for corner cases?). What about moving tags associated to air blocks (i.e.
-     * ephemeral tags and "ghost" ones?)
      */
     @Test
     void fromRestrictedBlock_shouldNotAttemptToRemoveAnyTag() {
