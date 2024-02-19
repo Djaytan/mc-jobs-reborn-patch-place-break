@@ -43,9 +43,9 @@ public record BlockLocation(@NotNull String worldName, int x, int y, int z) {
    */
   public static @NotNull BlockLocation from(
       @NotNull BlockLocation blockLocation, @NotNull Vector direction) {
-    int newX = blockLocation.x() + direction.modX();
-    int newY = blockLocation.y() + direction.modY();
-    int newZ = blockLocation.z() + direction.modZ();
+    int newX = Math.addExact(blockLocation.x(), direction.modX());
+    int newY = Math.addExact(blockLocation.y(), direction.modY());
+    int newZ = Math.addExact(blockLocation.z(), direction.modZ());
     return new BlockLocation(blockLocation.worldName(), newX, newY, newZ);
   }
 }
