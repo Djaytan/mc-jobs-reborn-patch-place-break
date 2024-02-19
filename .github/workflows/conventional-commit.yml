@@ -1,0 +1,63 @@
+name: Conventional Commit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, 'release/v*', next, next-major, beta, alpha]
+  pull_request:
+    branches: [main, 'release/v*', next, next-major, beta, alpha]
+
+permissions: {}
+
+jobs:
+  commit-check:
+    name: Commit check
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    permissions:
+      contents: read
+
+    env:
+      COMMITLINT_CONFIG_FILE: ${{ github.workspace }}/.github/commitlint.config.js
+
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443
+            api.github.com:443
+            objects.githubusercontent.com:443
+
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # Required by commitlint
+
+      - name: Setup Node.js
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        with:
+          node-version: lts/iron
+          cache: npm
+          cache-dependency-path: .github/package-lock.json
+
+      - name: Install commitlint
+        working-directory: .github/
+        run: npm clean-install
+
+      - name: Validate current commit (last commit) with commitlint
+        if: ${{ github.event_name != 'pull_request' }}
+        working-directory: .github/
+        run: npx --no-install commitlint --config "${COMMITLINT_CONFIG_FILE}" --verbose --from HEAD~1 --to HEAD
+
+      - name: Validate PR commits with commitlint
+        if: ${{ github.event_name == 'pull_request' }}
+        working-directory: .github/
+        run: |
+          npx --no-install commitlint --config "${COMMITLINT_CONFIG_FILE}" --verbose \
+            --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} \
+            --to ${{ github.event.pull_request.head.sha }}
