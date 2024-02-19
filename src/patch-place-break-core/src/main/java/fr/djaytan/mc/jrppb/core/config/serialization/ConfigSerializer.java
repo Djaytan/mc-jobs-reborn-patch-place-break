@@ -67,7 +67,6 @@ public final class ConfigSerializer {
     ConfigurationLoader<? extends ConfigurationNode> loader =
         ConfigLoaderFactory.createLoader(destConfigFile);
 
-    // TODO: really useful? And what about tests?
     if (!loader.canSave()) {
       throw new IllegalStateException(
           "The loader configuration is invalid and thus prevent processing serialization "
@@ -105,7 +104,6 @@ public final class ConfigSerializer {
     ConfigurationLoader<? extends ConfigurationNode> loader =
         ConfigLoaderFactory.createLoader(srcConfigFile);
 
-    // TODO: really useful? And what about tests?
     if (!loader.canLoad()) {
       throw new IllegalStateException(
           "The loader configuration is invalid and thus prevent processing deserialization "
