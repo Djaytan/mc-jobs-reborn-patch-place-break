@@ -23,6 +23,7 @@
 package fr.djaytan.mc.jrppb.api.entities;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchException;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.jupiter.api.Nested;
@@ -50,13 +51,6 @@ class BlockLocationTest {
           () -> assertThat(blockLocation.z()).isEqualTo(Z));
     }
 
-    /**
-     * For now, the tests make in evidence a limitation of the current implementation since we can't
-     * scale indefinitely in cartesian coordinates as designed initially in Minecraft. In practice,
-     * there is no real impact since limitations will start to occur when reaching very high
-     * coordinates near to {@link Integer#MAX_VALUE}. Tho, it remains cleaner to fix that (maybe
-     * thanks to {@link java.math.BigInteger}?). An interesting problem to solve, in fact.
-     */
     @Nested
     class WithCopyConstructor {
 
@@ -75,27 +69,29 @@ class BlockLocationTest {
       @Test
       void onOverflow_shouldMatchExpectedValues() {
         // Given
-        Vector vector = new Vector(Integer.MAX_VALUE, 1, -1);
+        Vector vector = new Vector(0, 0, Integer.MAX_VALUE);
 
         // When
-        BlockLocation movedBlockLocation = BlockLocation.from(BLOCK_LOCATION, vector);
+        Exception exception = catchException(() -> BlockLocation.from(BLOCK_LOCATION, vector));
 
         // Then
-        assertThat(movedBlockLocation)
-            .isEqualTo(new BlockLocation("world", Integer.MAX_VALUE - Math.abs(X), 68, 4871));
+        assertThat(exception)
+            .isExactlyInstanceOf(ArithmeticException.class)
+            .hasMessage("integer overflow");
       }
 
       @Test
       void onUnderflow_shouldMatchExpectedValues() {
         // Given
-        Vector vector = new Vector(10, -50, Integer.MIN_VALUE);
+        Vector vector = new Vector(Integer.MIN_VALUE, 0, 0);
 
         // When
-        BlockLocation movedBlockLocation = BlockLocation.from(BLOCK_LOCATION, vector);
+        Exception exception = catchException(() -> BlockLocation.from(BLOCK_LOCATION, vector));
 
         // Then
-        assertThat(movedBlockLocation)
-            .isEqualTo(new BlockLocation("world", -44, 17, Integer.MIN_VALUE + Math.abs(Z)));
+        assertThat(exception)
+            .isExactlyInstanceOf(ArithmeticException.class)
+            .hasMessage("integer overflow");
       }
     }
   }
