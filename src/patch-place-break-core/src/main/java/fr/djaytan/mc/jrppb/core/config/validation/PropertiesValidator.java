@@ -59,8 +59,7 @@ public final class PropertiesValidator {
 
     if (!constraintViolations.isEmpty()) {
       String formatted = ConstraintViolationFormatter.format(constraintViolations);
-      // TODO: normalize line separator (i.e. always use \n)
-      // TODO: weird to log an error + throw an exception: to be reworked
+
       LOG.atError().log("Detected constraint violations:{}{}", LINE_SEPARATOR, formatted);
       throw new IllegalStateException(
           String.format("Detected config constraint violations: %s", constraintViolations));
