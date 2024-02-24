@@ -56,6 +56,9 @@
 
         <!-- ==================== Dependencies versions ==================== -->
         <version.flyway>10.7.2</version.flyway>
+        <version.junit>5.10.2</version.junit>
+        <version.mockito>5.10.0</version.mockito>
+        <version.testcontainers>1.19.5</version.testcontainers>
     </properties>
 
     <dependencyManagement>
@@ -224,55 +227,94 @@
 
             <!-- General test dependencies -->
             <dependency>
-                <groupId>org.junit</groupId>
-                <artifactId>junit-bom</artifactId>
-                <version>5.10.2</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>3.25.3</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
-                <artifactId>mockito-bom</artifactId>
-                <version>5.10.0</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <artifactId>mockito-core</artifactId>
+                <version>${version.mockito}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>${version.mockito}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>nl.jqno.equalsverifier</groupId>
                 <artifactId>equalsverifier</artifactId>
                 <version>3.15.6</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.jparams</groupId>
                 <artifactId>to-string-verifier</artifactId>
                 <version>1.4.8</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.threeten</groupId>
                 <artifactId>threeten-extra</artifactId>
                 <version>1.7.2</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.google.jimfs</groupId>
                 <artifactId>jimfs</artifactId>
                 <version>1.3.0</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.awaitility</groupId>
                 <artifactId>awaitility</artifactId>
                 <version>4.2.0</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.testcontainers</groupId>
-                <artifactId>testcontainers-bom</artifactId>
-                <version>1.19.5</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <artifactId>testcontainers</artifactId>
+                <version>${version.testcontainers}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>jdbc</artifactId>
+                <version>${version.testcontainers}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>mysql</artifactId>
+                <version>${version.testcontainers}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>mariadb</artifactId>
+                <version>${version.testcontainers}</version>
+                <scope>test</scope>
             </dependency>
 
             <!-- Spigot-specific test dependencies -->
@@ -280,6 +322,7 @@
                 <groupId>com.github.seeseemelk</groupId>
                 <artifactId>MockBukkit-v1.17</artifactId>
                 <version>1.13.0</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
