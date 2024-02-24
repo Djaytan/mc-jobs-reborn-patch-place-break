@@ -327,11 +327,6 @@
                     <artifactId>maven-install-plugin</artifactId>
                     <version>3.1.1</version>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>3.1.1</version>
-                </plugin>
 
                 <!-- Formatting-related plugins -->
                 <plugin>
@@ -418,8 +413,9 @@
                             </requireMavenVersion>
                             <requirePluginVersions>
                                 <message>Best Practice is to always define plugin versions!</message>
-                                <!-- "site" phase is not applicable for this project -->
-                                <unCheckedPluginList>org.apache.maven.plugins:maven-site-plugin</unCheckedPluginList>
+                                <!-- "site" & "deploy" phases are not applicable for this project -->
+                                <unCheckedPluginList>org.apache.maven.plugins:maven-deploy-plugin,
+                                    org.apache.maven.plugins:maven-site-plugin</unCheckedPluginList>
                             </requirePluginVersions>
                             <requireUpperBoundDeps />
                         </rules>
@@ -639,7 +635,6 @@
     </build>
 
     <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break</url>
-
     <inceptionYear>2022</inceptionYear>
 
     <licenses>
@@ -648,6 +643,21 @@
             <url>https://opensource.org/licenses/MIT</url>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <name>Loïc DUBOIS-TERMOZ (alias Djaytan)</name>
+            <email>26904516+Djaytan@users.noreply.github.com</email>
+            <organization>Djaytan</organization>
+            <organizationUrl>https://github.com/Djaytan/bukkit-slf4j</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:${project.scm.url}</connection>
+        <developerConnection>scm:git:${project.scm.url}</developerConnection>
+        <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break.git</url>
+    </scm>
 
     <issueManagement>
         <url>https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues</url>
