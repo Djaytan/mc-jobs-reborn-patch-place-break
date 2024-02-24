@@ -8,8 +8,7 @@
     'workarounds:mavenCommonsAncientVersion',
     ':enableVulnerabilityAlertsWithLabel(t:security)',
     ':label(t:dependencies)',
-    ':semanticCommits',
-    ':semanticCommitType(build)'
+    ':semanticCommits'
   ],
   configMigration: true,
   osvVulnerabilityAlerts: true

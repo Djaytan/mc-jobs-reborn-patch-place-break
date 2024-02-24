@@ -12,7 +12,8 @@ module.exports = {
       {type: 'build', section: '🏗️ Build System'},
       {type: 'test', section: '✅ Tests'},
       {type: 'ci', section: '📦 Continuous Integration'},
-      {type: 'docs', section: '📖 Documentation'}
+      {type: 'docs', section: '📖 Documentation'},
+      {type: 'chore', section: '🧹 House Keeping'}
     ]
   },
   branches: [

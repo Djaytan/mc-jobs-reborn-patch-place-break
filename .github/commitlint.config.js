@@ -9,7 +9,8 @@ module.exports = {
 
     // Compliant with Angular conventions (getting rid of "style" and "chore" types)
     'type-enum': [2, 'always', [
-      'feat', 'fix', 'perf', 'revert', 'refactor', 'build', 'test', 'ci', 'docs'
+      'feat', 'fix', 'perf', 'revert', 'refactor', 'build', 'test', 'ci',
+      'docs', 'chore'
     ]],
 
     // Adjust some rules predefined by @commitlint/config-conventional
