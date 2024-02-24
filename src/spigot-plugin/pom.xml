@@ -115,7 +115,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.Djaytan</groupId>
+            <groupId>com.djaytan.bukkit</groupId>
             <artifactId>bukkit-slf4j</artifactId>
         </dependency>
         <dependency>
