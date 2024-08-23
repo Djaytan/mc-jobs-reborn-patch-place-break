@@ -66,7 +66,7 @@ abstract class PatchPlaceBreakApiBaseTest {
   }
 
   @AfterEach
-  void afterEach() {
+  void tearDown() {
     patchPlaceBreakCore.disable();
   }
 

@@ -34,19 +34,19 @@ import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ConfigApiTest {
 
+  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(Configuration.unix());
+
   private ConfigApi configApi;
-  private FileSystem imfs;
   private Path dataFolder;
 
   @BeforeEach
-  void beforeEach() {
-    imfs = Jimfs.newFileSystem(Configuration.unix());
+  void setUp() {
     dataFolder = imfs.getPath("");
     ConfigSerializer configSerializer = new ConfigSerializer();
     PropertiesValidator propertiesValidator =
@@ -54,11 +54,6 @@ class ConfigApiTest {
     ConfigManager configManager =
         new ConfigManager(dataFolder, configSerializer, propertiesValidator);
     configApi = new ConfigApi(configManager);
-  }
-
-  @AfterEach
-  void afterEach() throws IOException {
-    imfs.close();
   }
 
   @Test

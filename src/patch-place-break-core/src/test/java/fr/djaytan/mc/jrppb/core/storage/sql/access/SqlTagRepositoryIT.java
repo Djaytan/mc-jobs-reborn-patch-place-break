@@ -34,7 +34,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Random;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -50,9 +50,11 @@ class SqlTagRepositoryIT {
   private static final MySQLContainer<?> MYSQL_CONTAINER =
       new MySQLContainer<>("mysql:8.1.0-oracle").withDatabaseName(DATABASE_NAME).withReuse(true);
 
-  private BlockLocation randomBlockLocation;
+  @AutoClose
   private final MysqlTagRepositoryFactory mysqlTagRepositoryFactory =
       new MysqlTagRepositoryFactory();
+
+  private BlockLocation randomBlockLocation;
   private SqlTagRepository sqlTagRepository;
 
   @BeforeAll
@@ -61,18 +63,13 @@ class SqlTagRepositoryIT {
   }
 
   @BeforeEach
-  void beforeEach() {
+  void setUp() {
     int dbmsPort = MYSQL_CONTAINER.getMappedPort(DATABASE_ORIGINAL_PORT);
     String username = MYSQL_CONTAINER.getUsername();
     String password = MYSQL_CONTAINER.getPassword();
 
     sqlTagRepository = mysqlTagRepositoryFactory.create(dbmsPort, username, password);
     randomBlockLocation = createRandomBlockLocation();
-  }
-
-  @AfterEach
-  void afterEach() {
-    mysqlTagRepositoryFactory.close();
   }
 
   @Test

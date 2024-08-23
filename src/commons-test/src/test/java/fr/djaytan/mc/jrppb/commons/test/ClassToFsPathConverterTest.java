@@ -27,30 +27,24 @@ import static org.assertj.core.api.Assertions.catchException;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import java.io.IOException;
 import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class ClassToFsPathConverterTest {
 
+  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(Configuration.unix());
+
   private ClassToFsPathConverter classToFsPathConverter;
-  private FileSystem fileSystem;
 
   @BeforeEach
-  void beforeEach() {
-    this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
-    this.classToFsPathConverter = new ClassToFsPathConverter(fileSystem);
-  }
-
-  @AfterEach
-  void afterEach() throws IOException {
-    fileSystem.close();
+  void setUp() {
+    this.classToFsPathConverter = new ClassToFsPathConverter(imfs);
   }
 
   @Nested

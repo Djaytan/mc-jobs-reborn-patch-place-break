@@ -76,7 +76,7 @@ class PatchPlaceBreakCoreIT {
   }
 
   @AfterEach
-  void afterEach() {
+  void tearDown() {
     patchPlaceBreakCore.disable();
   }
 

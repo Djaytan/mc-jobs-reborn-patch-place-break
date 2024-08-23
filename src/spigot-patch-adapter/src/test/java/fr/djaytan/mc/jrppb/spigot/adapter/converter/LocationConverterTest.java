@@ -43,7 +43,7 @@ class LocationConverterTest {
   private LocationConverter locationConverter;
 
   @BeforeEach
-  void beforeEach() {
+  void setUp() {
     locationConverter = new LocationConverter();
   }
 

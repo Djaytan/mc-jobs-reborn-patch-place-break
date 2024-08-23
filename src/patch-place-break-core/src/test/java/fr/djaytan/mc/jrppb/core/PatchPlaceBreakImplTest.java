@@ -81,7 +81,7 @@ class PatchPlaceBreakImplTest {
   private PatchPlaceBreakImpl patchPlaceBreakImpl;
 
   @BeforeEach
-  void beforeEach() {
+  void setUp() {
     BlocksFilter blocksFilter = new BlocksFilter(restrictedBlocksProperties);
 
     this.patchPlaceBreakImpl =

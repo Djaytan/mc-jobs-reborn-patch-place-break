@@ -86,7 +86,7 @@ abstract class PatchPlaceBreakSpigotAdapterApiBaseTest {
   }
 
   @AfterEach
-  void afterEach() {
+  void tearDown() {
     patchPlaceBreakCore.disable();
   }
 

@@ -74,7 +74,7 @@ class ListenerRegisterTest {
   }
 
   @BeforeEach
-  void beforeEach() {
+  void setUp() {
     BlockBreakListener blockBreakListener = new BlockBreakListener(patchApi);
     BlockGrowListener blockGrowListener = new BlockGrowListener(patchApi);
     BlockPistonListener blockPistonListener = new BlockPistonListener(patchApi);
