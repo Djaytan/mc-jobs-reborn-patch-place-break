@@ -32,6 +32,7 @@ jobs:
             api.osv.dev:443
             www.bestpractices.dev:443
             api.deps.dev:443
+            api.scorecard.dev:443
             repo.maven.apache.org:443
             oss-fuzz-build-logs.storage.googleapis.com:443
             rekor.sigstore.dev:443
