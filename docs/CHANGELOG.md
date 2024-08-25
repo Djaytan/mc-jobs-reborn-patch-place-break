@@ -1,3 +1,71 @@
+## [3.0.4](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/compare/v3.0.3...v3.0.4) (2024-08-25)
+
+
+### 🐛 Bug Fixes
+
+* **core:** fail on overflow/underflow ([#589](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/589)) ([e5427e2](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/e5427e2c1bd263c8c74be6b3e0e1dafe89d92257))
+
+
+### 🏗️ Build System
+
+* **deps:** bump bukkit-slf4j dependency to v2.0.0 ([#593](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/593)) ([f781c18](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/f781c1867055487cc2c183c4a294e92d8e01c656))
+* **deps:** lock file maintenance ([#586](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/586)) ([61f1804](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/61f1804365f210d7170f0446e55a048498f6624c))
+* **deps:** lock file maintenance ([#592](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/592)) ([c12927b](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/c12927befc1b6991e7562bcb3a0d5f9e01f15cd7))
+* **packaging:** adjust the root pom.xml file ([#594](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/594)) ([8aff837](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/8aff837d4eddbfb4168119f872f9cbd4adbf320b))
+* **packaging:** explicitly define the "test" scope for dependencies ([#596](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/596)) ([3e0e81a](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/3e0e81a16b8cfddfd2149895e1bc077df415a5b8))
+
+
+### ✅ Tests
+
+* rely on Logback instead of slf4j-nop for test logs ([#584](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/584)) ([d08cead](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/d08cead9a9a017bc8c8abe9d5b1a13f3817c811b))
+* setup PITest with Maven for mutation testing ([#402](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/402)) ([2a3d87c](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/2a3d87c8a040829eed24f8ced0e703f513d2b50c))
+* update junit5 to v5.11.0 & migrate to @AutoClose annotation ([#616](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/616)) ([ca124c2](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/ca124c2927aea9c11d097b67794466415a2db884))
+
+
+### 📦 Continuous Integration
+
+* allow 'chore' Conv. Commit type for dependencies updates & others ([#595](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/595)) ([556bde9](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/556bde9009ef3d43ca9b970db6379933e073b373))
+* **github:** allow installing dependencies from the NPM registry ([#591](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/591)) ([092f9ea](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/092f9ea3e141b25f295407078b725a70ebef8f3e))
+* **github:** allow SonarCloud to generate GitHub security events ([#598](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/598)) ([c32ab5b](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/c32ab5b97b6fb2622697a6b966311bf0de8fc62b))
+* **github:** extract Bash instructions in script files & improve the existing one ([#582](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/582)) ([9d3ccdc](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/9d3ccdcd162f04d14629a35f89b6f8ecde904a74))
+* **github:** fix OpenSSF scans by allowing communications with api.deps.dev host ([#621](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/621)) ([bf22719](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/bf227199197ae4805b7b26d6d956bb1e2051fd79))
+* **github:** fix OpenSSF scans by allowing communications with api.scorecard.dev host ([#622](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/622)) ([bb28a2b](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/bb28a2b507031439f2c18db971c7ab43a8cef365))
+* **github:** separate commit check from the CI in a dedicated workflow ([#590](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/590)) ([e9ff398](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/e9ff398207d3bfd346990356134ddb6bcdefe008))
+* **github:** specify minutes instead of seconds for timeout ([#585](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/585)) ([11a0176](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/11a01762ea14b84a79372e5c972b7bda61a42db9))
+
+
+### 📖 Documentation
+
+* **changelog:** release v3.0.3 ([#581](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/581)) ([72942d7](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/72942d7a69a31dfabf3e66a2bd1dd19f883bf79f))
+* clean-up TODOs comments in code ([#588](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/588)) ([8d80b36](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/8d80b365f5fbbbcfb6f9a1c467400f646e3f9b75))
+* **readme:** document Pitest usage for mutation testing ([#597](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/597)) ([107076b](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/107076b867f4f3341b260e699febe8b8abb71bd6))
+* **readme:** update & include feature overview section ([#623](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/623)) ([3c566cd](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/3c566cdbfc4f81b96b7b1a125a0d94a5a38856a4))
+
+
+### 🧹 House Keeping
+
+* **deps:** lock file maintenance ([#599](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/599)) ([0bb9acc](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/0bb9acca1dfdcadc40cee6d28669c90a96bddc67))
+* **deps:** lock file maintenance ([#602](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/602)) ([fd0d3c5](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/fd0d3c5d2ef6108b4b1cdfa43700b1e6caea7314))
+* **deps:** lock file maintenance ([#603](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/603)) ([966b547](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/966b54784005163fcfebdbd27cee6a154b101822))
+* **deps:** lock file maintenance ([#604](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/604)) ([7b969ca](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/7b969cadfaaa125d27b01b3bef9e1f28c0ef534f))
+* **deps:** lock file maintenance ([#611](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/611)) ([c450ff5](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/c450ff5ede0e77eb1491d1be2c03581b646fee0d))
+* **deps:** lock file maintenance ([#614](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/614)) ([804eec5](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/804eec5e01ea51df323fafe8f0e17ad3dc13b297))
+* **deps:** update actions/cache action to v4.0.1 ([#600](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/600)) ([e6a1948](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/e6a19487d27059d838b3cddb11c70f285c7cbf7c))
+* **deps:** update actions/cache action to v4.0.2 ([#605](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/605)) ([bb9c9cb](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/bb9c9cbc021cfd4baf40e2b583cffe1cf3957dfc))
+* **deps:** update actions/checkout action to v4.1.6 ([#609](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/609)) ([6525b7e](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/6525b7e8c43cdd9a072fa08543eaacf29830a560))
+* **deps:** update actions/checkout action to v4.1.7 ([#615](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/615)) ([7984999](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/7984999192b75019f36ae96f53222e730036722f))
+* **deps:** update actions/setup-node action to v4.0.3 ([#619](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/619)) ([8166d24](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/8166d24d1c6985d52b499c5e3388855e24a02ba5))
+* **deps:** update actions/upload-artifact action to v4.3.3 ([#610](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/610)) ([347027b](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/347027bb88caab0231f14c0c48f5dc775f0a932e))
+* **deps:** update actions/upload-artifact action to v4.3.6 ([#620](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/620)) ([ada875a](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/ada875a21a9a359a582d6a75e4dbb003e526b909))
+* **deps:** update commitlint monorepo ([#601](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/601)) ([9d7d5d5](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/9d7d5d5b68e679fba5018f0bb0af083eb64fdb36))
+* **deps:** update dependency @commitlint/config-conventional to v18.6.3 ([#606](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/606)) ([4e61039](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/4e610393cad2f90ce2707e3699641094263039c8))
+* **deps:** update dependency org.apache.maven.plugins:maven-install-plugin to v3.1.2 ([#612](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/612)) ([f5d85b7](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/f5d85b73725e60c5234e36f70c942bf56a797bc6))
+* **deps:** update dependency org.apache.maven.plugins:maven-shade-plugin to v3.5.3 ([#607](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/607)) ([e3abb63](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/e3abb631edbd4d35fb8edbbbc77e5a94cfb9adf7))
+* **deps:** update dependency org.awaitility:awaitility to v4.2.1 ([#608](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/608)) ([944a60d](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/944a60de07f88f181f7569f07262b363a8180617))
+* **deps:** update dependency org.jacoco:jacoco-maven-plugin to v0.8.12 ([#613](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/613)) ([4f643da](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/4f643da0e3add44b28fea0c34895e7e1d29ccdb1))
+* **deps:** update npm to v10.8.2 ([#617](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/617)) ([eeead0d](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/eeead0df444b8b2cb1fa568ae9114e5f6ea03f53))
+* **deps:** update ossf/scorecard-action action to v2.4.0 ([#618](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/618)) ([565f724](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/565f7241a62891fb5ba6775940e12dc68b8f3b43))
+
 ## [3.0.3](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/compare/v3.0.2...v3.0.3) (2024-02-15)
 
 
