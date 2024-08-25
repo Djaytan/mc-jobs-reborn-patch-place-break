@@ -49,8 +49,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -60,17 +59,7 @@ import org.spongepowered.configurate.serialize.SerializationException;
 
 class DbmsHostPropertiesImplTest {
 
-  private FileSystem imfs;
-
-  @BeforeEach
-  void beforeEach() {
-    imfs = Jimfs.newFileSystem(Configuration.unix());
-  }
-
-  @AfterEach
-  void afterEach() throws IOException {
-    imfs.close();
-  }
+  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(Configuration.unix());
 
   @Test
   void whenCallingEqualsAndHashcode_shouldMetContracts() {

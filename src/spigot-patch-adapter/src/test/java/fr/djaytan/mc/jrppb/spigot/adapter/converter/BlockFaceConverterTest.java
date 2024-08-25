@@ -41,7 +41,7 @@ class BlockFaceConverterTest {
   private BlockFaceConverter blockFaceConverter;
 
   @BeforeEach
-  void beforeEach() {
+  void setUp() {
     blockFaceConverter = new BlockFaceConverter();
   }
 

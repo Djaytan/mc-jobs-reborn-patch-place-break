@@ -34,18 +34,13 @@ import fr.djaytan.mc.jrppb.core.config.properties.DbmsServerPropertiesImpl;
 import fr.djaytan.mc.jrppb.core.config.testutils.ValidatorTestWrapper;
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceType;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class PropertiesValidatorTest {
 
-  private PropertiesValidator propertiesValidator;
-
-  @BeforeEach
-  void beforeEach() {
-    propertiesValidator = new PropertiesValidator(ValidatorTestWrapper.getValidator());
-  }
+  private final PropertiesValidator propertiesValidator =
+      new PropertiesValidator(ValidatorTestWrapper.getValidator());
 
   @Nested
   class WhenValidating {

@@ -46,7 +46,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -57,24 +57,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ConfigManagerTest {
 
+  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(Configuration.unix());
+
   private ConfigManager configManager;
   @Spy private ConfigSerializer configSerializerSpied;
   private Path dataFolder;
-  private FileSystem imfs;
 
   @BeforeEach
-  void beforeEach() {
-    imfs = Jimfs.newFileSystem(Configuration.unix());
-
+  void setUp() {
     dataFolder = imfs.getPath("");
     PropertiesValidator propertiesValidator =
         new PropertiesValidator(ValidatorTestWrapper.getValidator());
     configManager = new ConfigManager(dataFolder, configSerializerSpied, propertiesValidator);
-  }
-
-  @AfterEach
-  void afterEach() throws IOException {
-    imfs.close();
   }
 
   @Nested

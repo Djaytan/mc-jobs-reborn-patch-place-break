@@ -35,27 +35,16 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.spongepowered.configurate.serialize.SerializationException;
 
 class ConfigSerializerTest {
 
-  private ConfigSerializer configSerializer = new ConfigSerializer();
-  private FileSystem imfs;
+  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(Configuration.unix());
 
-  @BeforeEach
-  void beforeEach() {
-    configSerializer = new ConfigSerializer();
-    imfs = Jimfs.newFileSystem(Configuration.unix());
-  }
-
-  @AfterEach
-  void afterEach() throws IOException {
-    imfs.close();
-  }
+  private final ConfigSerializer configSerializer = new ConfigSerializer();
 
   @Nested
   class WhenSerializing {

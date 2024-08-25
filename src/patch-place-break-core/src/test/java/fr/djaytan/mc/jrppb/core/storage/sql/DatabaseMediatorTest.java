@@ -36,7 +36,7 @@ import java.sql.Connection;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,10 +47,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class DatabaseMediatorTest {
 
   @TempDir private Path dataFolder;
-  private DatabaseMediator databaseMediator;
+  @AutoClose private DatabaseMediator databaseMediator;
 
   @BeforeEach
-  void beforeEach() {
+  void setUp() {
     Path sqliteDatabaseFile = dataFolder.resolve("sqlite-data.db");
     JdbcUrl jdbcUrl = new SqliteJdbcUrl(sqliteDatabaseFile);
     DataSourceProperties dataSourceProperties = DataSourcePropertiesMock.get(DataSourceType.SQLITE);
@@ -60,11 +60,6 @@ class DatabaseMediatorTest {
     HikariDataSource hikariDataSource = hikariDataSourceProvider.get();
 
     databaseMediator = new DatabaseMediator(hikariDataSource);
-  }
-
-  @AfterEach
-  void afterEach() {
-    databaseMediator.close();
   }
 
   @Test

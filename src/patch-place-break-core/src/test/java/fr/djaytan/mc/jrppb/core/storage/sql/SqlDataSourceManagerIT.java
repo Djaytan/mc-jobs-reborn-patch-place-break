@@ -79,7 +79,7 @@ class SqlDataSourceManagerIT {
   }
 
   @AfterEach
-  void afterEach() {
+  void tearDown() {
     sqlDataSourceManager.disconnect();
   }
 

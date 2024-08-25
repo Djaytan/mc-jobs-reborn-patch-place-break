@@ -26,20 +26,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Test;
 
 class SqliteJdbcUrlTest {
 
-  private final FileSystem imfs = Jimfs.newFileSystem(Configuration.unix());
-
-  @AfterEach
-  void afterEach() throws IOException {
-    imfs.close();
-  }
+  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(Configuration.unix());
 
   @Test
   void whenGettingJdbcUrlFromDummyPath_shouldReturnExpectedSqliteJdbcUrl() {
