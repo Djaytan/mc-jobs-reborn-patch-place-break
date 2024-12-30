@@ -49,6 +49,7 @@ class MariadbPatchPlaceBreakApiIT extends PatchPlaceBreakApiBaseTest {
   }
 
   @BeforeEach
+  @Override
   void beforeEach() throws IOException {
     int dbmsPort = MARIADB_CONTAINER.getMappedPort(DATABASE_ORIGINAL_PORT);
     String username = MARIADB_CONTAINER.getUsername();

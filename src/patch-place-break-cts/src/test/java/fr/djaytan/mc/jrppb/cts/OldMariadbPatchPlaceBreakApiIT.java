@@ -28,33 +28,36 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.containers.MariaDBContainer;
 
-class MysqlPatchPlaceBreakApiIT extends PatchPlaceBreakApiBaseTest {
+class OldMariadbPatchPlaceBreakApiIT extends PatchPlaceBreakApiBaseTest {
 
   private static final int DATABASE_ORIGINAL_PORT = 3306;
   private static final String DATABASE_NAME = "patch_place_break";
 
   @SuppressWarnings("resource") // Reusable containers feature enabled: do not clean-up containers!
-  private static final MySQLContainer<?> MYSQL_CONTAINER =
-      new MySQLContainer<>("mysql:8.1.0-oracle").withDatabaseName(DATABASE_NAME).withReuse(true);
+  private static final MariaDBContainer<?> MARIADB_CONTAINER =
+      new MariaDBContainer<>("mariadb:10.3.39-focal")
+          .withDatabaseName(DATABASE_NAME)
+          .withReuse(true);
 
   private static final String CONFIG_DATA_SOURCE_FILE_NAME = "dataSource.conf";
 
   @BeforeAll
   static void beforeAll() {
-    MYSQL_CONTAINER.start();
+    MARIADB_CONTAINER.start();
   }
 
   @BeforeEach
   @Override
   void beforeEach() throws IOException {
-    int dbmsPort = MYSQL_CONTAINER.getMappedPort(DATABASE_ORIGINAL_PORT);
-    String username = MYSQL_CONTAINER.getUsername();
-    String password = MYSQL_CONTAINER.getPassword();
+    int dbmsPort = MARIADB_CONTAINER.getMappedPort(DATABASE_ORIGINAL_PORT);
+    String username = MARIADB_CONTAINER.getUsername();
+    String password = MARIADB_CONTAINER.getPassword();
     String givenDataSourceConfFileContent =
         String.format(
-            TestResourcesHelper.getClassResourceAsString(this.getClass(), "mysql.conf", false),
+            TestResourcesHelper.getClassResourceAsString(
+                MariadbPatchPlaceBreakApiIT.class, "mariadb.conf", false),
             dbmsPort,
             username,
             password);

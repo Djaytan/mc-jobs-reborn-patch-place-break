@@ -36,11 +36,6 @@ import org.jetbrains.annotations.NotNull;
 @Singleton
 public final class FlywayProvider implements Provider<Flyway> {
 
-  private static final String DB_MIGRATION_DESCRIPTOR_FORMAT = "/db/migration/%s";
-  private static final String MIGRATION_HISTORY_TABLE_NAME =
-      "patch_place_break_flyway_schema_history";
-  private static final String PLACEHOLDER_PATCH_PLACE_BREAK_TABLE_NAME = "patchPlaceBreakTableName";
-
   private final ClassLoader classLoader;
   private final DataSource dataSource;
   private final DataSourceProperties dataSourceProperties;
@@ -57,16 +52,17 @@ public final class FlywayProvider implements Provider<Flyway> {
 
   public @NotNull Flyway get() {
     Map<String, String> placeholders = new HashMap<>();
-    placeholders.put(PLACEHOLDER_PATCH_PLACE_BREAK_TABLE_NAME, dataSourceProperties.getTable());
+    placeholders.put("patchPlaceBreakTableName", dataSourceProperties.getTable());
 
     return Flyway.configure(classLoader)
         .baselineOnMigrate(true)
+        .baselineVersion("3.0.0")
         .dataSource(dataSource)
         .failOnMissingLocations(true)
         .locations(getLocation())
         .loggers("slf4j")
         .placeholders(placeholders)
-        .table(MIGRATION_HISTORY_TABLE_NAME)
+        .table("patch_place_break_flyway_schema_history")
         .validateOnMigrate(false)
         .validateMigrationNaming(true)
         .load();
@@ -74,8 +70,7 @@ public final class FlywayProvider implements Provider<Flyway> {
 
   private @NotNull Location getLocation() {
     String descriptor =
-        String.format(
-            DB_MIGRATION_DESCRIPTOR_FORMAT, dataSourceProperties.getType().name().toLowerCase());
+        String.format("/db/migration/%s", dataSourceProperties.getType().name().toLowerCase());
     return new Location(descriptor);
   }
 }
