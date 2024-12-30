@@ -1,3 +1,22 @@
+## [3.0.5](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/compare/v3.0.4...v3.0.5) (2024-12-30)
+
+
+### 🐛 Bug Fixes
+
+* **core:** 639 - old database initialization was failing ([#640](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/640)) ([8a52c8b](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/8a52c8b7b065baba895c41a5ab9d097c32c69667))
+
+
+### 📖 Documentation
+
+* **changelog:** release v3.0.4 ([#624](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/624)) ([8cde400](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/8cde4002fae13f23b6efeef04b7f447f75abf738))
+
+
+### 🧹 House Keeping
+
+* **deps:** lock file maintenance ([#627](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/627)) ([c3cfff1](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/c3cfff15d68d72b94db82c308c91c255458cb443))
+* **deps:** update dependency org.apache.maven.plugins:maven-install-plugin to v3.1.3 ([#625](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/625)) ([06eb4fe](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/06eb4fecca4649c7067cff19a702f703c5e7a841))
+* **deps:** update dependency org.awaitility:awaitility to v4.2.2 ([#626](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/issues/626)) ([a32d7a0](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/commit/a32d7a0c4a6de8b43f478dc56a37fe4723a12834))
+
 ## [3.0.4](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/compare/v3.0.3...v3.0.4) (2024-08-25)
 
 
