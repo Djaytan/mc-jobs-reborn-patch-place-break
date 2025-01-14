@@ -1,0 +1,18 @@
+{
+  "name": "semantic-release",
+  "devDependencies": {
+    "@commitlint/cli": "19.6.1",
+    "@commitlint/config-conventional": "19.6.0",
+    "semantic-release": "24.2.0",
+    "@semantic-release/changelog": "6.0.3",
+    "@semantic-release/exec": "6.0.3"
+  },
+  "overrides": {
+    "conventional-changelog-conventionalcommits_": "Temporary workaround: https://github.com/semantic-release/release-notes-generator/issues/657",
+    "conventional-changelog-conventionalcommits": ">= 8.0.0"
+  },
+  "engines": {
+    "node": "^22.0.0"
+  },
+  "packageManager": "npm@11.0.0"
+}
