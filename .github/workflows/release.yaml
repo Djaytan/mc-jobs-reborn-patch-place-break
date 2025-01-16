@@ -54,11 +54,11 @@ jobs:
           git config --global user.email "${RELEASE_BOT_EMAIL}"
 
       - name: Setup Node.js
-        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
-          node-version: lts/iron
+          node-version: lts/jod
           cache: npm
-          cache-dependency-path: .github/package-lock.json
+          cache-dependency-path: .github/semantic-release/package-lock.json
 
       - name: Setup Java
         uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
@@ -67,7 +67,7 @@ jobs:
           distribution: temurin
 
       - name: Install semantic-release
-        working-directory: .github/
+        working-directory: .github/semantic-release/
         run: npm clean-install
 
       - name: Release
@@ -76,7 +76,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           # Hacky way of retrieving the released version tag name through a temporary file
           TMP_TAG_VERSION_NAME_FILE: ${{ runner.temp }}/tag_version_name
-        working-directory: .github/
+        working-directory: .github/semantic-release/
         run: |
           npx --no-install semantic-release
           echo "tag=$(cat "${TMP_TAG_VERSION_NAME_FILE}")" >> "${GITHUB_OUTPUT}"
