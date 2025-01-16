@@ -16,14 +16,6 @@ module.exports = {
       {type: 'chore', section: '🧹 House Keeping'}
     ]
   },
-  branches: [
-    'main',
-    'next',
-    'next-major',
-    'release/v+([0-9])?(.{+([0-9]),x}).x',
-    {name: 'beta', prerelease: true},
-    {name: 'alpha', prerelease: true}
-  ],
   plugins: [
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',

@@ -3,9 +3,9 @@ name: Conventional Commit
 on:
   workflow_dispatch:
   push:
-    branches: [main, 'release/v*', next, next-major, beta, alpha]
+    branches: [main, '+.x', next, next-major, beta, alpha]
   pull_request:
-    branches: [main, 'release/v*', next, next-major, beta, alpha]
+    branches: [main, '+.x', next, next-major, beta, alpha]
 
 permissions: {}
 
