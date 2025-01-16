@@ -3,9 +3,9 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches: [main, 'release/v*', next, next-major, beta, alpha]
+    branches: [main, '+.x', next, next-major, beta, alpha]
   pull_request:
-    branches: [main, 'release/v*', next, next-major, beta, alpha]
+    branches: [main, '+.x', next, next-major, beta, alpha]
   schedule:
     - cron: '5 4 * * *' # Every day at 04:05
 
