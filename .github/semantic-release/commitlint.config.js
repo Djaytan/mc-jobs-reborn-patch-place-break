@@ -4,7 +4,7 @@ module.exports = {
     // Project specific rules
     'scope-enum': [2, 'always', [
       'core', 'spigot-adapter', 'spigot-plugin', 'readme', 'contributing',
-      'changelog', 'packaging', 'deps', 'other', 'github', 'renovate', 'release'
+      'packaging', 'deps', 'other', 'github', 'renovate', 'release'
     ]],
 
     // Compliant with Angular conventions (getting rid of "style" and "chore" types)

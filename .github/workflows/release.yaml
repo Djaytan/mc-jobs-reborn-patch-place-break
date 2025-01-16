@@ -16,12 +16,6 @@ jobs:
       issues: write # Required to comment on released issues
       pull-requests: write # Required to comment on released pull requests
 
-    outputs:
-      release-tag: ${{ steps.release.outputs.tag }}
-
-    env:
-      CHANGELOG_FILE: ${{ github.workspace }}/docs/CHANGELOG.md
-
     steps:
       - name: Harden runner
         uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
@@ -44,15 +38,6 @@ jobs:
         with:
           fetch-depth: 0 # Required by semantic-release
 
-      - name: Config Git user as release bot
-        env:
-          # https://github.com/orgs/community/discussions/26560#discussioncomment-3252339
-          RELEASE_BOT_NAME: 'github-actions[bot]'
-          RELEASE_BOT_EMAIL: '41898282+github-actions[bot]@users.noreply.github.com'
-        run: |
-          git config --global user.name "${RELEASE_BOT_NAME}"
-          git config --global user.email "${RELEASE_BOT_EMAIL}"
-
       - name: Setup Node.js
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
@@ -71,68 +56,8 @@ jobs:
         run: npm clean-install
 
       - name: Release
-        id: release
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          # Hacky way of retrieving the released version tag name through a temporary file
-          TMP_TAG_VERSION_NAME_FILE: ${{ runner.temp }}/tag_version_name
         working-directory: .github/semantic-release/
         run: |
           npx --no-install semantic-release
-          echo "tag=$(cat "${TMP_TAG_VERSION_NAME_FILE}")" >> "${GITHUB_OUTPUT}"
-
-      - name: Create a PR for creating/updating the changelog file
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          CHANGELOG_BRANCH_NAME: changelog/${{ steps.release.outputs.tag }}
-        run: |
-          git switch --create "${CHANGELOG_BRANCH_NAME}"
-          git add "${CHANGELOG_FILE}"
-          git commit --message='docs(changelog): release ${{ steps.release.outputs.tag }}' "${CHANGELOG_FILE}"
-          git push --set-upstream origin "${CHANGELOG_BRANCH_NAME}"
-
-          gh pr create --fill \
-            --label 't:release' \
-            --base ${{ github.ref_name }} \
-            --head "${CHANGELOG_BRANCH_NAME}"
-
-  release-sign:
-    name: Release - Sign
-    runs-on: ubuntu-22.04
-    timeout-minutes: 5
-
-    needs: release-perform
-
-    permissions:
-      contents: write # Required to add assets in existing GitHub release
-      id-token: write # Required for signing through Sigstore
-
-    steps:
-      - name: Harden runner
-        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
-        with:
-          disable-sudo: true
-          egress-policy: block
-          allowed-endpoints: >
-            github.com:443
-            api.github.com:443
-            uploads.github.com:443
-            objects.githubusercontent.com:443
-            fulcio.sigstore.dev:443
-            rekor.sigstore.dev:443
-            tuf-repo-cdn.sigstore.dev:443
-
-      - name: Checkout repository
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-        with:
-          persist-credentials: false
-
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@e1523de7571e31dbe865fd2e80c5c7c23ae71eb4 # v3.4.0
-
-      - name: Sign GitHub release assets
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          CERTIFICATE_IDENTITY: ${{ github.server_url }}/${{ github.workflow_ref }}
-          CERTIFICATE_OIDC_ISSUER: https://token.actions.githubusercontent.com
-        run: .github/scripts/sign_gh_release_assets.sh ${{ needs.release-perform.outputs.release-tag }}
