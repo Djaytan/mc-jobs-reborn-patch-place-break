@@ -160,8 +160,8 @@ from [Angular project](https://github.com/angular/angular/blob/main/CONTRIBUTING
   │       │             │
   │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
   │       │
-  │       └─⫸ Commit Scope: core|spigot-adapter|spigot-plugin|readme|contributing|changelog|  
-  │                          packaging|deps|other|github|renovate|release
+  │       └─⫸ Commit Scope: core|spigot-adapter|spigot-plugin|readme|contributing|packaging|deps|
+  │                          other|github|renovate|release
   │
   └─⫸ Commit Type: feat|fix|perf|refactor|docs|test|build|ci|chore
 ```
@@ -200,7 +200,6 @@ But there are exceptions that shall be considered as well depending mostly on th
 * **readme**: used for changes updating the `README.md` file
 * **contributing**: used for changes updating the contribution-related
   files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md` & `SECURITY.md`
-* **changelog**: used for changes updating the `CHANGELOG.md` file
 
 ###### Specific to the `build` type
 

@@ -24,11 +24,9 @@ module.exports = {
     {name: 'beta', prerelease: true},
     {name: 'alpha', prerelease: true}
   ],
-  changelogFile: process.env.CHANGELOG_FILE,
   plugins: [
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',
-    '@semantic-release/changelog',
     [
       '@semantic-release/github',
       {
@@ -43,8 +41,7 @@ module.exports = {
     [
       '@semantic-release/exec',
       {
-        prepareCmd: './scripts/generate_spigot_plugin.sh ${nextRelease.version}',
-        successCmd: `echo '$\{nextRelease.gitTag}' > '${process.env.TMP_TAG_VERSION_NAME_FILE}'`
+        prepareCmd: './scripts/generate_spigot_plugin.sh ${nextRelease.version}'
       }
     ],
   ]

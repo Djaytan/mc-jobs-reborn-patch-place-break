@@ -99,26 +99,6 @@ Download the latest `.jar` file from the
 [release section](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/releases/) of this
 repository.
 
-#### Signature verification
-
-In case you wish to verify the plugin's signature to ensure that the file is trustworthy, you can
-follow these steps:
-
-* Install the [Cosign CLI](https://github.com/sigstore/cosign?tab=readme-ov-file#installation)
-* Install the `.sig` and `.pem` files alongside the plugin one
-* Execute the following Bash commands (you will have to adapt them if necessary):
-
-```shell
-PLUGIN_VERSION=''
-cosign verify-blob "JobsReborn-PatchPlaceBreak-${PLUGIN_VERSION}.jar" \
-  --signature="JobsReborn-PatchPlaceBreak-${PLUGIN_VERSION}.jar-keyless.sig" \
-  --certificate="JobsReborn-PatchPlaceBreak-${PLUGIN_VERSION}.jar-keyless.pem" \
-  --certificate-identity=https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/.github/workflows/release.yml@refs/heads/main \
-  --certificate-oidc-issuer=https://token.actions.githubusercontent.com
-```
-
-Well think about filling the `PLUGIN_VERSION` variable.
-
 ### Installation
 
 Put the plugin JAR file into the `plugins/` folder, and you'll be done!
@@ -209,7 +189,6 @@ Specifically for the CI:
 * [OpenSSF Scorecard](https://github.com/ossf/scorecard)
 * [semantic-release](https://github.com/semantic-release/semantic-release)
 * [commitlint](https://github.com/conventional-changelog/commitlint)
-* [Sigstore](https://www.sigstore.dev/)
 
 ## Versioning
 
