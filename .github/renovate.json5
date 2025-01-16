@@ -2,14 +2,28 @@
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
     'config:best-practices',
-    'schedule:monthly',
-    ':maintainLockFilesWeekly',
+    'schedule:quarterly',
     'security:openssf-scorecard',
-    'workarounds:mavenCommonsAncientVersion',
-    ':enableVulnerabilityAlertsWithLabel(t:security)',
-    ':label(t:dependencies)',
-    ':semanticCommits'
+    'workarounds:mavenCommonsAncientVersion'
   ],
   configMigration: true,
-  osvVulnerabilityAlerts: true
+  labels: [
+    't:dependencies'
+  ],
+  lockFileMaintenance: {
+    enabled: true,
+    extends: [
+      'schedule:quarterly'
+    ]
+  },
+  osvVulnerabilityAlerts: true,
+  prConcurrentLimit: 50,
+  prHourlyLimit: 20,
+  semanticCommits: 'enabled',
+  vulnerabilityAlerts: {
+    enabled: true,
+    labels: [
+      't:security'
+    ]
+  }
 }
