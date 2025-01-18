@@ -106,13 +106,6 @@ You will find the packaged JAR file of the Spigot plugin at `src/spigot-plugin/t
 If you want to test it, copy it into your local Spigot server by taking care that the server
 version is compatible with the plugin.
 
-If you want to quickly package the Jar file without running tests and other time-consuming steps:
-
-    $ mvn -Pfast
-
-However, it's recommended to use it as little as possible.
-Never use it for validating changes before committing.
-
 ### 📋 Test-Driven Development (TDD)
 
 The [TDD](https://en.wikipedia.org/wiki/Test-driven_development) is a great way to improve software

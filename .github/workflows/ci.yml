@@ -11,6 +11,9 @@ on:
 
 permissions: {}
 
+env:
+  MAVEN_ARGS: --batch-mode -Dstyle.color=always
+
 jobs:
   build-and-test:
     name: Build & Test
@@ -76,8 +79,7 @@ jobs:
           SONAR_ORGANIZATION="$(echo '${{ github.repository_owner }}' | awk '{print tolower($0)}')"
           SONAR_PROJECT_KEY="$(echo '${{ github.repository }}' | sed 's/\//_/')"
 
-          mvn verify sonar:sonar --activate-profiles ci -Dstyle.color=always \
-            --batch-mode --errors --strict-checksums --update-snapshots \
+          ./mvnw verify sonar:sonar \
             -Dsonar.host.url="${SONAR_HOST_URL}" \
             -Dsonar.organization="${SONAR_ORGANIZATION}" \
             -Dsonar.projectKey="${SONAR_PROJECT_KEY}"
@@ -126,9 +128,7 @@ jobs:
           languages: java
 
       - name: Build
-        run: |
-          mvn package --activate-profiles fast -Dstyle.color=always \
-            --batch-mode --errors --strict-checksums --update-snapshots --fail-fast
+        run: ./mvnw package -DskipTests
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@e8893c57a1f3a2b659b6b55564fdfdbbd2982911 # v3.24.0
