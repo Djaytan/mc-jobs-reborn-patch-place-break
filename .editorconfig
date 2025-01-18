@@ -12,8 +12,6 @@ indent_size = 2
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.xml]
-indent_size = 4
-
-[*.{diff,md,properties,conf}]
+# Prevent line-ending removal in Markdown files (two trailing spaces = new line)
+[*.md]
 trim_trailing_whitespace = false
