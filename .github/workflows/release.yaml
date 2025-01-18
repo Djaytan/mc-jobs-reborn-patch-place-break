@@ -36,6 +36,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
+          persist-credentials: false
           fetch-depth: 0 # Required by semantic-release
 
       - name: Setup Node.js
@@ -59,5 +60,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         working-directory: .github/semantic-release/
-        run: |
-          npx --no-install semantic-release
+        run: npx --no-install semantic-release
