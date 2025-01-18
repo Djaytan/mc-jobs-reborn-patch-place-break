@@ -329,213 +329,67 @@
 
     <build>
         <defaultGoal>clean install</defaultGoal>
-
-        <pluginManagement>
-            <plugins>
-                <!-- Basic Maven plugins -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.3.2</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.3.1</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.12.1</version>
-                    <configuration>
-                        <release>${java.version}</release>
-                        <failOnWarning>true</failOnWarning>
-                        <showDeprecation>true</showDeprecation>
-                        <compilerArgs>
-                            <arg>-Xlint:all</arg>
-                            <arg>-Xlint:-exports</arg>
-                            <arg>-Xlint:-requires-automatic</arg>
-                            <arg>-Xlint:-requires-transitive-automatic</arg>
-                            <arg>-Xlint:-serial</arg>
-                        </compilerArgs>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.3.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>3.1.3</version>
-                </plugin>
-
-                <!-- Formatting-related plugins -->
-                <plugin>
-                    <groupId>com.github.ekryd.sortpom</groupId>
-                    <artifactId>sortpom-maven-plugin</artifactId>
-                    <version>3.3.0</version>
-                    <configuration>
-                        <!-- General properties -->
-                        <createBackupFile>false</createBackupFile>
-                        <encoding>${project.encoding}</encoding>
-
-                        <!-- Formatting properties -->
-                        <expandEmptyElements>false</expandEmptyElements>
-                        <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
-                        <lineSeparator>\n</lineSeparator>
-                        <nrOfIndentSpace>4</nrOfIndentSpace>
-                        <ignoreLineSeparators>false</ignoreLineSeparators>
-
-                        <!-- Sorting properties -->
-                        <predefinedSortOrder>custom_1</predefinedSortOrder>
-                        <sortModules>true</sortModules>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>com.spotify.fmt</groupId>
-                    <artifactId>fmt-maven-plugin</artifactId>
-                    <version>2.22.1</version>
-                </plugin>
-                <plugin>
-                    <groupId>com.mycila</groupId>
-                    <artifactId>license-maven-plugin</artifactId>
-                    <version>4.3</version>
-                    <configuration>
-                        <properties>
-                            <owner>Loïc DUBOIS-TERMOZ (alias Djaytan)</owner>
-                        </properties>
-                        <licenseSets>
-                            <licenseSet>
-                                <header>com/mycila/maven/plugin/license/templates/MIT.txt</header>
-                                <excludes>
-                                    <exclude>src/main/resources/**</exclude>
-                                    <exclude>src/test/resources/**</exclude>
-                                    <exclude>scripts/**</exclude>
-                                    <exclude>.editorconfig</exclude>
-                                    <exclude>release.config.js</exclude>
-                                </excludes>
-                            </licenseSet>
-                        </licenseSets>
-                    </configuration>
-                </plugin>
-
-                <!-- Enforcement-related plugins -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.8.1</version>
-                    <configuration>
-                        <failBuild>true</failBuild>
-                        <failOnWarning>true</failOnWarning>
-                        <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
-                        <ignoredUnusedDeclaredDependencies>
-                            <dependency>ch.qos.logback:logback-classic</dependency>
-                            <!-- Required by Pitest for mutation testing -->
-                            <dependency>org.junit.jupiter:junit-jupiter-engine</dependency>
-                        </ignoredUnusedDeclaredDependencies>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.4.1</version>
-                    <configuration>
-                        <fail>true</fail>
-                        <failFast>true</failFast>
-                        <rules>
-                            <banDuplicatePomDependencyVersions />
-                            <dependencyConvergence />
-                            <reactorModuleConvergence />
-                            <requireJavaVersion>
-                                <version>[17,)</version>
-                            </requireJavaVersion>
-                            <requireMavenVersion>
-                                <version>[3.9,)</version>
-                            </requireMavenVersion>
-                            <requirePluginVersions>
-                                <message>Best Practice is to always define plugin versions!</message>
-                                <!-- "site" & "deploy" phases are not applicable for this project -->
-                                <unCheckedPluginList>org.apache.maven.plugins:maven-deploy-plugin,
-                                    org.apache.maven.plugins:maven-site-plugin</unCheckedPluginList>
-                            </requirePluginVersions>
-                            <requireUpperBoundDeps />
-                        </rules>
-                    </configuration>
-                </plugin>
-
-                <!-- Test-related plugins -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.2.5</version>
-                    <configuration>
-                        <argLine>@{argLine} -Xshare:off</argLine>
-                        <parallel>all</parallel>
-                        <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                        <systemPropertyVariables>
-                            <!-- Required to redirect Hibernate Validator's logs to SLF4J -->
-                            <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
-                        </systemPropertyVariables>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.2.5</version>
-                    <configuration>
-                        <argLine>@{argLine} -Xshare:off</argLine>
-                        <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.12</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.pitest</groupId>
-                    <artifactId>pitest-maven</artifactId>
-                    <version>1.15.8</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.pitest</groupId>
-                            <artifactId>pitest-junit5-plugin</artifactId>
-                            <version>1.2.1</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-
-                <!-- Release-related plugins -->
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>versions-maven-plugin</artifactId>
-                    <version>2.16.2</version>
-                    <configuration>
-                        <generateBackupPoms>false</generateBackupPoms>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.5.3</version>
-                </plugin>
-
-                <!-- SonarCloud code quality scans -->
-                <plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>3.10.0.2594</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
         <plugins>
+            <!-- Basic Maven plugins -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.3.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.12.1</version>
+                <configuration>
+                    <release>${java.version}</release>
+                    <failOnWarning>true</failOnWarning>
+                    <showDeprecation>true</showDeprecation>
+                    <compilerArgs>
+                        <arg>-Xlint:all</arg>
+                        <arg>-Xlint:-exports</arg>
+                        <arg>-Xlint:-requires-automatic</arg>
+                        <arg>-Xlint:-requires-transitive-automatic</arg>
+                        <arg>-Xlint:-serial</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>3.1.3</version>
+            </plugin>
+
             <!-- Formatting-related plugins -->
             <plugin>
                 <groupId>com.github.ekryd.sortpom</groupId>
                 <artifactId>sortpom-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <!-- General properties -->
+                    <createBackupFile>false</createBackupFile>
+                    <encoding>${project.encoding}</encoding>
+
+                    <!-- Formatting properties -->
+                    <expandEmptyElements>false</expandEmptyElements>
+                    <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
+                    <lineSeparator>\n</lineSeparator>
+                    <nrOfIndentSpace>4</nrOfIndentSpace>
+                    <ignoreLineSeparators>false</ignoreLineSeparators>
+
+                    <!-- Sorting properties -->
+                    <predefinedSortOrder>custom_1</predefinedSortOrder>
+                    <sortModules>true</sortModules>
+                </configuration>
                 <executions>
                     <execution>
                         <id>format</id>
@@ -563,6 +417,7 @@
             <plugin>
                 <groupId>com.spotify.fmt</groupId>
                 <artifactId>fmt-maven-plugin</artifactId>
+                <version>2.22.1</version>
                 <executions>
                     <execution>
                         <id>format</id>
@@ -589,6 +444,24 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
+                <version>4.3</version>
+                <configuration>
+                    <properties>
+                        <owner>Loïc DUBOIS-TERMOZ (alias Djaytan)</owner>
+                    </properties>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>com/mycila/maven/plugin/license/templates/MIT.txt</header>
+                            <excludes>
+                                <exclude>src/main/resources/**</exclude>
+                                <exclude>src/test/resources/**</exclude>
+                                <exclude>scripts/**</exclude>
+                                <exclude>.editorconfig</exclude>
+                                <exclude>release.config.js</exclude>
+                            </excludes>
+                        </licenseSet>
+                    </licenseSets>
+                </configuration>
                 <executions>
                     <execution>
                         <id>format</id>
@@ -621,6 +494,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <failBuild>true</failBuild>
+                    <failOnWarning>true</failOnWarning>
+                    <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
+                    <ignoredUnusedDeclaredDependencies>
+                        <dependency>ch.qos.logback:logback-classic</dependency>
+                        <!-- Required by Pitest for mutation testing -->
+                        <dependency>org.junit.jupiter:junit-jupiter-engine</dependency>
+                    </ignoredUnusedDeclaredDependencies>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -635,6 +519,29 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <fail>true</fail>
+                    <failFast>true</failFast>
+                    <rules>
+                        <banDuplicatePomDependencyVersions />
+                        <dependencyConvergence />
+                        <reactorModuleConvergence />
+                        <requireJavaVersion>
+                            <version>[17,)</version>
+                        </requireJavaVersion>
+                        <requireMavenVersion>
+                            <version>[3.9,)</version>
+                        </requireMavenVersion>
+                        <requirePluginVersions>
+                            <message>Best Practice is to always define plugin versions!</message>
+                            <!-- "site" & "deploy" phases are not applicable for this project -->
+                            <unCheckedPluginList>org.apache.maven.plugins:maven-deploy-plugin,
+                                org.apache.maven.plugins:maven-site-plugin</unCheckedPluginList>
+                        </requirePluginVersions>
+                        <requireUpperBoundDeps />
+                    </rules>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -647,7 +554,26 @@
             <!-- Test-related plugins -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <argLine>@{argLine} -Xshare:off</argLine>
+                    <parallel>all</parallel>
+                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                    <systemPropertyVariables>
+                        <!-- Required to redirect Hibernate Validator's logs to SLF4J -->
+                        <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <argLine>@{argLine} -Xshare:off</argLine>
+                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -660,6 +586,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.12</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -674,6 +601,28 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Release-related plugins -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.16.2</version>
+                <configuration>
+                    <generateBackupPoms>false</generateBackupPoms>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.3</version>
+            </plugin>
+
+            <!-- SonarCloud code quality scans -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.10.0.2594</version>
             </plugin>
         </plugins>
     </build>
@@ -743,6 +692,14 @@
                     <plugin>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-maven</artifactId>
+                        <version>1.15.8</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.pitest</groupId>
+                                <artifactId>pitest-junit5-plugin</artifactId>
+                                <version>1.2.1</version>
+                            </dependency>
+                        </dependencies>
                         <executions>
                             <execution>
                                 <goals>
