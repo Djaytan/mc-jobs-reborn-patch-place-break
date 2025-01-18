@@ -452,7 +452,7 @@
                                 <version>[17,)</version>
                             </requireJavaVersion>
                             <requireMavenVersion>
-                                <version>[3.8,)</version>
+                                <version>[3.9,)</version>
                             </requireMavenVersion>
                             <requirePluginVersions>
                                 <message>Best Practice is to always define plugin versions!</message>
@@ -725,21 +725,15 @@
     <profiles>
         <profile>
             <id>ci</id>
+            <activation>
+                <property>
+                    <name>env.CI</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <properties>
                 <format.perform.skip>true</format.perform.skip>
                 <format.check.skip>false</format.check.skip>
-            </properties>
-        </profile>
-        <profile>
-            <id>fast</id>
-            <properties>
-                <format.perform.skip>true</format.perform.skip>
-                <format.check.skip>true</format.check.skip>
-                <enforcer.skip>true</enforcer.skip>
-                <jacoco.skip>true</jacoco.skip>
-                <mdep.analyze.skip>true</mdep.analyze.skip>
-                <skipTests>true</skipTests>
-                <maven.test.skip>true</maven.test.skip>
             </properties>
         </profile>
         <profile>
