@@ -24,7 +24,7 @@ module.exports = {
       {
         assets: [
           {
-            path: '../src/spigot-plugin/target/JobsReborn-PatchPlaceBreak-*.*.*.jar'
+            path: '../../src/spigot-plugin/target/JobsReborn-PatchPlaceBreak-*.*.*.jar'
           }
         ],
         labels: ['t:release']
