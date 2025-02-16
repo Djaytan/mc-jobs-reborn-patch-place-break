@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config.testutils;
+package fr.djaytan.mc.jrppb.core.config.validation;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;

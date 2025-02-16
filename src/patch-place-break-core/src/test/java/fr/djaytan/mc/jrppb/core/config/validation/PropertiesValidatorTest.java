@@ -31,7 +31,6 @@ import fr.djaytan.mc.jrppb.core.config.properties.DataSourcePropertiesImpl;
 import fr.djaytan.mc.jrppb.core.config.properties.DbmsCredentialsPropertiesImpl;
 import fr.djaytan.mc.jrppb.core.config.properties.DbmsHostPropertiesImpl;
 import fr.djaytan.mc.jrppb.core.config.properties.DbmsServerPropertiesImpl;
-import fr.djaytan.mc.jrppb.core.config.testutils.ValidatorTestWrapper;
 import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceType;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Nested;

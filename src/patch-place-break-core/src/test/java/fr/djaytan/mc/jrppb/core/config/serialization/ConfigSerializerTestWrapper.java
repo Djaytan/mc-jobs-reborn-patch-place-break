@@ -20,10 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config.testutils;
+package fr.djaytan.mc.jrppb.core.config.serialization;
 
 import fr.djaytan.mc.jrppb.core.config.properties.Properties;
-import fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializer;
 import java.nio.file.Path;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
