@@ -20,30 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.storage.properties;
+package fr.djaytan.mc.jrppb.core.config.serialization;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.configurate.serialize.SerializationException;
 
-public final class DbmsServerCredentialsPropertiesAssertions {
+public final class ConfigSerializerV2Assertions {
 
-  public static void assertSuccessfulInstantiation(
-      @NotNull String username, @NotNull String password) {
-    assertThat(new DbmsServerCredentialsProperties(username, password))
-        .satisfies(v -> assertThat(v.username()).isEqualTo(username))
-        .satisfies(v -> assertThat(v.password()).isEqualTo(password));
-  }
-
-  public static void assertInstantiationFailureWithBlankUsername(@NotNull String username) {
-    assertThatThrownBy(
-            () ->
-                new DbmsServerCredentialsProperties(
-                    username,
-                    DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PASSWORD))
-        .isExactlyInstanceOf(IllegalArgumentException.class)
-        .hasMessage("The DBMS server username cannot be blank")
-        .hasNoCause();
+  public static void assertDeserializationFailure(
+      @NotNull String serializedConfig, @NotNull Class<?> targetType) {
+    assertThatThrownBy(() -> deserialize(serializedConfig, targetType))
+        .isExactlyInstanceOf(ConfigSerializationException.class)
+        .hasMessage(
+            "Fail to deserialize config properties of type '%s' from the following config input:\n%s",
+            targetType.getName(), serializedConfig)
+        .cause()
+        .isExactlyInstanceOf(SerializationException.class)
+        .hasMessageEndingWith("A value is required for this field");
   }
 }

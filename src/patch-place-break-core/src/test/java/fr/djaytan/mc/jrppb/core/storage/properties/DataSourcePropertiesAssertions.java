@@ -53,6 +53,7 @@ public final class DataSourcePropertiesAssertions {
                     NOMINAL_DBMS_SERVER_PROPERTIES,
                     NOMINAL_CONNECTION_POOL_PROPERTIES))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("The data source table name must not be blank");
+        .hasMessageContaining("The data source table name must not be blank")
+        .hasNoCause();
   }
 }

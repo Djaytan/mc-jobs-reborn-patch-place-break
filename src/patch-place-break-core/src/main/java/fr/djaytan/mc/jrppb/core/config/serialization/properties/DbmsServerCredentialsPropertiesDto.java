@@ -20,30 +20,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.storage.properties;
+package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
+import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsProperties;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
-public final class DbmsServerCredentialsPropertiesAssertions {
+@ConfigSerializable
+public record DbmsServerCredentialsPropertiesDto(
+    @Required @Comment(USERNAME_COMMENT) @NotNull String username,
+    @Required @Comment(PASSWORD_COMMENT) @NotNull String password) {
 
-  public static void assertSuccessfulInstantiation(
-      @NotNull String username, @NotNull String password) {
-    assertThat(new DbmsServerCredentialsProperties(username, password))
-        .satisfies(v -> assertThat(v.username()).isEqualTo(username))
-        .satisfies(v -> assertThat(v.password()).isEqualTo(password));
+  private static final String USERNAME_COMMENT =
+      """
+      Under behalf of which user to connect on the DBMS server
+      Value can't be empty or blank""";
+
+  private static final String PASSWORD_COMMENT =
+      "Password of the user (optional but highly recommended)";
+
+  public static @NotNull DbmsServerCredentialsPropertiesDto fromModel(
+      @NotNull DbmsServerCredentialsProperties model) {
+    return new DbmsServerCredentialsPropertiesDto(model.username(), model.password());
   }
 
-  public static void assertInstantiationFailureWithBlankUsername(@NotNull String username) {
-    assertThatThrownBy(
-            () ->
-                new DbmsServerCredentialsProperties(
-                    username,
-                    DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PASSWORD))
-        .isExactlyInstanceOf(IllegalArgumentException.class)
-        .hasMessage("The DBMS server username cannot be blank")
-        .hasNoCause();
+  public @NotNull DbmsServerCredentialsProperties toModel() {
+    return new DbmsServerCredentialsProperties(username, password);
   }
 }

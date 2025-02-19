@@ -46,13 +46,15 @@ public final class ConnectionPoolPropertiesAssertions {
   public static void assertInstantiationFailureWithInvalidConnectionTimeout(int connectionTimeout) {
     assertThatThrownBy(() -> new ConnectionPoolProperties(connectionTimeout, NOMINAL_POOL_SIZE))
         .isExactlyInstanceOf(IllegalArgumentException.class)
-        .hasMessage("The connection timeout must be between 1 and 600000");
+        .hasMessage("The connection timeout must be between 1 and 600000")
+        .hasNoCause();
   }
 
   public static void assertInstantiationFailureWithInvalidPoolSize(int invalidPoolSize) {
     assertThatThrownBy(
             () -> new ConnectionPoolProperties(NOMINAL_CONNECTION_TIMEOUT, invalidPoolSize))
         .isExactlyInstanceOf(IllegalArgumentException.class)
-        .hasMessage("The pool size must be between 1 and 100");
+        .hasMessage("The pool size must be between 1 and 100")
+        .hasNoCause();
   }
 }

@@ -20,30 +20,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.storage.properties;
+package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_CONNECTION_TIMEOUT;
+import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_POOL_SIZE;
 
-import org.jetbrains.annotations.NotNull;
+public final class ConnectionPoolPropertiesDtoTestDataSet {
 
-public final class DbmsServerCredentialsPropertiesAssertions {
+  public static final ConnectionPoolPropertiesDto NOMINAL_CONNECTION_POOL_PROPERTIES_DTO =
+      new ConnectionPoolPropertiesDto(NOMINAL_CONNECTION_TIMEOUT, NOMINAL_POOL_SIZE);
 
-  public static void assertSuccessfulInstantiation(
-      @NotNull String username, @NotNull String password) {
-    assertThat(new DbmsServerCredentialsProperties(username, password))
-        .satisfies(v -> assertThat(v.username()).isEqualTo(username))
-        .satisfies(v -> assertThat(v.password()).isEqualTo(password));
-  }
-
-  public static void assertInstantiationFailureWithBlankUsername(@NotNull String username) {
-    assertThatThrownBy(
-            () ->
-                new DbmsServerCredentialsProperties(
-                    username,
-                    DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PASSWORD))
-        .isExactlyInstanceOf(IllegalArgumentException.class)
-        .hasMessage("The DBMS server username cannot be blank")
-        .hasNoCause();
-  }
+  public static final String NOMINAL_SERIALIZED_CONNECTION_POOL_PROPERTIES =
+      """
+      # The connection timeout (in milliseconds)
+      # Corresponds to the maximum time the connection pool will wait to acquire a new connection
+      # from the DBMS server
+      # Not applicable for SQLite
+      # Accepted range values: [1-600000]
+      connectionTimeout=60000
+      # The number of DBMS connections in the pool
+      # Could be best determined by the executing environment
+      # Accepted range values: [1-100]
+      poolSize=20
+      """;
 }

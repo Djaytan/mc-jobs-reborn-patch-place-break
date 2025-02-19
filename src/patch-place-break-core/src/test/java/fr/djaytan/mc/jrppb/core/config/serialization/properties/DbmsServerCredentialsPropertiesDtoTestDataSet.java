@@ -20,30 +20,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.storage.properties;
+package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PASSWORD;
+import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_USERNAME;
 
-import org.jetbrains.annotations.NotNull;
+public final class DbmsServerCredentialsPropertiesDtoTestDataSet {
 
-public final class DbmsServerCredentialsPropertiesAssertions {
+  public static final DbmsServerCredentialsPropertiesDto
+      NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES_DTO =
+          new DbmsServerCredentialsPropertiesDto(
+              NOMINAL_DBMS_SERVER_USERNAME, NOMINAL_DBMS_SERVER_PASSWORD);
 
-  public static void assertSuccessfulInstantiation(
-      @NotNull String username, @NotNull String password) {
-    assertThat(new DbmsServerCredentialsProperties(username, password))
-        .satisfies(v -> assertThat(v.username()).isEqualTo(username))
-        .satisfies(v -> assertThat(v.password()).isEqualTo(password));
-  }
-
-  public static void assertInstantiationFailureWithBlankUsername(@NotNull String username) {
-    assertThatThrownBy(
-            () ->
-                new DbmsServerCredentialsProperties(
-                    username,
-                    DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PASSWORD))
-        .isExactlyInstanceOf(IllegalArgumentException.class)
-        .hasMessage("The DBMS server username cannot be blank")
-        .hasNoCause();
-  }
+  public static final String NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_PROPERTIES =
+      """
+      # Password of the user (optional but highly recommended)
+      password=my-admin-pwd
+      # Under behalf of which user to connect on the DBMS server
+      # Value can't be empty or blank
+      username=admin
+      """;
 }

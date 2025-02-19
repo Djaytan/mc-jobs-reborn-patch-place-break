@@ -49,6 +49,7 @@ public final class DbmsServerPropertiesAssertions {
                     NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES,
                     databaseName))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("The DBMS server database name cannot be blank");
+        .hasMessageContaining("The DBMS server database name cannot be blank")
+        .hasNoCause();
   }
 }

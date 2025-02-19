@@ -63,7 +63,8 @@ public final class DbmsServerHostPropertiesAssertions {
                 new DbmsServerHostProperties(
                     hostname, NOMINAL_DBMS_SERVER_PORT, NOMINAL_DBMS_SERVER_IS_SSL_ENABLED))
         .isExactlyInstanceOf(IllegalArgumentException.class)
-        .hasMessage("The DBMS server hostname cannot exceed 255 characters");
+        .hasMessage("The DBMS server hostname cannot exceed 255 characters")
+        .hasNoCause();
   }
 
   public static void assertInstantiationFailureWithBlankHostname(@NotNull String hostname) {
@@ -72,7 +73,8 @@ public final class DbmsServerHostPropertiesAssertions {
                 new DbmsServerHostProperties(
                     hostname, NOMINAL_DBMS_SERVER_PORT, NOMINAL_DBMS_SERVER_IS_SSL_ENABLED))
         .isExactlyInstanceOf(IllegalArgumentException.class)
-        .hasMessage("The DBMS server hostname cannot be blank");
+        .hasMessage("The DBMS server hostname cannot be blank")
+        .hasNoCause();
   }
 
   public static void assertInstantiationFailureWithInvalidPort(int port) {
@@ -81,6 +83,7 @@ public final class DbmsServerHostPropertiesAssertions {
                 new DbmsServerHostProperties(
                     NOMINAL_DBMS_SERVER_HOSTNAME, port, NOMINAL_DBMS_SERVER_IS_SSL_ENABLED))
         .isExactlyInstanceOf(IllegalArgumentException.class)
-        .hasMessage("The DBMS server port must be between 1 and 65535");
+        .hasMessage("The DBMS server port must be between 1 and 65535")
+        .hasNoCause();
   }
 }
