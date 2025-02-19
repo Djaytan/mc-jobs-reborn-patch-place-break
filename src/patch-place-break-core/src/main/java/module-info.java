@@ -43,8 +43,6 @@ module fr.djaytan.mc.jrppb.core {
       com.google.guice;
   opens fr.djaytan.mc.jrppb.core.config to
       com.google.guice;
-  opens fr.djaytan.mc.jrppb.core.config.serialization to
-      com.google.guice;
   opens fr.djaytan.mc.jrppb.core.config.validation to
       com.google.guice;
   opens fr.djaytan.mc.jrppb.core.inject to
@@ -66,4 +64,5 @@ module fr.djaytan.mc.jrppb.core {
 
   // Reflection for Configurate
   opens fr.djaytan.mc.jrppb.core.config.properties;
+  opens fr.djaytan.mc.jrppb.core.config.serialization;
 }
