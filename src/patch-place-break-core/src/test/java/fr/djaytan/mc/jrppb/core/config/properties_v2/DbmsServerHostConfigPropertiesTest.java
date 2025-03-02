@@ -20,13 +20,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config.serialization.properties;
+package fr.djaytan.mc.jrppb.core.config.properties_v2;
 
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.serialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2Assertions.assertDeserializationFailure;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostPropertiesTestDataSet.NOMINAL_DBMS_SERVER_HOSTNAME;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostPropertiesTestDataSet.NOMINAL_DBMS_SERVER_HOST_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostPropertiesTestDataSet.NOMINAL_DBMS_SERVER_IS_SSL_ENABLED;

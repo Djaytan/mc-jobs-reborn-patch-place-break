@@ -20,16 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config.serialization.properties;
+package fr.djaytan.mc.jrppb.core.config.properties_v2;
 
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.ConnectionPoolConfigPropertiesTestDataSet.NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.ConnectionPoolConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.serialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2Assertions.assertDeserializationFailure;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PASSWORD;
-import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_USERNAME;
+import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_CONNECTION_POOL_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_CONNECTION_TIMEOUT;
+import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_POOL_SIZE;
+import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.randomInvalidConnectionTimeout;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -37,26 +38,22 @@ import fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializationExceptio
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-final class DbmsServerCredentialsConfigPropertiesTest {
+final class ConnectionPoolConfigPropertiesTest {
 
   @Nested
   class WhenInstantiating {
 
     @Test
     void withNominalValues() {
-      assertThat(
-              new DbmsServerCredentialsConfigProperties(
-                  NOMINAL_DBMS_SERVER_USERNAME, NOMINAL_DBMS_SERVER_PASSWORD))
-          .satisfies(v -> assertThat(v.username()).isEqualTo(NOMINAL_DBMS_SERVER_USERNAME))
-          .satisfies(v -> assertThat(v.password()).isEqualTo(NOMINAL_DBMS_SERVER_PASSWORD));
+      assertThat(new ConnectionPoolConfigProperties(NOMINAL_CONNECTION_TIMEOUT, NOMINAL_POOL_SIZE))
+          .satisfies(v -> assertThat(v.connectionTimeout()).isEqualTo(NOMINAL_CONNECTION_TIMEOUT))
+          .satisfies(v -> assertThat(v.poolSize()).isEqualTo(NOMINAL_POOL_SIZE));
     }
 
     @Test
     void fromNominalModel() {
-      assertThat(
-              DbmsServerCredentialsConfigProperties.fromModel(
-                  NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES))
-          .isEqualTo(NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES);
+      assertThat(ConnectionPoolConfigProperties.fromModel(NOMINAL_CONNECTION_POOL_PROPERTIES))
+          .isEqualTo(NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES);
     }
   }
 
@@ -65,18 +62,18 @@ final class DbmsServerCredentialsConfigPropertiesTest {
 
     @Test
     void nominalCase() {
-      assertThat(NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES.toModel())
-          .isEqualTo(NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES);
+      assertThat(NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES.toModel())
+          .isEqualTo(NOMINAL_CONNECTION_POOL_PROPERTIES);
     }
 
     @Test
     void fromDtoWithInvalidValue_shallFail() {
-      var dbmsServerCredentialsPropertiesDto =
-          new DbmsServerCredentialsConfigProperties(" ", NOMINAL_DBMS_SERVER_PASSWORD);
+      var connectionPoolPropertiesDto =
+          new ConnectionPoolConfigProperties(randomInvalidConnectionTimeout(), NOMINAL_POOL_SIZE);
 
-      assertThatThrownBy(dbmsServerCredentialsPropertiesDto::toModel)
-          .isExactlyInstanceOf(IllegalArgumentException.class)
-          .hasMessage("The DBMS server username cannot be blank")
+      assertThatThrownBy(connectionPoolPropertiesDto::toModel)
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessage("The connection timeout must be between 1 and 600000")
           .hasNoCause();
     }
   }
@@ -86,8 +83,8 @@ final class DbmsServerCredentialsConfigPropertiesTest {
 
     @Test
     void nominalCase() throws ConfigSerializationException {
-      assertThat(serialize(NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES))
-          .endsWith(NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES);
+      assertThat(serialize(NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES))
+          .endsWith(NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES);
     }
   }
 
@@ -98,30 +95,29 @@ final class DbmsServerCredentialsConfigPropertiesTest {
     void nominalCase() throws ConfigSerializationException {
       assertThat(
               deserialize(
-                  NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES,
-                  DbmsServerCredentialsConfigProperties.class))
-          .isEqualTo(NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES);
+                  NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES,
+                  ConnectionPoolConfigProperties.class))
+          .isEqualTo(NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES);
     }
 
     @Nested
     class ShallFailWhenMissingProperty {
 
       @Test
-      void username() {
+      void connectionTimeout() {
         assertDeserializationFailure(
             """
-            password=test-password
-            """,
-            DbmsServerCredentialsConfigProperties.class);
+            poolSize=20
+            """, ConnectionPoolConfigProperties.class);
       }
 
       @Test
-      void password() {
+      void poolSize() {
         assertDeserializationFailure(
             """
-            username=test-username
+            connectionTimeout=20000
             """,
-            DbmsServerCredentialsConfigProperties.class);
+            ConnectionPoolConfigProperties.class);
       }
     }
   }

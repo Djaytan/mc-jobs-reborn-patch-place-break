@@ -20,17 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config.serialization.properties;
+package fr.djaytan.mc.jrppb.core.config.properties_v2;
 
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.ConnectionPoolConfigPropertiesTestDataSet.NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.ConnectionPoolConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.DataSourceConfigPropertiesTestDataSet.NOMINAL_DATA_SOURCE_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.DataSourceConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DATA_SOURCE_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.DbmsServerConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.DbmsServerConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.serialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2Assertions.assertDeserializationFailure;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolConfigPropertiesTestDataSet.NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DataSourceConfigPropertiesTestDataSet.NOMINAL_DATA_SOURCE_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DataSourceConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DATA_SOURCE_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.NOMINAL_DATA_SOURCE_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.NOMINAL_DATA_SOURCE_TABLE_NAME;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.NOMINAL_DATA_SOURCE_TYPE;

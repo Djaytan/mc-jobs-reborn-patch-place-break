@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config.serialization.properties;
+package fr.djaytan.mc.jrppb.core.config.properties_v2;
 
 import fr.djaytan.mc.jrppb.core.storage.properties.DataSourceProperties;
 import fr.djaytan.mc.jrppb.core.storage.properties.DataSourceType;
@@ -35,7 +35,7 @@ public record DataSourceConfigProperties(
     @Required @Comment(TABLE_COMMENT) @NotNull String table,
     @Required @Comment(DBMS_SERVER_COMMENT) @NotNull DbmsServerConfigProperties dbmsServer,
     @Required @Comment(CONNECTION_POOL_COMMENT) @NotNull
-    ConnectionPoolConfigProperties connectionPool) {
+        ConnectionPoolConfigProperties connectionPool) {
 
   private static final String TYPE_COMMENT =
       """

@@ -64,6 +64,6 @@ module fr.djaytan.mc.jrppb.core {
 
   // Reflection for Configurate
   opens fr.djaytan.mc.jrppb.core.config.properties;
+  opens fr.djaytan.mc.jrppb.core.config.properties_v2;
   opens fr.djaytan.mc.jrppb.core.config.serialization;
-  opens fr.djaytan.mc.jrppb.core.config.serialization.properties;
 }

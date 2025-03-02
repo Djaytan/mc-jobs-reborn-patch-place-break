@@ -20,16 +20,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config.serialization.properties;
+package fr.djaytan.mc.jrppb.core.config.properties_v2;
 
 import static fr.djaytan.mc.jrppb.core.RestrictedBlocksPropertiesTestDataSet.NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST;
 import static fr.djaytan.mc.jrppb.core.RestrictedBlocksPropertiesTestDataSet.NOMINAL_RESTRICTED_BLOCKS_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.RestrictedBlocksPropertiesTestDataSet.NOMINAL_RESTRICTION_MODE;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.RestrictedBlocksConfigPropertiesTestDataSet.NOMINAL_RESTRICTED_BLOCKS_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.RestrictedBlocksConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_RESTRICTED_BLOCKS_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.serialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2Assertions.assertDeserializationFailure;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.RestrictedBlocksConfigPropertiesTestDataSet.NOMINAL_RESTRICTED_BLOCKS_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.RestrictedBlocksConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_RESTRICTED_BLOCKS_CONFIG_PROPERTIES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

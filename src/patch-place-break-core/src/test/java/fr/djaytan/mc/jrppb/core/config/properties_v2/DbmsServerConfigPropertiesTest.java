@@ -20,17 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config.serialization.properties;
+package fr.djaytan.mc.jrppb.core.config.properties_v2;
 
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.DbmsServerConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.DbmsServerConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.DbmsServerCredentialsConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.DbmsServerCredentialsConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.serialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2Assertions.assertDeserializationFailure;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerPropertiesTestDataSet.NOMINAL_DBMS_SERVER_DATABASE_NAME;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PROPERTIES;
 import static org.assertj.core.api.Assertions.assertThat;

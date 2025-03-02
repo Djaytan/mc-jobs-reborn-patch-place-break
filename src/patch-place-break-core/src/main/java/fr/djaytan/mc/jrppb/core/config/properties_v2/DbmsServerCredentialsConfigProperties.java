@@ -20,36 +20,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config.serialization.properties;
+package fr.djaytan.mc.jrppb.core.config.properties_v2;
 
-import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerProperties;
+import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsProperties;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-public record DbmsServerConfigProperties(
-    @Required @Comment(HOST_COMMENT) @NotNull DbmsServerHostConfigProperties host,
-    @Required @Comment(CREDENTIALS_COMMENT) @NotNull DbmsServerCredentialsConfigProperties credentials,
-    @Required @Comment(DATABASE_COMMENT) @NotNull String database) {
+public record DbmsServerCredentialsConfigProperties(
+    @Required @Comment(USERNAME_COMMENT) @NotNull String username,
+    @Required @Comment(PASSWORD_COMMENT) @NotNull String password) {
 
-  private static final String HOST_COMMENT = "Host properties of the DBMS server";
-  private static final String CREDENTIALS_COMMENT =
-      "Credentials for authentication with the DBMS server";
-  private static final String DATABASE_COMMENT =
+  private static final String USERNAME_COMMENT =
       """
-      The database to use on DBMS server
+      Under behalf of which user to connect on the DBMS server
       Value can't be empty or blank""";
 
-  public static @NotNull DbmsServerConfigProperties fromModel(@NotNull DbmsServerProperties model) {
-    return new DbmsServerConfigProperties(
-        DbmsServerHostConfigProperties.fromModel(model.host()),
-        DbmsServerCredentialsConfigProperties.fromModel(model.credentials()),
-        model.databaseName());
+  private static final String PASSWORD_COMMENT =
+      "Password of the user (optional but highly recommended)";
+
+  public static @NotNull DbmsServerCredentialsConfigProperties fromModel(
+      @NotNull DbmsServerCredentialsProperties model) {
+    return new DbmsServerCredentialsConfigProperties(model.username(), model.password());
   }
 
-  public @NotNull DbmsServerProperties toModel() {
-    return new DbmsServerProperties(host.toModel(), credentials.toModel(), database);
+  public @NotNull DbmsServerCredentialsProperties toModel() {
+    return new DbmsServerCredentialsProperties(username, password);
   }
 }
