@@ -30,12 +30,12 @@ import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-public record DataSourcePropertiesDto(
+public record DataSourceConfigProperties(
     @Required @Comment(TYPE_COMMENT) @NotNull DataSourceType type,
     @Required @Comment(TABLE_COMMENT) @NotNull String table,
-    @Required @Comment(DBMS_SERVER_COMMENT) @NotNull DbmsServerPropertiesDto dbmsServer,
+    @Required @Comment(DBMS_SERVER_COMMENT) @NotNull DbmsServerConfigProperties dbmsServer,
     @Required @Comment(CONNECTION_POOL_COMMENT) @NotNull
-        ConnectionPoolPropertiesDto connectionPool) {
+    ConnectionPoolConfigProperties connectionPool) {
 
   private static final String TYPE_COMMENT =
       """
@@ -60,12 +60,12 @@ public record DataSourcePropertiesDto(
       This is reserved for advanced usage only
       Change these settings only if you know what you are doing""";
 
-  public static @NotNull DataSourcePropertiesDto fromModel(@NotNull DataSourceProperties model) {
-    return new DataSourcePropertiesDto(
+  public static @NotNull DataSourceConfigProperties fromModel(@NotNull DataSourceProperties model) {
+    return new DataSourceConfigProperties(
         model.type(),
         model.tableName(),
-        DbmsServerPropertiesDto.fromModel(model.dbmsServer()),
-        ConnectionPoolPropertiesDto.fromModel(model.connectionPool()));
+        DbmsServerConfigProperties.fromModel(model.dbmsServer()),
+        ConnectionPoolConfigProperties.fromModel(model.connectionPool()));
   }
 
   public @NotNull DataSourceProperties toModel() {

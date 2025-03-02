@@ -25,12 +25,12 @@ package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.serialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2Assertions.assertDeserializationFailure;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolPropertiesDtoTestDataSet.NOMINAL_CONNECTION_POOL_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolPropertiesDtoTestDataSet.NOMINAL_SERIALIZED_CONNECTION_POOL_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DataSourcePropertiesDtoTestDataSet.NOMINAL_DATA_SOURCE_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DataSourcePropertiesDtoTestDataSet.NOMINAL_SERIALIZED_DATA_SOURCE_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerPropertiesDtoTestDataSet.NOMINAL_DBMS_SERVER_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerPropertiesDtoTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolConfigPropertiesTestDataSet.NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DataSourceConfigPropertiesTestDataSet.NOMINAL_DATA_SOURCE_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DataSourceConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DATA_SOURCE_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.NOMINAL_DATA_SOURCE_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.NOMINAL_DATA_SOURCE_TABLE_NAME;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.NOMINAL_DATA_SOURCE_TYPE;
@@ -41,7 +41,7 @@ import fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializationExceptio
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-final class DataSourcePropertiesDtoTest {
+final class DataSourceConfigPropertiesTest {
 
   @Nested
   class WhenInstantiating {
@@ -49,23 +49,25 @@ final class DataSourcePropertiesDtoTest {
     @Test
     void withNominalValues() {
       assertThat(
-              new DataSourcePropertiesDto(
+              new DataSourceConfigProperties(
                   NOMINAL_DATA_SOURCE_TYPE,
                   NOMINAL_DATA_SOURCE_TABLE_NAME,
-                  NOMINAL_DBMS_SERVER_PROPERTIES_DTO,
-                  NOMINAL_CONNECTION_POOL_PROPERTIES_DTO))
+                  NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES,
+                  NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES))
           .satisfies(v -> assertThat(v.type()).isEqualTo(NOMINAL_DATA_SOURCE_TYPE))
           .satisfies(v -> assertThat(v.table()).isEqualTo(NOMINAL_DATA_SOURCE_TABLE_NAME))
-          .satisfies(v -> assertThat(v.dbmsServer()).isEqualTo(NOMINAL_DBMS_SERVER_PROPERTIES_DTO))
+          .satisfies(
+              v -> assertThat(v.dbmsServer()).isEqualTo(NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES))
           .satisfies(
               v ->
-                  assertThat(v.connectionPool()).isEqualTo(NOMINAL_CONNECTION_POOL_PROPERTIES_DTO));
+                  assertThat(v.connectionPool())
+                      .isEqualTo(NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES));
     }
 
     @Test
     void fromNominalModel() {
-      assertThat(DataSourcePropertiesDto.fromModel(NOMINAL_DATA_SOURCE_PROPERTIES))
-          .isEqualTo(NOMINAL_DATA_SOURCE_PROPERTIES_DTO);
+      assertThat(DataSourceConfigProperties.fromModel(NOMINAL_DATA_SOURCE_PROPERTIES))
+          .isEqualTo(NOMINAL_DATA_SOURCE_CONFIG_PROPERTIES);
     }
   }
 
@@ -74,18 +76,18 @@ final class DataSourcePropertiesDtoTest {
 
     @Test
     void fromNominalDto() {
-      assertThat(NOMINAL_DATA_SOURCE_PROPERTIES_DTO.toModel())
+      assertThat(NOMINAL_DATA_SOURCE_CONFIG_PROPERTIES.toModel())
           .isEqualTo(NOMINAL_DATA_SOURCE_PROPERTIES);
     }
 
     @Test
     void fromDtoWithInvalidValue_shallFail() {
       var dataSourcePropertiesDto =
-          new DataSourcePropertiesDto(
+          new DataSourceConfigProperties(
               NOMINAL_DATA_SOURCE_TYPE,
               " ",
-              NOMINAL_DBMS_SERVER_PROPERTIES_DTO,
-              NOMINAL_CONNECTION_POOL_PROPERTIES_DTO);
+              NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES,
+              NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES);
 
       assertThatThrownBy(dataSourcePropertiesDto::toModel)
           .isExactlyInstanceOf(IllegalArgumentException.class)
@@ -99,8 +101,8 @@ final class DataSourcePropertiesDtoTest {
 
     @Test
     void nominalCase() throws ConfigSerializationException {
-      assertThat(serialize(NOMINAL_DATA_SOURCE_PROPERTIES_DTO))
-          .endsWith(NOMINAL_SERIALIZED_DATA_SOURCE_PROPERTIES);
+      assertThat(serialize(NOMINAL_DATA_SOURCE_CONFIG_PROPERTIES))
+          .endsWith(NOMINAL_SERIALIZED_DATA_SOURCE_CONFIG_PROPERTIES);
     }
   }
 
@@ -110,8 +112,10 @@ final class DataSourcePropertiesDtoTest {
     @Test
     void nominalCase() throws ConfigSerializationException {
       assertThat(
-              deserialize(NOMINAL_SERIALIZED_DATA_SOURCE_PROPERTIES, DataSourcePropertiesDto.class))
-          .isEqualTo(NOMINAL_DATA_SOURCE_PROPERTIES_DTO);
+              deserialize(
+                  NOMINAL_SERIALIZED_DATA_SOURCE_CONFIG_PROPERTIES,
+                  DataSourceConfigProperties.class))
+          .isEqualTo(NOMINAL_DATA_SOURCE_CONFIG_PROPERTIES);
     }
 
     @Nested
@@ -130,55 +134,55 @@ final class DataSourcePropertiesDtoTest {
             table="nominal_table_name"
             """
                 .formatted(
-                    NOMINAL_SERIALIZED_CONNECTION_POOL_PROPERTIES.indent(4).trim(),
-                    NOMINAL_SERIALIZED_DBMS_SERVER_PROPERTIES.indent(4).trim()),
-            ConnectionPoolPropertiesDto.class);
+                    NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES.indent(4).trim(),
+                    NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES.indent(4).trim()),
+            ConnectionPoolConfigProperties.class);
       }
 
       @Test
       void table() {
         assertDeserializationFailure(
             """
-          connectionPool {
-              %s
-          }
-          dbmsServer {
-              %s
-          }
-          type=MYSQL
-          """
+            connectionPool {
+                %s
+            }
+            dbmsServer {
+                %s
+            }
+            type=MYSQL
+            """
                 .formatted(
-                    NOMINAL_SERIALIZED_CONNECTION_POOL_PROPERTIES.indent(4).trim(),
-                    NOMINAL_SERIALIZED_DBMS_SERVER_PROPERTIES.indent(4).trim()),
-            ConnectionPoolPropertiesDto.class);
+                    NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES.indent(4).trim(),
+                    NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES.indent(4).trim()),
+            ConnectionPoolConfigProperties.class);
       }
 
       @Test
       void dbmsServer() {
         assertDeserializationFailure(
             """
-          connectionPool {
-              %s
-          }
-          table="nominal_table_name"
-          type=MYSQL
-          """
-                .formatted(NOMINAL_SERIALIZED_CONNECTION_POOL_PROPERTIES.indent(4).trim()),
-            ConnectionPoolPropertiesDto.class);
+            connectionPool {
+                %s
+            }
+            table="nominal_table_name"
+            type=MYSQL
+            """
+                .formatted(NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES.indent(4).trim()),
+            ConnectionPoolConfigProperties.class);
       }
 
       @Test
       void connectionPool() {
         assertDeserializationFailure(
             """
-          dbmsServer {
-              %s
-          }
-          table="nominal_table_name"
-          type=MYSQL
-          """
-                .formatted(NOMINAL_SERIALIZED_DBMS_SERVER_PROPERTIES.indent(4).trim()),
-            ConnectionPoolPropertiesDto.class);
+            dbmsServer {
+                %s
+            }
+            table="nominal_table_name"
+            type=MYSQL
+            """
+                .formatted(NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES.indent(4).trim()),
+            ConnectionPoolConfigProperties.class);
       }
     }
   }

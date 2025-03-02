@@ -22,21 +22,21 @@
  */
 package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsPropertiesDtoTestDataSet.NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsPropertiesDtoTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostPropertiesDtoTestDataSet.NOMINAL_DBMS_SERVER_HOST_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostPropertiesDtoTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_HOST_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerPropertiesTestDataSet.NOMINAL_DBMS_SERVER_DATABASE_NAME;
 
-public final class DbmsServerPropertiesDtoTestDataSet {
+public final class DbmsServerConfigPropertiesTestDataSet {
 
-  public static final DbmsServerPropertiesDto NOMINAL_DBMS_SERVER_PROPERTIES_DTO =
-      new DbmsServerPropertiesDto(
-          NOMINAL_DBMS_SERVER_HOST_PROPERTIES_DTO,
-          NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES_DTO,
+  public static final DbmsServerConfigProperties NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES =
+      new DbmsServerConfigProperties(
+        NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES,
+        NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES,
           NOMINAL_DBMS_SERVER_DATABASE_NAME);
 
-  public static final String NOMINAL_SERIALIZED_DBMS_SERVER_PROPERTIES =
+  public static final String NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES =
       """
       # Credentials for authentication with the DBMS server
       credentials {
@@ -51,6 +51,6 @@ public final class DbmsServerPropertiesDtoTestDataSet {
       }
       """
           .formatted(
-              NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_PROPERTIES.indent(4).trim(),
-              NOMINAL_SERIALIZED_DBMS_SERVER_HOST_PROPERTIES.indent(4).trim());
+              NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES.indent(4).trim(),
+              NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES.indent(4).trim());
 }

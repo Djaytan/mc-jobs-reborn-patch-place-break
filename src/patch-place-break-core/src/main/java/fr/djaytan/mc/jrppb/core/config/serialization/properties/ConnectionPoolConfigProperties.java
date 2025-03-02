@@ -29,7 +29,7 @@ import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-public record ConnectionPoolPropertiesDto(
+public record ConnectionPoolConfigProperties(
     @Required @Comment(CONNECTION_TIMEOUT_COMMENT) int connectionTimeout,
     @Required @Comment(POOL_SIZE_COMMENT) int poolSize) {
 
@@ -47,9 +47,9 @@ public record ConnectionPoolPropertiesDto(
       Could be best determined by the executing environment
       Accepted range values: [1-100]""";
 
-  public static @NotNull ConnectionPoolPropertiesDto fromModel(
+  public static @NotNull ConnectionPoolConfigProperties fromModel(
       @NotNull ConnectionPoolProperties connectionPoolProperties) {
-    return new ConnectionPoolPropertiesDto(
+    return new ConnectionPoolConfigProperties(
         connectionPoolProperties.connectionTimeout(), connectionPoolProperties.poolSize());
   }
 

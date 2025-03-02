@@ -22,28 +22,28 @@
  */
 package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 
-import static fr.djaytan.mc.jrppb.core.RestrictedBlocksPropertiesTestDataSet.NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST;
-import static fr.djaytan.mc.jrppb.core.RestrictedBlocksPropertiesTestDataSet.NOMINAL_RESTRICTION_MODE;
+import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostPropertiesTestDataSet.NOMINAL_DBMS_SERVER_HOSTNAME;
+import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostPropertiesTestDataSet.NOMINAL_DBMS_SERVER_IS_SSL_ENABLED;
+import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PORT;
 
-public final class RestrictedBlocksPropertiesDtoTestDataSet {
+public final class DbmsServerHostConfigPropertiesTestDataSet {
 
-  public static final RestrictedBlocksPropertiesDto NOMINAL_RESTRICTED_BLOCKS_PROPERTIES_DTO =
-      new RestrictedBlocksPropertiesDto(
-          NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST, NOMINAL_RESTRICTION_MODE);
+  public static final DbmsServerHostConfigProperties NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES =
+      new DbmsServerHostConfigProperties(
+          NOMINAL_DBMS_SERVER_HOSTNAME,
+          NOMINAL_DBMS_SERVER_PORT,
+          NOMINAL_DBMS_SERVER_IS_SSL_ENABLED);
 
-  public static final String NOMINAL_SERIALIZED_RESTRICTED_BLOCKS_PROPERTIES =
+  public static final String NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES =
       """
-      # List of materials used when applying restrictions to patch tags
-      materials=[
-          DIRT,
-          SAND,
-          STONE
-      ]
-      # Define the restriction mode when handling tags for the listed blocks.
-      # Three values are available:
-      # * BLACKLIST: Only listed blocks are marked as restricted
-      # * WHITELIST: All blocks are marked as restricted except the listed ones
-      # * DISABLED: No restriction applied
-      restrictionMode=BLACKLIST
+      # Hostname (an IP address (IPv4/IPv6) or a domain name)
+      # Value can't be empty or blank
+      hostname="db.amazing.com"
+      # Whether an SSL/TLS communication must be established at connection time (more secure)
+      # Only boolean values accepted (true|false)
+      isSslEnabled=true
+      # Port
+      # Accepted range values: [1-65535]
+      port=4123
       """;
 }

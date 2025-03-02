@@ -22,23 +22,23 @@
  */
 package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolPropertiesDtoTestDataSet.NOMINAL_CONNECTION_POOL_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolPropertiesDtoTestDataSet.NOMINAL_SERIALIZED_CONNECTION_POOL_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerPropertiesDtoTestDataSet.NOMINAL_DBMS_SERVER_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerPropertiesDtoTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolConfigPropertiesTestDataSet.NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.NOMINAL_DATA_SOURCE_TABLE_NAME;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.NOMINAL_DATA_SOURCE_TYPE;
 
-public final class DataSourcePropertiesDtoTestDataSet {
+public final class DataSourceConfigPropertiesTestDataSet {
 
-  public static final DataSourcePropertiesDto NOMINAL_DATA_SOURCE_PROPERTIES_DTO =
-      new DataSourcePropertiesDto(
+  public static final DataSourceConfigProperties NOMINAL_DATA_SOURCE_CONFIG_PROPERTIES =
+      new DataSourceConfigProperties(
           NOMINAL_DATA_SOURCE_TYPE,
           NOMINAL_DATA_SOURCE_TABLE_NAME,
-          NOMINAL_DBMS_SERVER_PROPERTIES_DTO,
-          NOMINAL_CONNECTION_POOL_PROPERTIES_DTO);
+        NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES,
+          NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES);
 
-  public static final String NOMINAL_SERIALIZED_DATA_SOURCE_PROPERTIES =
+  public static final String NOMINAL_SERIALIZED_DATA_SOURCE_CONFIG_PROPERTIES =
       """
       # Connection pool properties
       # This is reserved for advanced usage only
@@ -61,6 +61,6 @@ public final class DataSourcePropertiesDtoTestDataSet {
       type=MYSQL
       """
           .formatted(
-              NOMINAL_SERIALIZED_CONNECTION_POOL_PROPERTIES.indent(4).trim(),
-              NOMINAL_SERIALIZED_DBMS_SERVER_PROPERTIES.indent(4).trim());
+              NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES.indent(4).trim(),
+              NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES.indent(4).trim());
 }

@@ -22,28 +22,31 @@
  */
 package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 
-import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostPropertiesTestDataSet.NOMINAL_DBMS_SERVER_HOSTNAME;
-import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostPropertiesTestDataSet.NOMINAL_DBMS_SERVER_IS_SSL_ENABLED;
-import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PORT;
+import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsProperties;
+import org.jetbrains.annotations.NotNull;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
-public final class DbmsServerHostPropertiesDtoTestDataSet {
+@ConfigSerializable
+public record DbmsServerCredentialsConfigProperties(
+    @Required @Comment(USERNAME_COMMENT) @NotNull String username,
+    @Required @Comment(PASSWORD_COMMENT) @NotNull String password) {
 
-  public static final DbmsServerHostPropertiesDto NOMINAL_DBMS_SERVER_HOST_PROPERTIES_DTO =
-      new DbmsServerHostPropertiesDto(
-          NOMINAL_DBMS_SERVER_HOSTNAME,
-          NOMINAL_DBMS_SERVER_PORT,
-          NOMINAL_DBMS_SERVER_IS_SSL_ENABLED);
-
-  public static final String NOMINAL_SERIALIZED_DBMS_SERVER_HOST_PROPERTIES =
+  private static final String USERNAME_COMMENT =
       """
-      # Hostname (an IP address (IPv4/IPv6) or a domain name)
-      # Value can't be empty or blank
-      hostname="db.amazing.com"
-      # Whether an SSL/TLS communication must be established at connection time (more secure)
-      # Only boolean values accepted (true|false)
-      isSslEnabled=true
-      # Port
-      # Accepted range values: [1-65535]
-      port=4123
-      """;
+      Under behalf of which user to connect on the DBMS server
+      Value can't be empty or blank""";
+
+  private static final String PASSWORD_COMMENT =
+      "Password of the user (optional but highly recommended)";
+
+  public static @NotNull DbmsServerCredentialsConfigProperties fromModel(
+      @NotNull DbmsServerCredentialsProperties model) {
+    return new DbmsServerCredentialsConfigProperties(model.username(), model.password());
+  }
+
+  public @NotNull DbmsServerCredentialsProperties toModel() {
+    return new DbmsServerCredentialsProperties(username, password);
+  }
 }

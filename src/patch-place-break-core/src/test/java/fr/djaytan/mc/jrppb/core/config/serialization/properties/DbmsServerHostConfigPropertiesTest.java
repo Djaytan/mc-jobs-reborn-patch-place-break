@@ -25,8 +25,8 @@ package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.serialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2Assertions.assertDeserializationFailure;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostPropertiesDtoTestDataSet.NOMINAL_DBMS_SERVER_HOST_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostPropertiesDtoTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_HOST_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostPropertiesTestDataSet.NOMINAL_DBMS_SERVER_HOSTNAME;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostPropertiesTestDataSet.NOMINAL_DBMS_SERVER_HOST_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostPropertiesTestDataSet.NOMINAL_DBMS_SERVER_IS_SSL_ENABLED;
@@ -39,7 +39,7 @@ import fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializationExceptio
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-final class DbmsServerHostPropertiesDtoTest {
+final class DbmsServerHostConfigPropertiesTest {
 
   @Nested
   class WhenInstantiating {
@@ -47,7 +47,7 @@ final class DbmsServerHostPropertiesDtoTest {
     @Test
     void withNominalValues() {
       assertThat(
-              new DbmsServerHostPropertiesDto(
+              new DbmsServerHostConfigProperties(
                   NOMINAL_DBMS_SERVER_HOSTNAME,
                   NOMINAL_DBMS_SERVER_PORT,
                   NOMINAL_DBMS_SERVER_IS_SSL_ENABLED))
@@ -59,8 +59,8 @@ final class DbmsServerHostPropertiesDtoTest {
 
     @Test
     void fromNominalModel() {
-      assertThat(DbmsServerHostPropertiesDto.fromModel(NOMINAL_DBMS_SERVER_HOST_PROPERTIES))
-          .isEqualTo(NOMINAL_DBMS_SERVER_HOST_PROPERTIES_DTO);
+      assertThat(DbmsServerHostConfigProperties.fromModel(NOMINAL_DBMS_SERVER_HOST_PROPERTIES))
+          .isEqualTo(NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES);
     }
   }
 
@@ -69,14 +69,14 @@ final class DbmsServerHostPropertiesDtoTest {
 
     @Test
     void nominalCase() {
-      assertThat(NOMINAL_DBMS_SERVER_HOST_PROPERTIES_DTO.toModel())
+      assertThat(NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES.toModel())
           .isEqualTo(NOMINAL_DBMS_SERVER_HOST_PROPERTIES);
     }
 
     @Test
     void fromDtoWithInvalidValues_shallFail() {
       var dbmsServerHostPropertiesDto =
-          new DbmsServerHostPropertiesDto(
+          new DbmsServerHostConfigProperties(
               randomTooLongDbmsServerHostname(),
               NOMINAL_DBMS_SERVER_PORT,
               NOMINAL_DBMS_SERVER_IS_SSL_ENABLED);
@@ -93,8 +93,8 @@ final class DbmsServerHostPropertiesDtoTest {
 
     @Test
     void nominalCase() throws ConfigSerializationException {
-      assertThat(serialize(NOMINAL_DBMS_SERVER_HOST_PROPERTIES_DTO))
-          .endsWith(NOMINAL_SERIALIZED_DBMS_SERVER_HOST_PROPERTIES);
+      assertThat(serialize(NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES))
+          .endsWith(NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES);
     }
   }
 
@@ -105,9 +105,9 @@ final class DbmsServerHostPropertiesDtoTest {
     void nominalCase() throws ConfigSerializationException {
       assertThat(
               deserialize(
-                  NOMINAL_SERIALIZED_DBMS_SERVER_HOST_PROPERTIES,
-                  DbmsServerHostPropertiesDto.class))
-          .isEqualTo(NOMINAL_DBMS_SERVER_HOST_PROPERTIES_DTO);
+                  NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES,
+                  DbmsServerHostConfigProperties.class))
+          .isEqualTo(NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES);
     }
 
     @Nested
@@ -120,7 +120,7 @@ final class DbmsServerHostPropertiesDtoTest {
             is-ssl-enabled=true
             port=4235
             """,
-            DbmsServerHostPropertiesDto.class);
+            DbmsServerHostConfigProperties.class);
       }
 
       @Test
@@ -130,7 +130,7 @@ final class DbmsServerHostPropertiesDtoTest {
             hostname=hostname.com
             is-ssl-enabled=true
             """,
-            DbmsServerHostPropertiesDto.class);
+            DbmsServerHostConfigProperties.class);
       }
 
       @Test
@@ -140,7 +140,7 @@ final class DbmsServerHostPropertiesDtoTest {
             hostname=hostname.com
             port=4235
             """,
-            DbmsServerHostPropertiesDto.class);
+            DbmsServerHostConfigProperties.class);
       }
     }
   }

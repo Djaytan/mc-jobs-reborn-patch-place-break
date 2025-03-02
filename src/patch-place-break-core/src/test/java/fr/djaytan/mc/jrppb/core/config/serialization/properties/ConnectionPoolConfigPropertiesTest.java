@@ -25,8 +25,8 @@ package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.serialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2Assertions.assertDeserializationFailure;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolPropertiesDtoTestDataSet.NOMINAL_CONNECTION_POOL_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolPropertiesDtoTestDataSet.NOMINAL_SERIALIZED_CONNECTION_POOL_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolConfigPropertiesTestDataSet.NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.ConnectionPoolConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_CONNECTION_POOL_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_CONNECTION_TIMEOUT;
 import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_POOL_SIZE;
@@ -38,22 +38,22 @@ import fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializationExceptio
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-final class ConnectionPoolPropertiesDtoTest {
+final class ConnectionPoolConfigPropertiesTest {
 
   @Nested
   class WhenInstantiating {
 
     @Test
     void withNominalValues() {
-      assertThat(new ConnectionPoolPropertiesDto(NOMINAL_CONNECTION_TIMEOUT, NOMINAL_POOL_SIZE))
+      assertThat(new ConnectionPoolConfigProperties(NOMINAL_CONNECTION_TIMEOUT, NOMINAL_POOL_SIZE))
           .satisfies(v -> assertThat(v.connectionTimeout()).isEqualTo(NOMINAL_CONNECTION_TIMEOUT))
           .satisfies(v -> assertThat(v.poolSize()).isEqualTo(NOMINAL_POOL_SIZE));
     }
 
     @Test
     void fromNominalModel() {
-      assertThat(ConnectionPoolPropertiesDto.fromModel(NOMINAL_CONNECTION_POOL_PROPERTIES))
-          .isEqualTo(NOMINAL_CONNECTION_POOL_PROPERTIES_DTO);
+      assertThat(ConnectionPoolConfigProperties.fromModel(NOMINAL_CONNECTION_POOL_PROPERTIES))
+          .isEqualTo(NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES);
     }
   }
 
@@ -62,14 +62,14 @@ final class ConnectionPoolPropertiesDtoTest {
 
     @Test
     void nominalCase() {
-      assertThat(NOMINAL_CONNECTION_POOL_PROPERTIES_DTO.toModel())
+      assertThat(NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES.toModel())
           .isEqualTo(NOMINAL_CONNECTION_POOL_PROPERTIES);
     }
 
     @Test
     void fromDtoWithInvalidValue_shallFail() {
       var connectionPoolPropertiesDto =
-          new ConnectionPoolPropertiesDto(randomInvalidConnectionTimeout(), NOMINAL_POOL_SIZE);
+          new ConnectionPoolConfigProperties(randomInvalidConnectionTimeout(), NOMINAL_POOL_SIZE);
 
       assertThatThrownBy(connectionPoolPropertiesDto::toModel)
           .isInstanceOf(IllegalArgumentException.class)
@@ -83,8 +83,8 @@ final class ConnectionPoolPropertiesDtoTest {
 
     @Test
     void nominalCase() throws ConfigSerializationException {
-      assertThat(serialize(NOMINAL_CONNECTION_POOL_PROPERTIES_DTO))
-          .endsWith(NOMINAL_SERIALIZED_CONNECTION_POOL_PROPERTIES);
+      assertThat(serialize(NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES))
+          .endsWith(NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES);
     }
   }
 
@@ -95,8 +95,9 @@ final class ConnectionPoolPropertiesDtoTest {
     void nominalCase() throws ConfigSerializationException {
       assertThat(
               deserialize(
-                  NOMINAL_SERIALIZED_CONNECTION_POOL_PROPERTIES, ConnectionPoolPropertiesDto.class))
-          .isEqualTo(NOMINAL_CONNECTION_POOL_PROPERTIES_DTO);
+                  NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES,
+                  ConnectionPoolConfigProperties.class))
+          .isEqualTo(NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES);
     }
 
     @Nested
@@ -107,7 +108,8 @@ final class ConnectionPoolPropertiesDtoTest {
         assertDeserializationFailure(
             """
             poolSize=20
-            """, ConnectionPoolPropertiesDto.class);
+            """,
+            ConnectionPoolConfigProperties.class);
       }
 
       @Test
@@ -116,7 +118,7 @@ final class ConnectionPoolPropertiesDtoTest {
             """
             connectionTimeout=20000
             """,
-            ConnectionPoolPropertiesDto.class);
+            ConnectionPoolConfigProperties.class);
       }
     }
   }

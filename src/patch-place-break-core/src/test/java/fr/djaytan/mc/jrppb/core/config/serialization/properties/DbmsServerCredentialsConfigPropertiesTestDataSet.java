@@ -25,14 +25,14 @@ package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PASSWORD;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_USERNAME;
 
-public final class DbmsServerCredentialsPropertiesDtoTestDataSet {
+public final class DbmsServerCredentialsConfigPropertiesTestDataSet {
 
-  public static final DbmsServerCredentialsPropertiesDto
-      NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES_DTO =
-          new DbmsServerCredentialsPropertiesDto(
+  public static final DbmsServerCredentialsConfigProperties
+      NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES =
+          new DbmsServerCredentialsConfigProperties(
               NOMINAL_DBMS_SERVER_USERNAME, NOMINAL_DBMS_SERVER_PASSWORD);
 
-  public static final String NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_PROPERTIES =
+  public static final String NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES =
       """
       # Password of the user (optional but highly recommended)
       password=my-admin-pwd

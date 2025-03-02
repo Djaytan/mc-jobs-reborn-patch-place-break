@@ -22,34 +22,35 @@
  */
 package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 
-import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerProperties;
+import fr.djaytan.mc.jrppb.core.RestrictedBlocksProperties;
+import fr.djaytan.mc.jrppb.core.RestrictionMode;
+import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-public record DbmsServerPropertiesDto(
-    @Required @Comment(HOST_COMMENT) @NotNull DbmsServerHostPropertiesDto host,
-    @Required @Comment(CREDENTIALS_COMMENT) @NotNull DbmsServerCredentialsPropertiesDto credentials,
-    @Required @Comment(DATABASE_COMMENT) @NotNull String database) {
+public record RestrictedBlocksConfigProperties(
+    @Required @Comment(MATERIALS_COMMENT) @NotNull Set<String> materials,
+    @Required @Comment(RESTRICTION_MODE_COMMENT) @NotNull RestrictionMode restrictionMode) {
 
-  private static final String HOST_COMMENT = "Host properties of the DBMS server";
-  private static final String CREDENTIALS_COMMENT =
-      "Credentials for authentication with the DBMS server";
-  private static final String DATABASE_COMMENT =
+  private static final String MATERIALS_COMMENT =
+      "List of materials used when applying restrictions to patch tags";
+  private static final String RESTRICTION_MODE_COMMENT =
       """
-      The database to use on DBMS server
-      Value can't be empty or blank""";
+      Define the restriction mode when handling tags for the listed blocks.
+      Three values are available:
+      * BLACKLIST: Only listed blocks are marked as restricted
+      * WHITELIST: All blocks are marked as restricted except the listed ones
+      * DISABLED: No restriction applied""";
 
-  public static @NotNull DbmsServerPropertiesDto fromModel(@NotNull DbmsServerProperties model) {
-    return new DbmsServerPropertiesDto(
-        DbmsServerHostPropertiesDto.fromModel(model.host()),
-        DbmsServerCredentialsPropertiesDto.fromModel(model.credentials()),
-        model.databaseName());
+  public static @NotNull RestrictedBlocksConfigProperties fromModel(
+      @NotNull RestrictedBlocksProperties model) {
+    return new RestrictedBlocksConfigProperties(model.materials(), model.restrictionMode());
   }
 
-  public @NotNull DbmsServerProperties toModel() {
-    return new DbmsServerProperties(host.toModel(), credentials.toModel(), database);
+  public @NotNull RestrictedBlocksProperties toModel() {
+    return new RestrictedBlocksProperties(materials, restrictionMode);
   }
 }

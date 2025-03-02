@@ -25,12 +25,12 @@ package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.serialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2Assertions.assertDeserializationFailure;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsPropertiesDtoTestDataSet.NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsPropertiesDtoTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostPropertiesDtoTestDataSet.NOMINAL_DBMS_SERVER_HOST_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostPropertiesDtoTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_HOST_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerPropertiesDtoTestDataSet.NOMINAL_DBMS_SERVER_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerPropertiesDtoTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerHostConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerPropertiesTestDataSet.NOMINAL_DBMS_SERVER_DATABASE_NAME;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PROPERTIES;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,7 +40,7 @@ import fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializationExceptio
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-final class DbmsServerPropertiesDtoTest {
+final class DbmsServerConfigPropertiesTest {
 
   @Nested
   class WhenInstantiating {
@@ -48,22 +48,23 @@ final class DbmsServerPropertiesDtoTest {
     @Test
     void withNominalValues() {
       assertThat(
-              new DbmsServerPropertiesDto(
-                  NOMINAL_DBMS_SERVER_HOST_PROPERTIES_DTO,
-                  NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES_DTO,
+              new DbmsServerConfigProperties(
+                  NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES,
+                  NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES,
                   NOMINAL_DBMS_SERVER_DATABASE_NAME))
-          .satisfies(v -> assertThat(v.host()).isEqualTo(NOMINAL_DBMS_SERVER_HOST_PROPERTIES_DTO))
+          .satisfies(
+              v -> assertThat(v.host()).isEqualTo(NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES))
           .satisfies(
               v ->
                   assertThat(v.credentials())
-                      .isEqualTo(NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES_DTO))
+                      .isEqualTo(NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES))
           .satisfies(v -> assertThat(v.database()).isEqualTo(NOMINAL_DBMS_SERVER_DATABASE_NAME));
     }
 
     @Test
     void fromNominalModel() {
-      assertThat(DbmsServerPropertiesDto.fromModel(NOMINAL_DBMS_SERVER_PROPERTIES))
-          .isEqualTo(NOMINAL_DBMS_SERVER_PROPERTIES_DTO);
+      assertThat(DbmsServerConfigProperties.fromModel(NOMINAL_DBMS_SERVER_PROPERTIES))
+          .isEqualTo(NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES);
     }
   }
 
@@ -72,16 +73,16 @@ final class DbmsServerPropertiesDtoTest {
 
     @Test
     void fromNominalDto_shallSucceed() {
-      assertThat(NOMINAL_DBMS_SERVER_PROPERTIES_DTO.toModel())
+      assertThat(NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES.toModel())
           .isEqualTo(NOMINAL_DBMS_SERVER_PROPERTIES);
     }
 
     @Test
     void fromDtoWithInvalidValues_shallFail() {
       var dbmsServerPropertiesDto =
-          new DbmsServerPropertiesDto(
-              NOMINAL_DBMS_SERVER_HOST_PROPERTIES_DTO,
-              NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES_DTO,
+          new DbmsServerConfigProperties(
+              NOMINAL_DBMS_SERVER_HOST_CONFIG_PROPERTIES,
+              NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES,
               " ");
 
       assertThatThrownBy(dbmsServerPropertiesDto::toModel)
@@ -96,8 +97,8 @@ final class DbmsServerPropertiesDtoTest {
 
     @Test
     void nominalCase() throws ConfigSerializationException {
-      assertThat(serialize(NOMINAL_DBMS_SERVER_PROPERTIES_DTO))
-          .endsWith(NOMINAL_SERIALIZED_DBMS_SERVER_PROPERTIES);
+      assertThat(serialize(NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES))
+          .endsWith(NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES);
     }
   }
 
@@ -107,8 +108,10 @@ final class DbmsServerPropertiesDtoTest {
     @Test
     void nominalCase() throws ConfigSerializationException {
       assertThat(
-              deserialize(NOMINAL_SERIALIZED_DBMS_SERVER_PROPERTIES, DbmsServerPropertiesDto.class))
-          .isEqualTo(NOMINAL_DBMS_SERVER_PROPERTIES_DTO);
+              deserialize(
+                  NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES,
+                  DbmsServerConfigProperties.class))
+          .isEqualTo(NOMINAL_DBMS_SERVER_CONFIG_PROPERTIES);
     }
 
     @Nested
@@ -123,8 +126,9 @@ final class DbmsServerPropertiesDtoTest {
             }
             database=minecraft
             """
-                .formatted(NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_PROPERTIES.indent(4).trim()),
-            ConnectionPoolPropertiesDto.class);
+                .formatted(
+                    NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES.indent(4).trim()),
+            ConnectionPoolConfigProperties.class);
       }
 
       @Test
@@ -136,25 +140,25 @@ final class DbmsServerPropertiesDtoTest {
                 %s
             }
             """
-                .formatted(NOMINAL_SERIALIZED_DBMS_SERVER_HOST_PROPERTIES.indent(4).trim()),
-            ConnectionPoolPropertiesDto.class);
+                .formatted(NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES.indent(4).trim()),
+            ConnectionPoolConfigProperties.class);
       }
 
       @Test
       void database() {
         assertDeserializationFailure(
             """
-          credentials {
-              %s
-          }
-          host {
-              %s
-          }
-          """
+            credentials {
+                %s
+            }
+            host {
+                %s
+            }
+            """
                 .formatted(
-                    NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_PROPERTIES.indent(4).trim(),
-                    NOMINAL_SERIALIZED_DBMS_SERVER_HOST_PROPERTIES.indent(4).trim()),
-            ConnectionPoolPropertiesDto.class);
+                    NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES.indent(4).trim(),
+                    NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES.indent(4).trim()),
+            ConnectionPoolConfigProperties.class);
       }
     }
   }

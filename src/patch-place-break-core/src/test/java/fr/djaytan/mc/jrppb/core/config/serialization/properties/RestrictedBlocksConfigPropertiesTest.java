@@ -28,8 +28,8 @@ import static fr.djaytan.mc.jrppb.core.RestrictedBlocksPropertiesTestDataSet.NOM
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.serialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2Assertions.assertDeserializationFailure;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.RestrictedBlocksPropertiesDtoTestDataSet.NOMINAL_RESTRICTED_BLOCKS_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.RestrictedBlocksPropertiesDtoTestDataSet.NOMINAL_SERIALIZED_RESTRICTED_BLOCKS_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.RestrictedBlocksConfigPropertiesTestDataSet.NOMINAL_RESTRICTED_BLOCKS_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.RestrictedBlocksConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_RESTRICTED_BLOCKS_CONFIG_PROPERTIES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -38,7 +38,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.spongepowered.configurate.serialize.SerializationException;
 
-final class RestrictedBlocksPropertiesDtoTest {
+final class RestrictedBlocksConfigPropertiesTest {
 
   @Nested
   class WhenInstantiating {
@@ -46,7 +46,7 @@ final class RestrictedBlocksPropertiesDtoTest {
     @Test
     void withNominalValues() {
       assertThat(
-              new RestrictedBlocksPropertiesDto(
+              new RestrictedBlocksConfigProperties(
                   NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST, NOMINAL_RESTRICTION_MODE))
           .satisfies(
               v -> assertThat(v.materials()).isEqualTo(NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST))
@@ -55,8 +55,8 @@ final class RestrictedBlocksPropertiesDtoTest {
 
     @Test
     void fromNominalValues() {
-      assertThat(RestrictedBlocksPropertiesDto.fromModel(NOMINAL_RESTRICTED_BLOCKS_PROPERTIES))
-          .isEqualTo(NOMINAL_RESTRICTED_BLOCKS_PROPERTIES_DTO);
+      assertThat(RestrictedBlocksConfigProperties.fromModel(NOMINAL_RESTRICTED_BLOCKS_PROPERTIES))
+          .isEqualTo(NOMINAL_RESTRICTED_BLOCKS_CONFIG_PROPERTIES);
     }
   }
 
@@ -65,7 +65,7 @@ final class RestrictedBlocksPropertiesDtoTest {
 
     @Test
     void nominalCase() {
-      assertThat(NOMINAL_RESTRICTED_BLOCKS_PROPERTIES_DTO.toModel())
+      assertThat(NOMINAL_RESTRICTED_BLOCKS_CONFIG_PROPERTIES.toModel())
           .isEqualTo(NOMINAL_RESTRICTED_BLOCKS_PROPERTIES);
     }
   }
@@ -75,8 +75,8 @@ final class RestrictedBlocksPropertiesDtoTest {
 
     @Test
     void nominalCase() throws ConfigSerializationException {
-      assertThat(serialize(NOMINAL_RESTRICTED_BLOCKS_PROPERTIES_DTO))
-          .endsWith(NOMINAL_SERIALIZED_RESTRICTED_BLOCKS_PROPERTIES);
+      assertThat(serialize(NOMINAL_RESTRICTED_BLOCKS_CONFIG_PROPERTIES))
+          .endsWith(NOMINAL_SERIALIZED_RESTRICTED_BLOCKS_CONFIG_PROPERTIES);
     }
   }
 
@@ -87,9 +87,9 @@ final class RestrictedBlocksPropertiesDtoTest {
     void nominalCase() throws ConfigSerializationException {
       assertThat(
               deserialize(
-                  NOMINAL_SERIALIZED_RESTRICTED_BLOCKS_PROPERTIES,
-                  RestrictedBlocksPropertiesDto.class))
-          .isEqualTo(NOMINAL_RESTRICTED_BLOCKS_PROPERTIES_DTO);
+                  NOMINAL_SERIALIZED_RESTRICTED_BLOCKS_CONFIG_PROPERTIES,
+                  RestrictedBlocksConfigProperties.class))
+          .isEqualTo(NOMINAL_RESTRICTED_BLOCKS_CONFIG_PROPERTIES);
     }
 
     @Test
@@ -99,7 +99,7 @@ final class RestrictedBlocksPropertiesDtoTest {
                   """
                   materials=[]
                   restrictionMode=BLACKLIST""",
-                  RestrictedBlocksPropertiesDto.class))
+                  RestrictedBlocksConfigProperties.class))
           .satisfies(v -> assertThat(v.materials()).isEmpty());
     }
 
@@ -109,9 +109,9 @@ final class RestrictedBlocksPropertiesDtoTest {
               () ->
                   deserialize(
                       """
-                  materials=[]
-                  restrictionMode=INVALID""",
-                      RestrictedBlocksPropertiesDto.class))
+                      materials=[]
+                      restrictionMode=INVALID""",
+                      RestrictedBlocksConfigProperties.class))
           .isExactlyInstanceOf(ConfigSerializationException.class)
           .cause()
           .isExactlyInstanceOf(SerializationException.class)
@@ -126,7 +126,7 @@ final class RestrictedBlocksPropertiesDtoTest {
       @Test
       void materials() {
         assertDeserializationFailure(
-            "restrictionMode=BLACKLIST", RestrictedBlocksPropertiesDto.class);
+            "restrictionMode=BLACKLIST", RestrictedBlocksConfigProperties.class);
       }
 
       @Test
@@ -138,7 +138,7 @@ final class RestrictedBlocksPropertiesDtoTest {
                 SAND,
                 STONE
             ]""",
-            RestrictedBlocksPropertiesDto.class);
+            RestrictedBlocksConfigProperties.class);
       }
     }
   }

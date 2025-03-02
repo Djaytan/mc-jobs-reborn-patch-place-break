@@ -22,25 +22,28 @@
  */
 package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 
-import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_CONNECTION_TIMEOUT;
-import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_POOL_SIZE;
+import static fr.djaytan.mc.jrppb.core.RestrictedBlocksPropertiesTestDataSet.NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST;
+import static fr.djaytan.mc.jrppb.core.RestrictedBlocksPropertiesTestDataSet.NOMINAL_RESTRICTION_MODE;
 
-public final class ConnectionPoolPropertiesDtoTestDataSet {
+public final class RestrictedBlocksConfigPropertiesTestDataSet {
 
-  public static final ConnectionPoolPropertiesDto NOMINAL_CONNECTION_POOL_PROPERTIES_DTO =
-      new ConnectionPoolPropertiesDto(NOMINAL_CONNECTION_TIMEOUT, NOMINAL_POOL_SIZE);
+  public static final RestrictedBlocksConfigProperties NOMINAL_RESTRICTED_BLOCKS_CONFIG_PROPERTIES =
+      new RestrictedBlocksConfigProperties(
+          NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST, NOMINAL_RESTRICTION_MODE);
 
-  public static final String NOMINAL_SERIALIZED_CONNECTION_POOL_PROPERTIES =
+  public static final String NOMINAL_SERIALIZED_RESTRICTED_BLOCKS_CONFIG_PROPERTIES =
       """
-      # The connection timeout (in milliseconds)
-      # Corresponds to the maximum time the connection pool will wait to acquire a new connection
-      # from the DBMS server
-      # Not applicable for SQLite
-      # Accepted range values: [1-600000]
-      connectionTimeout=60000
-      # The number of DBMS connections in the pool
-      # Could be best determined by the executing environment
-      # Accepted range values: [1-100]
-      poolSize=20
+      # List of materials used when applying restrictions to patch tags
+      materials=[
+          DIRT,
+          SAND,
+          STONE
+      ]
+      # Define the restriction mode when handling tags for the listed blocks.
+      # Three values are available:
+      # * BLACKLIST: Only listed blocks are marked as restricted
+      # * WHITELIST: All blocks are marked as restricted except the listed ones
+      # * DISABLED: No restriction applied
+      restrictionMode=BLACKLIST
       """;
 }

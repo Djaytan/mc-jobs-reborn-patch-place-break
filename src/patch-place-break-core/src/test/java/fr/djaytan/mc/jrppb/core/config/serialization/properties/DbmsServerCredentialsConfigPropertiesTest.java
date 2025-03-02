@@ -25,8 +25,8 @@ package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.serialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2Assertions.assertDeserializationFailure;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsPropertiesDtoTestDataSet.NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES_DTO;
-import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsPropertiesDtoTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsConfigPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.properties.DbmsServerCredentialsConfigPropertiesTestDataSet.NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PASSWORD;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_USERNAME;
@@ -37,7 +37,7 @@ import fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializationExceptio
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-final class DbmsServerCredentialsPropertiesDtoTest {
+final class DbmsServerCredentialsConfigPropertiesTest {
 
   @Nested
   class WhenInstantiating {
@@ -45,7 +45,7 @@ final class DbmsServerCredentialsPropertiesDtoTest {
     @Test
     void withNominalValues() {
       assertThat(
-              new DbmsServerCredentialsPropertiesDto(
+              new DbmsServerCredentialsConfigProperties(
                   NOMINAL_DBMS_SERVER_USERNAME, NOMINAL_DBMS_SERVER_PASSWORD))
           .satisfies(v -> assertThat(v.username()).isEqualTo(NOMINAL_DBMS_SERVER_USERNAME))
           .satisfies(v -> assertThat(v.password()).isEqualTo(NOMINAL_DBMS_SERVER_PASSWORD));
@@ -54,9 +54,9 @@ final class DbmsServerCredentialsPropertiesDtoTest {
     @Test
     void fromNominalModel() {
       assertThat(
-              DbmsServerCredentialsPropertiesDto.fromModel(
+              DbmsServerCredentialsConfigProperties.fromModel(
                   NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES))
-          .isEqualTo(NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES_DTO);
+          .isEqualTo(NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES);
     }
   }
 
@@ -65,14 +65,14 @@ final class DbmsServerCredentialsPropertiesDtoTest {
 
     @Test
     void nominalCase() {
-      assertThat(NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES_DTO.toModel())
+      assertThat(NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES.toModel())
           .isEqualTo(NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES);
     }
 
     @Test
     void fromDtoWithInvalidValue_shallFail() {
       var dbmsServerCredentialsPropertiesDto =
-          new DbmsServerCredentialsPropertiesDto(" ", NOMINAL_DBMS_SERVER_PASSWORD);
+          new DbmsServerCredentialsConfigProperties(" ", NOMINAL_DBMS_SERVER_PASSWORD);
 
       assertThatThrownBy(dbmsServerCredentialsPropertiesDto::toModel)
           .isExactlyInstanceOf(IllegalArgumentException.class)
@@ -86,8 +86,8 @@ final class DbmsServerCredentialsPropertiesDtoTest {
 
     @Test
     void nominalCase() throws ConfigSerializationException {
-      assertThat(serialize(NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES_DTO))
-          .endsWith(NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_PROPERTIES);
+      assertThat(serialize(NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES))
+          .endsWith(NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES);
     }
   }
 
@@ -98,9 +98,9 @@ final class DbmsServerCredentialsPropertiesDtoTest {
     void nominalCase() throws ConfigSerializationException {
       assertThat(
               deserialize(
-                  NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_PROPERTIES,
-                  DbmsServerCredentialsPropertiesDto.class))
-          .isEqualTo(NOMINAL_DBMS_SERVER_CREDENTIALS_PROPERTIES_DTO);
+                  NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES,
+                  DbmsServerCredentialsConfigProperties.class))
+          .isEqualTo(NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES);
     }
 
     @Nested
@@ -112,7 +112,7 @@ final class DbmsServerCredentialsPropertiesDtoTest {
             """
             password=test-password
             """,
-            DbmsServerCredentialsPropertiesDto.class);
+            DbmsServerCredentialsConfigProperties.class);
       }
 
       @Test
@@ -121,7 +121,7 @@ final class DbmsServerCredentialsPropertiesDtoTest {
             """
             username=test-username
             """,
-            DbmsServerCredentialsPropertiesDto.class);
+            DbmsServerCredentialsConfigProperties.class);
       }
     }
   }

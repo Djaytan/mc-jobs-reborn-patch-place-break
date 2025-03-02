@@ -22,31 +22,25 @@
  */
 package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 
-import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsProperties;
-import org.jetbrains.annotations.NotNull;
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-import org.spongepowered.configurate.objectmapping.meta.Comment;
-import org.spongepowered.configurate.objectmapping.meta.Required;
+import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_CONNECTION_TIMEOUT;
+import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_POOL_SIZE;
 
-@ConfigSerializable
-public record DbmsServerCredentialsPropertiesDto(
-    @Required @Comment(USERNAME_COMMENT) @NotNull String username,
-    @Required @Comment(PASSWORD_COMMENT) @NotNull String password) {
+public final class ConnectionPoolConfigPropertiesTestDataSet {
 
-  private static final String USERNAME_COMMENT =
+  public static final ConnectionPoolConfigProperties NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES =
+      new ConnectionPoolConfigProperties(NOMINAL_CONNECTION_TIMEOUT, NOMINAL_POOL_SIZE);
+
+  public static final String NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES =
       """
-      Under behalf of which user to connect on the DBMS server
-      Value can't be empty or blank""";
-
-  private static final String PASSWORD_COMMENT =
-      "Password of the user (optional but highly recommended)";
-
-  public static @NotNull DbmsServerCredentialsPropertiesDto fromModel(
-      @NotNull DbmsServerCredentialsProperties model) {
-    return new DbmsServerCredentialsPropertiesDto(model.username(), model.password());
-  }
-
-  public @NotNull DbmsServerCredentialsProperties toModel() {
-    return new DbmsServerCredentialsProperties(username, password);
-  }
+      # The connection timeout (in milliseconds)
+      # Corresponds to the maximum time the connection pool will wait to acquire a new connection
+      # from the DBMS server
+      # Not applicable for SQLite
+      # Accepted range values: [1-600000]
+      connectionTimeout=60000
+      # The number of DBMS connections in the pool
+      # Could be best determined by the executing environment
+      # Accepted range values: [1-100]
+      poolSize=20
+      """;
 }

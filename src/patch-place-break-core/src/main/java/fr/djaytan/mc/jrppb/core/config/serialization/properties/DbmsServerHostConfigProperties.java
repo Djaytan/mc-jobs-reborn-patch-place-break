@@ -22,35 +22,39 @@
  */
 package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 
-import fr.djaytan.mc.jrppb.core.RestrictedBlocksProperties;
-import fr.djaytan.mc.jrppb.core.RestrictionMode;
-import java.util.Set;
+import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostProperties;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-public record RestrictedBlocksPropertiesDto(
-    @Required @Comment(MATERIALS_COMMENT) @NotNull Set<String> materials,
-    @Required @Comment(RESTRICTION_MODE_COMMENT) @NotNull RestrictionMode restrictionMode) {
+public record DbmsServerHostConfigProperties(
+    @Required @Comment(HOSTNAME_COMMENT) @NotNull String hostname,
+    @Required @Comment(PORT_COMMENT) int port,
+    @Required @Comment(SSL_ENABLED_COMMENT) boolean isSslEnabled) {
 
-  private static final String MATERIALS_COMMENT =
-      "List of materials used when applying restrictions to patch tags";
-  private static final String RESTRICTION_MODE_COMMENT =
+  private static final String HOSTNAME_COMMENT =
       """
-      Define the restriction mode when handling tags for the listed blocks.
-      Three values are available:
-      * BLACKLIST: Only listed blocks are marked as restricted
-      * WHITELIST: All blocks are marked as restricted except the listed ones
-      * DISABLED: No restriction applied""";
+      Hostname (an IP address (IPv4/IPv6) or a domain name)
+      Value can't be empty or blank""";
 
-  public static @NotNull RestrictedBlocksPropertiesDto fromModel(
-      @NotNull RestrictedBlocksProperties model) {
-    return new RestrictedBlocksPropertiesDto(model.materials(), model.restrictionMode());
+  private static final String PORT_COMMENT =
+      """
+      Port
+      Accepted range values: [1-65535]""";
+
+  private static final String SSL_ENABLED_COMMENT =
+      """
+      Whether an SSL/TLS communication must be established at connection time (more secure)
+      Only boolean values accepted (true|false)""";
+
+  public static @NotNull DbmsServerHostConfigProperties fromModel(
+      @NotNull DbmsServerHostProperties model) {
+    return new DbmsServerHostConfigProperties(model.hostname(), model.port(), model.isSslEnabled());
   }
 
-  public @NotNull RestrictedBlocksProperties toModel() {
-    return new RestrictedBlocksProperties(materials, restrictionMode);
+  public @NotNull DbmsServerHostProperties toModel() {
+    return new DbmsServerHostProperties(hostname, port, isSslEnabled);
   }
 }

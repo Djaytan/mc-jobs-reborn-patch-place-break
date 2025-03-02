@@ -22,39 +22,34 @@
  */
 package fr.djaytan.mc.jrppb.core.config.serialization.properties;
 
-import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostProperties;
+import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerProperties;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-public record DbmsServerHostPropertiesDto(
-    @Required @Comment(HOSTNAME_COMMENT) @NotNull String hostname,
-    @Required @Comment(PORT_COMMENT) int port,
-    @Required @Comment(SSL_ENABLED_COMMENT) boolean isSslEnabled) {
+public record DbmsServerConfigProperties(
+    @Required @Comment(HOST_COMMENT) @NotNull DbmsServerHostConfigProperties host,
+    @Required @Comment(CREDENTIALS_COMMENT) @NotNull DbmsServerCredentialsConfigProperties credentials,
+    @Required @Comment(DATABASE_COMMENT) @NotNull String database) {
 
-  private static final String HOSTNAME_COMMENT =
+  private static final String HOST_COMMENT = "Host properties of the DBMS server";
+  private static final String CREDENTIALS_COMMENT =
+      "Credentials for authentication with the DBMS server";
+  private static final String DATABASE_COMMENT =
       """
-      Hostname (an IP address (IPv4/IPv6) or a domain name)
+      The database to use on DBMS server
       Value can't be empty or blank""";
 
-  private static final String PORT_COMMENT =
-      """
-      Port
-      Accepted range values: [1-65535]""";
-
-  private static final String SSL_ENABLED_COMMENT =
-      """
-      Whether an SSL/TLS communication must be established at connection time (more secure)
-      Only boolean values accepted (true|false)""";
-
-  public static @NotNull DbmsServerHostPropertiesDto fromModel(
-      @NotNull DbmsServerHostProperties model) {
-    return new DbmsServerHostPropertiesDto(model.hostname(), model.port(), model.isSslEnabled());
+  public static @NotNull DbmsServerConfigProperties fromModel(@NotNull DbmsServerProperties model) {
+    return new DbmsServerConfigProperties(
+        DbmsServerHostConfigProperties.fromModel(model.host()),
+        DbmsServerCredentialsConfigProperties.fromModel(model.credentials()),
+        model.databaseName());
   }
 
-  public @NotNull DbmsServerHostProperties toModel() {
-    return new DbmsServerHostProperties(hostname, port, isSslEnabled);
+  public @NotNull DbmsServerProperties toModel() {
+    return new DbmsServerProperties(host.toModel(), credentials.toModel(), database);
   }
 }
