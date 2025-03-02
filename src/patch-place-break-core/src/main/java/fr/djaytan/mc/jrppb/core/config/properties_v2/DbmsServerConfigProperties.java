@@ -33,7 +33,8 @@ public record DbmsServerConfigProperties(
     @Required @Comment(HOST_COMMENT) @NotNull DbmsServerHostConfigProperties host,
     @Required @Comment(CREDENTIALS_COMMENT) @NotNull
         DbmsServerCredentialsConfigProperties credentials,
-    @Required @Comment(DATABASE_COMMENT) @NotNull String database) {
+    @Required @Comment(DATABASE_COMMENT) @NotNull String database)
+    implements ConfigProperties {
 
   private static final String HOST_COMMENT = "Host properties of the DBMS server";
   private static final String CREDENTIALS_COMMENT =

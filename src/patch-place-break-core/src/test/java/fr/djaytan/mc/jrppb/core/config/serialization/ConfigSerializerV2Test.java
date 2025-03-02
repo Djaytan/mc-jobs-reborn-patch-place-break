@@ -22,23 +22,22 @@
  */
 package fr.djaytan.mc.jrppb.core.config.serialization;
 
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.AnotherConfigProperties.ANOTHER_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties_v2.NominalConfigProperties.NOMINAL_CONFIG_PROPERTIES;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
 import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.serialize;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import fr.djaytan.mc.jrppb.core.config.properties_v2.AnotherConfigProperties;
+import fr.djaytan.mc.jrppb.core.config.properties_v2.NominalConfigProperties;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-import org.spongepowered.configurate.objectmapping.meta.Comment;
-import org.spongepowered.configurate.objectmapping.meta.Required;
 import org.spongepowered.configurate.serialize.SerializationException;
 
 final class ConfigSerializerV2Test {
 
-  private static final NominalConfigProperties NOMINAL_CONFIG_PROPERTIES =
-      new NominalConfigProperties("test-value", 34);
   private static final String NOMINAL_SERIALIZED_CONFIG_PROPERTIES =
       """
       #         JobsReborn-PatchPlaceBreak
@@ -58,6 +57,20 @@ final class ConfigSerializerV2Test {
       # Single line comment
       testField=test-value
       """;
+  private static final String ANOTHER_SERIALIZED_CONFIG_PROPERTIES =
+      """
+      #         JobsReborn-PatchPlaceBreak
+      # A patch place-break extension for JobsReborn
+      #                (by Djaytan)
+      #\s
+      # This config file use HOCON format
+      # Specifications are here: https://github.com/lightbend/config/blob/main/HOCON.md
+      #\s
+      # /!\\ Properties ordering is nondeterministic at config generation time because of limitations
+      # of underlying library.
+
+      test=another
+      """;
 
   @Nested
   class WhenSerializing {
@@ -66,6 +79,12 @@ final class ConfigSerializerV2Test {
     void nominalCase() throws ConfigSerializationException {
       assertThat(serialize(NOMINAL_CONFIG_PROPERTIES))
           .isEqualToIgnoringNewLines(NOMINAL_SERIALIZED_CONFIG_PROPERTIES);
+    }
+
+    @Test
+    void withAnotherConfigProperties_shallSucceed() {
+      assertThat(serialize(ANOTHER_CONFIG_PROPERTIES))
+          .isEqualToIgnoringNewLines(ANOTHER_SERIALIZED_CONFIG_PROPERTIES);
     }
 
     @Test
@@ -89,6 +108,12 @@ final class ConfigSerializerV2Test {
     void nominalCase() throws ConfigSerializationException {
       assertThat(deserialize(NOMINAL_SERIALIZED_CONFIG_PROPERTIES, NominalConfigProperties.class))
           .isEqualTo(NOMINAL_CONFIG_PROPERTIES);
+    }
+
+    @Test
+    void fromAnotherSerializedConfigProperties_shallSucceed() {
+      assertThat(deserialize(ANOTHER_SERIALIZED_CONFIG_PROPERTIES, AnotherConfigProperties.class))
+          .isEqualTo(ANOTHER_CONFIG_PROPERTIES);
     }
 
     @Test
@@ -120,7 +145,7 @@ final class ConfigSerializerV2Test {
           .isExactlyInstanceOf(ConfigSerializationException.class)
           .hasMessage(
               "Fail to deserialize config properties of type "
-                  + "'fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2Test$NominalConfigProperties' "
+                  + "'fr.djaytan.mc.jrppb.core.config.properties_v2.NominalConfigProperties' "
                   + "from the following config input:\nnumber=120")
           .cause()
           .isExactlyInstanceOf(SerializationException.class)
@@ -196,11 +221,6 @@ final class ConfigSerializerV2Test {
       }
     }
   }
-
-  @ConfigSerializable
-  private record NominalConfigProperties(
-      @Required @Comment("Single line comment") @NotNull String testField,
-      @Required @Comment("Multi\nline\ncomment") int number) {}
 
   private record NotSerializable(@NotNull String dummy) {}
 }

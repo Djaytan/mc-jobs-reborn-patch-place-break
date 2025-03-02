@@ -20,18 +20,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config.serialization;
+package fr.djaytan.mc.jrppb.core.config.repository;
 
+import fr.djaytan.mc.jrppb.core.config.ConfigName;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.configurate.ConfigurateException;
 
-public final class ConfigSerializationException extends RuntimeException {
+/** Represents a repository where configs are stored. */
+public interface ConfigRepository {
 
-  ConfigSerializationException(@NotNull String message) {
-    super(message);
-  }
+  /**
+   * Creates a new config.
+   *
+   * <p>It is recommended to first check for config existence with {@link #exists(ConfigName)}
+   * before calling this method.
+   *
+   * @param configName The name of the config to create.
+   * @param content The content of the config to create.
+   * @throws IllegalStateException If the config already exists.
+   */
+  void create(@NotNull ConfigName configName, @NotNull String content);
 
-  ConfigSerializationException(@NotNull String message, @NotNull ConfigurateException cause) {
-    super(message, cause);
-  }
+  /**
+   * Checks config existence.
+   *
+   * @param configName The name of the config to check existence.
+   * @return {@code true} if the config exists, {@code false} otherwise.
+   */
+  boolean exists(@NotNull ConfigName configName);
+
+  /**
+   * Searches the config matching the provided name if it exists.
+   *
+   * @param configName The name of the config to search.
+   * @return The matching config if it exists, otherwise nothing.
+   */
+  @NotNull
+  Optional<String> findByName(@NotNull ConfigName configName);
 }

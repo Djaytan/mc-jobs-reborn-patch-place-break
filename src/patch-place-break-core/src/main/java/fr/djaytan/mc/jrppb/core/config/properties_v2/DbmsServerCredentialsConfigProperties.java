@@ -31,7 +31,8 @@ import org.spongepowered.configurate.objectmapping.meta.Required;
 @ConfigSerializable
 public record DbmsServerCredentialsConfigProperties(
     @Required @Comment(USERNAME_COMMENT) @NotNull String username,
-    @Required @Comment(PASSWORD_COMMENT) @NotNull String password) {
+    @Required @Comment(PASSWORD_COMMENT) @NotNull String password)
+    implements ConfigProperties {
 
   private static final String USERNAME_COMMENT =
       """

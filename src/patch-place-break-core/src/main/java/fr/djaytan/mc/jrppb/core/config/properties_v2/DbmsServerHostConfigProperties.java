@@ -32,7 +32,8 @@ import org.spongepowered.configurate.objectmapping.meta.Required;
 public record DbmsServerHostConfigProperties(
     @Required @Comment(HOSTNAME_COMMENT) @NotNull String hostname,
     @Required @Comment(PORT_COMMENT) int port,
-    @Required @Comment(SSL_ENABLED_COMMENT) boolean isSslEnabled) {
+    @Required @Comment(SSL_ENABLED_COMMENT) boolean isSslEnabled)
+    implements ConfigProperties {
 
   private static final String HOSTNAME_COMMENT =
       """

@@ -20,38 +20,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config;
+package fr.djaytan.mc.jrppb.core.config.repository;
 
-import java.nio.file.Path;
+import fr.djaytan.mc.jrppb.core.config.ConfigName;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.TestOnly;
 
-/** Represents a config directory path. */
-public record ConfigDirectoryPath(@NotNull Path value) {
+@TestOnly
+public final class SimpleConfigRepository implements ConfigRepository {
 
-  public ConfigDirectoryPath(@NotNull Path value) {
-    this.value = value.toAbsolutePath().normalize();
+  private final Map<ConfigName, String> configs = new HashMap<>();
+
+  @Override
+  public void create(@NotNull ConfigName configName, @NotNull String content) {
+    if (exists(configName)) {
+      throw new IllegalStateException(
+          "Failed to create config named '%s' because it already exists"
+              .formatted(configName.value()));
+    }
+    configs.put(configName, content);
   }
 
-  /**
-   * Return the config directory path.
-   *
-   * <p>Note that the path is guaranteed to be absolute and normalized.
-   *
-   * @return The config directory path.
-   */
-  public @NotNull Path value() {
-    return value;
+  @Override
+  public boolean exists(@NotNull ConfigName configName) {
+    return configs.containsKey(configName);
   }
 
-  /**
-   * Resolved the config file path from this directory based on the provided config name.
-   *
-   * <p>Note that the returned path is guaranteed to be absolute and normalized.
-   *
-   * @param configName The config name used to resolve the config file path.
-   * @return The resolved config file path from this directory.
-   */
-  public @NotNull Path resolveConfigFilePath(@NotNull ConfigName configName) {
-    return value.resolve(configName.value() + ".conf");
+  @Override
+  public @NotNull Optional<String> findByName(@NotNull ConfigName configName) {
+    return Optional.ofNullable(configs.get(configName));
+  }
+
+  public boolean isEmpty() {
+    return configs.isEmpty();
   }
 }

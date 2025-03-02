@@ -35,7 +35,8 @@ public record DataSourceConfigProperties(
     @Required @Comment(TABLE_COMMENT) @NotNull String table,
     @Required @Comment(DBMS_SERVER_COMMENT) @NotNull DbmsServerConfigProperties dbmsServer,
     @Required @Comment(CONNECTION_POOL_COMMENT) @NotNull
-        ConnectionPoolConfigProperties connectionPool) {
+        ConnectionPoolConfigProperties connectionPool)
+    implements ConfigProperties {
 
   private static final String TYPE_COMMENT =
       """
@@ -59,6 +60,8 @@ public record DataSourceConfigProperties(
       Connection pool properties
       This is reserved for advanced usage only
       Change these settings only if you know what you are doing""";
+
+  public static final DataSourceConfigProperties DEFAULT = fromModel(DataSourceProperties.DEFAULT);
 
   public static @NotNull DataSourceConfigProperties fromModel(@NotNull DataSourceProperties model) {
     return new DataSourceConfigProperties(

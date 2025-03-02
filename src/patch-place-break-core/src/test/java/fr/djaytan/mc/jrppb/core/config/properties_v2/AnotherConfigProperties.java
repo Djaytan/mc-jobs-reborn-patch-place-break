@@ -22,39 +22,12 @@
  */
 package fr.djaytan.mc.jrppb.core.config.properties_v2;
 
-import fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolProperties;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-public record ConnectionPoolConfigProperties(
-    @Required @Comment(CONNECTION_TIMEOUT_COMMENT) int connectionTimeout,
-    @Required @Comment(POOL_SIZE_COMMENT) int poolSize)
-    implements ConfigProperties {
+public record AnotherConfigProperties(@Required String test) implements ConfigProperties {
 
-  private static final String CONNECTION_TIMEOUT_COMMENT =
-      """
-      The connection timeout (in milliseconds)
-      Corresponds to the maximum time the connection pool will wait to acquire a new connection
-      from the DBMS server
-      Not applicable for SQLite
-      Accepted range values: [1-600000]""";
-
-  private static final String POOL_SIZE_COMMENT =
-      """
-      The number of DBMS connections in the pool
-      Could be best determined by the executing environment
-      Accepted range values: [1-100]""";
-
-  public static @NotNull ConnectionPoolConfigProperties fromModel(
-      @NotNull ConnectionPoolProperties connectionPoolProperties) {
-    return new ConnectionPoolConfigProperties(
-        connectionPoolProperties.connectionTimeout(), connectionPoolProperties.poolSize());
-  }
-
-  public @NotNull ConnectionPoolProperties toModel() {
-    return new ConnectionPoolProperties(connectionTimeout, poolSize);
-  }
+  public static final AnotherConfigProperties ANOTHER_CONFIG_PROPERTIES =
+      new AnotherConfigProperties("another");
 }

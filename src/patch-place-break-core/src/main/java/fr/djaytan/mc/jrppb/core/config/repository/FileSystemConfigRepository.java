@@ -20,11 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config;
+package fr.djaytan.mc.jrppb.core.config.repository;
 
-import static java.nio.file.StandardOpenOption.CREATE_NEW;
-import static java.nio.file.StandardOpenOption.WRITE;
-
+import fr.djaytan.mc.jrppb.core.config.ConfigName;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import java.io.IOException;
@@ -35,26 +33,23 @@ import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @Singleton
-public final class ConfigRepository {
+public final class FileSystemConfigRepository implements ConfigRepository {
 
   private final ConfigDirectoryPath configDirectoryPath;
 
   @Inject
-  public ConfigRepository(@NotNull ConfigDirectoryPath configDirectoryPath) {
+  public FileSystemConfigRepository(@NotNull ConfigDirectoryPath configDirectoryPath) {
     this.configDirectoryPath = configDirectoryPath;
   }
 
-  /**
-   * Creates a new config.
-   *
-   * <p>It is recommended to first check for config existence with {@link #exists(ConfigName)}
-   * before calling this method.
-   *
-   * @param configName The name of the config to create.
-   * @param content The content of the config to create.
-   * @throws IllegalStateException If the config already exists.
-   */
+  @Override
   public void create(@NotNull ConfigName configName, @NotNull String content) {
+    if (exists(configName)) {
+      throw new IllegalStateException(
+          "Failed to create config named '%s' because it already exists"
+              .formatted(configName.value()));
+    }
+
     createConfigDirectoryIfNotExists();
     createNewConfigFile(configName, content);
   }
@@ -74,28 +69,18 @@ public final class ConfigRepository {
     Path configFile = configDirectoryPath.resolveConfigFilePath(configName);
 
     try {
-      Files.writeString(configFile, content, CREATE_NEW, WRITE);
+      Files.writeString(configFile, content);
     } catch (IOException e) {
       throw new UncheckedIOException("Failed to create config file '%s'".formatted(configFile), e);
     }
   }
 
-  /**
-   * Checks config existence.
-   *
-   * @param configName The name of the config to check existence.
-   * @return {@code true} if the config exists, {@code false} otherwise.
-   */
+  @Override
   public boolean exists(@NotNull ConfigName configName) {
     return findByName(configName).isPresent();
   }
 
-  /**
-   * Searches the config matching the provided name if it exists.
-   *
-   * @param configName The name of the config to search.
-   * @return The matching config if it exists, otherwise nothing.
-   */
+  @Override
   public @NotNull Optional<String> findByName(@NotNull ConfigName configName) {
     Path configFile = configDirectoryPath.resolveConfigFilePath(configName);
 

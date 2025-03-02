@@ -62,8 +62,10 @@ module fr.djaytan.mc.jrppb.core {
   opens db.migration.mysql;
   opens db.migration.sqlite;
 
-  // Reflection for Configurate
+  // Reflection for Configurate & Guice
   opens fr.djaytan.mc.jrppb.core.config.properties;
-  opens fr.djaytan.mc.jrppb.core.config.properties_v2;
+  opens fr.djaytan.mc.jrppb.core.config.properties_v2 to
+      org.spongepowered.configurate;
   opens fr.djaytan.mc.jrppb.core.config.serialization;
+  opens fr.djaytan.mc.jrppb.core.config.repository;
 }

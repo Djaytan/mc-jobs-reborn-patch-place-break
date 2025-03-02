@@ -20,18 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config.serialization;
+package fr.djaytan.mc.jrppb.core.config.properties_v2;
 
-import org.jetbrains.annotations.NotNull;
-import org.spongepowered.configurate.ConfigurateException;
-
-public final class ConfigSerializationException extends RuntimeException {
-
-  ConfigSerializationException(@NotNull String message) {
-    super(message);
-  }
-
-  ConfigSerializationException(@NotNull String message, @NotNull ConfigurateException cause) {
-    super(message, cause);
-  }
-}
+/** This interface is a marker to easily leverage type-safety on operations. */
+public interface ConfigProperties {}

@@ -20,18 +20,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config.serialization;
+package fr.djaytan.mc.jrppb.core.config.repository;
 
+import fr.djaytan.mc.jrppb.core.config.ConfigName;
+import java.nio.file.Path;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.configurate.ConfigurateException;
 
-public final class ConfigSerializationException extends RuntimeException {
+/** Represents a config directory path. */
+public record ConfigDirectoryPath(@NotNull Path value) {
 
-  ConfigSerializationException(@NotNull String message) {
-    super(message);
+  public ConfigDirectoryPath(@NotNull Path value) {
+    this.value = value.toAbsolutePath().normalize();
   }
 
-  ConfigSerializationException(@NotNull String message, @NotNull ConfigurateException cause) {
-    super(message, cause);
+  /**
+   * Returns the config directory path.
+   *
+   * <p>Note that the path is guaranteed to be absolute and normalized.
+   *
+   * @return The config directory path.
+   */
+  public @NotNull Path value() {
+    return value;
+  }
+
+  /**
+   * Resolves the config file path from this directory based on the provided config name.
+   *
+   * <p>Note that the returned path is guaranteed to be absolute and normalized.
+   *
+   * @param configName The config name used to resolve the config file path.
+   * @return The resolved config file path from this directory.
+   */
+  public @NotNull Path resolveConfigFilePath(@NotNull ConfigName configName) {
+    return value.resolve(configName.value() + ".conf");
   }
 }

@@ -20,18 +20,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config.serialization;
+package fr.djaytan.mc.jrppb.core.config.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import fr.djaytan.mc.jrppb.core.config.ConfigName;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.configurate.ConfigurateException;
 
-public final class ConfigSerializationException extends RuntimeException {
+final class SimpleConfigRepositoryTest extends ConfigRepositoryTest {
 
-  ConfigSerializationException(@NotNull String message) {
-    super(message);
+  private final SimpleConfigRepository configRepository = new SimpleConfigRepository();
+
+  @Override
+  protected @NotNull ConfigRepository configRepository() {
+    return configRepository;
   }
 
-  ConfigSerializationException(@NotNull String message, @NotNull ConfigurateException cause) {
-    super(message, cause);
+  @Override
+  protected void assertEmptyDataSource() {
+    assertThat(configRepository.isEmpty()).isTrue();
+  }
+
+  @Override
+  protected void assertMissingConfigSideEffect(@NotNull ConfigName configName) {
+    // No side effect to assert
+  }
+
+  @Override
+  protected void assertConfigExistenceSideEffect(@NotNull ConfigName configName) {
+    // No side effect to assert
   }
 }

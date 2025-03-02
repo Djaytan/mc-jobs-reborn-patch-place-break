@@ -36,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
 public record RestrictedBlocksProperties(
     @NotNull Set<String> materials, @NotNull RestrictionMode restrictionMode) {
 
-  private static final RestrictedBlocksProperties DEFAULT =
+  public static final RestrictedBlocksProperties DEFAULT =
       new RestrictedBlocksProperties(emptySet(), RestrictionMode.DISABLED);
 
   /**

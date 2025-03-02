@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.config;
+package fr.djaytan.mc.jrppb.core.config.repository;
 
 import static com.google.common.jimfs.Configuration.unix;
 import static fr.djaytan.mc.jrppb.core.config.ConfigNameTestDataSet.NOMINAL_CONFIG_NAME;
@@ -28,6 +28,7 @@ import static fr.djaytan.mc.jrppb.core.config.ConfigNameTestDataSet.randomConfig
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.jimfs.Jimfs;
+import fr.djaytan.mc.jrppb.core.config.ConfigName;
 import java.nio.file.FileSystem;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AutoClose;
