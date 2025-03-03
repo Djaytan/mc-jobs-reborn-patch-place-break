@@ -9,7 +9,8 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/8112/badge)](https://www.bestpractices.dev/projects/8112)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Djaytan/mc-jobs-reborn-patch-place-break/badge)](https://securityscorecards.dev/viewer/?uri=github.com/Djaytan/mc-jobs-reborn-patch-place-break)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Djaytan/mc-jobs-reborn-patch-place-break/badge)](https://securityscorecards.dev/viewer/?uri=github.com/Djaytan/mc-jobs-reborn-patch-place-break)  
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FDjaytan%2Fmc-jobs-reborn-patch-place-break.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FDjaytan%2Fmc-jobs-reborn-patch-place-break?ref=badge_shield)
 
 A place-and-break patch extension
 of [JobsReborn plugin](https://www.spigotmc.org/resources/jobs-reborn.4216/)
@@ -202,3 +203,5 @@ our [Security Policy](docs/SECURITY.md).
 ## Licence
 
 This project is under the [MIT license](LICENSE).
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FDjaytan%2Fmc-jobs-reborn-patch-place-break.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FDjaytan%2Fmc-jobs-reborn-patch-place-break?ref=badge_large)
