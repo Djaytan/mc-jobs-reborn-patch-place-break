@@ -20,25 +20,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.storage.sql.jdbc;
+package fr.djaytan.mc.jrppb.core.config.properties;
 
-import static com.google.common.jimfs.Configuration.unix;
-import static org.assertj.core.api.Assertions.assertThat;
+import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PASSWORD;
+import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsPropertiesTestDataSet.NOMINAL_DBMS_SERVER_USERNAME;
 
-import com.google.common.jimfs.Jimfs;
-import java.nio.file.FileSystem;
-import java.nio.file.Path;
-import org.junit.jupiter.api.AutoClose;
-import org.junit.jupiter.api.Test;
+public final class DbmsServerCredentialsConfigPropertiesTestDataSet {
 
-class SqliteJdbcUrlTest {
+  public static final DbmsServerCredentialsConfigProperties
+      NOMINAL_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES =
+          new DbmsServerCredentialsConfigProperties(
+              NOMINAL_DBMS_SERVER_USERNAME, NOMINAL_DBMS_SERVER_PASSWORD);
 
-  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(unix());
-  private final Path sqliteDatabaseFilePath = imfs.getPath("sqlite-data.db").toAbsolutePath();
-
-  @Test
-  void whenGettingJdbcUrlFromDummyPath_shouldReturnExpectedSqliteJdbcUrl() {
-    assertThat(new SqliteJdbcUrl(sqliteDatabaseFilePath).get())
-        .isEqualTo("jdbc:sqlite:/work/sqlite-data.db");
-  }
+  public static final String NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES =
+      """
+      # Password of the user (optional but highly recommended)
+      password=my-admin-pwd
+      # Under behalf of which user to connect on the DBMS server
+      # Value can't be empty or blank
+      username=admin
+      """;
 }

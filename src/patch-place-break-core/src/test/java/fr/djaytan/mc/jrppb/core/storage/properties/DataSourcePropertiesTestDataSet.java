@@ -23,6 +23,7 @@
 package fr.djaytan.mc.jrppb.core.storage.properties;
 
 import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_CONNECTION_POOL_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerPropertiesTestDataSet.NOMINAL_DBMS_SERVER_DATABASE_NAME;
 import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerPropertiesTestDataSet.NOMINAL_DBMS_SERVER_PROPERTIES;
 
 import org.instancio.Instancio;
@@ -39,6 +40,30 @@ public final class DataSourcePropertiesTestDataSet {
           NOMINAL_DATA_SOURCE_TABLE_NAME,
           NOMINAL_DBMS_SERVER_PROPERTIES,
           NOMINAL_CONNECTION_POOL_PROPERTIES);
+
+  public static final DataSourceProperties NOMINAL_SQLITE_DATA_SOURCE_PROPERTIES =
+      new DataSourceProperties(
+          DataSourceType.SQLITE,
+          NOMINAL_DATA_SOURCE_TABLE_NAME,
+          NOMINAL_DBMS_SERVER_PROPERTIES,
+          NOMINAL_CONNECTION_POOL_PROPERTIES);
+  public static final DataSourceProperties NOMINAL_MYSQL_DATA_SOURCE_PROPERTIES =
+      new DataSourceProperties(
+          DataSourceType.MYSQL,
+          NOMINAL_DATA_SOURCE_TABLE_NAME,
+          NOMINAL_DBMS_SERVER_PROPERTIES,
+          NOMINAL_CONNECTION_POOL_PROPERTIES);
+
+  public static @NotNull DataSourceProperties nominalMysqlDataSourceProperties(
+      @NotNull DbmsServerHostProperties hostProperties,
+      @NotNull DbmsServerCredentialsProperties credentialsProperties) {
+    return new DataSourceProperties(
+        DataSourceType.MYSQL,
+        NOMINAL_DATA_SOURCE_TABLE_NAME,
+        new DbmsServerProperties(
+            hostProperties, credentialsProperties, NOMINAL_DBMS_SERVER_DATABASE_NAME),
+        NOMINAL_CONNECTION_POOL_PROPERTIES);
+  }
 
   public static @NotNull DataSourceType randomDataSourceType() {
     return Instancio.create(DataSourceType.class);

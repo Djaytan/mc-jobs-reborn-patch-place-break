@@ -22,8 +22,8 @@
  */
 package fr.djaytan.mc.jrppb.core.config;
 
-import fr.djaytan.mc.jrppb.core.config.properties_v2.DataSourceConfigProperties;
-import fr.djaytan.mc.jrppb.core.config.properties_v2.RestrictedBlocksConfigProperties;
+import fr.djaytan.mc.jrppb.core.config.properties.DataSourceConfigProperties;
+import fr.djaytan.mc.jrppb.core.config.properties.RestrictedBlocksConfigProperties;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.jetbrains.annotations.NotNull;

@@ -24,7 +24,7 @@ package fr.djaytan.mc.jrppb.core.storage.sql.access;
 
 import fr.djaytan.mc.jrppb.api.entities.BlockLocation;
 import fr.djaytan.mc.jrppb.api.entities.Tag;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
+import fr.djaytan.mc.jrppb.core.storage.properties.DataSourceProperties;
 import fr.djaytan.mc.jrppb.core.storage.sql.serializer.BooleanIntegerSerializer;
 import fr.djaytan.mc.jrppb.core.storage.sql.serializer.LocalDateTimeStringSerializer;
 import jakarta.inject.Inject;
@@ -60,7 +60,7 @@ public class TagSqlDao {
 
   public void insert(@NotNull Connection connection, @NotNull Tag tag) throws SQLException {
     String sql =
-        String.format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?)", dataSourceProperties.getTable());
+        String.format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?)", dataSourceProperties.tableName());
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setString(1, tag.blockLocation().worldName());
@@ -79,7 +79,7 @@ public class TagSqlDao {
         String.format(
             "SELECT * FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
                 + " location_z = ?",
-            dataSourceProperties.getTable());
+            dataSourceProperties.tableName());
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setString(1, blockLocation.worldName());
@@ -125,7 +125,7 @@ public class TagSqlDao {
         String.format(
             "DELETE FROM %s WHERE world_name = ? AND location_x = ? AND location_y = ? AND"
                 + " location_z = ?",
-            dataSourceProperties.getTable());
+            dataSourceProperties.tableName());
 
     try (PreparedStatement deleteStmt = connection.prepareStatement(sqlDelete)) {
       deleteStmt.setString(1, blockLocation.worldName());

@@ -20,25 +20,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.storage.sql.jdbc;
+package fr.djaytan.mc.jrppb.core.config.properties;
 
-import static com.google.common.jimfs.Configuration.unix;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.jetbrains.annotations.NotNull;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
-import com.google.common.jimfs.Jimfs;
-import java.nio.file.FileSystem;
-import java.nio.file.Path;
-import org.junit.jupiter.api.AutoClose;
-import org.junit.jupiter.api.Test;
+@ConfigSerializable
+public record NominalConfigProperties(
+    @Required @Comment("Single line comment") @NotNull String testField,
+    @Required @Comment("Multi\nline\ncomment") int number)
+    implements ConfigProperties {
 
-class SqliteJdbcUrlTest {
-
-  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(unix());
-  private final Path sqliteDatabaseFilePath = imfs.getPath("sqlite-data.db").toAbsolutePath();
-
-  @Test
-  void whenGettingJdbcUrlFromDummyPath_shouldReturnExpectedSqliteJdbcUrl() {
-    assertThat(new SqliteJdbcUrl(sqliteDatabaseFilePath).get())
-        .isEqualTo("jdbc:sqlite:/work/sqlite-data.db");
-  }
+  public static final NominalConfigProperties NOMINAL_CONFIG_PROPERTIES =
+      new NominalConfigProperties("test-value", 34);
 }

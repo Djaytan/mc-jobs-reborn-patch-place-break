@@ -20,25 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.storage.sql.jdbc;
+package fr.djaytan.mc.jrppb.core.config.serialization;
 
-import static com.google.common.jimfs.Configuration.unix;
-import static org.assertj.core.api.Assertions.assertThat;
+import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializer.deserialize;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.google.common.jimfs.Jimfs;
-import java.nio.file.FileSystem;
-import java.nio.file.Path;
-import org.junit.jupiter.api.AutoClose;
-import org.junit.jupiter.api.Test;
+import org.jetbrains.annotations.NotNull;
+import org.spongepowered.configurate.serialize.SerializationException;
 
-class SqliteJdbcUrlTest {
+public final class ConfigSerializerAssertions {
 
-  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(unix());
-  private final Path sqliteDatabaseFilePath = imfs.getPath("sqlite-data.db").toAbsolutePath();
-
-  @Test
-  void whenGettingJdbcUrlFromDummyPath_shouldReturnExpectedSqliteJdbcUrl() {
-    assertThat(new SqliteJdbcUrl(sqliteDatabaseFilePath).get())
-        .isEqualTo("jdbc:sqlite:/work/sqlite-data.db");
+  public static void assertDeserializationFailure(
+      @NotNull String serializedConfig, @NotNull Class<?> targetType) {
+    assertThatThrownBy(() -> deserialize(serializedConfig, targetType))
+        .isExactlyInstanceOf(ConfigSerializationException.class)
+        .hasMessage(
+            "Fail to deserialize config properties of type '%s' from the following config input:\n%s",
+            targetType.getName(), serializedConfig)
+        .cause()
+        .isExactlyInstanceOf(SerializationException.class)
+        .hasMessageEndingWith("A value is required for this field");
   }
 }

@@ -30,10 +30,8 @@ module fr.djaytan.mc.jrppb.core {
   requires com.zaxxer.hikari;
   requires flyway.core;
   requires jakarta.inject;
-  requires jakarta.validation;
   requires java.sql;
   requires org.apache.commons.lang3;
-  requires org.apache.commons.io;
   requires org.slf4j;
   requires org.spongepowered.configurate;
   requires org.spongepowered.configurate.hocon;
@@ -42,8 +40,6 @@ module fr.djaytan.mc.jrppb.core {
   opens fr.djaytan.mc.jrppb.core to
       com.google.guice;
   opens fr.djaytan.mc.jrppb.core.config to
-      com.google.guice;
-  opens fr.djaytan.mc.jrppb.core.config.validation to
       com.google.guice;
   opens fr.djaytan.mc.jrppb.core.inject to
       com.google.guice;
@@ -64,8 +60,6 @@ module fr.djaytan.mc.jrppb.core {
 
   // Reflection for Configurate & Guice
   opens fr.djaytan.mc.jrppb.core.config.properties;
-  opens fr.djaytan.mc.jrppb.core.config.properties_v2 to
-      org.spongepowered.configurate;
   opens fr.djaytan.mc.jrppb.core.config.serialization;
   opens fr.djaytan.mc.jrppb.core.config.repository;
 }

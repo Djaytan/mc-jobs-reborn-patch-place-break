@@ -20,38 +20,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.inject;
+package fr.djaytan.mc.jrppb.core.config.properties;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import fr.djaytan.mc.jrppb.api.PatchPlaceBreakApi;
-import fr.djaytan.mc.jrppb.core.storage.api.DataSourceManager;
-import java.nio.file.Path;
-import java.time.Clock;
+import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsProperties;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
-public final class PatchPlaceBreakInjector {
+@ConfigSerializable
+public record DbmsServerCredentialsConfigProperties(
+    @Required @Comment(USERNAME_COMMENT) @NotNull String username,
+    @Required @Comment(PASSWORD_COMMENT) @NotNull String password)
+    implements ConfigProperties {
 
-  private final Injector injector;
+  private static final String USERNAME_COMMENT =
+      """
+      Under behalf of which user to connect on the DBMS server
+      Value can't be empty or blank""";
 
-  public PatchPlaceBreakInjector(
-      @NotNull ClassLoader classLoader, @NotNull Clock clock, @NotNull Path dataFolder) {
-    this.injector = createInjector(classLoader, clock, dataFolder);
+  private static final String PASSWORD_COMMENT =
+      "Password of the user (optional but highly recommended)";
+
+  public static @NotNull DbmsServerCredentialsConfigProperties fromModel(
+      @NotNull DbmsServerCredentialsProperties model) {
+    return new DbmsServerCredentialsConfigProperties(model.username(), model.password());
   }
 
-  private static @NotNull Injector createInjector(
-      @NotNull ClassLoader classLoader, @NotNull Clock clock, @NotNull Path dataFolder) {
-    return Guice.createInjector(
-        new ConfigModule(),
-        new PatchPlaceBreakModule(classLoader, clock, dataFolder),
-        new StorageModule());
-  }
-
-  public @NotNull PatchPlaceBreakApi patchPlaceBreakApi() {
-    return injector.getInstance(PatchPlaceBreakApi.class);
-  }
-
-  public @NotNull DataSourceManager dataSourceManager() {
-    return injector.getInstance(DataSourceManager.class);
+  public @NotNull DbmsServerCredentialsProperties toModel() {
+    return new DbmsServerCredentialsProperties(username, password);
   }
 }

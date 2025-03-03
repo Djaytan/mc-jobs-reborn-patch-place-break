@@ -22,94 +22,112 @@
  */
 package fr.djaytan.mc.jrppb.core.config.serialization;
 
-import fr.djaytan.mc.jrppb.core.config.properties.Properties;
-import jakarta.inject.Singleton;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.Path;
-import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.loader.ConfigurationLoader;
+import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
+import org.spongepowered.configurate.loader.HeaderMode;
+import org.spongepowered.configurate.objectmapping.ObjectMapper;
+import org.spongepowered.configurate.util.NamingSchemes;
 
-/**
- * Config serializer.
- *
- * <p>Two methods are exposed for serialization: {@link #serialize(Path, Properties)} and {@link
- * #deserialize(Path, Class)}.
- */
-@Singleton
 public final class ConfigSerializer {
 
+  private static final String CONFIG_HEADER =
+      """
+               JobsReborn-PatchPlaceBreak
+       A patch place-break extension for JobsReborn
+                      (by Djaytan)
+
+       This config file use HOCON format
+       Specifications are here: https://github.com/lightbend/config/blob/main/HOCON.md
+
+       /!\\ Properties ordering is nondeterministic at config generation time because of limitations
+       of underlying library.
+      """;
+
+  private ConfigSerializer() {
+    // Static class
+  }
+
   /**
-   * Serializes the given properties into the specified destination file.
+   * Serializes the specified config properties to HOCON format.
    *
-   * @param destConfigFile The destination config file into which serialize properties.
-   * @param properties The properties to serialize.
+   * <p>LIMITATION: Fields ordering is random and comes from the underlying HOCON library used by
+   * Configurate. More details can be found <a
+   * href="https://github.com/lightbend/config/issues/733">here</a>.
+   *
+   * <p>TODO: migrate to YAML loader: well-known and no such limitation
+   *
+   * @param configProperties The config properties to serialize.
+   * @return The serialized form of the initially provided config properties.
+   * @throws ConfigSerializationException If something wrong happened during serialization.
    */
-  public void serialize(@NotNull Path destConfigFile, @NotNull Properties properties) {
+  public static @NotNull String serialize(@NotNull Object configProperties)
+      throws ConfigSerializationException {
     try {
-      ConfigurationLoader<? extends ConfigurationNode> serializer =
-          createSerializer(destConfigFile);
-      ConfigurationNode configurationNode = serializer.createNode(node -> node.set(properties));
-      serializer.save(configurationNode);
-    } catch (IOException e) {
-      throw new UncheckedIOException(
-          String.format(
-              "Fail to serialize config properties of type '%s' in '%s' file",
-              properties.getClass().getTypeName(), destConfigFile),
+      var configLoaderBuilder = configLoaderBuilder();
+
+      // Weird... Because of Configurate itself
+      ConfigurationNode configNode =
+          configLoaderBuilder.build().createNode(node -> node.set(configProperties));
+
+      return configLoaderBuilder.buildAndSaveString(configNode);
+    } catch (ConfigurateException e) {
+      throw new ConfigSerializationException(
+          "Fail to serialize the following config properties: " + configProperties, e);
+    }
+  }
+
+  /**
+   * Deserializes the provided input to the specified target type if possible, otherwise fails.
+   *
+   * @param configInput The input to deserialize.
+   * @param configType The target type for the deserialization.
+   * @return The deserialized form of the input corresponding to the specified target type.
+   * @param <T> The deserialization target type.
+   * @throws ConfigSerializationException If something wrong happened during deserialization.
+   */
+  public static <T> @NotNull T deserialize(
+      @NotNull String configInput, @NotNull Class<T> configType)
+      throws ConfigSerializationException {
+    try {
+      T deserialized = configLoaderBuilder().buildAndLoadString(configInput).get(configType);
+
+      if (deserialized == null) {
+        throw new ConfigSerializationException(
+            "Unexpectedly deserialized the following input to null:\n%s".formatted(configInput));
+      }
+
+      return deserialized;
+    } catch (ConfigurateException e) {
+      throw new ConfigSerializationException(
+          "Fail to deserialize config properties of type '%s' from the following config input:\n%s"
+              .formatted(configType.getName(), configInput),
           e);
     }
   }
 
-  private @NotNull ConfigurationLoader<? extends ConfigurationNode> createSerializer(
-      @NotNull Path destConfigFile) throws IOException {
-    ConfigurationLoader<? extends ConfigurationNode> loader =
-        ConfigLoaderFactory.createLoader(destConfigFile);
+  private static @NotNull HoconConfigurationLoader.Builder configLoaderBuilder() {
+    var configLoaderBuilder =
+        HoconConfigurationLoader.builder().emitComments(true).prettyPrinting(true);
 
-    if (!loader.canSave()) {
-      throw new IllegalStateException(
-          "The loader configuration is invalid and thus prevent processing serialization "
-              + "of config files");
-    }
+    // Header
+    configLoaderBuilder =
+        configLoaderBuilder
+            .headerMode(HeaderMode.PRESET)
+            .defaultOptions(opts -> opts.header(CONFIG_HEADER));
 
-    return loader;
+    // Object mapper
+    configLoaderBuilder =
+        configLoaderBuilder.defaultOptions(
+            opts ->
+                opts.serializers(
+                    builder -> builder.registerAnnotatedObjects(customObjectMapperFactory())));
+
+    return configLoaderBuilder;
   }
 
-  /**
-   * Deserializes the given source file to the specified targeted properties type.
-   *
-   * @param srcConfigFile The source config file from which deserializing.
-   * @param propertiesType The targeted properties type of YAML deserialization.
-   * @return The deserialized value if present and of valid properties type.
-   * @param <T> The expected properties type to be obtained from deserialization.
-   */
-  public <T extends Properties> @NotNull Optional<T> deserialize(
-      @NotNull Path srcConfigFile, @NotNull Class<T> propertiesType) {
-    try {
-      ConfigurationLoader<?> deserializer = createDeserializer(srcConfigFile);
-      ConfigurationNode rootNode = deserializer.load();
-      return Optional.ofNullable(rootNode.get(propertiesType));
-    } catch (IOException e) {
-      throw new UncheckedIOException(
-          String.format(
-              "Fail to deserialize config properties of type '%s' from '%s' file",
-              propertiesType.getTypeName(), srcConfigFile),
-          e);
-    }
-  }
-
-  private @NotNull ConfigurationLoader<? extends ConfigurationNode> createDeserializer(
-      @NotNull Path srcConfigFile) throws IOException {
-    ConfigurationLoader<? extends ConfigurationNode> loader =
-        ConfigLoaderFactory.createLoader(srcConfigFile);
-
-    if (!loader.canLoad()) {
-      throw new IllegalStateException(
-          "The loader configuration is invalid and thus prevent processing deserialization "
-              + "of config files");
-    }
-
-    return loader;
+  private static @NotNull ObjectMapper.Factory customObjectMapperFactory() {
+    return ObjectMapper.factoryBuilder().defaultNamingScheme(NamingSchemes.CAMEL_CASE).build();
   }
 }

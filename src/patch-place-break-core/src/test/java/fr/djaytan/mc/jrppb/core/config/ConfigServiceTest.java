@@ -23,14 +23,14 @@
 package fr.djaytan.mc.jrppb.core.config;
 
 import static fr.djaytan.mc.jrppb.core.config.ConfigNameTestDataSet.NOMINAL_CONFIG_NAME;
-import static fr.djaytan.mc.jrppb.core.config.properties_v2.AnotherConfigProperties.ANOTHER_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.properties_v2.NominalConfigProperties.NOMINAL_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties.AnotherConfigProperties.ANOTHER_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties.NominalConfigProperties.NOMINAL_CONFIG_PROPERTIES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import fr.djaytan.mc.jrppb.core.config.properties_v2.AnotherConfigProperties;
-import fr.djaytan.mc.jrppb.core.config.properties_v2.ConfigProperties;
-import fr.djaytan.mc.jrppb.core.config.properties_v2.NominalConfigProperties;
+import fr.djaytan.mc.jrppb.core.config.properties.AnotherConfigProperties;
+import fr.djaytan.mc.jrppb.core.config.properties.ConfigProperties;
+import fr.djaytan.mc.jrppb.core.config.properties.NominalConfigProperties;
 import fr.djaytan.mc.jrppb.core.config.repository.ConfigRepository;
 import fr.djaytan.mc.jrppb.core.config.repository.SimpleConfigRepository;
 import org.jetbrains.annotations.NotNull;

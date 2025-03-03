@@ -1,9 +1,0 @@
-         JobsReborn-PatchPlaceBreak
- A patch place-break extension for JobsReborn
-                (by Djaytan)
-
- This config file use HOCON format
- Specifications are here: https://github.com/lightbend/config/blob/main/HOCON.md
-
- /!\ Properties ordering is nondeterministic at config generation time because of limitations
- of underlying library.

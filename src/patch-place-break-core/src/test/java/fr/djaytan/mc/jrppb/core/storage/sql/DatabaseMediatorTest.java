@@ -22,12 +22,11 @@
  */
 package fr.djaytan.mc.jrppb.core.storage.sql;
 
+import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.NOMINAL_SQLITE_DATA_SOURCE_PROPERTIES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 
 import com.zaxxer.hikari.HikariDataSource;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceType;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.JdbcUrl;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.SqliteJdbcUrl;
 import fr.djaytan.mc.jrppb.core.storage.sql.provider.HikariDataSourceProvider;
@@ -53,10 +52,8 @@ class DatabaseMediatorTest {
   void setUp() {
     Path sqliteDatabaseFile = dataFolder.resolve("sqlite-data.db");
     JdbcUrl jdbcUrl = new SqliteJdbcUrl(sqliteDatabaseFile);
-    DataSourceProperties dataSourceProperties = DataSourcePropertiesMock.get(DataSourceType.SQLITE);
-
     HikariDataSourceProvider hikariDataSourceProvider =
-        new HikariDataSourceProvider(dataSourceProperties, jdbcUrl);
+        new HikariDataSourceProvider(NOMINAL_SQLITE_DATA_SOURCE_PROPERTIES, jdbcUrl);
     HikariDataSource hikariDataSource = hikariDataSourceProvider.get();
 
     databaseMediator = new DatabaseMediator(hikariDataSource);

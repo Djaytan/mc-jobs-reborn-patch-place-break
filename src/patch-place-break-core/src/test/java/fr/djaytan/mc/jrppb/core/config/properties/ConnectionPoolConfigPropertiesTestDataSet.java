@@ -20,25 +20,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.storage.sql.jdbc;
+package fr.djaytan.mc.jrppb.core.config.properties;
 
-import static com.google.common.jimfs.Configuration.unix;
-import static org.assertj.core.api.Assertions.assertThat;
+import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_CONNECTION_TIMEOUT;
+import static fr.djaytan.mc.jrppb.core.storage.properties.ConnectionPoolPropertiesTestDataSet.NOMINAL_POOL_SIZE;
 
-import com.google.common.jimfs.Jimfs;
-import java.nio.file.FileSystem;
-import java.nio.file.Path;
-import org.junit.jupiter.api.AutoClose;
-import org.junit.jupiter.api.Test;
+public final class ConnectionPoolConfigPropertiesTestDataSet {
 
-class SqliteJdbcUrlTest {
+  public static final ConnectionPoolConfigProperties NOMINAL_CONNECTION_POOL_CONFIG_PROPERTIES =
+      new ConnectionPoolConfigProperties(NOMINAL_CONNECTION_TIMEOUT, NOMINAL_POOL_SIZE);
 
-  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(unix());
-  private final Path sqliteDatabaseFilePath = imfs.getPath("sqlite-data.db").toAbsolutePath();
-
-  @Test
-  void whenGettingJdbcUrlFromDummyPath_shouldReturnExpectedSqliteJdbcUrl() {
-    assertThat(new SqliteJdbcUrl(sqliteDatabaseFilePath).get())
-        .isEqualTo("jdbc:sqlite:/work/sqlite-data.db");
-  }
+  public static final String NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES =
+      """
+      # The connection timeout (in milliseconds)
+      # Corresponds to the maximum time the connection pool will wait to acquire a new connection
+      # from the DBMS server
+      # Not applicable for SQLite
+      # Accepted range values: [1-600000]
+      connectionTimeout=60000
+      # The number of DBMS connections in the pool
+      # Could be best determined by the executing environment
+      # Accepted range values: [1-100]
+      poolSize=20
+      """;
 }

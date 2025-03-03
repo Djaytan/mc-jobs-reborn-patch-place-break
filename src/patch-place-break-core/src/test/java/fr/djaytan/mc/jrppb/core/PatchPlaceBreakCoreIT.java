@@ -28,7 +28,6 @@ import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import fr.djaytan.mc.jrppb.api.PatchPlaceBreakApi;
-import fr.djaytan.mc.jrppb.commons.test.TestResourcesHelper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -93,29 +92,97 @@ class PatchPlaceBreakCoreIT {
           patchPlaceBreakCore.enable(classLoader, Clock.systemUTC(), dataFolder);
 
       // Then
-      Path expectedConfDataSourceFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(
-              this.getClass(), "whenEnabling_withDefaultSetup_expectedDataSourceConfigFile.conf");
-      Path actualConfDataSourceFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
-
-      Path expectedRestrictedBlocksConfigFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(
-              this.getClass(),
-              "whenEnabling_withDefaultSetup_expectedRestrictedBlocksConfigFile.conf");
-      Path actualRestrictedBlocksConfigFile =
-          dataFolder.resolve(RESTRICTED_BLOCKS_CONFIG_FILE_NAME);
-
-      Path sqliteDatabaseFile = dataFolder.resolve(SQLITE_DATABASE_FILE_NAME);
-
       assertAll(
           () -> assertThat(patchPlaceBreakApi).isNotNull(),
           () ->
-              assertThat(actualConfDataSourceFile)
-                  .hasSameTextualContentAs(expectedConfDataSourceFile),
+              assertThat(dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME))
+                  .hasContent(
+                      """
+                      #         JobsReborn-PatchPlaceBreak
+                      # A patch place-break extension for JobsReborn
+                      #                (by Djaytan)
+                      #\s
+                      # This config file use HOCON format
+                      # Specifications are here: https://github.com/lightbend/config/blob/main/HOCON.md
+                      #\s
+                      # /!\\ Properties ordering is nondeterministic at config generation time because of limitations
+                      # of underlying library.
+
+                      # Connection pool properties
+                      # This is reserved for advanced usage only
+                      # Change these settings only if you know what you are doing
+                      connectionPool {
+                          # The connection timeout (in milliseconds)
+                          # Corresponds to the maximum time the connection pool will wait to acquire a new connection
+                          # from the DBMS server
+                          # Not applicable for SQLite
+                          # Accepted range values: [1-600000]
+                          connectionTimeout=30000
+                          # The number of DBMS connections in the pool
+                          # Could be best determined by the executing environment
+                          # Accepted range values: [1-100]
+                          poolSize=10
+                      }
+                      # The DBMS server properties for connection establishment
+                      # Not applicable for SQLite
+                      dbmsServer {
+                          # Credentials for authentication with the DBMS server
+                          credentials {
+                              # Password of the user (optional but highly recommended)
+                              password=password
+                              # Under behalf of which user to connect on the DBMS server
+                              # Value can't be empty or blank
+                              username=username
+                          }
+                          # The database to use on DBMS server
+                          # Value can't be empty or blank
+                          database=database
+                          # Host properties of the DBMS server
+                          host {
+                              # Hostname (an IP address (IPv4/IPv6) or a domain name)
+                              # Value can't be empty or blank
+                              hostname=localhost
+                              # Whether an SSL/TLS communication must be established at connection time (more secure)
+                              # Only boolean values accepted (true|false)
+                              isSslEnabled=true
+                              # Port
+                              # Accepted range values: [1-65535]
+                              port=3306
+                          }
+                      }
+                      # The table where data will be stored
+                      # Value can't be empty or blank
+                      table="patch_place_break_tag"
+                      # The type of datasource to use
+                      # Available types:
+                      # * SQLITE: use a local file as database (easy & fast setup)
+                      # * MYSQL: use a MySQL database server (better performances)
+                      type=SQLITE
+                      """),
           () ->
-              assertThat(actualRestrictedBlocksConfigFile)
-                  .hasSameTextualContentAs(expectedRestrictedBlocksConfigFile),
-          () -> assertThat(sqliteDatabaseFile).isNotEmptyFile());
+              assertThat(dataFolder.resolve(RESTRICTED_BLOCKS_CONFIG_FILE_NAME))
+                  .hasContent(
+                      """
+                      #         JobsReborn-PatchPlaceBreak
+                      # A patch place-break extension for JobsReborn
+                      #                (by Djaytan)
+                      #\s
+                      # This config file use HOCON format
+                      # Specifications are here: https://github.com/lightbend/config/blob/main/HOCON.md
+                      #\s
+                      # /!\\ Properties ordering is nondeterministic at config generation time because of limitations
+                      # of underlying library.
+
+                      # List of materials used when applying restrictions to patch tags
+                      materials=[]
+                      # Define the restriction mode when handling tags for the listed blocks.
+                      # Three values are available:
+                      # * BLACKLIST: Only listed blocks are marked as restricted
+                      # * WHITELIST: All blocks are marked as restricted except the listed ones
+                      # * DISABLED: No restriction applied
+                      restrictionMode=DISABLED
+                      """),
+          () -> assertThat(dataFolder.resolve(SQLITE_DATABASE_FILE_NAME)).isNotEmptyFile());
     }
 
     @ParameterizedTest
@@ -126,14 +193,69 @@ class PatchPlaceBreakCoreIT {
       String username = jdbcContainer.getUsername();
       String password = jdbcContainer.getPassword();
       String givenConfigFileContent =
-          String.format(
-              TestResourcesHelper.getClassResourceAsString(
-                  this.getClass(),
-                  "whenEnabling_withCustomSetup_givenDataSourceConfigFileTemplate.conf",
-                  false),
-              dbmsPort,
-              username,
-              password);
+          """
+          #         JobsReborn-PatchPlaceBreak
+          # A patch place-break extension for JobsReborn
+          #                (by Djaytan)
+          #\s
+          # This config file use HOCON format
+          # Specifications are here: https://github.com/lightbend/config/blob/main/HOCON.md
+          #\s
+          # /!\\ Properties ordering is nondeterministic at config generation time because of limitations
+          # of underlying library.
+
+          # Connection pool properties
+          # This is reserved for advanced usage only
+          # Change these settings only if you know what you are doing
+          connectionPool {
+              # The connection timeout (in milliseconds)
+              # Corresponds to the maximum time the connection pool will wait to acquire a new connection
+              # from the DBMS server
+              # Not applicable for SQLite
+              # Accepted range values: [1-600000]
+              connectionTimeout=30000
+              # The number of DBMS connections in the pool
+              # Could be best determined by the executing environment
+              # Accepted range values: [1-100]
+              poolSize=10
+          }
+          # The DBMS server properties for connection establishment
+          # Not applicable for SQLite
+          dbmsServer {
+              # Credentials for authentication with the DBMS server
+              credentials {
+                  # Password of the user (optional but highly recommended)
+                  password="%3$s"
+                  # Under behalf of which user to connect on the DBMS server
+                  # Value can't be empty or blank
+                  username="%2$s"
+              }
+              # The database to use on DBMS server
+              # Value can't be empty or blank
+              database="patch_place_break"
+              # Host properties of the DBMS server
+              host {
+                  # Hostname (an IP address (IPv4/IPv6) or a domain name)
+                  # Value can't be empty or blank
+                  hostname=localhost
+                  # Whether an SSL/TLS communication must be established at connection time (more secure)
+                  # Only boolean values accepted (true|false)
+                  isSslEnabled=true
+                  # Port
+                  # Accepted range values: [1-65535]
+                  port=%1$d
+              }
+          }
+          # The table where data will be stored
+          # Value can't be empty or blank
+          table="patch_place_break_tag"
+          # The type of datasource to use
+          # Available types:
+          # * SQLITE: use a local file as database (easy & fast setup)
+          # * MYSQL: use a MySQL database server (better performances)
+          type=MYSQL
+          """
+              .formatted(dbmsPort, username, password);
       Path configFile = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
       Files.writeString(configFile, givenConfigFileContent);
 

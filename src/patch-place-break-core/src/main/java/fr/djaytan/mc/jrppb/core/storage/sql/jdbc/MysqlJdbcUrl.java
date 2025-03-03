@@ -22,8 +22,8 @@
  */
 package fr.djaytan.mc.jrppb.core.storage.sql.jdbc;
 
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DbmsServerProperties;
+import fr.djaytan.mc.jrppb.core.storage.properties.DataSourceProperties;
+import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerProperties;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
@@ -44,11 +44,11 @@ public final class MysqlJdbcUrl implements JdbcUrl {
 
   @Override
   public @NotNull String get() {
-    DbmsServerProperties dbmsServerProperties = dataSourceProperties.getDbmsServer();
-    String hostname = dbmsServerProperties.getHost().getHostname();
-    int port = dbmsServerProperties.getHost().getPort();
-    String database = dbmsServerProperties.getDatabase();
-    boolean isSslEnabled = dbmsServerProperties.getHost().isSslEnabled();
+    DbmsServerProperties dbmsServerProperties = dataSourceProperties.dbmsServer();
+    String hostname = dbmsServerProperties.host().hostname();
+    int port = dbmsServerProperties.host().port();
+    String database = dbmsServerProperties.databaseName();
+    boolean isSslEnabled = dbmsServerProperties.host().isSslEnabled();
     return String.format(
         MYSQL_JDBC_URL_TEMPLATE, hostname, port, database, isSslEnabled, SERVER_TIME_ZONE);
   }

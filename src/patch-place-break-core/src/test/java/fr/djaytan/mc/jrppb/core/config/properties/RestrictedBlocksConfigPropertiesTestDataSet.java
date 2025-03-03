@@ -20,25 +20,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package fr.djaytan.mc.jrppb.core.storage.sql.jdbc;
+package fr.djaytan.mc.jrppb.core.config.properties;
 
-import static com.google.common.jimfs.Configuration.unix;
-import static org.assertj.core.api.Assertions.assertThat;
+import static fr.djaytan.mc.jrppb.core.RestrictedBlocksPropertiesTestDataSet.NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST;
+import static fr.djaytan.mc.jrppb.core.RestrictedBlocksPropertiesTestDataSet.NOMINAL_RESTRICTION_MODE;
 
-import com.google.common.jimfs.Jimfs;
-import java.nio.file.FileSystem;
-import java.nio.file.Path;
-import org.junit.jupiter.api.AutoClose;
-import org.junit.jupiter.api.Test;
+public final class RestrictedBlocksConfigPropertiesTestDataSet {
 
-class SqliteJdbcUrlTest {
+  public static final RestrictedBlocksConfigProperties NOMINAL_RESTRICTED_BLOCKS_CONFIG_PROPERTIES =
+      new RestrictedBlocksConfigProperties(
+          NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST, NOMINAL_RESTRICTION_MODE);
 
-  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(unix());
-  private final Path sqliteDatabaseFilePath = imfs.getPath("sqlite-data.db").toAbsolutePath();
-
-  @Test
-  void whenGettingJdbcUrlFromDummyPath_shouldReturnExpectedSqliteJdbcUrl() {
-    assertThat(new SqliteJdbcUrl(sqliteDatabaseFilePath).get())
-        .isEqualTo("jdbc:sqlite:/work/sqlite-data.db");
-  }
+  public static final String NOMINAL_SERIALIZED_RESTRICTED_BLOCKS_CONFIG_PROPERTIES =
+      """
+      # List of materials used when applying restrictions to patch tags
+      materials=[
+          DIRT,
+          SAND,
+          STONE
+      ]
+      # Define the restriction mode when handling tags for the listed blocks.
+      # Three values are available:
+      # * BLACKLIST: Only listed blocks are marked as restricted
+      # * WHITELIST: All blocks are marked as restricted except the listed ones
+      # * DISABLED: No restriction applied
+      restrictionMode=BLACKLIST
+      """;
 }

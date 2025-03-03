@@ -220,7 +220,6 @@
                 <include>com.google.inject.**</include>
                 <include>com.google.j2objc.**</include>
                 <include>com.google.thirdparty.**</include>
-                <include>com.sun.el.**</include>
                 <include>com.typesafe.config.**</include>
                 <include>com.zaxxer.hikari.**</include>
               </includes>
@@ -236,9 +235,7 @@
               <pattern>jakarta</pattern>
               <shadedPattern>${package.lib}.jakarta</shadedPattern>
               <includes>
-                <include>jakarta.el.**</include>
                 <include>jakarta.inject.**</include>
-                <include>jakarta.validation.**</include>
               </includes>
             </relocation>
             <relocation>
@@ -258,7 +255,6 @@
                 <include>org.bstats.**</include>
                 <include>org.checkerframework.**</include>
                 <include>org.flywaydb.**</include>
-                <include>org.hibernate.validator.**</include>
                 <include>org.jboss.logging.**</include>
                 <include>org.sqlite.**</include>
                 <include>org.slf4j.**</include>

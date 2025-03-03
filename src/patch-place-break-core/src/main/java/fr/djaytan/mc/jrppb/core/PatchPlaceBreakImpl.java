@@ -28,7 +28,6 @@ import fr.djaytan.mc.jrppb.api.entities.BlockActionType;
 import fr.djaytan.mc.jrppb.api.entities.BlockLocation;
 import fr.djaytan.mc.jrppb.api.entities.Tag;
 import fr.djaytan.mc.jrppb.api.entities.Vector;
-import fr.djaytan.mc.jrppb.api.properties.RestrictedBlocksProperties;
 import fr.djaytan.mc.jrppb.core.storage.api.OldNewBlockLocationPair;
 import fr.djaytan.mc.jrppb.core.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.mc.jrppb.core.storage.api.TagRepository;

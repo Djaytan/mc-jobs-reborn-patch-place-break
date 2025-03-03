@@ -24,14 +24,14 @@ package fr.djaytan.mc.jrppb.core.config;
 
 import static fr.djaytan.mc.jrppb.core.config.PatchPlaceBreakConfig.DATA_SOURCE_CONFIG_NAME;
 import static fr.djaytan.mc.jrppb.core.config.PatchPlaceBreakConfig.RESTRICTED_BLOCKS_CONFIG_NAME;
-import static fr.djaytan.mc.jrppb.core.config.properties_v2.DataSourceConfigPropertiesTestDataSet.NOMINAL_DATA_SOURCE_CONFIG_PROPERTIES;
-import static fr.djaytan.mc.jrppb.core.config.properties_v2.RestrictedBlocksConfigPropertiesTestDataSet.NOMINAL_RESTRICTED_BLOCKS_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties.DataSourceConfigPropertiesTestDataSet.NOMINAL_DATA_SOURCE_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties.RestrictedBlocksConfigPropertiesTestDataSet.NOMINAL_RESTRICTED_BLOCKS_CONFIG_PROPERTIES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
-import fr.djaytan.mc.jrppb.core.config.properties_v2.ConfigProperties;
-import fr.djaytan.mc.jrppb.core.config.properties_v2.DataSourceConfigProperties;
-import fr.djaytan.mc.jrppb.core.config.properties_v2.RestrictedBlocksConfigProperties;
+import fr.djaytan.mc.jrppb.core.config.properties.ConfigProperties;
+import fr.djaytan.mc.jrppb.core.config.properties.DataSourceConfigProperties;
+import fr.djaytan.mc.jrppb.core.config.properties.RestrictedBlocksConfigProperties;
 import fr.djaytan.mc.jrppb.core.config.repository.SimpleConfigRepository;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;

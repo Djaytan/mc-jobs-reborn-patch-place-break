@@ -22,10 +22,10 @@
  */
 package fr.djaytan.mc.jrppb.core.config;
 
-import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.deserialize;
-import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerV2.serialize;
+import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializer.deserialize;
+import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializer.serialize;
 
-import fr.djaytan.mc.jrppb.core.config.properties_v2.ConfigProperties;
+import fr.djaytan.mc.jrppb.core.config.properties.ConfigProperties;
 import fr.djaytan.mc.jrppb.core.config.repository.ConfigRepository;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -59,7 +59,7 @@ public final class ConfigService {
     }
 
     configRepository.create(configName, serialize(configProperties));
-    log.info("New config file created because it didn't exist yet: {}", configName);
+    log.info("New config \"{}\" created because it didn't exist yet", configName);
   }
 
   /**

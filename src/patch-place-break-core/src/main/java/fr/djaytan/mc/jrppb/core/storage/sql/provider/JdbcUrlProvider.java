@@ -22,7 +22,7 @@
  */
 package fr.djaytan.mc.jrppb.core.storage.sql.provider;
 
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
+import fr.djaytan.mc.jrppb.core.storage.properties.DataSourceProperties;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.JdbcUrl;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.MysqlJdbcUrl;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.SqliteJdbcUrl;
@@ -48,7 +48,7 @@ public class JdbcUrlProvider implements Provider<JdbcUrl> {
 
   @Override
   public @NotNull JdbcUrl get() {
-    return switch (dataSourceProperties.getType()) {
+    return switch (dataSourceProperties.type()) {
       case MYSQL -> mysqlJdbcUrl;
       case SQLITE -> sqliteJdbcUrl;
     };

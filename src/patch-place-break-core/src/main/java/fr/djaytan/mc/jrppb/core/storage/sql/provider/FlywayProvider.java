@@ -22,7 +22,7 @@
  */
 package fr.djaytan.mc.jrppb.core.storage.sql.provider;
 
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
+import fr.djaytan.mc.jrppb.core.storage.properties.DataSourceProperties;
 import jakarta.inject.Inject;
 import jakarta.inject.Provider;
 import jakarta.inject.Singleton;
@@ -52,7 +52,7 @@ public final class FlywayProvider implements Provider<Flyway> {
 
   public @NotNull Flyway get() {
     Map<String, String> placeholders = new HashMap<>();
-    placeholders.put("patchPlaceBreakTableName", dataSourceProperties.getTable());
+    placeholders.put("patchPlaceBreakTableName", dataSourceProperties.tableName());
 
     return Flyway.configure(classLoader)
         .baselineOnMigrate(true)
@@ -70,7 +70,7 @@ public final class FlywayProvider implements Provider<Flyway> {
 
   private @NotNull Location getLocation() {
     String descriptor =
-        String.format("/db/migration/%s", dataSourceProperties.getType().name().toLowerCase());
+        String.format("/db/migration/%s", dataSourceProperties.type().name().toLowerCase());
     return new Location(descriptor);
   }
 }

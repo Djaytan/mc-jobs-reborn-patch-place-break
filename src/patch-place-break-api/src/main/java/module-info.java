@@ -25,5 +25,4 @@ module fr.djaytan.mc.jrppb.api {
 
   exports fr.djaytan.mc.jrppb.api;
   exports fr.djaytan.mc.jrppb.api.entities;
-  exports fr.djaytan.mc.jrppb.api.properties;
 }
