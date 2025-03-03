@@ -22,16 +22,16 @@
  */
 package fr.djaytan.mc.jrppb.core.storage.sql;
 
+import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.NOMINAL_SQLITE_DATA_SOURCE_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.nominalMysqlDataSourceProperties;
+import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerPropertiesTestDataSet.NOMINAL_DBMS_SERVER_DATABASE_NAME;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
-import static org.mockito.BDDMockito.given;
 
 import com.zaxxer.hikari.HikariDataSource;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceType;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DbmsCredentialsProperties;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DbmsHostProperties;
+import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsProperties;
+import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostProperties;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.JdbcUrl;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.MysqlJdbcUrl;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.SqliteJdbcUrl;
@@ -58,17 +58,19 @@ import org.testcontainers.lifecycle.Startables;
 @ExtendWith(MockitoExtension.class)
 class SqlDataSourceManagerIT {
 
-  private static final int DATABASE_ORIGINAL_PORT = 3306;
-  private static final String DATABASE_NAME = "patch_place_break";
+  private static final String DBMS_HOSTNAME = "localhost";
+  private static final int DBMS_ORIGINAL_PORT = 3306;
 
   @SuppressWarnings("resource") // Reusable containers feature enabled: do not clean-up containers!
   private static final MySQLContainer<?> MYSQL_CONTAINER =
-      new MySQLContainer<>("mysql:8.1.0-oracle").withDatabaseName(DATABASE_NAME).withReuse(true);
+      new MySQLContainer<>("mysql:8.1.0-oracle")
+          .withDatabaseName(NOMINAL_DBMS_SERVER_DATABASE_NAME)
+          .withReuse(true);
 
   @SuppressWarnings("resource") // Reusable containers feature enabled: do not clean-up containers!
   private static final MariaDBContainer<?> MARIADB_CONTAINER =
       new MariaDBContainer<>("mariadb:11.1.2-jammy")
-          .withDatabaseName(DATABASE_NAME)
+          .withDatabaseName(NOMINAL_DBMS_SERVER_DATABASE_NAME)
           .withReuse(true);
 
   private SqlDataSourceManager sqlDataSourceManager;
@@ -103,19 +105,17 @@ class SqlDataSourceManagerIT {
   }
 
   private static @NotNull Arguments forSqlite() throws IOException {
-    DataSourceProperties dataSourcePropertiesMocked =
-        DataSourcePropertiesMock.get(DataSourceType.SQLITE);
     Path sqliteDatabaseFile = Files.createTempFile("ppb-datasourcemanager", "");
     JdbcUrl jdbcUrl = new SqliteJdbcUrl(sqliteDatabaseFile);
 
     HikariDataSourceProvider hikariDataSourceProvider =
-        new HikariDataSourceProvider(dataSourcePropertiesMocked, jdbcUrl);
+        new HikariDataSourceProvider(NOMINAL_SQLITE_DATA_SOURCE_PROPERTIES, jdbcUrl);
     HikariDataSource hikariDataSource = hikariDataSourceProvider.get();
     DatabaseMediator databaseMediator = new DatabaseMediator(hikariDataSource);
 
     ClassLoader classLoader = SqlDataSourceManager.class.getClassLoader();
     FlywayProvider flywayProvider =
-        new FlywayProvider(classLoader, hikariDataSource, dataSourcePropertiesMocked);
+        new FlywayProvider(classLoader, hikariDataSource, NOMINAL_SQLITE_DATA_SOURCE_PROPERTIES);
     Flyway flyway = flywayProvider.get();
     DataMigrationExecutor dataMigrationExecutor = new DataMigrationExecutor(flyway);
 
@@ -124,14 +124,14 @@ class SqlDataSourceManagerIT {
   }
 
   private static @NotNull Arguments forMysql() {
-    int dbmsPort = MYSQL_CONTAINER.getMappedPort(DATABASE_ORIGINAL_PORT);
+    int dbmsPort = MYSQL_CONTAINER.getMappedPort(DBMS_ORIGINAL_PORT);
     String username = MYSQL_CONTAINER.getUsername();
     String password = MYSQL_CONTAINER.getUsername();
     return arguments(named("MySQL", createDbmsSqlDataSourceManager(dbmsPort, username, password)));
   }
 
   private static @NotNull Arguments forMariadb() {
-    int dbmsPort = MARIADB_CONTAINER.getMappedPort(DATABASE_ORIGINAL_PORT);
+    int dbmsPort = MARIADB_CONTAINER.getMappedPort(DBMS_ORIGINAL_PORT);
     String username = MARIADB_CONTAINER.getUsername();
     String password = MARIADB_CONTAINER.getUsername();
     return arguments(
@@ -140,25 +140,20 @@ class SqlDataSourceManagerIT {
 
   private static @NotNull SqlDataSourceManager createDbmsSqlDataSourceManager(
       int dbmsPort, @NotNull String username, @NotNull String password) {
-    DataSourceProperties dataSourcePropertiesMocked =
-        DataSourcePropertiesMock.get(DataSourceType.MYSQL);
-    DbmsHostProperties dbmsHostProperties = dataSourcePropertiesMocked.getDbmsServer().getHost();
-    DbmsCredentialsProperties dbmsCredentialsProperties =
-        dataSourcePropertiesMocked.getDbmsServer().getCredentials();
+    var dataSourceProperties =
+        nominalMysqlDataSourceProperties(
+            new DbmsServerHostProperties(DBMS_HOSTNAME, dbmsPort, true),
+            new DbmsServerCredentialsProperties(username, password));
 
-    given(dbmsHostProperties.getPort()).willReturn(dbmsPort);
-    given(dbmsCredentialsProperties.getUsername()).willReturn(username);
-    given(dbmsCredentialsProperties.getPassword()).willReturn(password);
-
-    JdbcUrl jdbcUrl = new MysqlJdbcUrl(dataSourcePropertiesMocked);
+    JdbcUrl jdbcUrl = new MysqlJdbcUrl(dataSourceProperties);
     HikariDataSourceProvider hikariDataSourceProvider =
-        new HikariDataSourceProvider(dataSourcePropertiesMocked, jdbcUrl);
+        new HikariDataSourceProvider(dataSourceProperties, jdbcUrl);
     HikariDataSource hikariDataSource = hikariDataSourceProvider.get();
     DatabaseMediator databaseMediator = new DatabaseMediator(hikariDataSource);
 
     ClassLoader classLoader = SqlDataSourceManager.class.getClassLoader();
     FlywayProvider flywayProvider =
-        new FlywayProvider(classLoader, hikariDataSource, dataSourcePropertiesMocked);
+        new FlywayProvider(classLoader, hikariDataSource, dataSourceProperties);
     Flyway flyway = flywayProvider.get();
     DataMigrationExecutor dataMigrationExecutor = new DataMigrationExecutor(flyway);
 

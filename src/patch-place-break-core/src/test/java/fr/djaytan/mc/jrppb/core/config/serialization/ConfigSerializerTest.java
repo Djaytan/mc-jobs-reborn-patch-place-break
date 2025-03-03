@@ -22,49 +22,82 @@
  */
 package fr.djaytan.mc.jrppb.core.config.serialization;
 
+import static fr.djaytan.mc.jrppb.core.config.properties.AnotherConfigProperties.ANOTHER_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.properties.NominalConfigProperties.NOMINAL_CONFIG_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializer.deserialize;
+import static fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializer.serialize;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.Jimfs;
-import fr.djaytan.mc.jrppb.commons.test.TestResourcesHelper;
-import fr.djaytan.mc.jrppb.core.config.properties.DbmsHostPropertiesImpl;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.FileSystem;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Optional;
-import org.junit.jupiter.api.AutoClose;
+import fr.djaytan.mc.jrppb.core.config.properties.AnotherConfigProperties;
+import fr.djaytan.mc.jrppb.core.config.properties.NominalConfigProperties;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.spongepowered.configurate.serialize.SerializationException;
 
-class ConfigSerializerTest {
+final class ConfigSerializerTest {
 
-  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(Configuration.unix());
+  private static final String NOMINAL_SERIALIZED_CONFIG_PROPERTIES =
+      """
+      #         JobsReborn-PatchPlaceBreak
+      # A patch place-break extension for JobsReborn
+      #                (by Djaytan)
+      #\s
+      # This config file use HOCON format
+      # Specifications are here: https://github.com/lightbend/config/blob/main/HOCON.md
+      #\s
+      # /!\\ Properties ordering is nondeterministic at config generation time because of limitations
+      # of underlying library.
 
-  private final ConfigSerializer configSerializer = new ConfigSerializer();
+      # Multi
+      # line
+      # comment
+      number=34
+      # Single line comment
+      testField=test-value
+      """;
+  private static final String ANOTHER_SERIALIZED_CONFIG_PROPERTIES =
+      """
+      #         JobsReborn-PatchPlaceBreak
+      # A patch place-break extension for JobsReborn
+      #                (by Djaytan)
+      #\s
+      # This config file use HOCON format
+      # Specifications are here: https://github.com/lightbend/config/blob/main/HOCON.md
+      #\s
+      # /!\\ Properties ordering is nondeterministic at config generation time because of limitations
+      # of underlying library.
+
+      test=another
+      """;
 
   @Nested
   class WhenSerializing {
 
     @Test
-    void withNominalValues_shouldCreateAndFillYamlFile() throws IOException {
-      // Given
-      Path targetFileLocation = imfs.getPath("test.conf");
-      DbmsHostPropertiesImpl dbmsHostPropertiesImpl =
-          new DbmsHostPropertiesImpl("example.com", 1234, true);
+    void nominalCase() throws ConfigSerializationException {
+      assertThat(serialize(NOMINAL_CONFIG_PROPERTIES))
+          .isEqualToIgnoringNewLines(NOMINAL_SERIALIZED_CONFIG_PROPERTIES);
+    }
 
-      // When
-      configSerializer.serialize(targetFileLocation, dbmsHostPropertiesImpl);
+    @Test
+    void withAnotherConfigProperties_shallSucceed() {
+      assertThat(serialize(ANOTHER_CONFIG_PROPERTIES))
+          .isEqualToIgnoringNewLines(ANOTHER_SERIALIZED_CONFIG_PROPERTIES);
+    }
 
-      // Then
-      String expectedYamlFile = "whenSerializing_withNominalValues.conf";
-      String expectedYaml =
-          TestResourcesHelper.getClassResourceAsString(this.getClass(), expectedYamlFile, false);
-      String actualYaml = new String(Files.readAllBytes(targetFileLocation));
-      assertThat(actualYaml).isEqualToIgnoringNewLines(expectedYaml);
+    @Test
+    void withNotSerializableObject_shallFail() {
+      assertThatThrownBy(() -> serialize(new NotSerializable("test")))
+          .isExactlyInstanceOf(ConfigSerializationException.class)
+          .hasMessage(
+              "Fail to serialize the following config properties: NotSerializable[dummy=test]")
+          .cause()
+          .isExactlyInstanceOf(SerializationException.class)
+          .hasMessageEndingWith(
+              "No serializer available for type class "
+                  + "fr.djaytan.mc.jrppb.core.config.serialization.ConfigSerializerTest$NotSerializable");
     }
   }
 
@@ -72,42 +105,122 @@ class ConfigSerializerTest {
   class WhenDeserializing {
 
     @Test
-    void withCamelCaseFields_shouldSuccess() {
-      // Given
-      String confFileName = "whenDeserializing_withCamelCaseFields.conf";
-      Path confFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
-
-      // When
-      Optional<DbmsHostPropertiesImpl> properties =
-          configSerializer.deserialize(confFile, DbmsHostPropertiesImpl.class);
-
-      // Then
-      assertThat(properties).hasValue(new DbmsHostPropertiesImpl("example.com", 1234, true));
+    void nominalCase() throws ConfigSerializationException {
+      assertThat(deserialize(NOMINAL_SERIALIZED_CONFIG_PROPERTIES, NominalConfigProperties.class))
+          .isEqualTo(NOMINAL_CONFIG_PROPERTIES);
     }
 
     @Test
-    void withKebabCaseFields_shouldThrowException() {
-      // Given
-      String confFileName = "whenDeserializing_withKebabCaseFields.conf";
-      Path confFile =
-          TestResourcesHelper.getClassResourceAsAbsolutePath(this.getClass(), confFileName);
+    void fromAnotherSerializedConfigProperties_shallSucceed() {
+      assertThat(deserialize(ANOTHER_SERIALIZED_CONFIG_PROPERTIES, AnotherConfigProperties.class))
+          .isEqualTo(ANOTHER_CONFIG_PROPERTIES);
+    }
 
-      // When
-      Exception exception =
-          catchException(
-              () -> configSerializer.deserialize(confFile, DbmsHostPropertiesImpl.class));
+    @Test
+    void withoutHeader_shallSucceed() throws ConfigSerializationException {
+      assertThat(
+              deserialize(
+                  """
+                  # Multi
+                  # line
+                  # comment
+                  number=34
+                  # Single line comment
+                  testField=test-value""",
+                  NominalConfigProperties.class))
+          .isEqualTo(NOMINAL_CONFIG_PROPERTIES);
+    }
 
-      // Then
-      assertThat(exception)
-          .isExactlyInstanceOf(UncheckedIOException.class)
-          .hasMessageMatching(
+    @Test
+    void withNotDeserializableTargetType_shallFail() {
+      assertThatThrownBy(() -> deserialize("dummy=test", NotSerializable.class))
+          .isExactlyInstanceOf(ConfigSerializationException.class)
+          .hasMessage("Unexpectedly deserialized the following input to null:\ndummy=test")
+          .hasNoCause();
+    }
+
+    @Test
+    void withMissingRequiredField_shallFail() {
+      assertThatThrownBy(() -> deserialize("number=120", NominalConfigProperties.class))
+          .isExactlyInstanceOf(ConfigSerializationException.class)
+          .hasMessage(
               "Fail to deserialize config properties of type "
-                  + "'fr\\.djaytan\\.mc\\.jrppb\\.core\\.config\\.properties\\.DbmsHostPropertiesImpl' from "
-                  + "'.*whenDeserializing_withKebabCaseFields\\.conf' file")
-          .hasRootCauseExactlyInstanceOf(SerializationException.class)
-          .hasRootCauseMessage(
-              "[isSslEnabled] of type boolean: A value is required for this field");
+                  + "'fr.djaytan.mc.jrppb.core.config.properties.NominalConfigProperties' "
+                  + "from the following config input:\nnumber=120")
+          .cause()
+          .isExactlyInstanceOf(SerializationException.class)
+          .hasMessage("[testField] of type java.lang.String: A value is required for this field");
+    }
+
+    @Test
+    void withNonCamelCaseFieldName_shallFail() {
+      assertThatThrownBy(
+              () ->
+                  deserialize(
+                      """
+                      number=34
+                      test_field=test-value""",
+                      NominalConfigProperties.class))
+          .isExactlyInstanceOf(ConfigSerializationException.class)
+          .cause()
+          .isExactlyInstanceOf(SerializationException.class)
+          .hasMessage("[testField] of type java.lang.String: A value is required for this field");
     }
   }
+
+  @Nested
+  class WhenRoundTripping {
+
+    @Nested
+    class FromNominalSerializedProperties {
+
+      @Test
+      void oneRoundTrip() throws ConfigSerializationException {
+        String roundTripResult =
+            serialize(
+                deserialize(NOMINAL_SERIALIZED_CONFIG_PROPERTIES, NominalConfigProperties.class));
+
+        assertThat(roundTripResult).isEqualToIgnoringNewLines(NOMINAL_SERIALIZED_CONFIG_PROPERTIES);
+      }
+
+      @Test
+      void multipleRoundTrips() throws ConfigSerializationException {
+        String roundTripResult =
+            serialize(
+                deserialize(
+                    serialize(
+                        deserialize(
+                            NOMINAL_SERIALIZED_CONFIG_PROPERTIES, NominalConfigProperties.class)),
+                    NominalConfigProperties.class));
+
+        assertThat(roundTripResult).isEqualToIgnoringNewLines(NOMINAL_SERIALIZED_CONFIG_PROPERTIES);
+      }
+    }
+
+    @Nested
+    class FromNominalDeserializedProperties {
+
+      @Test
+      void oneRoundTrip() throws ConfigSerializationException {
+        NominalConfigProperties roundTripResult =
+            deserialize(serialize(NOMINAL_CONFIG_PROPERTIES), NominalConfigProperties.class);
+
+        assertThat(roundTripResult).isEqualTo(NOMINAL_CONFIG_PROPERTIES);
+      }
+
+      @Test
+      void multipleRoundTrips() throws ConfigSerializationException {
+        NominalConfigProperties roundTripResult =
+            deserialize(
+                serialize(
+                    deserialize(
+                        serialize(NOMINAL_CONFIG_PROPERTIES), NominalConfigProperties.class)),
+                NominalConfigProperties.class);
+
+        assertThat(roundTripResult).isEqualTo(NOMINAL_CONFIG_PROPERTIES);
+      }
+    }
+  }
+
+  private record NotSerializable(@NotNull String dummy) {}
 }

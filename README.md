@@ -163,8 +163,6 @@ This will show us your interest in the project, and we will be grateful for that
 * [Guice](https://github.com/google/guice)
 * [HikariCP](https://github.com/brettwooldridge/HikariCP)
 * [Flyway](https://github.com/flyway/flyway)
-* [Jakarta Beans Validator](https://beanvalidation.org/)
-  (with [Hibernate Validator](https://github.com/hibernate/hibernate-validator) as implementation)
 * [Configurate](https://github.com/SpongePowered/Configurate)
 * [Spigot API](https://hub.spigotmc.org/javadocs/spigot/)
 * [JobsReborn API](https://github.com/Zrips/Jobs/wiki/API)
@@ -180,6 +178,7 @@ Specifically for the tests:
 * [Jimfs](https://github.com/google/jimfs)
 * [MockBukkit](https://github.com/MockBukkit/MockBukkit)
 * [Awaitability](https://github.com/awaitility/awaitility)
+* [Instancio](https://www.instancio.org/)
 * [Pitest](https://pitest.org/)
 
 Specifically for the CI:

@@ -22,14 +22,14 @@
  */
 package fr.djaytan.mc.jrppb.core.storage.sql.access;
 
-import static org.mockito.BDDMockito.given;
+import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.nominalMysqlDataSourceProperties;
 
 import com.zaxxer.hikari.HikariDataSource;
 import fr.djaytan.mc.jrppb.core.storage.api.DataSourceManager;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceType;
+import fr.djaytan.mc.jrppb.core.storage.properties.DataSourceProperties;
+import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerCredentialsProperties;
+import fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerHostProperties;
 import fr.djaytan.mc.jrppb.core.storage.sql.DataMigrationExecutor;
-import fr.djaytan.mc.jrppb.core.storage.sql.DataSourcePropertiesMock;
 import fr.djaytan.mc.jrppb.core.storage.sql.DatabaseMediator;
 import fr.djaytan.mc.jrppb.core.storage.sql.SqlDataSourceManager;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.JdbcUrl;
@@ -51,34 +51,24 @@ final class MysqlTagRepositoryFactory implements AutoCloseable {
   SqlTagRepository create(int dbmsPort, @NotNull String username, @NotNull String password) {
     Validate.validState(dataSourceManager == null, "Creation already requested.");
 
-    DataSourceProperties mysqlDataSourcePropertiesMock =
-        createMysqlDataSourcePropertiesMock(dbmsPort, username, password);
-    HikariDataSource hikariDataSource = createHikariDataSource(mysqlDataSourcePropertiesMock);
+    var dataSourceProperties =
+        nominalMysqlDataSourceProperties(
+            new DbmsServerHostProperties("localhost", dbmsPort, true),
+            new DbmsServerCredentialsProperties(username, password));
+    HikariDataSource hikariDataSource = createHikariDataSource(dataSourceProperties);
     DatabaseMediator databaseMediator = new DatabaseMediator(hikariDataSource);
 
     dataSourceManager =
-        createDataSourceManager(databaseMediator, hikariDataSource, mysqlDataSourcePropertiesMock);
+        createDataSourceManager(databaseMediator, hikariDataSource, dataSourceProperties);
     dataSourceManager.connect();
 
-    TagSqlDao tagSqlDao = createTagSqlDao(mysqlDataSourcePropertiesMock);
+    TagSqlDao tagSqlDao = createTagSqlDao(dataSourceProperties);
     return new SqlTagRepository(databaseMediator, tagSqlDao);
   }
 
   @Override
   public void close() {
     dataSourceManager.disconnect();
-  }
-
-  private static @NotNull DataSourceProperties createMysqlDataSourcePropertiesMock(
-      int dbmsPort, @NotNull String username, @NotNull String password) {
-    DataSourceProperties dataSourcePropertiesMock =
-        DataSourcePropertiesMock.get(DataSourceType.MYSQL);
-    given(dataSourcePropertiesMock.getDbmsServer().getHost().getPort()).willReturn(dbmsPort);
-    given(dataSourcePropertiesMock.getDbmsServer().getCredentials().getUsername())
-        .willReturn(username);
-    given(dataSourcePropertiesMock.getDbmsServer().getCredentials().getPassword())
-        .willReturn(password);
-    return dataSourcePropertiesMock;
   }
 
   private static @NotNull HikariDataSource createHikariDataSource(

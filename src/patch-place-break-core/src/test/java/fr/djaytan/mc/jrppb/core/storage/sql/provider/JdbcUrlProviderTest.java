@@ -22,51 +22,40 @@
  */
 package fr.djaytan.mc.jrppb.core.storage.sql.provider;
 
+import static com.google.common.jimfs.Configuration.unix;
+import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.NOMINAL_MYSQL_DATA_SOURCE_PROPERTIES;
+import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.NOMINAL_SQLITE_DATA_SOURCE_PROPERTIES;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
-import static org.mockito.BDDMockito.given;
 
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceType;
-import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.JdbcUrl;
+import com.google.common.jimfs.Jimfs;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.MysqlJdbcUrl;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.SqliteJdbcUrl;
-import java.util.stream.Stream;
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import java.nio.file.FileSystem;
+import java.nio.file.Path;
+import org.junit.jupiter.api.AutoClose;
+import org.junit.jupiter.api.Test;
 
-@ExtendWith(MockitoExtension.class)
-class JdbcUrlProviderTest {
+final class JdbcUrlProviderTest {
 
-  @Mock private DataSourceProperties dataSourceProperties;
-  @Mock private MysqlJdbcUrl mysqlJdbcUrl;
-  @Mock private SqliteJdbcUrl sqliteJdbcUrl;
+  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(unix());
+  private final Path sqliteDbFile = imfs.getPath("sqlite-data.db");
+  private final SqliteJdbcUrl sqliteJdbcUrl = new SqliteJdbcUrl(sqliteDbFile);
 
-  @ParameterizedTest
-  @MethodSource
-  void whenProvidingJdbcUrl_shouldReturnTheExpectedOne(
-      @NotNull DataSourceType dataSourceType,
-      @NotNull Class<? extends JdbcUrl> expectedJdbcUrlType) {
-    // Given
-    given(dataSourceProperties.getType()).willReturn(dataSourceType);
-    JdbcUrlProvider jdbcUrlProvider =
-        new JdbcUrlProvider(dataSourceProperties, mysqlJdbcUrl, sqliteJdbcUrl);
+  private final MysqlJdbcUrl mysqlJdbcUrl = new MysqlJdbcUrl(NOMINAL_MYSQL_DATA_SOURCE_PROPERTIES);
 
-    // When
-    JdbcUrl jdbcUrl = jdbcUrlProvider.get();
-
-    // Then
-    assertThat(jdbcUrl).isExactlyInstanceOf(expectedJdbcUrlType);
+  @Test
+  void mysqlJdbcUrl() {
+    assertThat(
+            new JdbcUrlProvider(NOMINAL_MYSQL_DATA_SOURCE_PROPERTIES, mysqlJdbcUrl, sqliteJdbcUrl)
+                .get())
+        .isExactlyInstanceOf(MysqlJdbcUrl.class);
   }
 
-  private static @NotNull Stream<Arguments> whenProvidingJdbcUrl_shouldReturnTheExpectedOne() {
-    return Stream.of(
-        arguments(DataSourceType.SQLITE, SqliteJdbcUrl.class),
-        arguments(DataSourceType.MYSQL, MysqlJdbcUrl.class));
+  @Test
+  void sqliteJdbcUrl() {
+    assertThat(
+            new JdbcUrlProvider(NOMINAL_SQLITE_DATA_SOURCE_PROPERTIES, mysqlJdbcUrl, sqliteJdbcUrl)
+                .get())
+        .isExactlyInstanceOf(SqliteJdbcUrl.class);
   }
 }

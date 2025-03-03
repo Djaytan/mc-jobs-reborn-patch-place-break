@@ -24,7 +24,7 @@ package fr.djaytan.mc.jrppb.core.storage.sql.provider;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
+import fr.djaytan.mc.jrppb.core.storage.properties.DataSourceProperties;
 import fr.djaytan.mc.jrppb.core.storage.sql.jdbc.JdbcUrl;
 import jakarta.inject.Inject;
 import jakarta.inject.Provider;
@@ -58,11 +58,10 @@ public class HikariDataSourceProvider implements Provider<HikariDataSource> {
   private @NotNull HikariConfig createHikariConfig() {
     HikariConfig hikariConfig = new HikariConfig();
     hikariConfig.setJdbcUrl(jdbcUrl.get());
-    hikariConfig.setConnectionTimeout(
-        dataSourceProperties.getConnectionPool().getConnectionTimeout());
-    hikariConfig.setMaximumPoolSize(dataSourceProperties.getConnectionPool().getPoolSize());
-    hikariConfig.setUsername(dataSourceProperties.getDbmsServer().getCredentials().getUsername());
-    hikariConfig.setPassword(dataSourceProperties.getDbmsServer().getCredentials().getPassword());
+    hikariConfig.setConnectionTimeout(dataSourceProperties.connectionPool().connectionTimeout());
+    hikariConfig.setMaximumPoolSize(dataSourceProperties.connectionPool().poolSize());
+    hikariConfig.setUsername(dataSourceProperties.dbmsServer().credentials().username());
+    hikariConfig.setPassword(dataSourceProperties.dbmsServer().credentials().password());
     return hikariConfig;
   }
 }

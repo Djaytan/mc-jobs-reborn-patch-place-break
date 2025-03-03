@@ -36,9 +36,6 @@ import fr.djaytan.mc.jrppb.api.entities.BlockActionType;
 import fr.djaytan.mc.jrppb.api.entities.BlockLocation;
 import fr.djaytan.mc.jrppb.api.entities.Tag;
 import fr.djaytan.mc.jrppb.api.entities.Vector;
-import fr.djaytan.mc.jrppb.api.properties.RestrictedBlocksProperties;
-import fr.djaytan.mc.jrppb.api.properties.RestrictionMode;
-import fr.djaytan.mc.jrppb.core.config.properties.RestrictedBlocksPropertiesImpl;
 import fr.djaytan.mc.jrppb.core.storage.api.OldNewBlockLocationPair;
 import fr.djaytan.mc.jrppb.core.storage.api.OldNewBlockLocationPairSet;
 import fr.djaytan.mc.jrppb.core.storage.api.TagRepository;
@@ -76,7 +73,7 @@ class PatchPlaceBreakImplTest {
   @Captor private ArgumentCaptor<OldNewBlockLocationPairSet> locationPairCaptor;
   @Captor private ArgumentCaptor<BlockLocation> blockLocationCaptor;
   private final RestrictedBlocksProperties restrictedBlocksProperties =
-      new RestrictedBlocksPropertiesImpl(
+      new RestrictedBlocksProperties(
           new HashSet<>(Arrays.asList("STONE", "DIRT")), RestrictionMode.BLACKLIST);
   private PatchPlaceBreakImpl patchPlaceBreakImpl;
 

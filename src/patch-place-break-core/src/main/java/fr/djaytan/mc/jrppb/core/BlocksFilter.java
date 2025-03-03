@@ -23,7 +23,6 @@
 package fr.djaytan.mc.jrppb.core;
 
 import fr.djaytan.mc.jrppb.api.entities.Block;
-import fr.djaytan.mc.jrppb.api.properties.RestrictedBlocksProperties;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import java.util.Collection;

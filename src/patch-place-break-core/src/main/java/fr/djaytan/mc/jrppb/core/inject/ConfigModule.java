@@ -24,10 +24,15 @@ package fr.djaytan.mc.jrppb.core.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import fr.djaytan.mc.jrppb.api.properties.RestrictedBlocksProperties;
-import fr.djaytan.mc.jrppb.core.config.ConfigApi;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
+import fr.djaytan.mc.jrppb.core.RestrictedBlocksProperties;
+import fr.djaytan.mc.jrppb.core.config.PatchPlaceBreakConfig;
+import fr.djaytan.mc.jrppb.core.config.repository.ConfigDirectoryPath;
+import fr.djaytan.mc.jrppb.core.config.repository.ConfigRepository;
+import fr.djaytan.mc.jrppb.core.config.repository.FileSystemConfigRepository;
+import fr.djaytan.mc.jrppb.core.storage.properties.DataSourceProperties;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
+import java.nio.file.Path;
 import org.jetbrains.annotations.NotNull;
 
 final class ConfigModule extends AbstractModule {
@@ -38,14 +43,21 @@ final class ConfigModule extends AbstractModule {
 
   @Provides
   @Singleton
-  static @NotNull DataSourceProperties dataSourceProperties(@NotNull ConfigApi configApi) {
-    return configApi.getDataSourceProperties();
+  static @NotNull ConfigRepository configRepository(@NotNull @Named("dataFolder") Path dataFolder) {
+    return new FileSystemConfigRepository(new ConfigDirectoryPath(dataFolder));
   }
 
   @Provides
   @Singleton
-  static @NotNull RestrictedBlocksProperties provideRestrictedBlocksProperties(
-      @NotNull ConfigApi configApi) {
-    return configApi.getRestrictedBlocksProperties();
+  static @NotNull DataSourceProperties dataSourceProperties(
+      @NotNull PatchPlaceBreakConfig patchPlaceBreakConfig) {
+    return patchPlaceBreakConfig.dataSourceConfigProperties().toModel();
+  }
+
+  @Provides
+  @Singleton
+  static @NotNull RestrictedBlocksProperties restrictedBlocksProperties(
+      @NotNull PatchPlaceBreakConfig patchPlaceBreakConfig) {
+    return patchPlaceBreakConfig.restrictedBlocksConfigProperties().toModel();
   }
 }

@@ -22,6 +22,7 @@
  */
 package fr.djaytan.mc.jrppb.core.storage.sql.access;
 
+import static fr.djaytan.mc.jrppb.core.storage.properties.DbmsServerPropertiesTestDataSet.NOMINAL_DBMS_SERVER_DATABASE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -44,11 +45,12 @@ import org.testcontainers.containers.MySQLContainer;
 class SqlTagRepositoryIT {
 
   private static final int DATABASE_ORIGINAL_PORT = 3306;
-  private static final String DATABASE_NAME = "patch_place_break";
 
   @SuppressWarnings("resource") // Reusable containers feature enabled: do not clean-up containers!
   private static final MySQLContainer<?> MYSQL_CONTAINER =
-      new MySQLContainer<>("mysql:8.1.0-oracle").withDatabaseName(DATABASE_NAME).withReuse(true);
+      new MySQLContainer<>("mysql:8.1.0-oracle")
+          .withDatabaseName(NOMINAL_DBMS_SERVER_DATABASE_NAME)
+          .withReuse(true);
 
   @AutoClose
   private final MysqlTagRepositoryFactory mysqlTagRepositoryFactory =

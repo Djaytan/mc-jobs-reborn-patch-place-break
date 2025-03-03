@@ -22,9 +22,9 @@
  */
 package fr.djaytan.mc.jrppb.core.storage.sql.jdbc;
 
+import static com.google.common.jimfs.Configuration.unix;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
@@ -33,20 +33,12 @@ import org.junit.jupiter.api.Test;
 
 class SqliteJdbcUrlTest {
 
-  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(Configuration.unix());
+  @AutoClose private final FileSystem imfs = Jimfs.newFileSystem(unix());
+  private final Path sqliteDatabaseFilePath = imfs.getPath("sqlite-data.db").toAbsolutePath();
 
   @Test
   void whenGettingJdbcUrlFromDummyPath_shouldReturnExpectedSqliteJdbcUrl() {
-    // Given
-    Path dummySqliteDatabasePath = imfs.getPath("/dummy/sqlite-data.db");
-    SqliteJdbcUrl sqliteJdbcUrl = new SqliteJdbcUrl(dummySqliteDatabasePath);
-
-    // When
-    String actualSqliteJdbcUrl = sqliteJdbcUrl.get();
-
-    // Then
-    String expectedSqliteJdbcUrl = "jdbc:sqlite:/dummy/sqlite-data.db";
-
-    assertThat(actualSqliteJdbcUrl).isEqualTo(expectedSqliteJdbcUrl);
+    assertThat(new SqliteJdbcUrl(sqliteDatabaseFilePath).get())
+        .isEqualTo("jdbc:sqlite:/work/sqlite-data.db");
   }
 }

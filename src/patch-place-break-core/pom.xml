@@ -49,25 +49,11 @@
       <groupId>jakarta.inject</groupId>
       <artifactId>jakarta.inject-api</artifactId>
     </dependency>
-    <dependency>
-      <groupId>jakarta.validation</groupId>
-      <artifactId>jakarta.validation-api</artifactId>
-    </dependency>
 
     <!-- Jakarta implementation dependencies -->
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate.validator</groupId>
-      <artifactId>hibernate-validator</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish</groupId>
-      <artifactId>jakarta.el</artifactId>
-      <scope>runtime</scope>
     </dependency>
 
     <!-- General dependencies -->
@@ -83,10 +69,6 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
     </dependency>
 
     <!-- Configuration-specific dependencies -->
@@ -131,13 +113,6 @@
 
     <!-- ==================== TEST  ==================== -->
 
-    <!-- Internal test dependencies -->
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>commons-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-
     <!-- General test dependencies -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -170,13 +145,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>nl.jqno.equalsverifier</groupId>
-      <artifactId>equalsverifier</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.jparams</groupId>
-      <artifactId>to-string-verifier</artifactId>
+      <groupId>org.instancio</groupId>
+      <artifactId>instancio-core</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

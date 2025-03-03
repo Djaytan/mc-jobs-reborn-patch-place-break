@@ -22,7 +22,6 @@
  */
 package fr.djaytan.mc.jrppb.spigot.adapter;
 
-import fr.djaytan.mc.jrppb.commons.test.TestResourcesHelper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,11 +51,69 @@ class MysqlPatchPlaceBreakSpigotAdapterApiIT extends PatchPlaceBreakSpigotAdapte
     String username = MYSQL_CONTAINER.getUsername();
     String password = MYSQL_CONTAINER.getPassword();
     String givenDataSourceConfFileContent =
-        String.format(
-            TestResourcesHelper.getClassResourceAsString(this.getClass(), "mysql.conf", false),
-            dbmsPort,
-            username,
-            password);
+        """
+        #         JobsReborn-PatchPlaceBreak
+        # A patch place-break extension for JobsReborn
+        #                (by Djaytan)
+        #\s
+        # This config file use HOCON format
+        # Specifications are here: https://github.com/lightbend/config/blob/main/HOCON.md
+        #\s
+        # /!\\ Properties ordering is nondeterministic at config generation time because of limitations
+        # of underlying library.
+
+        # Connection pool properties
+        # This is reserved for advanced usage only
+        # Change these settings only if you know what you are doing
+        connectionPool {
+            # The connection timeout (in milliseconds)
+            # Corresponds to the maximum time the connection pool will wait to acquire a new connection
+            # from the DBMS server
+            # Not applicable for SQLite
+            # Accepted range values: [1-600000]
+            connectionTimeout=30000
+            # The number of DBMS connections in the pool
+            # Could be best determined by the executing environment
+            # Accepted range values: [1-100]
+            poolSize=10
+        }
+        # The DBMS server properties for connection establishment
+        # Not applicable for SQLite
+        dbmsServer {
+            # Credentials for authentication with the DBMS server
+            credentials {
+                # Password of the user (optional but highly recommended)
+                password="%3$s"
+                # Under behalf of which user to connect on the DBMS server
+                # Value can't be empty or blank
+                username="%2$s"
+            }
+            # The database to use on DBMS server
+            # Value can't be empty or blank
+            database="patch_place_break"
+            # Host properties of the DBMS server
+            host {
+                # Hostname (an IP address (IPv4/IPv6) or a domain name)
+                # Value can't be empty or blank
+                hostname=localhost
+                # Whether an SSL/TLS communication must be established at connection time (more secure)
+                # Only boolean values accepted (true|false)
+                isSslEnabled=true
+                # Port
+                # Accepted range values: [1-65535]
+                port=%1$d
+            }
+        }
+        # The table where data will be stored
+        # Value can't be empty or blank
+        table="patch_place_break_tag"
+        # The type of datasource to use
+        # Available types:
+        # * SQLITE: use a local file as database (easy & fast setup)
+        # * MYSQL: use a MySQL database server (better performances)
+        type=MYSQL
+        """
+            .formatted(dbmsPort, username, password);
     Path dataSourceConf = dataFolder.resolve(CONFIG_DATA_SOURCE_FILE_NAME);
     Files.writeString(dataSourceConf, givenDataSourceConfFileContent);
     super.beforeEach();

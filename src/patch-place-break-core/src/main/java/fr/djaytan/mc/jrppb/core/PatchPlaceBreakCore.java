@@ -51,7 +51,6 @@ public class PatchPlaceBreakCore {
 
   public @NotNull PatchPlaceBreakApi enable(
       @NotNull ClassLoader classLoader, @NotNull Clock clock, @NotNull Path dataFolder) {
-    setupSlf4j();
     PatchPlaceBreakInjector injector = new PatchPlaceBreakInjector(classLoader, clock, dataFolder);
     dataSourceManager = injector.dataSourceManager();
     dataSourceManager.connect();
@@ -60,14 +59,5 @@ public class PatchPlaceBreakCore {
 
   public void disable() {
     dataSourceManager.disconnect();
-  }
-
-  /**
-   * jboss-logging shall use SLF4J as logger provider.
-   *
-   * <p>This is required since jboss-logging is a dependency of hibernate-validator.
-   */
-  private void setupSlf4j() {
-    System.setProperty("org.jboss.logging.provider", "slf4j");
   }
 }

@@ -26,9 +26,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import fr.djaytan.mc.jrppb.api.entities.Block;
 import fr.djaytan.mc.jrppb.api.entities.BlockLocation;
-import fr.djaytan.mc.jrppb.api.properties.RestrictedBlocksProperties;
-import fr.djaytan.mc.jrppb.api.properties.RestrictionMode;
-import fr.djaytan.mc.jrppb.core.config.properties.RestrictedBlocksPropertiesImpl;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +34,7 @@ import org.junit.jupiter.api.Test;
 class BlocksFilterTest {
 
   private final RestrictedBlocksProperties restrictedBlocksProperties =
-      new RestrictedBlocksPropertiesImpl(
+      new RestrictedBlocksProperties(
           new HashSet<>(Arrays.asList("STONE", "DIRT")), RestrictionMode.BLACKLIST);
   private final BlocksFilter blocksFilter = new BlocksFilter(restrictedBlocksProperties);
 

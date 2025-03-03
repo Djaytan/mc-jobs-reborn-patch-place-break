@@ -22,41 +22,16 @@
  */
 package fr.djaytan.mc.jrppb.core.storage.sql.jdbc;
 
+import static fr.djaytan.mc.jrppb.core.storage.properties.DataSourcePropertiesTestDataSet.NOMINAL_DATA_SOURCE_PROPERTIES;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DataSourceProperties;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DbmsHostProperties;
-import fr.djaytan.mc.jrppb.core.storage.api.properties.DbmsServerProperties;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 class MysqlJdbcUrlTest {
-
-  @Mock private DataSourceProperties dataSourcePropertiesMocked;
-  @Mock private DbmsServerProperties dbmsServerPropertiesMocked;
-  @Mock private DbmsHostProperties dbmsHostPropertiesMocked;
 
   @Test
   void whenGettingJdbcUrlFromConfig_shouldReturnExpectedMySQLJdbcUrl() {
-    // Given
-    given(dataSourcePropertiesMocked.getDbmsServer()).willReturn(dbmsServerPropertiesMocked);
-    given(dbmsServerPropertiesMocked.getHost()).willReturn(dbmsHostPropertiesMocked);
-    given(dbmsServerPropertiesMocked.getDatabase()).willReturn("patch_place_break");
-    given(dbmsHostPropertiesMocked.getHostname()).willReturn("localhost");
-    given(dbmsHostPropertiesMocked.getPort()).willReturn(12345);
-    given(dbmsHostPropertiesMocked.isSslEnabled()).willReturn(true);
-
-    MysqlJdbcUrl mysqlJdbcUrl = new MysqlJdbcUrl(dataSourcePropertiesMocked);
-
-    // When
-    String actualMysqlJdbcUrl = mysqlJdbcUrl.get();
-
-    // Then
-    assertThat(actualMysqlJdbcUrl)
-        .isEqualTo("jdbc:mysql://localhost:12345/patch_place_break?useSSL=true&serverTimezone=UTC");
+    assertThat(new MysqlJdbcUrl(NOMINAL_DATA_SOURCE_PROPERTIES).get())
+        .isEqualTo("jdbc:mysql://db.amazing.com:4123/minecraft?useSSL=true&serverTimezone=UTC");
   }
 }

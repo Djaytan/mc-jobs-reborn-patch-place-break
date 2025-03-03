@@ -35,7 +35,6 @@
   <description>A place-break patch extension of JobsReborn plugin for Spigot servers (Minecraft)</description>
 
   <modules>
-    <module>src/commons-test</module>
     <module>src/patch-place-break-api</module>
     <module>src/patch-place-break-core</module>
     <module>src/patch-place-break-cts</module>
@@ -79,11 +78,6 @@
         <artifactId>spigot-patch-adapter</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>commons-test</artifactId>
-        <version>${project.version}</version>
-      </dependency>
 
       <!-- Jakarta API dependencies -->
       <dependency>
@@ -99,16 +93,6 @@
         <groupId>com.google.inject</groupId>
         <artifactId>guice</artifactId>
         <version>7.0.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hibernate.validator</groupId>
-        <artifactId>hibernate-validator</artifactId>
-        <version>8.0.1.Final</version>
-      </dependency>
-      <dependency>
-        <groupId>org.glassfish</groupId>
-        <artifactId>jakarta.el</artifactId>
-        <version>4.0.2</version>
       </dependency>
 
       <!-- General dependencies -->
@@ -149,11 +133,6 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
         <version>3.14.0</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>2.15.1</version>
       </dependency>
 
       <!-- Database-related dependencies -->
@@ -272,6 +251,12 @@
         <groupId>com.jparams</groupId>
         <artifactId>to-string-verifier</artifactId>
         <version>1.4.8</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.instancio</groupId>
+        <artifactId>instancio-core</artifactId>
+        <version>5.2.1</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -555,10 +540,6 @@
           <argLine>@{argLine} -Xshare:off</argLine>
           <parallel>all</parallel>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
-          <systemPropertyVariables>
-            <!-- Required to redirect Hibernate Validator's logs to SLF4J -->
-            <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
-          </systemPropertyVariables>
         </configuration>
       </plugin>
       <plugin>

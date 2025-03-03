@@ -1,1 +1,0 @@
- * Property 'theImpactedProperty' - A message (invalid value: 'An invalid value')

@@ -1,2 +1,0 @@
- * Property 'theImpactedProperty1' - A message (invalid value: 'An invalid value')
- * Property 'theImpactedProperty2' - Another message (invalid value: 'Another invalid value')

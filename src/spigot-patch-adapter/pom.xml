@@ -81,11 +81,6 @@
       <artifactId>patch-place-break-core</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>commons-test</artifactId>
-      <scope>test</scope>
-    </dependency>
 
     <!-- General test dependencies -->
     <dependency>
