@@ -23,8 +23,6 @@
 package fr.djaytan.mc.jrppb.core.config.repository;
 
 import fr.djaytan.mc.jrppb.core.config.ConfigName;
-import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -32,12 +30,10 @@ import java.nio.file.Path;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
-@Singleton
 public final class FileSystemConfigRepository implements ConfigRepository {
 
   private final ConfigDirectoryPath configDirectoryPath;
 
-  @Inject
   public FileSystemConfigRepository(@NotNull ConfigDirectoryPath configDirectoryPath) {
     this.configDirectoryPath = configDirectoryPath;
   }
