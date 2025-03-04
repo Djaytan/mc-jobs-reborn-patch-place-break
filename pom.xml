@@ -185,7 +185,7 @@
       <dependency>
         <groupId>com.djaytan.bukkit</groupId>
         <artifactId>bukkit-slf4j</artifactId>
-        <version>2.0.0</version>
+        <version>3.1.1</version>
       </dependency>
       <dependency>
         <groupId>org.bstats</groupId>

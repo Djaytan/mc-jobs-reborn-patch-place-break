@@ -22,7 +22,7 @@
  */
 package fr.djaytan.mc.jrppb.spigot.plugin;
 
-import com.djaytan.bukkit.slf4j.BukkitLoggerFactory;
+import com.djaytan.bukkit.slf4j.api.BukkitLoggerFactory;
 import fr.djaytan.mc.jrppb.core.PatchPlaceBreakCore;
 import fr.djaytan.mc.jrppb.spigot.adapter.PatchPlaceBreakSpigotAdapterApi;
 import fr.djaytan.mc.jrppb.spigot.listener.ListenerRegister;
