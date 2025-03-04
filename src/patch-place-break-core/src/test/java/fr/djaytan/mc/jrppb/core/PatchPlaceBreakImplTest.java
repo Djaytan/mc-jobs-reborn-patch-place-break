@@ -74,7 +74,7 @@ class PatchPlaceBreakImplTest {
   @Captor private ArgumentCaptor<BlockLocation> blockLocationCaptor;
   private final RestrictedBlocksProperties restrictedBlocksProperties =
       new RestrictedBlocksProperties(
-          new HashSet<>(Arrays.asList("STONE", "DIRT")), RestrictionMode.BLACKLIST);
+          RestrictionMode.BLACKLIST, new HashSet<>(Arrays.asList("STONE", "DIRT")));
   private PatchPlaceBreakImpl patchPlaceBreakImpl;
 
   @BeforeEach

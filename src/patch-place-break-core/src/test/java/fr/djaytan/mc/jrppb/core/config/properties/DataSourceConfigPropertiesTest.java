@@ -125,13 +125,13 @@ final class DataSourceConfigPropertiesTest {
       void type() {
         assertDeserializationFailure(
             """
-            connectionPool {
-                %s
-            }
+            table="nominal_table_name"
             dbmsServer {
                 %s
             }
-            table="nominal_table_name"
+            connectionPool {
+                %s
+            }
             """
                 .formatted(
                     NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES.indent(4).trim(),
@@ -143,13 +143,13 @@ final class DataSourceConfigPropertiesTest {
       void table() {
         assertDeserializationFailure(
             """
-            connectionPool {
-                %s
-            }
+            type=MYSQL
             dbmsServer {
                 %s
             }
-            type=MYSQL
+            connectionPool {
+                %s
+            }
             """
                 .formatted(
                     NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES.indent(4).trim(),
@@ -161,11 +161,11 @@ final class DataSourceConfigPropertiesTest {
       void dbmsServer() {
         assertDeserializationFailure(
             """
+            type=MYSQL
+            table="nominal_table_name"
             connectionPool {
                 %s
             }
-            table="nominal_table_name"
-            type=MYSQL
             """
                 .formatted(NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES.indent(4).trim()),
             ConnectionPoolConfigProperties.class);
@@ -175,11 +175,11 @@ final class DataSourceConfigPropertiesTest {
       void connectionPool() {
         assertDeserializationFailure(
             """
+            type=MYSQL
+            table="nominal_table_name"
             dbmsServer {
                 %s
             }
-            table="nominal_table_name"
-            type=MYSQL
             """
                 .formatted(NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES.indent(4).trim()),
             ConnectionPoolConfigProperties.class);

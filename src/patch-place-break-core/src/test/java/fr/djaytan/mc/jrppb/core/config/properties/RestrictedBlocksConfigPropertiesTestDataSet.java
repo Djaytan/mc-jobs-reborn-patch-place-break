@@ -29,21 +29,21 @@ public final class RestrictedBlocksConfigPropertiesTestDataSet {
 
   public static final RestrictedBlocksConfigProperties NOMINAL_RESTRICTED_BLOCKS_CONFIG_PROPERTIES =
       new RestrictedBlocksConfigProperties(
-          NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST, NOMINAL_RESTRICTION_MODE);
+          NOMINAL_RESTRICTION_MODE, NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST);
 
   public static final String NOMINAL_SERIALIZED_RESTRICTED_BLOCKS_CONFIG_PROPERTIES =
       """
-      # List of materials used when applying restrictions to patch tags
-      materials=[
-          DIRT,
-          SAND,
-          STONE
-      ]
       # Define the restriction mode when handling tags for the listed blocks.
       # Three values are available:
       # * BLACKLIST: Only listed blocks are marked as restricted
       # * WHITELIST: All blocks are marked as restricted except the listed ones
       # * DISABLED: No restriction applied
       restrictionMode=BLACKLIST
+      # List of materials used when applying restrictions to patch tags
+      materials=[
+          DIRT,
+          SAND,
+          STONE
+      ]
       """;
 }

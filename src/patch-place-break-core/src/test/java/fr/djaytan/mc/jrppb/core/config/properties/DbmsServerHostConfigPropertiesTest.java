@@ -117,8 +117,8 @@ final class DbmsServerHostConfigPropertiesTest {
       void hostname() {
         assertDeserializationFailure(
             """
-            is-ssl-enabled=true
             port=4235
+            is-ssl-enabled=true
             """,
             DbmsServerHostConfigProperties.class);
       }

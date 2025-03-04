@@ -40,27 +40,27 @@ public final class DataSourceConfigPropertiesTestDataSet {
 
   public static final String NOMINAL_SERIALIZED_DATA_SOURCE_CONFIG_PROPERTIES =
       """
+      # The type of datasource to use
+      # Available types:
+      # * SQLITE: use a local file as database (easy & fast setup)
+      # * MYSQL: use a MySQL database server (better performances)
+      type=MYSQL
+      # The table where data will be stored
+      # Value can't be empty or blank
+      table="nominal_table_name"
+      # The DBMS server properties for connection establishment
+      # Not applicable for SQLite
+      dbmsServer {
+          %s
+      }
       # Connection pool properties
       # This is reserved for advanced usage only
       # Change these settings only if you know what you are doing
       connectionPool {
           %s
       }
-      # The DBMS server properties for connection establishment
-      # Not applicable for SQLite
-      dbmsServer {
-          %s
-      }
-      # The table where data will be stored
-      # Value can't be empty or blank
-      table="nominal_table_name"
-      # The type of datasource to use
-      # Available types:
-      # * SQLITE: use a local file as database (easy & fast setup)
-      # * MYSQL: use a MySQL database server (better performances)
-      type=MYSQL
       """
           .formatted(
-              NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES.indent(4).trim(),
-              NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES.indent(4).trim());
+              NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES.indent(4).trim(),
+              NOMINAL_SERIALIZED_CONNECTION_POOL_CONFIG_PROPERTIES.indent(4).trim());
 }

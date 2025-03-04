@@ -47,7 +47,7 @@ final class RestrictedBlocksConfigPropertiesTest {
     void withNominalValues() {
       assertThat(
               new RestrictedBlocksConfigProperties(
-                  NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST, NOMINAL_RESTRICTION_MODE))
+                  NOMINAL_RESTRICTION_MODE, NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST))
           .satisfies(
               v -> assertThat(v.materials()).isEqualTo(NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST))
           .satisfies(v -> assertThat(v.restrictionMode()).isEqualTo(NOMINAL_RESTRICTION_MODE));
@@ -97,8 +97,8 @@ final class RestrictedBlocksConfigPropertiesTest {
       assertThat(
               deserialize(
                   """
-                  materials=[]
-                  restrictionMode=BLACKLIST""",
+                  restrictionMode=BLACKLIST
+                  materials=[]""",
                   RestrictedBlocksConfigProperties.class))
           .satisfies(v -> assertThat(v.materials()).isEmpty());
     }
@@ -109,8 +109,8 @@ final class RestrictedBlocksConfigPropertiesTest {
               () ->
                   deserialize(
                       """
-                      materials=[]
-                      restrictionMode=INVALID""",
+                      restrictionMode=INVALID
+                      materials=[]""",
                       RestrictedBlocksConfigProperties.class))
           .isExactlyInstanceOf(ConfigSerializationException.class)
           .cause()
