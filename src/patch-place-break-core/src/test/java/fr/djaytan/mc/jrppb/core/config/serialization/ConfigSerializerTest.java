@@ -46,16 +46,13 @@ final class ConfigSerializerTest {
       #\s
       # This config file use HOCON format
       # Specifications are here: https://github.com/lightbend/config/blob/main/HOCON.md
-      #\s
-      # /!\\ Properties ordering is nondeterministic at config generation time because of limitations
-      # of underlying library.
 
+      # Single line comment
+      testField=test-value
       # Multi
       # line
       # comment
       number=34
-      # Single line comment
-      testField=test-value
       """;
   private static final String ANOTHER_SERIALIZED_CONFIG_PROPERTIES =
       """
@@ -65,9 +62,6 @@ final class ConfigSerializerTest {
       #\s
       # This config file use HOCON format
       # Specifications are here: https://github.com/lightbend/config/blob/main/HOCON.md
-      #\s
-      # /!\\ Properties ordering is nondeterministic at config generation time because of limitations
-      # of underlying library.
 
       test=another
       """;
@@ -121,12 +115,12 @@ final class ConfigSerializerTest {
       assertThat(
               deserialize(
                   """
+                  # Single line comment
+                  testField=test-value
                   # Multi
                   # line
                   # comment
-                  number=34
-                  # Single line comment
-                  testField=test-value""",
+                  number=34""",
                   NominalConfigProperties.class))
           .isEqualTo(NOMINAL_CONFIG_PROPERTIES);
     }
@@ -158,8 +152,8 @@ final class ConfigSerializerTest {
               () ->
                   deserialize(
                       """
-                      number=34
-                      test_field=test-value""",
+                      test_field=test-value
+                      number=34""",
                       NominalConfigProperties.class))
           .isExactlyInstanceOf(ConfigSerializationException.class)
           .cause()

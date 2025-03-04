@@ -135,10 +135,10 @@ final class DbmsServerConfigPropertiesTest {
       void credentials() {
         assertDeserializationFailure(
             """
-            database=minecraft
             host {
                 %s
             }
+            database=minecraft
             """
                 .formatted(NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES.indent(4).trim()),
             ConnectionPoolConfigProperties.class);
@@ -148,16 +148,16 @@ final class DbmsServerConfigPropertiesTest {
       void database() {
         assertDeserializationFailure(
             """
-            credentials {
+            host {
                 %s
             }
-            host {
+            credentials {
                 %s
             }
             """
                 .formatted(
-                    NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES.indent(4).trim(),
-                    NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES.indent(4).trim()),
+                    NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES.indent(4).trim(),
+                    NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES.indent(4).trim()),
             ConnectionPoolConfigProperties.class);
       }
     }

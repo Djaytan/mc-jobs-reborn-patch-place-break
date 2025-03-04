@@ -40,9 +40,6 @@ public final class ConfigSerializer {
 
        This config file use HOCON format
        Specifications are here: https://github.com/lightbend/config/blob/main/HOCON.md
-
-       /!\\ Properties ordering is nondeterministic at config generation time because of limitations
-       of underlying library.
       """;
 
   private ConfigSerializer() {
@@ -51,12 +48,6 @@ public final class ConfigSerializer {
 
   /**
    * Serializes the specified config properties to HOCON format.
-   *
-   * <p>LIMITATION: Fields ordering is random and comes from the underlying HOCON library used by
-   * Configurate. More details can be found <a
-   * href="https://github.com/lightbend/config/issues/733">here</a>.
-   *
-   * <p>TODO: migrate to YAML loader: well-known and no such limitation
    *
    * @param configProperties The config properties to serialize.
    * @return The serialized form of the initially provided config properties.

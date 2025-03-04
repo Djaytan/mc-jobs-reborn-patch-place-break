@@ -39,11 +39,11 @@ public final class DbmsServerHostConfigPropertiesTestDataSet {
       # Hostname (an IP address (IPv4/IPv6) or a domain name)
       # Value can't be empty or blank
       hostname="db.amazing.com"
-      # Whether an SSL/TLS communication must be established at connection time (more secure)
-      # Only boolean values accepted (true|false)
-      isSslEnabled=true
       # Port
       # Accepted range values: [1-65535]
       port=4123
+      # Whether an SSL/TLS communication must be established at connection time (more secure)
+      # Only boolean values accepted (true|false)
+      isSslEnabled=true
       """;
 }

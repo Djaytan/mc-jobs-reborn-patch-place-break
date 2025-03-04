@@ -34,10 +34,10 @@ import org.jetbrains.annotations.NotNull;
  * {@link #isRestricted(String)} method.
  */
 public record RestrictedBlocksProperties(
-    @NotNull Set<String> materials, @NotNull RestrictionMode restrictionMode) {
+    @NotNull RestrictionMode restrictionMode, @NotNull Set<String> materials) {
 
   public static final RestrictedBlocksProperties DEFAULT =
-      new RestrictedBlocksProperties(emptySet(), RestrictionMode.DISABLED);
+      new RestrictedBlocksProperties(RestrictionMode.DISABLED, emptySet());
 
   /**
    * Checks if a given material is restricted based on defined properties.

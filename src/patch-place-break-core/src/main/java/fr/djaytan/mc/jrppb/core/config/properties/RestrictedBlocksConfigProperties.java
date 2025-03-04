@@ -32,12 +32,10 @@ import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
 public record RestrictedBlocksConfigProperties(
-    @Required @Comment(MATERIALS_COMMENT) @NotNull Set<String> materials,
-    @Required @Comment(RESTRICTION_MODE_COMMENT) @NotNull RestrictionMode restrictionMode)
+    @Required @Comment(RESTRICTION_MODE_COMMENT) @NotNull RestrictionMode restrictionMode,
+    @Required @Comment(MATERIALS_COMMENT) @NotNull Set<String> materials)
     implements ConfigProperties {
 
-  private static final String MATERIALS_COMMENT =
-      "List of materials used when applying restrictions to patch tags";
   private static final String RESTRICTION_MODE_COMMENT =
       """
       Define the restriction mode when handling tags for the listed blocks.
@@ -45,16 +43,18 @@ public record RestrictedBlocksConfigProperties(
       * BLACKLIST: Only listed blocks are marked as restricted
       * WHITELIST: All blocks are marked as restricted except the listed ones
       * DISABLED: No restriction applied""";
+  private static final String MATERIALS_COMMENT =
+      "List of materials used when applying restrictions to patch tags";
 
   public static final RestrictedBlocksConfigProperties DEFAULT =
       fromModel(RestrictedBlocksProperties.DEFAULT);
 
   public static @NotNull RestrictedBlocksConfigProperties fromModel(
       @NotNull RestrictedBlocksProperties model) {
-    return new RestrictedBlocksConfigProperties(model.materials(), model.restrictionMode());
+    return new RestrictedBlocksConfigProperties(model.restrictionMode(), model.materials());
   }
 
   public @NotNull RestrictedBlocksProperties toModel() {
-    return new RestrictedBlocksProperties(materials, restrictionMode);
+    return new RestrictedBlocksProperties(restrictionMode, materials);
   }
 }

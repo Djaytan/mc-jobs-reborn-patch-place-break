@@ -34,10 +34,10 @@ public final class DbmsServerCredentialsConfigPropertiesTestDataSet {
 
   public static final String NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES =
       """
-      # Password of the user (optional but highly recommended)
-      password=my-admin-pwd
       # Under behalf of which user to connect on the DBMS server
       # Value can't be empty or blank
       username=admin
+      # Password of the user (optional but highly recommended)
+      password=my-admin-pwd
       """;
 }

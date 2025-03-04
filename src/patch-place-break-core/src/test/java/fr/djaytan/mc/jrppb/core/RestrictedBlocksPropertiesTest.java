@@ -45,7 +45,7 @@ final class RestrictedBlocksPropertiesTest {
     void nominalCase() {
       assertThat(
               new RestrictedBlocksProperties(
-                  NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST, NOMINAL_RESTRICTION_MODE))
+                  NOMINAL_RESTRICTION_MODE, NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST))
           .satisfies(
               v -> assertThat(v.materials()).isEqualTo(NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST))
           .satisfies(v -> assertThat(v.restrictionMode()).isEqualTo(NOMINAL_RESTRICTION_MODE));
@@ -61,7 +61,7 @@ final class RestrictedBlocksPropertiesTest {
       assertThatCode(
               () ->
                   new RestrictedBlocksProperties(
-                      NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST, RestrictionMode.DISABLED))
+                      RestrictionMode.DISABLED, NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST))
           .doesNotThrowAnyException();
     }
   }
@@ -86,7 +86,7 @@ final class RestrictedBlocksPropertiesTest {
           @NotNull String material) {
         assertThat(
                 new RestrictedBlocksProperties(
-                        NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST, RestrictionMode.DISABLED)
+                        RestrictionMode.DISABLED, NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST)
                     .isRestricted(material))
             .isFalse();
       }
@@ -111,7 +111,7 @@ final class RestrictedBlocksPropertiesTest {
         private static void assertRestrictedMaterialWhenBlacklisted(
             @NotNull Set<String> blacklist) {
           assertThat(
-                  new RestrictedBlocksProperties(blacklist, RestrictionMode.BLACKLIST)
+                  new RestrictedBlocksProperties(RestrictionMode.BLACKLIST, blacklist)
                       .isRestricted(NOMINAL_LISTED_MATERIAL))
               .isTrue();
         }
@@ -138,7 +138,7 @@ final class RestrictedBlocksPropertiesTest {
         private static void assertUnrestrictedMaterialWhenNotBlacklisted(
             @NotNull Set<String> blacklist) {
           assertThat(
-                  new RestrictedBlocksProperties(blacklist, RestrictionMode.BLACKLIST)
+                  new RestrictedBlocksProperties(RestrictionMode.BLACKLIST, blacklist)
                       .isRestricted(NOMINAL_UNLISTED_MATERIAL))
               .isFalse();
         }
@@ -164,7 +164,7 @@ final class RestrictedBlocksPropertiesTest {
         private static void assertUnrestrictedMaterialWhenWhitelisted(
             @NotNull Set<String> whitelist) {
           assertThat(
-                  new RestrictedBlocksProperties(whitelist, RestrictionMode.WHITELIST)
+                  new RestrictedBlocksProperties(RestrictionMode.WHITELIST, whitelist)
                       .isRestricted(NOMINAL_LISTED_MATERIAL))
               .isFalse();
         }
@@ -191,7 +191,7 @@ final class RestrictedBlocksPropertiesTest {
         private static void assertRestrictedMaterialWhenNotWhitelisted(
             @NotNull Set<String> whitelist) {
           assertThat(
-                  new RestrictedBlocksProperties(whitelist, RestrictionMode.WHITELIST)
+                  new RestrictedBlocksProperties(RestrictionMode.WHITELIST, whitelist)
                       .isRestricted(NOMINAL_UNLISTED_MATERIAL))
               .isTrue();
         }

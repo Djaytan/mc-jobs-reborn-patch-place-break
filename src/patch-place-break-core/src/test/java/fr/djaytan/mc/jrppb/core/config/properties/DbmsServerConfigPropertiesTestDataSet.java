@@ -38,6 +38,10 @@ public final class DbmsServerConfigPropertiesTestDataSet {
 
   public static final String NOMINAL_SERIALIZED_DBMS_SERVER_CONFIG_PROPERTIES =
       """
+      # Host properties of the DBMS server
+      host {
+          %s
+      }
       # Credentials for authentication with the DBMS server
       credentials {
           %s
@@ -45,12 +49,8 @@ public final class DbmsServerConfigPropertiesTestDataSet {
       # The database to use on DBMS server
       # Value can't be empty or blank
       database=minecraft
-      # Host properties of the DBMS server
-      host {
-          %s
-      }
       """
           .formatted(
-              NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES.indent(4).trim(),
-              NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES.indent(4).trim());
+              NOMINAL_SERIALIZED_DBMS_SERVER_HOST_CONFIG_PROPERTIES.indent(4).trim(),
+              NOMINAL_SERIALIZED_DBMS_SERVER_CREDENTIALS_CONFIG_PROPERTIES.indent(4).trim());
 }

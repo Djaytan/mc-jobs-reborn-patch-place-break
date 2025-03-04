@@ -35,7 +35,7 @@ class BlocksFilterTest {
 
   private final RestrictedBlocksProperties restrictedBlocksProperties =
       new RestrictedBlocksProperties(
-          new HashSet<>(Arrays.asList("STONE", "DIRT")), RestrictionMode.BLACKLIST);
+          RestrictionMode.BLACKLIST, new HashSet<>(Arrays.asList("STONE", "DIRT")));
   private final BlocksFilter blocksFilter = new BlocksFilter(restrictedBlocksProperties);
 
   @Test

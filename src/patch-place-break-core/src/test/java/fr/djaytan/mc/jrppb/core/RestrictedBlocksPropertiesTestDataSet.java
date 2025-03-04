@@ -41,5 +41,5 @@ public final class RestrictedBlocksPropertiesTestDataSet {
 
   public static final RestrictedBlocksProperties NOMINAL_RESTRICTED_BLOCKS_PROPERTIES =
       new RestrictedBlocksProperties(
-          NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST, NOMINAL_RESTRICTION_MODE);
+          NOMINAL_RESTRICTION_MODE, NOMINAL_MULTI_ELEMENTS_RESTRICTION_LIST);
 }
