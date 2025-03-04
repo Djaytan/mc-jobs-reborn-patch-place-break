@@ -108,7 +108,8 @@ final class ConnectionPoolConfigPropertiesTest {
         assertDeserializationFailure(
             """
             poolSize=20
-            """, ConnectionPoolConfigProperties.class);
+            """,
+            ConnectionPoolConfigProperties.class);
       }
 
       @Test
