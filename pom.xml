@@ -104,10 +104,8 @@
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-bom</artifactId>
+        <artifactId>slf4j-api</artifactId>
         <version>2.0.12</version>
-        <type>pom</type>
-        <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>ch.qos.logback</groupId>
