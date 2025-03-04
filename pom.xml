@@ -195,7 +195,7 @@
       <dependency>
         <groupId>com.github.Zrips</groupId>
         <artifactId>Jobs</artifactId>
-        <version>v4.17.2</version>
+        <version>v5.2.2.3</version>
         <!-- Server must have JobsReborn plugin installed -->
         <scope>provided</scope>
       </dependency>
