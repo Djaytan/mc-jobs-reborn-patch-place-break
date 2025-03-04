@@ -255,7 +255,6 @@
                 <include>org.bstats.**</include>
                 <include>org.checkerframework.**</include>
                 <include>org.flywaydb.**</include>
-                <include>org.jboss.logging.**</include>
                 <include>org.sqlite.**</include>
                 <include>org.slf4j.**</include>
                 <include>org.spongepowered.configurate.**</include>
