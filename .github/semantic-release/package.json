@@ -4,7 +4,7 @@
     "@commitlint/cli": "19.6.1",
     "@commitlint/config-conventional": "19.6.0",
     "semantic-release": "24.2.3",
-    "@semantic-release/exec": "6.0.3"
+    "@semantic-release/exec": "7.0.3"
   },
   "overrides": {
     "conventional-changelog-conventionalcommits_": "Temporary workaround: https://github.com/semantic-release/release-notes-generator/issues/657",
