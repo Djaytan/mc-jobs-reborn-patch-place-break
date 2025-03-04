@@ -22,8 +22,7 @@
  */
 package fr.djaytan.mc.jrppb.core.config;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
-import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
+import static org.apache.commons.lang3.RandomStringUtils.secure;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,12 +36,12 @@ public final class ConfigNameTestDataSet {
   }
 
   public static @NotNull String randomValidConfigNameValue() {
-    return randomAlphanumeric(3, 32);
+    return secure().nextAlphanumeric(3, 32);
   }
 
   public static @NotNull String randomInvalidConfigNameValue() {
     while (true) {
-      String value = randomAscii(3, 32);
+      String value = secure().nextAscii(3, 32);
 
       if (!value.matches("(\\w|-){3,32}")) {
         return value;
