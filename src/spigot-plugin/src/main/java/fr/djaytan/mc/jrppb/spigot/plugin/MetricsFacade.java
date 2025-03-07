@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class MetricsFacade {
 
-  private static final Logger LOG = LoggerFactory.getLogger(MetricsFacade.class);
+  private static final Logger log = LoggerFactory.getLogger(MetricsFacade.class);
 
   private static final int BSTATS_ID = 16899;
 
@@ -46,6 +46,6 @@ public class MetricsFacade {
 
   public void activateMetricsCollection() {
     new Metrics(javaPlugin, BSTATS_ID);
-    LOG.atInfo().log("bStats metrics collection activated.");
+    log.info("bStats metrics collection activated.");
   }
 }

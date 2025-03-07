@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class TagSqlDao {
 
-  private static final Logger LOG = LoggerFactory.getLogger(TagSqlDao.class);
+  private static final Logger log = LoggerFactory.getLogger(TagSqlDao.class);
 
   private final BooleanIntegerSerializer booleanIntegerSerializer;
   private final DataSourceProperties dataSourceProperties;
@@ -95,10 +95,9 @@ public class TagSqlDao {
 
   private @NotNull Optional<Tag> extractTag(@NotNull ResultSet resultSet) throws SQLException {
     if (resultSet.getFetchSize() > 1) {
-      LOG.atWarn()
-          .log(
-              "Multiple tags detected for a same location, selecting the first one."
-                  + " Anyway, please report this issue to the developer for investigation.");
+      log.warn(
+          "Multiple tags detected for a same location, selecting the first one."
+              + " Anyway, please report this issue to the developer for investigation.");
     }
 
     if (!resultSet.next()) {

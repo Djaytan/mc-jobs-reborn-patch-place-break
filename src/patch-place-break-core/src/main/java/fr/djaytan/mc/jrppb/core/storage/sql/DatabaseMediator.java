@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class DatabaseMediator implements AutoCloseable {
 
-  private static final Logger LOG = LoggerFactory.getLogger(DatabaseMediator.class);
+  private static final Logger log = LoggerFactory.getLogger(DatabaseMediator.class);
 
   private final HikariDataSource hikariDataSource;
 
@@ -95,6 +95,6 @@ public class DatabaseMediator implements AutoCloseable {
   @Override
   public void close() {
     hikariDataSource.close();
-    LOG.atInfo().log("Disconnected from the database '{}'", hikariDataSource.getJdbcUrl());
+    log.info("Disconnected from the database '{}'", hikariDataSource.getJdbcUrl());
   }
 }
