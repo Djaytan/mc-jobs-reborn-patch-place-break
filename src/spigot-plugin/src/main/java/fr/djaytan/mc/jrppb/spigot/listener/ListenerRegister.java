@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class ListenerRegister {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ListenerRegister.class);
+  private static final Logger log = LoggerFactory.getLogger(ListenerRegister.class);
 
   private final JavaPlugin javaPlugin;
   private final PluginManager pluginManager;
@@ -87,6 +87,6 @@ public class ListenerRegister {
     pluginManager.registerEvents(blockSpreadListener, javaPlugin);
     pluginManager.registerEvents(jobsExpGainListener, javaPlugin);
     pluginManager.registerEvents(jobsPrePaymentListener, javaPlugin);
-    LOG.atInfo().log("Event listeners registered.");
+    log.info("Event listeners registered.");
   }
 }

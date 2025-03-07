@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class HikariDataSourceProvider implements Provider<HikariDataSource> {
 
-  private static final Logger LOG = LoggerFactory.getLogger(HikariDataSourceProvider.class);
+  private static final Logger log = LoggerFactory.getLogger(HikariDataSourceProvider.class);
 
   private final DataSourceProperties dataSourceProperties;
   private final JdbcUrl jdbcUrl;
@@ -49,9 +49,9 @@ public class HikariDataSourceProvider implements Provider<HikariDataSource> {
   }
 
   public @NotNull HikariDataSource get() {
-    LOG.atInfo().log("Connecting to database '{}'...", jdbcUrl.get());
+    log.info("Connecting to database '{}'...", jdbcUrl.get());
     HikariDataSource hikariDataSource = new HikariDataSource(createHikariConfig());
-    LOG.atInfo().log("Connected to the database successfully.");
+    log.info("Connected to the database successfully.");
     return hikariDataSource;
   }
 
