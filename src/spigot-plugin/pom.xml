@@ -101,12 +101,6 @@
       <!-- Provided by CraftBukkit at runtime -->
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.mariadb.jdbc</groupId>
-      <artifactId>mariadb-java-client</artifactId>
-      <!-- Do not shade it: we already rely on mysql-connector-j -->
-      <scope>provided</scope>
-    </dependency>
 
     <!-- Spigot-specific dependencies -->
     <dependency>
@@ -293,7 +287,6 @@
           <ignoredUnusedDeclaredDependencies combine.children="append">
             <ignoredUnusedDeclaredDependency>com.mysql:mysql-connector-j</ignoredUnusedDeclaredDependency>
             <ignoredUnusedDeclaredDependency>org.xerial:sqlite-jdbc</ignoredUnusedDeclaredDependency>
-            <ignoredUnusedDeclaredDependency>org.mariadb.jdbc:mariadb-java-client</ignoredUnusedDeclaredDependency>
           </ignoredUnusedDeclaredDependencies>
         </configuration>
       </plugin>
