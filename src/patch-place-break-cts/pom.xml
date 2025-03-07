@@ -112,5 +112,11 @@
       <artifactId>mariadb</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- MariaDB driver required by Testcontainers -->
+    <dependency>
+      <groupId>org.mariadb.jdbc</groupId>
+      <artifactId>mariadb-java-client</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

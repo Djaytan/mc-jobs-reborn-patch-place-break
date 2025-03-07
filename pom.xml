@@ -159,11 +159,6 @@
         <artifactId>mysql-connector-j</artifactId>
         <version>9.2.0</version>
       </dependency>
-      <dependency>
-        <groupId>org.mariadb.jdbc</groupId>
-        <artifactId>mariadb-java-client</artifactId>
-        <version>3.5.2</version>
-      </dependency>
 
       <!-- Configuration-specific dependencies -->
       <dependency>
@@ -297,6 +292,13 @@
         <groupId>org.testcontainers</groupId>
         <artifactId>mariadb</artifactId>
         <version>${version.testcontainers}</version>
+        <scope>test</scope>
+      </dependency>
+      <!-- MariaDB driver required by Testcontainers -->
+      <dependency>
+        <groupId>org.mariadb.jdbc</groupId>
+        <artifactId>mariadb-java-client</artifactId>
+        <version>3.5.2</version>
         <scope>test</scope>
       </dependency>
 
@@ -478,7 +480,9 @@
           <failOnWarning>true</failOnWarning>
           <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
           <ignoredUnusedDeclaredDependencies>
+            <!-- Test runtime dependencies need to be listed below -->
             <dependency>ch.qos.logback:logback-classic</dependency>
+            <dependency>org.mariadb.jdbc:mariadb-java-client</dependency>
             <!-- Required by Pitest for mutation testing -->
             <dependency>org.junit.jupiter:junit-jupiter-engine</dependency>
           </ignoredUnusedDeclaredDependencies>
