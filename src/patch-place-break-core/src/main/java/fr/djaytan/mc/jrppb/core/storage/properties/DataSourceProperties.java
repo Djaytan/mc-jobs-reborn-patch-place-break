@@ -34,7 +34,6 @@ import org.jetbrains.annotations.NotNull;
  *     types like {@link DataSourceType#SQLITE}).
  * @param connectionPool The properties related to the connection pool.
  */
-// TODO: DbmsServerProperties shall be omited for SQLite data source type.
 public record DataSourceProperties(
     @NotNull DataSourceType type,
     @NotNull String tableName,

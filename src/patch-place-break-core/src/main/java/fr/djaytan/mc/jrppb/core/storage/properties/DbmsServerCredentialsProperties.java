@@ -33,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public record DbmsServerCredentialsProperties(@NotNull String username, @NotNull String password) {
 
-  // TODO: do we really want to set default values for username and password?
   public static final DbmsServerCredentialsProperties DEFAULT =
       new DbmsServerCredentialsProperties("username", "password");
 
