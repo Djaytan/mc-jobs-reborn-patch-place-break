@@ -3,7 +3,7 @@
 <div align="center">
 
 ![Target](https://img.shields.io/badge/plugin-Minecraft-blueviolet)
-![Compatibility](https://img.shields.io/badge/compatibility-v1.17.x%20-->%20v1.21.x-blue)
+![Compatibility](https://img.shields.io/badge/compatibility-v1.19.x%20-->%20v1.21.x-blue)
 [![CI](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/actions/workflows/ci.yml)
 [![semantic-release: conventional-commits](https://img.shields.io/badge/semantic--release-conventional--commits-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)  
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Djaytan_mc-jobs-reborn-patch-place-break&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Djaytan_mc-jobs-reborn-patch-place-break)
@@ -14,7 +14,7 @@
 
 A place-and-break patch extension
 of [JobsReborn plugin](https://www.spigotmc.org/resources/jobs-reborn.4216/)
-for Spigot servers and fork ones (PaperMC, ...).
+for PaperMC servers (compatible with Spigot).
 
 The resource is available
 on [Spigot](https://www.spigotmc.org/resources/jobsreborn-patchplacebreak.102779/),
@@ -87,12 +87,12 @@ As a comparison point, this behavior can have similarities with the one implemen
 
 Easy and efficient, this does the trick.
 
-## Setup of the Spigot plugin
+## Setup of the plugin
 
-We expect here that you already have a Spigot server already set up with the JobsReborn plugin
+We expect here that you already have a PaperMC server already set up with the JobsReborn plugin
 installed on it.
 
-The server's version must be higher or equals to 1.17.x.
+The server's version must be higher or equals to 1.19.x.
 
 ### Download
 
@@ -165,7 +165,7 @@ This will show us your interest in the project, and we will be grateful for that
 * [HikariCP](https://github.com/brettwooldridge/HikariCP)
 * [Flyway](https://github.com/flyway/flyway)
 * [Configurate](https://github.com/SpongePowered/Configurate)
-* [Spigot API](https://hub.spigotmc.org/javadocs/spigot/)
+* [PaperMC API](https://papermc.io/)
 * [JobsReborn API](https://github.com/Zrips/Jobs/wiki/API)
 * [bStats](https://bstats.org/)
 

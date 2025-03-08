@@ -32,14 +32,14 @@
   <packaging>pom</packaging>
 
   <name>JobsReborn-PatchPlaceBreak</name>
-  <description>A place-break patch extension of JobsReborn plugin for Spigot servers (Minecraft)</description>
+  <description>A place-break patch extension of JobsReborn plugin for PaperMC servers (Minecraft)</description>
 
   <modules>
     <module>src/patch-place-break-api</module>
     <module>src/patch-place-break-core</module>
     <module>src/patch-place-break-cts</module>
-    <module>src/spigot-patch-adapter</module>
-    <module>src/spigot-plugin</module>
+    <module>src/paper-patch-adapter</module>
+    <module>src/paper-plugin</module>
   </modules>
 
   <properties>
@@ -75,7 +75,7 @@
       </dependency>
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>spigot-patch-adapter</artifactId>
+        <artifactId>paper-patch-adapter</artifactId>
         <version>${project.version}</version>
       </dependency>
 
@@ -169,12 +169,12 @@
         <scope>import</scope>
       </dependency>
 
-      <!-- Spigot-specific dependencies -->
+      <!-- Paper-specific dependencies -->
       <dependency>
-        <groupId>org.spigotmc</groupId>
-        <artifactId>spigot-api</artifactId>
-        <version>1.17.1-R0.1-SNAPSHOT</version>
-        <!-- The server must be a Spigot or a derivative one (e.g. PaperMC, Purpur, ...) -->
+        <groupId>io.papermc.paper</groupId>
+        <artifactId>paper-api</artifactId>
+        <version>1.19.4-R0.1-SNAPSHOT</version>
+        <!-- Plugin can only be used on PaperMC servers (note: compatibility with Spigot servers is still necessary) -->
         <scope>provided</scope>
       </dependency>
       <dependency>
@@ -302,11 +302,11 @@
         <scope>test</scope>
       </dependency>
 
-      <!-- Spigot-specific test dependencies -->
+      <!-- Paper-specific test dependencies -->
       <dependency>
         <groupId>com.github.seeseemelk</groupId>
-        <artifactId>MockBukkit-v1.17</artifactId>
-        <version>1.13.0</version>
+        <artifactId>MockBukkit-v1.19</artifactId>
+        <version>3.1.0</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
@@ -334,12 +334,20 @@
           <release>${java.version}</release>
           <failOnWarning>true</failOnWarning>
           <showDeprecation>true</showDeprecation>
+          <!-- javac linter has a number of warnings that are really off-the-wall... -->
           <compilerArgs>
             <arg>-Xlint:all</arg>
+
+            <!-- Not realist because of not (yet) JPMS compliant dependencies -->
             <arg>-Xlint:-exports</arg>
             <arg>-Xlint:-requires-automatic</arg>
             <arg>-Xlint:-requires-transitive-automatic</arg>
+
+            <!-- Java serialization is not used + Complaints about the serialVersionUID field are irrelevant/unwanted -->
             <arg>-Xlint:-serial</arg>
+
+            <!-- Disable irrelevant complaints about annotations such as @NotNull, @Test, ... -->
+            <arg>-Xlint:-processing</arg>
           </compilerArgs>
         </configuration>
       </plugin>
