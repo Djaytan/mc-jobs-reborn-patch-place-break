@@ -76,7 +76,9 @@ public class JobsRebornPatchPlaceBreakPlugin extends JavaPlugin {
 
   @Override
   public void onDisable() {
-    patchPlaceBreakCore.disable();
+    if (patchPlaceBreakCore != null) {
+      patchPlaceBreakCore.disable();
+    }
     getLogger().info("JobsReborn-PatchPlaceBreak successfully disabled.");
   }
 
