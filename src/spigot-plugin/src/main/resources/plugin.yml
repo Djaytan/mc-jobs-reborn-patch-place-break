@@ -1,6 +1,0 @@
-name: ${spigotPlugin.name}
-version: ${version}
-author: Djaytan
-api-version: 1.17
-main: ${package.root}.spigot.plugin.JobsRebornPatchPlaceBreakPlugin
-depend: [ Jobs ]

@@ -3,7 +3,7 @@ module.exports = {
   rules: {
     // Project specific rules
     'scope-enum': [2, 'always', [
-      'core', 'spigot-adapter', 'spigot-plugin', 'readme', 'contributing',
+      'core', 'paper-adapter', 'paper-plugin', 'readme', 'contributing',
       'packaging', 'deps', 'other', 'github', 'renovate', 'release'
     ]],
 

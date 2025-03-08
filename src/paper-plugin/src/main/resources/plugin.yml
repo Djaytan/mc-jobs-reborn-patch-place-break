@@ -1,0 +1,6 @@
+name: ${paperPlugin.name}
+version: ${version}
+author: Djaytan
+api-version: 1.19
+main: ${package.root}.paper.plugin.JobsRebornPatchPlaceBreakPlugin
+depend: [ Jobs ]

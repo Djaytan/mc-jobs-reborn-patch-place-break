@@ -58,8 +58,8 @@ When considering contributing to the project through PRs, please follow these gu
 If you are working on Bukkit related parts of the project, then you may find useful to consult these
 documentations if required:
 
-* [The Spigot API JavaDoc](https://hub.spigotmc.org/javadocs/spigot/)
-* [The Bukkit Dev Wiki](https://bukkit.fandom.com/wiki/Main_Page)
+* [The PaperMC API JavaDoc](https://papermc.io/javadocs)
+* [The PaperMC Development Guide](https://docs.papermc.io/paper/dev)
 
 ### ❓ Support
 
@@ -102,8 +102,8 @@ this command at the root project:
     $ mvn
 
 This is the command you will run most of the time.
-You will find the packaged JAR file of the Spigot plugin at `src/spigot-plugin/target`.
-If you want to test it, copy it into your local Spigot server by taking care that the server
+You will find the packaged JAR file of the PaperMC plugin at `src/paper-plugin/target`.
+If you want to test it, copy it into your local PaperMC server by taking care that the server
 version is compatible with the plugin.
 
 ### 📋 Test-Driven Development (TDD)
@@ -153,7 +153,7 @@ from [Angular project](https://github.com/angular/angular/blob/main/CONTRIBUTING
   │       │             │
   │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
   │       │
-  │       └─⫸ Commit Scope: core|spigot-adapter|spigot-plugin|readme|contributing|packaging|deps|
+  │       └─⫸ Commit Scope: core|paper-adapter|paper-plugin|readme|contributing|packaging|deps|
   │                          other|github|renovate|release
   │
   └─⫸ Commit Type: feat|fix|perf|refactor|docs|test|build|ci|chore
@@ -171,7 +171,7 @@ It must be one of the following:
 * **refactor**: A code change that neither fixes a bug nor adds a feature
 * **docs**: Documentation only changes
 * **test**: Adding missing tests or correcting existing tests
-* **build**: Changes that affect the build system or external dependencies (e.g. Spigot API, Guice,
+* **build**: Changes that affect the build system or external dependencies (e.g. PaperMC API, Guice,
   Flyway, ...)
 * **ci**: Changes to our CI configuration files and scripts (e.g. GitHub Actions, Renovate, ...)
 * **chore**: Changes that don't in any other category (e.g. dependencies' update, update
@@ -183,8 +183,8 @@ Most of the time, you should try to stick with the following scopes:
 
 * **core**: used for changes related to the `patch-place-break-api`, `patch-place-break-core`
   and `patch-place-break-cts` modules
-* **spigot-adapter**: used for changes related to the `spigot-patch-adapter` module
-* **spigot-plugin**: used for changes related to the `spigot-plugin` module
+* **paper-adapter**: used for changes related to the `paper-patch-adapter` module
+* **paper-plugin**: used for changes related to the `paper-plugin` module
 
 But there are exceptions that shall be considered as well depending mostly on the change type.
 

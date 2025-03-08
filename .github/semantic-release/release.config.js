@@ -24,7 +24,7 @@ module.exports = {
       {
         assets: [
           {
-            path: '../../src/spigot-plugin/target/JobsReborn-PatchPlaceBreak-*.*.*.jar'
+            path: '../../src/paper-plugin/target/JobsReborn-PatchPlaceBreak-*.*.*.jar'
           }
         ],
         labels: ['t:release']
@@ -33,7 +33,7 @@ module.exports = {
     [
       '@semantic-release/exec',
       {
-        prepareCmd: './scripts/generate_spigot_plugin.sh ${nextRelease.version}'
+        prepareCmd: './scripts/generate_papermc_plugin.sh ${nextRelease.version}'
       }
     ],
   ]
