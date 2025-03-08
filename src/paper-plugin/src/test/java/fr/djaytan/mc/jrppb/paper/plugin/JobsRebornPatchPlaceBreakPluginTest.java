@@ -44,6 +44,7 @@ import org.bukkit.Material;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -81,7 +82,14 @@ class JobsRebornPatchPlaceBreakPluginTest {
     ActionInfo actionInfo = new BlockActionInfo(blockToPlace, ActionType.BREAK);
 
     BlockPlaceEvent blockPlaceEvent =
-        new BlockPlaceEvent(blockToPlace, null, null, null, playerMock, true, EquipmentSlot.HAND);
+        new BlockPlaceEvent(
+            blockToPlace,
+            null,
+            null,
+            new ItemStack(Material.DIAMOND_ORE),
+            playerMock,
+            true,
+            EquipmentSlot.HAND);
 
     // When
     serverMock.getPluginManager().callEvent(blockPlaceEvent);
