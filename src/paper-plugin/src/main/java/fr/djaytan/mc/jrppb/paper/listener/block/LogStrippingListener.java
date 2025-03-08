@@ -27,51 +27,54 @@ import static fr.djaytan.mc.jrppb.paper.listener.block.LogStrippingChangeDetecto
 import fr.djaytan.mc.jrppb.paper.adapter.PatchPlaceBreakPaperAdapterApi;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import org.bukkit.block.Block;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This class represents a {@link BlockPlaceEvent} listener.
+ * Represents a listener for log stripping.
  *
- * <p>The purpose of this listener is to put a place-and-break tag to newly placed blocks by a
- * player. This permits to prevent place-and-break exploit with diamond ores, for example.
+ * <p>Its purpose is to tolerate payment when breaking a log after having been stripped beforehand.
+ * This doesn't question the patch when a stripped log is placed: the regular patch process applies
+ * in such a scenario.
+ *
+ * <p>To summarize:
+ *
+ * <ul>
+ *   <li>When the log block is placed then stripped and finally broken, payment for the break action
+ *       is tolerated
+ *   <li>When the (stripped) log block is placed then broken, payment is blocked
+ * </ul>
  */
 @Singleton
-public class BlockPlaceListener implements Listener {
+public final class LogStrippingListener implements Listener {
 
   private final PatchPlaceBreakPaperAdapterApi patchPlaceBreakPaperAdapterApi;
 
   @Inject
-  public BlockPlaceListener(
-      @NotNull PatchPlaceBreakPaperAdapterApi patchPlaceBreakPaperAdapterApi) {
+  public LogStrippingListener(PatchPlaceBreakPaperAdapterApi patchPlaceBreakPaperAdapterApi) {
     this.patchPlaceBreakPaperAdapterApi = patchPlaceBreakPaperAdapterApi;
   }
 
   /**
-   * This method is called when a {@link BlockPlaceEvent} is dispatched to put the place-and-break
-   * patch tag.
-   *
-   * <p>Because of a conflict with the {@link LogStrippingListener}, it is required to never put
-   * tags on log stripping actions.
+   * This method is called when a {@link EntityChangeBlockEvent} is dispatched to remove the
+   * potentially existing place-and-break patch tag to the now stripped log block.
    *
    * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we just want to react when
-   * we have the confirmation that the event will occur without modifying its result. Furthermore,
-   * because this plugin will always be enabled before the JobsReborn one (enhance the "depend"
-   * plugin.yml line), we have the guarantee that this listener will always be called before the one
-   * registered by JobsReborn at the same priority level.
+   * we have the confirmation that the event will occur without modifying its result.
    *
-   * @param event The block place event.
+   * @param event The entity change block event.
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onBlockPlace(@NotNull BlockPlaceEvent event) {
-    Block placedBlock = event.getBlockPlaced();
+  public void onEntityChangeBlock(@NotNull EntityChangeBlockEvent event) {
+    Material initialBlockType = event.getBlock().getType();
+    Material finalBlockType = event.getTo();
 
-    if (!isLogStrippingChange(event.getItemInHand(), placedBlock.getType())) {
-      patchPlaceBreakPaperAdapterApi.putTag(placedBlock, false);
+    if (isLogStrippingChange(initialBlockType, finalBlockType)) {
+      patchPlaceBreakPaperAdapterApi.removeTag(event.getBlock());
     }
   }
 }

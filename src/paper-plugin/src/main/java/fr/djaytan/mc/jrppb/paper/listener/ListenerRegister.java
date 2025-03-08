@@ -27,6 +27,7 @@ import fr.djaytan.mc.jrppb.paper.listener.block.BlockGrowListener;
 import fr.djaytan.mc.jrppb.paper.listener.block.BlockPistonListener;
 import fr.djaytan.mc.jrppb.paper.listener.block.BlockPlaceListener;
 import fr.djaytan.mc.jrppb.paper.listener.block.BlockSpreadListener;
+import fr.djaytan.mc.jrppb.paper.listener.block.LogStrippingListener;
 import fr.djaytan.mc.jrppb.paper.listener.jobs.JobsExpGainListener;
 import fr.djaytan.mc.jrppb.paper.listener.jobs.JobsPrePaymentListener;
 import jakarta.inject.Inject;
@@ -53,6 +54,7 @@ public class ListenerRegister {
   private final BlockSpreadListener blockSpreadListener;
   private final JobsExpGainListener jobsExpGainListener;
   private final JobsPrePaymentListener jobsPrePaymentListener;
+  private final LogStrippingListener logStrippingListener;
 
   @Inject
   public ListenerRegister(
@@ -64,7 +66,8 @@ public class ListenerRegister {
       @NotNull BlockPlaceListener blockPlaceListener,
       @NotNull BlockSpreadListener blockSpreadListener,
       @NotNull JobsExpGainListener jobsExpGainListener,
-      @NotNull JobsPrePaymentListener jobsPrePaymentListener) {
+      @NotNull JobsPrePaymentListener jobsPrePaymentListener,
+      @NotNull LogStrippingListener logStrippingListener) {
     this.javaPlugin = javaPlugin;
     this.pluginManager = pluginManager;
     this.blockBreakListener = blockBreakListener;
@@ -74,6 +77,7 @@ public class ListenerRegister {
     this.blockSpreadListener = blockSpreadListener;
     this.jobsExpGainListener = jobsExpGainListener;
     this.jobsPrePaymentListener = jobsPrePaymentListener;
+    this.logStrippingListener = logStrippingListener;
   }
 
   /**
@@ -87,6 +91,7 @@ public class ListenerRegister {
     pluginManager.registerEvents(blockSpreadListener, javaPlugin);
     pluginManager.registerEvents(jobsExpGainListener, javaPlugin);
     pluginManager.registerEvents(jobsPrePaymentListener, javaPlugin);
+    pluginManager.registerEvents(logStrippingListener, javaPlugin);
     log.info("Event listeners registered.");
   }
 }

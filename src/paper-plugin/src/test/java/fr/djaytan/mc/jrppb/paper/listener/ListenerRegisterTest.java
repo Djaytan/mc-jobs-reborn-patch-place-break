@@ -39,6 +39,7 @@ import fr.djaytan.mc.jrppb.paper.listener.block.BlockGrowListener;
 import fr.djaytan.mc.jrppb.paper.listener.block.BlockPistonListener;
 import fr.djaytan.mc.jrppb.paper.listener.block.BlockPlaceListener;
 import fr.djaytan.mc.jrppb.paper.listener.block.BlockSpreadListener;
+import fr.djaytan.mc.jrppb.paper.listener.block.LogStrippingListener;
 import fr.djaytan.mc.jrppb.paper.listener.jobs.JobsExpGainListener;
 import fr.djaytan.mc.jrppb.paper.listener.jobs.JobsPrePaymentListener;
 import fr.djaytan.mc.jrppb.paper.plugin.JobsRebornPatchPlaceBreakPlugin;
@@ -49,6 +50,7 @@ import org.awaitility.Awaitility;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -82,6 +84,7 @@ class ListenerRegisterTest {
     BlockSpreadListener blockSpreadListener = new BlockSpreadListener(patchApi);
     JobsExpGainListener jobsExpGainListener = new JobsExpGainListener(patchApi);
     JobsPrePaymentListener jobsPrePaymentListener = new JobsPrePaymentListener(patchApi);
+    LogStrippingListener logStrippingListener = new LogStrippingListener(patchApi);
     listenerRegister =
         new ListenerRegister(
             plugin,
@@ -92,7 +95,8 @@ class ListenerRegisterTest {
             blockPlaceListener,
             blockSpreadListener,
             jobsExpGainListener,
-            jobsPrePaymentListener);
+            jobsPrePaymentListener,
+            logStrippingListener);
   }
 
   @AfterAll
@@ -114,7 +118,8 @@ class ListenerRegisterTest {
 
     // Then
     BlockPlaceEvent blockPlaceEvent =
-        new BlockPlaceEvent(blockMock, null, null, null, playerMock, true, null);
+        new BlockPlaceEvent(
+            blockMock, null, null, new ItemStack(Material.STONE), playerMock, true, null);
     serverMock.getPluginManager().callEvent(blockPlaceEvent);
 
     assertThat(blockPlaceEvent.isCancelled()).isFalse();
