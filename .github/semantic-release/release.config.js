@@ -22,7 +22,7 @@ module.exports = {
     [
       '@semantic-release/exec',
       {
-        prepareCmd: './scripts/generate_papermc_plugin.sh ${nextRelease.version}'
+        prepareCmd: '../scripts/generate_papermc_plugin.sh ${nextRelease.version}'
       }
     ],
     [
