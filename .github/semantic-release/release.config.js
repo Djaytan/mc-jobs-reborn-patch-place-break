@@ -20,6 +20,12 @@ module.exports = {
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',
     [
+      '@semantic-release/exec',
+      {
+        prepareCmd: './scripts/generate_papermc_plugin.sh ${nextRelease.version}'
+      }
+    ],
+    [
       '@semantic-release/github',
       {
         assets: [
@@ -29,12 +35,6 @@ module.exports = {
         ],
         labels: ['t:release']
       }
-    ],
-    [
-      '@semantic-release/exec',
-      {
-        prepareCmd: './scripts/generate_papermc_plugin.sh ${nextRelease.version}'
-      }
-    ],
+    ]
   ]
 }
