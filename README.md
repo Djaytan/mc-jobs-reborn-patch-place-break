@@ -147,9 +147,7 @@ PlaceAndBreak:
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](docs/CONTRIBUTING.md) for details on ways to help us.
-
-Take care to always follow our [CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md).
+If you want to help us improve the project, you can learn more about ways to do so [here](docs/CONTRIBUTING.md).
 
 ## How to support us?
 
@@ -192,8 +190,7 @@ Specifically for the CI:
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the
-[tags on this repository](https://github.com/Djaytan/mc-jobs-reborn-patch-place-break/tags).
+This project follows [Semantic Versioning](http://semver.org/).
 
 ## Security Policy
 
