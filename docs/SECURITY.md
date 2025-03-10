@@ -1,7 +1,6 @@
 # Security Policy
 
-This document outlines security procedures and general policies for the JobsReborn-PatchPlaceBreak
-project.
+This document outlines security procedures and general policies for the project.
 
 ## Reporting a Vulnerability
 
