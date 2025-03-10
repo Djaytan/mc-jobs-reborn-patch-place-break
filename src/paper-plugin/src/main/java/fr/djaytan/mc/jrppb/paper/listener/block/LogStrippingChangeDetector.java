@@ -31,25 +31,10 @@ import org.jetbrains.annotations.NotNull;
 public final class LogStrippingChangeDetector {
 
   public static boolean isLogStrippingChange(
-      @NotNull Material initialBlockType, @NotNull Material finalBlockType) {
-    return isNotStrippedLog(initialBlockType) && isStrippedLog(finalBlockType);
-  }
-
-  public static boolean isLogStrippingChange(
       @NotNull ItemStack itemInPlayerHand, @NotNull Material finalBlockType) {
-    return isStrippedLog(finalBlockType) && Tag.ITEMS_AXES.isTagged(itemInPlayerHand.getType());
-  }
-
-  private static boolean isNotStrippedLog(@NotNull Material material) {
-    return isLog(material) && !isStripped(material);
-  }
-
-  private static boolean isStrippedLog(@NotNull Material material) {
-    return isLog(material) && isStripped(material);
-  }
-
-  private static boolean isLog(@NotNull Material material) {
-    return Tag.LOGS.isTagged(material);
+    return Tag.LOGS.isTagged(finalBlockType)
+        && isStripped(finalBlockType)
+        && Tag.ITEMS_AXES.isTagged(itemInPlayerHand.getType());
   }
 
   /**
