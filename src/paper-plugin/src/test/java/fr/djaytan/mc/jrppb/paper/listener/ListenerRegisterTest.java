@@ -39,7 +39,6 @@ import fr.djaytan.mc.jrppb.paper.listener.block.BlockGrowListener;
 import fr.djaytan.mc.jrppb.paper.listener.block.BlockPistonListener;
 import fr.djaytan.mc.jrppb.paper.listener.block.BlockPlaceListener;
 import fr.djaytan.mc.jrppb.paper.listener.block.BlockSpreadListener;
-import fr.djaytan.mc.jrppb.paper.listener.block.LogStrippingListener;
 import fr.djaytan.mc.jrppb.paper.listener.jobs.JobsExpGainListener;
 import fr.djaytan.mc.jrppb.paper.listener.jobs.JobsPrePaymentListener;
 import fr.djaytan.mc.jrppb.paper.plugin.JobsRebornPatchPlaceBreakPlugin;
@@ -84,7 +83,6 @@ class ListenerRegisterTest {
     BlockSpreadListener blockSpreadListener = new BlockSpreadListener(patchApi);
     JobsExpGainListener jobsExpGainListener = new JobsExpGainListener(patchApi);
     JobsPrePaymentListener jobsPrePaymentListener = new JobsPrePaymentListener(patchApi);
-    LogStrippingListener logStrippingListener = new LogStrippingListener(patchApi);
     listenerRegister =
         new ListenerRegister(
             plugin,
@@ -95,8 +93,7 @@ class ListenerRegisterTest {
             blockPlaceListener,
             blockSpreadListener,
             jobsExpGainListener,
-            jobsPrePaymentListener,
-            logStrippingListener);
+            jobsPrePaymentListener);
   }
 
   @AfterAll

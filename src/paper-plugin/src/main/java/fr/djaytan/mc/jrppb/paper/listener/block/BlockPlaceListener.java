@@ -55,8 +55,10 @@ public class BlockPlaceListener implements Listener {
    * This method is called when a {@link BlockPlaceEvent} is dispatched to put the place-and-break
    * patch tag.
    *
-   * <p>Because of a conflict with the {@link LogStrippingListener}, it is required to never put
-   * tags on log stripping actions.
+   * <p>Important note: block place events are not only dispatched when a block is placed by a
+   * player as documented in the class' Javadoc. Therefore, some checks like trying to detect log
+   * stripping actions are required to avoid unwanted tags. For instance, when stripping a log then
+   * breaking it, the break payment is unexpectedly cancelled if not filtered first.
    *
    * <p>The EventPriority is set to {@link EventPriority#MONITOR} because we just want to react when
    * we have the confirmation that the event will occur without modifying its result. Furthermore,
