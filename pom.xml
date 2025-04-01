@@ -249,7 +249,7 @@
       <dependency>
         <groupId>org.instancio</groupId>
         <artifactId>instancio-core</artifactId>
-        <version>5.4.0</version>
+        <version>5.4.1</version>
         <scope>test</scope>
       </dependency>
       <dependency>
