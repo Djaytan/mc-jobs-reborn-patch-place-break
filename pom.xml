@@ -443,7 +443,7 @@
               <excludes>
                 <exclude>src/main/resources/**</exclude>
                 <exclude>src/test/resources/**</exclude>
-                <exclude>scripts/**</exclude>
+                <exclude>.github/release/prepare-papermc-plugin.sh</exclude>
                 <exclude>.editorconfig</exclude>
                 <exclude>release.config.js</exclude>
               </excludes>
