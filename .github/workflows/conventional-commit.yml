@@ -40,20 +40,20 @@ jobs:
         with:
           node-version: lts/jod
           cache: npm
-          cache-dependency-path: .github/semantic-release/package-lock.json
+          cache-dependency-path: .github/release/package-lock.json
 
       - name: Install commitlint
-        working-directory: .github/semantic-release/
+        working-directory: .github/release/
         run: npm clean-install
 
       - name: Validate current commit (last commit) with commitlint
         if: ${{ github.event_name != 'pull_request' }}
-        working-directory: .github/semantic-release/
+        working-directory: .github/release/
         run: npx --no-install commitlint --verbose --from HEAD~1 --to HEAD
 
       - name: Validate PR commits with commitlint
         if: ${{ github.event_name == 'pull_request' }}
-        working-directory: .github/semantic-release/
+        working-directory: .github/release/
         run: |
           npx --no-install commitlint --verbose \
             --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} \
