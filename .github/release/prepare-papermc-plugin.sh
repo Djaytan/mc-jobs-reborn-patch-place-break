@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Generate the PaperMC plugin of the JobsReborn place-break patch.
+# Prepare the PaperMC plugin of the JobsReborn place-break patch.
 
 set -Eeuo pipefail
 trap 'echo "Error encountered while executing the script." >&2' ERR
