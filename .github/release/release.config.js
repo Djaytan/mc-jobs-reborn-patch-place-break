@@ -1,5 +1,14 @@
 module.exports = {
   preset: 'conventionalcommits',
+
+  // Branches specs: https://semantic-release.gitbook.io/semantic-release/usage/configuration#branches
+  branches: [
+    'main',
+    '+([0-9])?(.{+([0-9]),x}).x',
+    {name: 'beta', prerelease: true},
+    {name: 'alpha', prerelease: true}
+  ],
+
   // Conventional Changelog config specifications can be found here:
   // -> https://github.com/conventional-changelog/conventional-changelog-config-spec/tree/master/versions
   presetConfig: {
