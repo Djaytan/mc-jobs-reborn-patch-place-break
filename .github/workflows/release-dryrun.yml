@@ -1,0 +1,68 @@
+name: Release - Dry Run
+
+on:
+  pull_request:
+    branches: [ main, '+.x', beta, alpha ]
+
+permissions: {}
+
+jobs:
+  release-dryrun:
+    name: Release - Dry Run
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    permissions:
+      contents: write # Necessary for semantic-release to verify Git push permissions, even during a dry run.
+
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          disable-sudo-and-containers: true
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443
+            *.github.com:443
+            *.githubusercontent.com:443
+            api.nuget.org:443
+            registry.npmjs.org:443
+
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0 # Required by semantic-release
+          # Use the pull request head ref (source branch) to ensure the dry run simulates a release for the current PR.
+          # LIMITATION: will probably not work with pull requests from forks forbidding read accesses.
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: lts/jod
+          cache: npm
+          cache-dependency-path: .github/release/package-lock.json
+
+      - name: Install semantic-release
+        working-directory: .github/release/
+        run: npm clean-install --engine-strict
+
+      - name: Simulate new feature
+        run: |
+          git config --local user.name 'github-actions[bot]'
+          git config --local user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit --no-verify --allow-empty -m 'feat: simulate new feature'
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        working-directory: .github/release/
+        # Perform a dry run without publishing anything.
+        #
+        # Unset the `GITHUB_ACTIONS` environment variable to trick semantic-release into thinking it's not running in a CI environment,
+        # as `--no-ci` alone is insufficient.
+        #
+        # Use `--branches '${{ github.head_ref }}'` to consider the PR head ref (source branch) as a release one for the dry run.
+        run: |
+          unset GITHUB_ACTIONS
+          npx --no-install semantic-release --dry-run --no-ci --branches '${{ github.head_ref }}'
