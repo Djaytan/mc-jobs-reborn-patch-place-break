@@ -13,5 +13,5 @@
   "engines": {
     "node": "^22.0.0"
   },
-  "packageManager": "npm@11.4.2"
+  "packageManager": "npm@11.19.1"
 }
