@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
+        uses: step-security/harden-runner@aebdcf6156ab6691adf63218240e476564a1ed4c # v2.23.0
         with:
           disable-sudo-and-containers: true
           egress-policy: block
